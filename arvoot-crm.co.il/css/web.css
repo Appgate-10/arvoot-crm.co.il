@@ -1,0 +1,2418 @@
+﻿/*@import url('https://fonts.googleapis.com/css?family=Open+Sans');*/
+@import url(opensanshebrew/opensanshebrew.css);
+
+* {
+    margin: 0;
+    padding: 0;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    color: #000000;
+    background-color: #FFFFFF;
+    font-family: 'Open Sans Hebrew', sans-serif;
+    voice-family: "\"}\"";
+    voice-family: inherit;
+    font-size: medium;
+    direction: rtl;
+}
+
+html > body {
+    font-size: medium;
+    font-family: 'Open Sans Hebrew', sans-serif;
+    margin: 0;
+}
+
+P {
+    margin: 0;
+    padding: 0;
+}
+
+/*a {
+    text-decoration: none;
+    color: #0e98c1;
+}
+
+    a:hover {
+        text-decoration: none;
+        color: #0e98c1;
+    }*/
+
+input[type="text"], input[type="password"], textarea, select {
+    outline: none;
+    font-size: medium;
+    font-family: 'Open Sans Hebrew', sans-serif;
+    /*    font-family: 'Open Sans Hebrew', sans-serif;
+    display: inline-block;*/
+}
+
+/*lable {
+    display: inline-block;
+    vertical-align: top;
+    width: 70%;
+    margin-left: 5px;
+    margin-top: 5px;
+    text-align: left;
+    font-size: 10pt;
+    color: red;
+}*/
+
+H1 {
+    text-align: left;
+    color: #323544;
+    font-size: 26pt;
+    line-height: 47px;
+    margin: 20px 0px 0px 20px;
+}
+
+H2 {
+    font-size: 20pt;
+    color: #323544;
+    text-align: left;
+    font-weight: 400;
+}
+
+.MenuDiv {
+    background-color: #323544;
+    height: 100vh;
+    width: 250px;
+    float: left;
+}
+
+.MenuDivHeadline {
+    color: #5f6b7d;
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 16px;
+}
+
+.MenuLink {
+    margin-bottom: 7px;
+    height: 38px;
+    cursor: pointer;
+}
+
+    .MenuLink:hover {
+        background-color: #464f5d;
+    }
+
+    .MenuLink img {
+        width: 24px;
+        height: 24px;
+        margin-top: 6px;
+        margin-left: 10px;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .MenuLink span {
+        color: #b9c7d1;
+        font-size: 11pt;
+        font-weight: 600;
+        line-height: 26px;
+        margin-top: 6px;
+        margin-left: 15px;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+.MenuLinkOn {
+    margin-bottom: 7px;
+    height: 38px;
+    cursor: pointer;
+    background-color: #464f5d;
+}
+
+    .MenuLinkOn:hover {
+        background-color: #464f5d;
+    }
+
+    .MenuLinkOn img {
+        width: 24px;
+        height: 24px;
+        margin-top: 6px;
+        margin-left: 10px;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .MenuLinkOn span {
+        color: #b9c7d1;
+        font-size: 11pt;
+        font-weight: 600;
+        line-height: 26px;
+        margin-top: 6px;
+        margin-left: 15px;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+.logo {
+    width: 250px;
+    height: 100px;
+    border: none;
+}
+
+.SignInBox {
+    position: relative;
+    width: 450px;
+    height: 60px;
+    border: solid 1px #e7e9ed;
+    border-radius: 7px;
+    background-color: #FFFFFF;
+    margin-top: 30px;
+}
+
+    .SignInBox span {
+        position: absolute;
+        left: 10px;
+        line-height: 54px;
+        font-size: 24pt;
+        color: #354052;
+        font-weight: normal;
+        margin-left: 7px;
+    }
+
+    .SignInBox input {
+        position: absolute;
+        right: 5px;
+        height: 60px;
+        width: 370px;
+        line-height: 60px;
+        font-size: 12.5pt;
+        color: #9da4b1;
+        font-weight: 400;
+        background-color: transparent;
+        border: none;
+    }
+
+.ErrorLable {
+    display: inline-block;
+    vertical-align: top;
+    width: 70%;
+    margin-left: 5px;
+    margin-top: 5px;
+    text-align: right;
+    font-size: 10pt;
+    color: red;
+}
+
+.ErrorLable2 {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 5px;
+    margin-top: 5px;
+    text-align: left;
+    font-size: 10pt;
+    color: red;
+}
+
+.UserBox {
+    position: relative;
+    height: 65px;
+    background-color: #282c38;
+    width: 100%;
+    margin-top: -4px;
+    vertical-align: top;
+}
+
+    .UserBox span {
+        position: absolute;
+        top: 22px;
+        left: 65px;
+        color: #FFFFFF;
+        font-size: 13pt;
+    }
+
+.UserImage {
+    position: absolute;
+    top: 11px;
+    left: 10px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+}
+
+.UserLogOut {
+    position: absolute;
+    top: 22px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+}
+
+.Wrapper {
+    position: relative;
+    background-color: #f6f6f6;
+    text-align: left;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.HeaderBoxD {
+    width: 40%;
+}
+
+.HeaderBox {
+    /*    position: fixed;
+*/ background-color: #FFFFFF;
+    text-align: left;
+    height: 115px;
+    width: 100%;
+    padding: 0px 2%;
+    top: 0;
+    right: 0;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.HeaderBoxBg {
+    position: fixed;
+    height: 4px;
+    width: calc(100% - 250px);
+    top: 100px;
+    right: 0;
+    background-image: url(../Images/HederBg.jpg);
+    z-index: 100;
+}
+/*
+.HeaderSearchBox {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    width: 25%;
+    height: 42px;
+    border-bottom: solid 1px #b9c7d1;
+    margin-top: 30px;
+    margin-left: 55px;
+}*/
+
+.HeaderFilterBox {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    width: 380px;
+    height: 42px;
+    border: solid 1px #e7e9ed;
+    border-radius: 7px;
+    background-color: #f5f8fa;
+    margin-top: 30px;
+    margin-left: 80px;
+}
+
+    .HeaderFilterBox span {
+        position: absolute;
+        left: 10px;
+        line-height: 42px;
+        font-size: 13pt;
+        color: #354052;
+        font-weight: 700;
+    }
+
+    .HeaderFilterBox select {
+        position: absolute;
+        right: 10px;
+        height: 42px;
+        line-height: 42px;
+        font-size: 12.5pt;
+        color: #9da4b1;
+        font-weight: 400;
+        background-color: transparent;
+        border: none;
+    }
+
+.inputTextTable {
+    display: inline-block;
+    color: #000000;
+    height: 35px;
+    line-height: 45px;
+    border-radius: 6px;
+    border: solid 2px #b0adad;
+    background-color: #fbfdfe;
+    font-size: 12pt;
+    width: 98%;
+    text-align: center;
+}
+
+/*.inputTextSearch {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 26px;
+    width: 340px;
+    font-size: 14pt;
+    line-height: 26px;
+    padding: 5px;
+    color: #bdcad3;
+    border: none;
+    background-color: transparent;
+    text-align: center;
+}*/
+
+/*.SearchIcon {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 25px;
+}*/
+
+.MainContentDiv {
+    /*margin-top: 100px;*/
+    /*    height: calc(100vh - 150px);
+    overflow-x: hidden;
+    overflow-y: scroll;*/
+    /*    background-color: #f6f6f6;*/
+    /*    background-color: white;
+*/ text-align: center;
+    overflow-x: auto;
+    height: calc(100vh - 115px - 55px - 50px);
+}
+
+#NavBar {
+    padding-top: 30px;
+    width: 96%;
+    height: 50px;
+    margin: auto;
+    text-align: left;
+    color: #313d4f;
+    line-height: 20px;
+}
+
+    #NavBar span {
+        display: inline-block;
+        margin-left: 8px;
+        color: #cccccc;
+    }
+
+    #NavBar a span {
+        display: inline-block;
+        margin-left: 8px;
+        font-weight: 700;
+        color: #313d4f;
+    }
+
+#ListDiv {
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    background-color: #FFFFFF;
+    border-radius: 6px;
+    margin: auto;
+    /*    margin-top: 24px;
+*/ border: solid 1px #ededed;
+    -moz-box-shadow: 1px 0px 15px #ededed;
+    -webkit-box-shadow: 1px 0px 15px #ededed;
+    box-shadow: 1px 0px 15px #ededed;
+    text-align: center;
+}
+
+/*.ListDivHeadline {
+    height: 60px;
+    line-height: 60px;
+    color: #323544;
+    font-size: 14pt;
+    text-align: left;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.ListDivParamsHead {
+    width: 100%;
+    height: 38px;
+    background-color: white;
+    border-top: solid 1px #e7e9ed;
+    border-bottom: solid 1px #e7e9ed;
+    display: table;
+}
+
+    .ListDivParamsHead div {
+        display: table-cell;
+        line-height: 38px;
+        color: #7f8fa4;
+        font-weight: 700;
+        text-align: left;
+    }
+
+.ListDivParams1 {
+    display: table;
+    width: 100%;
+    height: 76px;
+    background-color: #FFFFFF;
+    border-bottom: solid 1px #e8eaee;
+}
+
+    .ListDivParams1 div {
+        display: table-cell;
+        height: 76px;
+        line-height: 76px;
+        color: #313d4f;
+        font-weight: 700;
+        text-align: left;
+        float: left;
+        padding-left: 10px;
+        background-color: #FFFFFF;
+    }
+
+        .ListDivParams1 div a {
+            color: #313d4f;
+        }
+
+.ListDivParams2 {
+    display: table;
+    width: 100%;
+    height: 76px;
+    background-color: #f5f5f5;
+    border-bottom: solid 1px #e8eaee;
+}
+
+    .ListDivParams2 div {
+        display: table-cell;
+        height: 76px;
+        line-height: 76px;
+        color: #313d4f;
+        font-weight: 700;
+        text-align: left;
+        float: left;
+        padding-left: 10px;
+        background-color: #f5f5f5;
+    }
+
+        .ListDivParams2 div a {
+            color: #313d4f;
+        }*/
+
+.ListDivParamsImg {
+    width: 54px;
+    height: 54px;
+    margin-top: 11px;
+    border: none;
+}
+
+
+.ListDivParamsImgHD {
+    height: 54px;
+    margin-top: 11px;
+    border: solid 1px #000000;
+}
+
+.ListDivParamsImgNana {
+    width: 44px;
+    height: 60px;
+    margin-top: 11px;
+    border: solid 1px #CCCCCC;
+}
+
+
+.ListImageButton {
+    height: 26px;
+    /*margin-left:20px;*/
+    border: none;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.ListDivShowStatusGreen {
+    width: 1%;
+    display: table-cell;
+    height: 76px;
+    line-height: 76px;
+    color: #313d4f;
+    font-weight: 700;
+    text-align: left;
+    float: left;
+    padding-left: 10px;
+    background-color: #19a20f;
+}
+
+.ListDivShowStatusRed {
+    width: 1%;
+    display: table-cell;
+    height: 76px;
+    line-height: 76px;
+    color: #313d4f;
+    font-weight: 700;
+    text-align: left;
+    float: left;
+    padding-left: 10px;
+    background-color: red;
+    outline: none;
+}
+
+.btnTop {
+    position: absolute;
+    /*top: 22px;    
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 20px;
+    padding-left: 20px;*/
+    border: none !important;
+    outline: none;
+    cursor: pointer;
+}
+
+.PushInput {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    color: #000000;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 3px;
+    border: solid 1px #cccccc;
+    background-color: #fbfdfe;
+    margin-left: 5px;
+    font-size: 12pt;
+}
+
+.PushBu {
+    position: absolute;
+    right: -125px;
+    top: 23px;
+    height: 42px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    border: dashed 1px #b9c7d1;
+    color: #7f8fa4;
+    font-size: 13pt;
+    font-weight: 700;
+    background-color: #f5f8fa;
+}
+
+.FormLine {
+    width: 98%;
+    height: 1px;
+    background-color: #e7e9ed;
+    display: table;
+    margin: auto;
+}
+
+#PageNav {
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    height: 26px;
+    text-align: center;
+    color: #858585;
+    font-weight: bold;
+    line-height: 26px;
+    background-color: #FFFFFF;
+}
+
+    #PageNav span {
+        line-height: 26px;
+        color: #858585;
+        font-weight: bold;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    #PageNav a {
+        line-height: 26px;
+        color: #858585;
+        font-weight: normal;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    #PageNav img {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+.PageSelectDiv {
+    position: absolute;
+    right: 20px;
+    top: 0px;
+    font-size: 10pt;
+    font-weight: normal;
+}
+
+.ListButton {
+    font-family: 'Open Sans Hebrew', sans-serif;
+    width: 80%;
+    max-width: 150px;
+    color: white;
+    background-color: #10378f;
+    border-radius: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+    height: 35px;
+    font-size: 14pt;
+    cursor: pointer;
+}
+
+#container:after {
+    content: "";
+    display: block;
+    height: 50px;
+    width: 100%;
+    margin-top: 380px;
+}
+
+.FormInput {
+    text-align: right;
+    margin-bottom: 20px;
+    direction: rtl;
+}
+
+    .FormInput div {
+        display: inline-block;
+        vertical-align: top;
+        height: 45px;
+        line-height: 38px;
+        color: #333c48;
+        font-size: 11pt;
+        font-weight: bold;
+        text-align: right;
+    }
+
+    .FormInput input {
+        display: inline-block;
+        vertical-align: top;
+        width: 13%;
+        color: #000000;
+        padding-left: 5px;
+        padding-right: 5px;
+        height: 40px;
+        line-height: 45px;
+        border-radius: 6px;
+        border: solid 2px #b0adad;
+        background-color: #fbfdfe;
+        margin-left: 5px;
+        font-size: 12pt;
+    }
+
+    .FormInput button {
+        display: inline-block;
+        vertical-align: top;
+        width: 30%;
+        color: #000000;
+        padding-left: 5px;
+        padding-right: 5px;
+        height: 45px;
+        line-height: 45px;
+        border-radius: 3px;
+        border: solid 1px #cccccc;
+        background-color: #000000;
+        margin-left: 5px;
+        font-size: 12pt;
+        cursor: pointer;
+    }
+
+    .FormInput textarea {
+        display: inline-block;
+        vertical-align: top;
+        width: 25%;
+        height: 200px;
+        color: #000000;
+        padding-left: 5px;
+        padding-right: 5px;
+        line-height: 25px;
+        border-radius: 6px;
+        border: solid 2px #b0adad;
+        background-color: #fbfdfe;
+        margin-left: 5px;
+        font-size: 12pt;
+    }
+
+    .FormInput select {
+        display: inline-block;
+        vertical-align: top;
+        width: 13%;
+        color: #000000;
+        padding-left: 5px;
+        padding-right: 5px;
+        height: 40px;
+        line-height: 45px;
+        border-radius: 6px;
+        border: solid 2px #b0adad;
+        background-color: #fbfdfe;
+        margin-left: 5px;
+        font-size: 12pt;
+        direction: rtl;
+    }
+
+    .FormInput lable {
+        display: inline-block;
+        vertical-align: top;
+        width: 70%;
+        margin-left: 5px;
+        margin-top: 5px;
+        text-align: left;
+        font-size: 10pt;
+        color: red;
+    }
+
+    .FormInput divImg {
+        display: inline-block;
+        vertical-align: top;
+        /*אילה*/
+        /*width:70%;
+    height:200px;*/
+        color: #000000;
+        line-height: 45px;
+        margin-left: 5px;
+        text-align: left;
+    }
+
+    .FormInput divButton {
+        display: inline-block;
+        vertical-align: top;
+        width: 70%;
+        color: #000000;
+        line-height: 45px;
+        margin-left: 5px;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .FormInput divTextEditBu {
+        display: inline-block;
+        width: 44px;
+        height: 44px;
+        color: #000000;
+        font-size: 12pt;
+        text-align: center;
+        line-height: 44px;
+        border-radius: 1px;
+        border: solid 1px #cccccc;
+        background-color: #fbfdfe;
+        margin: 5px;
+    }
+
+.FormSection {
+    width: 50%;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    text-align: left;
+    background-color: #FFFFFF;
+    border-bottom: solid 1px #edf1f4;
+    font-size: 10pt;
+    font-style: italic;
+    padding-left: 5px;
+}
+
+.FormInputBu {
+    width: 200px;
+    height: 50px;
+    margin-top: 0px;
+    margin-bottom: 30px;
+    text-align: center;
+    background-color: #337ab7;
+    border: solid 1px #2e6da4;
+    font-size: 14pt;
+    color: #FFFFFF;
+    border-radius: 4px;
+}
+
+.FormInputBu2 {
+    height: 50px;
+    margin-top: -0px;
+    margin-bottom: 30px;
+    margin-right: 30px;
+    text-align: center;
+    background-color: #00bca4;
+    border: solid 1px #00a792;
+    font-size: 14pt;
+    color: #FFFFFF;
+    border-radius: 4px;
+    min-width: 130px;
+}
+
+.InputLink {
+    margin-top: 6px;
+    margin-left: 5px;
+    border-radius: 3px;
+    border: solid 1px #cccccc;
+    background-color: #fbfdfe;
+    width: 60%;
+    height: 30px;
+    margin-bottom: -5px;
+}
+
+.InputText {
+    float: left;
+    margin-left: 27px;
+    margin-top: 11px;
+    font-weight: bold;
+    font-size: 11pt;
+    color: #333c48;
+}
+
+.ImageFile {
+    border-radius: 3px;
+    border: solid 1px #cccccc;
+    background-color: #fbfdfe;
+    /*margin-left:5px;*/
+}
+
+.StatsBoxsLine {
+    display: inline-block;
+    float: left;
+    height: 56px;
+    width: 4px;
+    margin-right: 15px;
+    margin-left: 15px;
+    background-color: #26b99a;
+}
+
+#StatsBoxs {
+    position: relative;
+    display: inline-block;
+    float: left;
+    height: 56px;
+    width: 175px;
+}
+
+    #StatsBoxs val {
+        position: absolute;
+        left: 0px;
+        top: 2px;
+        font-size: 22pt;
+        line-height: 22pt;
+        font-weight: bold;
+        color: #323544;
+    }
+
+    #StatsBoxs span {
+        position: absolute;
+        left: 0px;
+        bottom: 2px;
+        font-size: 12pt;
+        line-height: 12pt;
+        font-weight: normal;
+        color: #323544;
+    }
+
+#MenuStatsBoxs {
+    position: relative;
+    display: inline-block;
+    float: left;
+    height: 75px;
+    /*width:60px;*/
+    width: 60px;
+    margin: 10px;
+    background-color: #282c38;
+    text-align: center;
+    padding-top: 5px;
+}
+
+    #MenuStatsBoxs val {
+        font-size: 16pt;
+        line-height: 16pt;
+        font-weight: bold;
+        text-align: center;
+        color: #FFFFFF;
+        width: 60px;
+    }
+
+    #MenuStatsBoxs span {
+        /*font-size:8pt;*/
+        font-size: 9pt;
+        line-height: 10pt;
+        font-weight: normal;
+        text-align: center;
+        color: #b9c7d1;
+    }
+
+
+.Footer {
+    /* position: fixed;*/
+    background-color: #1a2c62;
+    /*    height: 250px;
+*/
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    font-family: 'Open Sans Hebrew', sans-serif;
+    margin-top: 45px;
+    padding-bottom: 13px
+}
+
+
+.Appgate {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    height: 30px;
+}
+
+
+.popUpOut {
+    font-family: 'Open Sans Hebrew', sans-serif;
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    top: 0;
+    right: 0;
+    background: rgba(0,0,0,0.6);
+    text-align: center;
+    z-index: 2004;
+}
+
+.popUpIn {
+    background-color: #FFFFFF;
+    width: 600px;
+    max-width: 70%;
+    height: 70%;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px;
+}
+
+.popUpButton {
+    width: 35%;
+    font-family: 'Open Sans Hebrew', sans-serif;
+    font-size: 15pt !important;
+    height: 45px !important;
+    color: white;
+    background-color: #10378f;
+    border: none;
+    margin-left: 5px;
+    border-radius: 5px;
+    direction: rtl;
+    cursor: pointer;
+}
+
+.ChkBoxClass {
+    vertical-align: -webkit-baseline-middle;
+}
+
+    .ChkBoxClass input {
+        width: 10% !important;
+        margin-left: 0px !important;
+        height: 20px !important;
+        vertical-align: middle !important;
+        float: right;
+        margin-right: 10px;
+    }
+
+    .ChkBoxClass label {
+        float: right;
+        line-height: 20px;
+    }
+
+.rbl input[type="radio"] {
+    margin-left: 7px;
+}
+
+.rbl label {
+    margin-left: 35px;
+}
+
+.rbl1 input[type="checkbox"] {
+    margin-left: 3px;
+}
+
+.rbl1 label {
+    margin-left: 15px;
+}
+
+.weekDays-selector input {
+    display: none !important;
+}
+
+    .weekDays-selector input[type=checkbox] + label {
+        display: inline-block;
+        border-radius: 6px;
+        background: #dddddd;
+        height: 35px;
+        width: 28px;
+        margin-right: 3px;
+        line-height: 35px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .weekDays-selector input[type=checkbox]:checked + label {
+        background: #2AD705;
+        color: #ffffff;
+    }
+
+.chkBoxList input {
+    margin-right: 1px;
+    margin-left: 4px;
+    vertical-align: middle;
+    width: 18px;
+    height: 18px;
+}
+
+.chkBoxList label {
+    vertical-align: middle;
+}
+
+
+.CategoriesList select {
+    display: inline-block;
+    width: 90%;
+    color: #000000;
+    margin-top: 4px;
+    text-align: center;
+    line-height: 45px;
+    border-radius: 3px;
+    border: solid 1px #cccccc;
+    background-color: #fbfdfe;
+}
+
+/*------- datepicker ---------*/
+
+.ui-datepicker {
+    background: #fcfcfc; /* Old browsers */
+    background: #fff -moz-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* FF3.6+ */
+    background: #fff -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fcfcfc), color-stop(100%,#fff)); /* Chrome,Safari4+ */
+    background: #fff -webkit-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* Chrome10+,Safari5.1+ */
+    background: #fff -o-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* Opera11.10+ */
+    background: #fff -ms-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* IE10+ */
+    background: #fff linear-gradient(top, #fcfcfc 0%, #fff 100%); /* W3C */
+    font-size: 11px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    display: none;
+}
+
+    .ui-datepicker table {
+        width: 278px;
+        background-color: #FFFFFF;
+    }
+
+        .ui-datepicker table td {
+            text-align: center;
+        }
+
+        .ui-datepicker table th {
+            text-align: center;
+            color: #1abbac;
+            font-size: 12pt;
+        }
+
+    .ui-datepicker a {
+        cursor: pointer;
+        text-decoration: none;
+        color: #000000;
+        font-size: 12pt;
+    }
+
+.ui-datepicker-prev {
+    color: #FFFFFF;
+    font-size: 11pt;
+    margin-left: 10px;
+}
+
+    .ui-datepicker-prev a {
+        color: #FFFFFF;
+    }
+
+.ui-datepicker-next {
+    color: #FFFFFF;
+    margin-right: 10px;
+    font-size: 11pt;
+    float: right;
+}
+
+    .ui-datepicker-next a {
+        color: #FFFFFF;
+    }
+
+.ui-datepicker-title {
+    text-align: center;
+    font-weight: bold;
+    color: #0e98c1;
+    font-size: 11pt;
+    height: 30px;
+}
+
+.weekDays-selector input {
+    display: none !important;
+}
+
+    .weekDays-selector input[type=checkbox] + label {
+        display: inline-block;
+        border-radius: 6px;
+        background: #dddddd;
+        height: 40px;
+        width: 30px;
+        margin-right: 3px;
+        line-height: 40px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .weekDays-selector input[type=checkbox]:checked + label {
+        background: #2AD705;
+        color: #ffffff;
+    }
+
+.weekDays-selector input {
+    display: none !important;
+}
+
+    .weekDays-selector input[type=checkbox] + label {
+        display: inline-block;
+        border-radius: 6px;
+        background: #dddddd;
+        height: 40px;
+        width: 30px;
+        margin-right: 3px;
+        line-height: 40px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .weekDays-selector input[type=checkbox]:checked + label {
+        background: #2AD705;
+        color: #ffffff;
+    }
+
+/*
+ CSS for the main interaction
+*/
+.tabset > input[type="radio"] {
+    position: absolute;
+    left: -200vw;
+}
+
+.tabset .tab-panel {
+    display: none;
+}
+
+.tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
+.tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
+.tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
+.tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4),
+.tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel:nth-child(5),
+.tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel:nth-child(6) {
+    display: block;
+}
+
+/*
+ Styling
+*/
+.tabset > label {
+    position: relative;
+    display: inline-block;
+    padding: 15px 15px 25px;
+    border: 1px solid transparent;
+    border-bottom: 0;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+    .tabset > label::after {
+        content: "";
+        position: absolute;
+        left: 15px;
+        bottom: 10px;
+        width: 22px;
+        height: 4px;
+        background: #8d8d8d;
+    }
+
+    .tabset > label:hover,
+    .tabset > input:focus + label {
+        color: #06c;
+    }
+
+        .tabset > label:hover::after,
+        .tabset > input:focus + label::after,
+        .tabset > input:checked + label::after {
+            background: #06c;
+        }
+
+.tabset > input:checked + label {
+    border-color: #ccc;
+    border-bottom: 1px solid #fff;
+    margin-bottom: -1px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+
+.tab-panel {
+    padding: 30px 0;
+    border-top: 1px solid #ccc;
+}
+
+.PageingDiv {
+    display: inline-block;
+    height: 90px;
+    padding-top: 30px;
+}
+
+    .PageingDiv a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+        border: 1px solid #ddd;
+    }
+
+        .PageingDiv a.active {
+            background-color: #464f5d;
+            color: white;
+            border: 1px solid #464f5d;
+        }
+
+        .PageingDiv a:hover:not(.active) {
+            background-color: #ddd;
+        }
+
+        .PageingDiv a:first-child {
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+
+        .PageingDiv a:last-child {
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+.button_style {
+    border-radius: 3px;
+    border: solid 1px #cccccc;
+    font-size: 11pt;
+    width: 60%;
+    max-width: 130px;
+    height: 32px;
+    background-color: white;
+    border-color: darkred;
+    color: darkred;
+    white-space: normal;
+    font-family: 'Open Sans Hebrew', sans-serif;
+}
+
+    .button_style:hover {
+        background-color: darkred;
+        color: white;
+    }
+
+#LoadingDiv {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 3000;
+    text-align: center;
+    background-color: rgba(54, 56, 70, 0.7);
+}
+
+.loader {
+    margin: auto;
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    margin-top: 40vh;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.cbText {
+    display: inline-block;
+    float: right;
+    margin-right: 6px;
+    text-align: right;
+    width: 13%;
+}
+
+.nav-bar {
+    width: 100%;
+    height: 50px;
+    /**/ /* background-color: #6d1ca2;*/
+    /*       border-top: solid 1px #e7e9ed;
+*/ /* border-bottom: solid 1px #e7e9ed;*/
+    padding: 0px 2%;
+  /*  position: fixed;
+    top: 115px;*/
+/*    padding-top: 52px;
+*/}
+
+.bar-item {
+    /*    line-height: 80px;
+*/ color: #0f325e;
+    font-weight: 700;
+    cursor: pointer;
+    margin-inline-end: 30px;
+    background-image: url('../images/icons/Arrow_Slide_Button.png');
+    padding-left: 28px;
+}
+
+.row {
+    display: flex;
+}
+.rowHome {
+    display: flex;
+    margin-bottom: 10px;
+    padding: 5px;
+    height: 100%;
+    margin: auto;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+}
+.colHome {
+    height: 255px;
+    /*margin-right: 10px;*/
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    /*background-image: url(../images/icons/Calendar_Big_BG.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;*/
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+}
+
+.DivDetails {
+    background-color: white;
+    width: 50%;
+    text-align: right;
+}
+
+
+.LableDetails {
+    font-weight: 700;
+    padding-top: 12px;
+    padding-bottom: 38px;
+}
+
+.InputAdd {
+    border: none;
+    border-bottom: 1px solid #0098ff;
+    /*   width: 50%;*/
+}
+
+.InputLable {
+    font-weight: 700;
+    margin-left: 10px;
+    white-space: nowrap
+}
+
+.MarginDiv {
+    margin-bottom: 38px;
+}
+
+.SecondaryDiv {
+    background-color: white;
+    padding: 0px 2%;
+    text-align: right;
+}
+
+.MarginRow {
+    margin-bottom: 25px;
+}
+
+.PaddingRow {
+    padding-top: 25px;
+}
+
+.NewOfferLable {
+    font-size: 20pt;
+    color: #273283;
+}
+
+.NewOfferDiv {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.DivGray {
+    height: 14px;
+    border-top: 1px solid #dddddd;
+}
+
+.PaddingAgentCus {
+    padding-bottom: 20px;
+}
+
+.ServiceRequestDiv {
+    justify-content: space-between;
+    width: 100%;
+    border-bottom: 1px solid #dddddd;
+    height: 75px;
+    align-items: center;
+}
+
+.BorderDiv {
+    border: 2px solid #ddd2d2;
+    border-radius: 6px;
+    padding-bottom: 130px;
+}
+
+.PaddingDiv {
+    padding-bottom: 20px;
+}
+
+.MainDivDocuments {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.SecondaryDivDocuments {
+    height: 40px;
+}
+
+.RowDocuments {
+    line-height: 40px;
+    height: 100%;
+}
+
+.DivBackground {
+    width: 93%;
+    border-radius: 6px;
+}
+
+.DivBackgroundRep {
+    background-color: #f6f6f6;
+}
+
+.DivNameFile {
+    font-weight: 700;
+    padding-right: 20px;
+}
+
+.HeaderSearchBox {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    background-color: #f6f6f6;
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    padding: 0 10px;
+}
+
+.InputTextSearch {
+    /* position: absolute;
+    right: 0px;
+    top: 8px;*/
+    height: 26px;
+    width: 100%;
+    font-size: 14pt;
+    line-height: 26px;
+    color: #bdcad3;
+    border: none;
+    background-color: transparent;
+    text-align: center;
+}
+
+.SearchIcon {
+    width: 25px;
+}
+
+.ColorLable {
+    color: #606b86;
+}
+
+.LableBlue {
+    color: #0098ff;
+    font-weight: 700;
+}
+
+.ContactDetails {
+    font-size: 17pt;
+    color: #0098ff;
+}
+
+.ContactDetailsNote {
+    width: 46%;
+/*    margin-left: 2%;*/
+    align-items: center;
+}
+
+.ContactDetailsStatus {
+    justify-content: end;
+}
+
+.ContactDetailsPM {
+    margin-left: 20px;
+}
+
+.GrayLine {
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 25px;
+}
+
+.DivDetailsCus {
+    width: 48%;
+    margin-left: 2%
+}
+
+.DivDetailsCusWidth {
+    width: 49%;
+}
+
+.DivParamsHeadMargin {
+    margin-top: 38px;
+    padding-left: 18px;
+}
+
+.ListDivParamsHeadFlex {
+    background-color: white;
+    border-bottom: solid 1px #c7c3c3;
+    color: #606b86;
+    display: flex;
+    align-items: center;
+    height: 100px;
+}
+
+.ListDivParamsHead {
+    width: 100%;
+    height: 38px;
+    background-color: white;
+    border-bottom: solid 1px #c7c3c3;
+    display: table;
+    /*    padding-left: 18px;*/
+}
+
+    .ListDivParamsHead div {
+        display: table-cell;
+        line-height: 38px;
+        color: #606b86;
+        /*  font-weight: 700;*/
+        text-align: left;
+    }
+
+.ListDivParams {
+    display: table;
+    width: 100%;
+    height: 45px;
+    background-color: white;
+    border-bottom: solid 1px #c7c3c3;
+}
+
+
+    .ListDivParams div {
+        display: table-cell;
+        height: 45px;
+        line-height: 45px;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        color: #273283;
+        font-weight: normal;
+        text-align: left;
+        float: left;
+        padding-left: 10px;
+        background-color: white;
+    }
+
+        .ListDivParams div a {
+            color: #313d4f;
+        }
+
+.ListDivParamsHeadS {
+    height: 100px !important;
+}
+.ListDivParamsBig {
+    display: table;
+    width: 100%;
+    height: 85px;
+    background-color: white;
+    border-bottom: solid 1px #c7c3c3;
+}
+
+
+    .ListDivParamsBig div {
+        display: table-cell;
+        height: 85px;
+        line-height: 85px;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        color: #273283;
+        font-weight: normal;
+        text-align: left;
+        float: left;
+        padding-left: 10px;
+        background-color: white;
+    }
+    .ListDivParamsHeadS div {
+        line-height: 100px !important;
+    }
+
+.DivLidTop {
+    display: flex;
+    justify-content: end;
+}
+
+.col1 {
+    width: 31%;
+    margin-left: 24%
+}
+
+.col2 {
+    width: 21%;
+    margin-left: 2%;
+}
+
+.col3 {
+    width: 20%;
+    margin-left: 2%;
+}
+
+.SpanConnection {
+    text-align: right;
+    display: inline-block;
+    width: 68%;
+    font-size: 22pt;
+    color: #212529;
+    font-weight: 700;
+}
+
+.SignInBoxInput {
+    margin-top: 33px;
+    height: 10%;
+    width: 70%;
+    line-height: 60px;
+    font-size: 12.5pt;
+    color: #9da4b1;
+    font-weight: 400;
+    background-color: white;
+    border: solid 1px #ced9e6;
+    border-radius: 7px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.PasswordButton {
+    color: #0098ff;
+    border: none;
+    background: none;
+    font-size: medium;
+    text-decoration: underline;
+    font-family: 'Open Sans Hebrew', sans-serif;
+}
+
+.RowMenue {
+    align-items: center;
+    display: flex;
+    background-color: white;
+    height: 46px;
+    border: none;
+    font-weight: 700;
+    color: #0f325e;
+    font-weight: bolder;
+    border-bottom: 1px solid #c7c3c3;
+    cursor: pointer;
+    /*    width: 120%;
+*/ font-size: 10.5pt;
+    text-align: right;
+    padding-right: 10%;
+}
+
+.PopupMenue {
+    text-align: right;
+/*    box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.4);
+*/    position: fixed;
+    top: 205px;
+    width: 9%;
+    box-shadow: 0px 2px 5px 5px rgb(178 178 178 / 40%)
+}
+
+.DivBackgroundTasks {
+    background-color: #f6f6f6;
+    width: 96%;
+    border-radius: 6px;
+    align-items: center;
+    height: 37px;
+}
+
+.DivGrayTasks {
+    width: 2px;
+    height: 20px;
+    background-color: #9a9ba0;
+}
+
+.BtnTasksOpen {
+    cursor: pointer;
+    background-color: white;
+    font-size: 13pt;
+    border: none;
+    border-bottom: 1px solid;
+}
+
+.BtnGender {
+    background-color: rgba(255, 255, 255, 0);
+    background-repeat: no-repeat;
+    background-position: left 0px center;
+    width: 100%;
+    display: flex;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: medium;
+    border-bottom: 1px solid #0098ff;
+    background-image: url(../images/icons/Arrow_Blue_Button.png);
+    text-align:right;
+}
+
+.DivSearchBox {
+    /*    position: relative;
+*/ width: 100%;
+    display: flex;
+    align-items: center;
+    border-radius: 9px;
+    padding: 0 10px;
+    background-color: white;
+    width: 21%;
+    border: 1px solid #273283;
+}
+
+.ImgSearch {
+    margin-right: 12px;
+    margin-left: 8px;
+}
+
+.DivTasks {
+    border-bottom: 1px solid #dddddd;
+    height: 78px;
+    align-items: center;
+}
+
+.DivRepeaterTasks {
+    height: 287px;
+    margin-top: 80px;
+    margin-bottom: 44px;
+}
+
+.LblLatestNotifications {
+    color: #0f325e;
+    font-weight: 700;
+}
+
+.Blue {
+    color: #0098ff;
+}
+
+.LblDate {
+    text-align: right;
+    font-size: 10px;
+    color: #05025f;
+}
+
+.ImgBell {
+    height: 18px;
+    width: auto;
+}
+
+.DivLatestNotifications {
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0px;
+}
+
+.DivSecLatestN {
+    height: 100%;
+    align-items: center
+}
+
+.ColUpLid {
+    width: 40%;
+    margin-left: 10%;
+}
+
+.ImgOpen {
+    height: 18px;
+    width: auto;
+}
+
+.RowMenue:hover {
+    color: #2da9fd;
+}
+/*.bar-item:hover {
+    color: #2da9fd;
+}*/
+.ImgX {
+    margin-top: 15px;
+    float: left;
+    margin-left: 15px;
+}
+
+.HeaderPopup {
+    font-size: 22pt;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: #273283
+}
+.HeaderPopupPurple {
+    font-size: 22pt;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: #993796
+}
+
+.SecondaryHeaderPopup {
+    font-weight: bold;
+    color: #273283;
+    font-size: 15pt;
+}
+
+.MainDivPopup {
+    width: 50%;
+    margin: auto;
+    align-items: center;
+    padding-top: 113px;
+}
+.MainDivPopup2 {
+    width: 100%;
+    margin: auto;
+    align-items: center;
+    padding-top: 45px;
+}
+
+.SecondaryDivPopup {
+    width: 45%;
+    margin-top: 22px;
+    margin-bottom: 52px;
+}
+
+.ListSelect {
+    padding-right: 30px;
+    box-shadow: 0px 3px 9px 0px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+}
+
+.DivRepeaterPopUp {
+    height: 144px;
+    margin-top: 28px
+}
+
+.DivRpwRepeaterPopUp {
+    width: 100%;
+    background-color: #f6f6f6;
+    padding: 1% 3%;
+    border-radius: 4px;
+}
+
+.RowWhitePopUp {
+    background-color: white;
+    height: 15px;
+}
+
+.DivDownPopUp {
+    width: 70%;
+    margin: auto;
+    border-top: 2px #dedada solid;
+    padding-top: 37px;
+}
+
+.imgOkCancelPopUp {
+    width: 45%;
+    height: auto;
+}
+
+
+
+
+.selectGlobal {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #0098ff;
+    background: url(../images/icons/Arrow_Blue_Button.png) no-repeat left 4px center;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: rgba(255, 255, 255, 0);
+    background-size: 18px;
+    cursor: pointer;
+    font-size: medium;
+    padding: 0px 5px;
+}
+
+   
+
+
+.radioButtonListSmall input[type="radio"] {
+    display: none;
+}
+
+    .radioButtonListSmall input[type="radio"] + label {
+        cursor: pointer;
+        position: relative;
+    }
+
+        .radioButtonListSmall input[type="radio"] + label::before {
+            content: "";
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: none;
+            width: 18px;
+            height: 18px;
+            background-image: url(../images/icons/Blue_Vi.png);
+            background-size: cover;
+        }
+
+    .radioButtonListSmall input[type="radio"]:checked + label::before {
+        display: inline-block; /* show the image when the item is selected */
+    }
+
+    .radioButtonListSmall input[type="radio"]:checked + label {
+        color: #0098ff;
+    }
+
+.radioButtonListBig label {
+    display: inline-block;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: black;
+    font-weight: 700;
+    font-size: 12pt;
+}
+
+.radioButtonListBig input[type="radio"] {
+    display: none;
+}
+
+    .radioButtonListBig input[type="radio"] + label {
+        cursor: pointer;
+        position: relative;
+    }
+
+        .radioButtonListBig input[type="radio"] + label::before {
+            content: "";
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: none;
+            width: 18px;
+            height: 18px;
+            background-image: url(../images/icons/Blue_Vi.png);
+            background-size: cover;
+        }
+
+
+    .radioButtonListBig input[type="radio"]:checked + label::before {
+        display: inline-block; /* show the image when the item is selected */
+    }
+
+    .radioButtonListBig input[type="radio"]:checked + label {
+        color: #0098ff;
+    }
+
+.ContentDiv {
+    padding: 0px 2%;
+    display: flex;
+}
+
+.ContentDivHome {
+    width: 90%;
+    display: flex;
+}
+
+.ProfileImage {
+    height: auto;
+    width: 54px;
+}
+
+.ImgCleanAll {
+    width: auto;
+    height: 19px;
+}
+
+.FontWeightBold {
+    font-weight: 700;
+}
+
+.ImgV {
+    height: 18px;
+    width: auto;
+}
+
+.AlignItemsCenter {
+    align-items: center;
+}
+
+.myCalendar td {
+    text-align: center;
+    border-width: 1px;
+    border-color: lightgray;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.myCalendar td a {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    line-height: 28px;
+}
+
+/*Gila*/
+.calendar-title-master td a {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    line-height: 45px;
+}
+/*
+.hide-days {
+    display: none;
+}*/
+.myCalendarMonth td {
+    width: 96px;
+    font-size: 14pt;
+}
+
+.myCalendarMaster td {
+    width: 27px;
+    font-size: 10pt;
+}
+
+.calendar-title {
+    background-color: white;
+    border-bottom: 1px solid #dddddd;
+    color: #0098ff;
+    font-weight: 700;
+    /*    height:78px;
+*/
+}
+
+/*.myCalendars td {
+    text-align: center;
+   
+    border-width: 1px;
+    border-color: lightgray;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}*/
+/*
+.hide-days {
+    display: none;
+}*/
+
+/*.calendars-title {
+    background-color: white;
+    border-bottom: 1px solid #dddddd;
+    color: #0098ff;
+    font-weight: 700;
+   
+}*/
+
+.calendar-title-month {
+    height: 78px;
+}
+
+.calendar-title-master {
+    height: 45px;/*Gila*/
+    font-size: 10pt;
+}
+
+.ColorWhite {
+    color: white;
+}
+
+.FooterFinance {
+    font-size: 32pt;
+}
+
+.DropDownList {
+    padding-right: 15px;
+    border-radius: 45px;
+    /* border: solid 1px #a3a3a4; */
+    background-color: #f1f6fa;
+    margin-right: 2%;
+    font-size: 13pt;
+    height: 56px;
+    color: #0e416d;
+    width: 75%;
+    border: none;
+    margin-inline-end: 20px;
+}
+
+.RepeaterMoveLead {
+    height: 55px;
+    border-bottom: 1px solid #dddddd;
+}
+
+    .RepeaterMoveLead div {
+        line-height: 55px;
+    }
+
+.DivRepeaterMoveLead {
+    width: 90%;
+    height: 551px;
+    margin-bottom: 49px;
+}
+
+.DivAgentVAll {
+    width: 100%;
+    margin-bottom: 30px;
+    justify-content: center;
+    border-top: 1px solid #dddddd;
+    padding-top: 40px
+}
+
+.buttonWithImages {
+    display: flex;
+    border-radius: 40px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 13pt;
+}
+
+.buttonWithTwoImages {
+    height: 36px;
+    background-color: #d9f0ff; /* צבע רקע */
+    background-image: url('../images/icons/Arrow_Blue_Button.png'), url('../images/icons/Open_Mession_Sending_Flug.png');
+    background-position: left, right;
+    background-repeat: no-repeat;
+    background-position: left 10px center, right 10px center;
+    padding: 0px 35px;
+}
+
+.buttonWithOneImages {
+    background-color: rgba(255, 255, 255, 0); /* צבע שקוף */
+    background-repeat: no-repeat;
+    background-position: left 10px center;
+    font-family: 'Open Sans Hebrew', sans-serif;/*Gila*/
+}
+
+.listOpenTasks {
+    padding-left: 28px;
+    background-image: url('../images/icons/Arrow_Blue_Button.png');
+}
+
+.secondStatus {
+    padding: 0 10px;
+    background-image: url('../images/icons/Arrow_Blue_Button.png');
+}
+
+.width100 {
+    width: 100%;
+}
+
+.NewLid {
+    position: fixed;
+    top: 39px;
+    left: 14%;
+    height: 60px;
+    background-color: #973595;
+    border: none;
+    color: white;
+    font-size: medium;
+    font-weight: bold;
+    border-radius: 38px;
+    width: 11%;
+    cursor: pointer;
+    font-family: 'Open Sans Hebrew', sans-serif;/*Gila*/
+}
+
+.AllPopUp {
+    z-index: 2; /* ערך גבוה יותר מהערך של דיב ה-x */
+}
+/*#sa {
+    z-index: 1;*/ /* ערך נמוך יותר מהערך של דיב ה-PopUp_Contacts */
+/*}*/
+.BtnSave {
+    background-color: #973595;
+    color: white;
+    padding: 0px 2%;
+    border: none;
+    border-radius: 40px;
+    font-size: medium;
+    font-weight: bold;
+    margin-inline-start: 5px;
+    cursor: pointer;
+    font-family: 'Open Sans Hebrew', sans-serif; /*Gila*/
+}
+.BorderNone {
+    border: none;
+}
+.itemCheckbox {
+ 
+}
+.BackgroundColorWhite {
+    background-color: white;
+}
+.content-wrapper-add-agent {
+    width: 77%;
+    margin: auto;
+    position: absolute;
+    left: 12%;
+    height: 110%;
+    text-align: right;
+}
+
+@media screen and (max-width: 1680px) {
+    .content-wrapper-add-agent {
+        top: 15vh;
+        height: 67%;
+    }
+}
+.form-header-agent {
+    text-align: center;
+    color: #932B90;
+    font-size: 22pt;
+    font-weight: bold;
+    margin-top: 6%;
+    margin-bottom: 3%;
+}
+.colImgAgentSettings {
+    height: 100%;
+    width: 14%;
+}
+
+@media screen and (max-width: 1400px) {
+    .form-header-agent {
+        margin-bottom: 7%;
+        margin-top: 3%;
+    }
+}
+.ColAgentPermissions {
+    margin-inline-end: 5%;
+}
+.PermissionsChoose {
+    height: 42px;
+    background: white;
+    content: url(/images/icon/History_Lawsuit_Popup_Vi_Icon.png);
+    display: inline-block;
+    border-radius: 36px;
+    font-size: 0.9vw;
+    padding: 1.5%;
+    margin-bottom: 3%;
+    /*  width: 69%;*/
+    color: #932B90;
+    border: 1px solid #932B90;
+    cursor: pointer;
+    font-family: 'Open Sans Hebrew', sans-serif; /*Gila*/
+}
+.Permissions {
+    height: 42px;
+    background: white;
+    border: 1px solid #a3a3a4;
+    color: #a3a3a4;
+    border-radius: 36px;
+    font-size: 0.9vw;
+    padding: 1.5%;
+    margin-bottom: 3%;
+    cursor: pointer;
+    /*  width: 69%;*/
+    /* color: #027aff;*/
+    /* border: 1px solid #027aff;*/
+    font-family: 'Open Sans Hebrew', sans-serif; /*Gila*/
+}
+.SpanPermissions {
+    font-size: 10pt;
+    color: #a3a3a4;
+}
+.form-group-wrapper {
+    width: 47%;
+    row-gap: 5px;
+}
+.form-group-wrapper input {
+        /* width: 301px;*/
+        height: 100%;
+        color: #000000;
+        /* padding-left: 20px;*/
+        padding-right: 20px;
+        /* line-height: 45px;*/
+        border-radius: 6px;
+        border: solid 1px #a3a3a4;
+        background-color: #fbfdfe;
+        margin-left: 5px;
+        font-size: 12pt;
+        margin-bottom: 6%;
+    }
+.form-input-wrapper {
+    height: 100%;
+}
+.form-span-wrapper {
+    color: #932B90;
+    margin-bottom: 10px;
+    font-size: 10pt;
+}
+.form-span-wrapper-right {
+    color: #932B90;
+    margin-bottom: 10px;
+    font-size: 12pt;
+    text-align: right;
+    margin-right: 7%;
+}
+.AddAgentButton {
+    height: 45px;
+    background: #932B90;
+    color: white;
+    border-radius: 6px;
+    font-size: 14pt;
+    padding: 8px;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    font-family: 'Open Sans Hebrew', sans-serif; /*Gila*/
+}
+
+
+.ImageFile {
+    background-color: #fbfdfe;
+    border: solid 1px #9e9e9e;
+    border-radius: 50px;
+    width: 12%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.StatusClaims {
+    color: #2b4788;
+    border: none;
+    font-family: 'Open Sans Hebrew', sans-serif;
+    font-size: medium;
+}
+.tasks-calendar td {
+    text-align: center;
+}
+
+.tasks-calendar-title {
+    border-bottom: 1px #EEF2F4 solid;
+    height: 100%;
+}
+
+.calendar-day {
+    position: relative;
+    border-radius: 2px;
+}
+
+    .calendar-day .indicator {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 12px;
+        height: 12px;
+        background-color: #669EFF;
+        border-radius: 50%;
+    }

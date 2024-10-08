@@ -32,3 +32,4 @@ C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\Contro
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\cp.adarapp.co.il.dll
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\cp.adarapp.co.il.pdb
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\ControlPanel.csproj.AssemblyReference.cache
+C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\ControlPanel.csproj.CopyComplete

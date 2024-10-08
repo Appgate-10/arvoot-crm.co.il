@@ -24,6 +24,7 @@ namespace ControlPanel
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
             Page.Form.Attributes.Add("enctype", "multipart/form-data");
             ImageFile_1_display.Attributes.Add("onclick", "document.getElementById('" + ImageFile_1_FileUpload.ClientID + "').click();");
             if (!Page.IsPostBack)
@@ -36,7 +37,8 @@ namespace ControlPanel
                 }
                 ManagementPermission_Click(this, EventArgs.Empty);
 
-                loadUsers(1);        
+                loadUsers(1);
+                loadUsers(2);
             }
         }
 

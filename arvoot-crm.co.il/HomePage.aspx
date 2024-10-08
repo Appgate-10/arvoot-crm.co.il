@@ -90,7 +90,7 @@
 
 
             <div class="rowHome">
-                <div class="colHome" style="width: 70%; background-color:yellow;">
+                <div class="colHome" style="width: 70%;">
                     <%--                 <asp:Label ID="Label5" Text="נתון כללי" class="text-blue" style="font-size:11pt"  runat="server" />--%>
                     <div class="rowHome" style="padding: 25px 25px 0px 25px; height: auto;">
                         <asp:Button ID="Label6" OnClick="Month_General_Click" Text="נתון כללי" class="text-blue" Style="font-size: 11pt; color: #05025f; margin-right: 3%; background: none; border: none; font-family: 'Open Sans Hebrew', sans-serif; /*Gila*/" runat="server" />
@@ -194,7 +194,7 @@
 
                         <asp:Label ID="Label5" Text="התראות אחרונות" class="text-blue" Style="font-size: 11pt; padding-right: 10px" runat="server" />
                     </div>
-                    <div style="padding-bottom: 12%; padding-right: 7%; margin: 10px 10px 10px 30px;">
+                    <div style="padding-bottom: 12%; padding-right: 7%; margin: 10px; max-height: 200px; overflow-y: auto;">
                         <asp:Repeater ID="Repeater2" runat="server">
                             <ItemTemplate>
                                 <div style="background-color: whitesmoke; border-radius: 12px; margin: 10px 0px 10px 10px; padding-right: 16px; padding-bottom: 8px;">

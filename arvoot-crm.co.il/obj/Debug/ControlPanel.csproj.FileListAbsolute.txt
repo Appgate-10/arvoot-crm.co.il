@@ -9,16 +9,11 @@ C:\Server\cp.adarapp.co.il\cp.adarapp.co.il\obj\Debug\ControlPanel.csproj.Assemb
 C:\Server\cp.adarapp.co.il\cp.adarapp.co.il\obj\Debug\ControlPanel.csproj.CoreCompileInputs.cache
 C:\Server\cp.adarapp.co.il\cp.adarapp.co.il\obj\Debug\cp.adarapp.co.il.dll
 C:\Server\cp.adarapp.co.il\cp.adarapp.co.il\obj\Debug\cp.adarapp.co.il.pdb
-C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\cp.adarapp.co.il.dll.config
-C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\cp.adarapp.co.il.dll
-C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\cp.adarapp.co.il.pdb
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\Newtonsoft.Json.dll
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\RestSharp.Net2.dll
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\Newtonsoft.Json.pdb
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\Newtonsoft.Json.xml
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\ControlPanel.csproj.CoreCompileInputs.cache
-C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\cp.adarapp.co.il.dll
-C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\cp.adarapp.co.il.pdb
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\cp.adarapp.co.il.dll.config
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\cp.adarapp.co.il.dll
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\cp.adarapp.co.il.pdb
@@ -31,5 +26,9 @@ C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\Contro
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\ControlPanel.csproj.CopyComplete
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\cp.adarapp.co.il.dll
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\cp.adarapp.co.il.pdb
+C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\arvoot-crm.co.il.dll.config
+C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\arvoot-crm.co.il.dll
+C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\arvoot-crm.co.il.pdb
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\ControlPanel.csproj.AssemblyReference.cache
-C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\ControlPanel.csproj.CopyComplete
+C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\arvoot-crm.co.il.dll
+C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\arvoot-crm.co.il.pdb

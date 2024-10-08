@@ -1,0 +1,287 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="DesignDisplay.master.cs" Inherits="ControlPanel.DesignDisplay" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" runat="server">
+<head runat="server">
+    <title></title>
+    <%--  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>--%>
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="content-language" content="he" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js"></script>
+    <script type="text/javascript" src="js/js.js?v=<% = DateTime.Now %>"></script>
+
+    <style type="text/css">
+        @import url("css/web.css?v=<% = DateTime.Now %>");
+    </style>
+    
+    <style>
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        <asp:PlaceHolder ID="ControlContainer" runat="server" />
+
+        <div style="position: relative; width: 100%;">
+            <div class="Wrapper width100">
+                <div id="LoadingDiv" style="display: none;">
+                    <div class="loader"></div>
+                </div>
+                <div runat="server">
+                    <div id="AfterSignIn1" style="justify-content: space-between;" runat="server" class="HeaderBox row">
+                        <div class="row" style="align-items: center;">
+                            <div class="col" style="align-items: center; margin-inline-end: 62px;">
+                            
+                                <asp:ImageButton ID="ProfileAgent" Style="width:50px;height:50px;border-radius:50px;object-fit:cover" ImageUrl="~/images/icons/Profile_Image.png" OnClientClick="return confirm('האם אתה בטוח שברצונך להתנתק?');" OnClick='LogOutBU_Click' runat="server"  />
+
+                                <asp:Label ID="AgentName" runat="server" style="color: #273283; font-size: 10pt; font-weight: 700;"/>
+                            </div>
+                            <div style="position: relative;">
+                                <asp:ImageButton ID="ImageButton5" runat="server" OnClick="TaskListOpen_Click" ImageUrl="~/images/icons/Topbar_Logo_Message_Icon_Off.png" Style="margin-inline-end: 34px;" />
+                                <asp:Label ID="CMessagesNumber" runat="server" Style="border-radius: 50%; background-color: #973595; color: white; width: 22px; height: 22px; display: inline-block; text-align: center; font-weight: bold; position: absolute; top: -3px; right: -3px; line-height: 22px;" Text="1"></asp:Label>
+                            </div>
+                            <asp:ImageButton ID="ImageButton3" runat="server" OnCommand="UploadFile_Command" ImageUrl="~/images/icons/Refrash_List_Button.png" Style="margin-inline-end: 12px;" />
+                            <label style="margin-inline-end: 5px;">עודכן ב: </label>
+                            <label>16:07</label>
+                        </div>
+                        <img onclick="navigateToOtherPage()" src="images/icons/Topbar_Logo_1.png " />
+                    </div>
+                    <div class="row nav-bar" id="AfterSignIn2" runat="server">
+                        <div style="width: 14.5%; text-align: right; padding-left: 2%; color: #973595;">
+                            <label class="FontWeightBold" style="margin-inline-end: 7%;">
+                                <%= DateTime.Now.ToString("dd.MM.yy") %>
+                            </label>
+                            <label class="FontWeightBold">
+                                <%= DateTime.Now.ToString("HH:mm") %>
+                            </label>
+                        </div>
+                        <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>
+                                <div style="width: 85.5%;position: relative;" class="row">
+                                    <div>
+                                        <asp:Button ID="BtnBarItem_AllLeads" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="ניהול לידים" />
+                                        <div id="PopUp_AllLeads" class="col PopupMenue AllPopUp" runat="server" visible="false">
+                                            <a class="RowMenue" href="Leads.aspx?ID=1">כל הלידים</a>
+                                            <a class="RowMenue" href="Leads.aspx">אין מענה</a>
+                                            <a class="RowMenue" href="Leads.aspx">לא רלוונטי/לא מעוניין</a>
+                                            <a class="RowMenue" href="Leads.aspx">לידים-חדש</a>
+                                            <a class="RowMenue" href="Leads.aspx">לידים-משכנתאות</a>
+                                            <a class="RowMenue" href="Leads.aspx">לידים-בחודש האחרון</a>
+                                            <%--<asp:Button runat="server" OnCommand="OrderReciveTime_Command" class="RowMenue" Text="כל הלידים"></asp:Button>
+                                        <asp:Button runat="server" OnCommand="OrderReciveTime_Command" class="RowMenue" Text="אין מענה"></asp:Button>
+                                        <asp:Button runat="server" OnCommand="OrderReciveTime_Command" class="RowMenue" Text="לא רלוונטי/לא מעוניין"></asp:Button>
+                                        <asp:Button runat="server" OnCommand="OrderReciveTime_Command" class="RowMenue" Text="לידים-חדש"></asp:Button>
+                                        <asp:Button runat="server" OnCommand="OrderReciveTime_Command" class="RowMenue" Text="לידים-משכנתאות"></asp:Button>
+                                        <asp:Button runat="server" OnCommand="OrderReciveTime_Command" class="RowMenue" Text="לידים-בחודש האחרון"></asp:Button>--%>
+                                            <%--  </div>--%>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <asp:Button ID="BtnBarItem_Contacts" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="אנשי קשר" />
+                                        <div id="PopUp_Contacts" class="col PopupMenue AllPopUp" runat="server" visible="false">
+                                            <a class="RowMenue" href="Contacts.aspx">כל אנשי קשר</a>
+                                            <a class="RowMenue" href="Contacts.aspx">אנשי קשר בבעלותי</a>
+                                            <a class="RowMenue" href="Contacts.aspx?filter=new">אנשי קשר חדשים</a>
+<%--                                            <a class="RowMenue" href="Contacts.aspx">בעלי קרנות השתלמות נזילות בקרוב</a>--%>
+                                            <a class="RowMenue" href="Contacts.aspx?filter=birthday">אנשי קשר חוגגים יום הולדת השבוע</a>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <asp:Button ID="BtnBarItem_Households" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="משקי בית" />
+                                        <div id="PopUp_Households" class="col PopupMenue AllPopUp" runat="server" visible="false">
+<%--                                            <a class="RowMenue" href="DeliveryMan.aspx">כל משקי הבית במערכת</a>--%>
+                                            <a class="RowMenue" href="HouseHolds.aspx">משקי הבית שלי</a>
+                                            <a class="RowMenue" href="HouseHolds.aspx">משקי הבית שהוקמו בשבוע האחרון</a>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <asp:Button ID="BtnBarItem_Proposals" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="הצעות" />
+                                        <div id="PopUp_Proposals" class="col PopupMenue AllPopUp" runat="server" visible="false">
+                                            <a class="RowMenue" href="Offers.aspx">כל הצעות</a>
+                                            <a class="RowMenue" href="Offers.aspx?IsMyPerformance=1">הצעות לטיפולי</a>
+<%--                                            <a class="RowMenue" href="ChatList.aspx">תור תפעול הלוואות/פדיונות</a>--%>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <asp:Button ID="Button1" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="פוליסות" />
+                                    </div>
+                                    <div>
+                                        <asp:Button ID="BtnBarItem_ServiceRequests" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="בקשות" />
+                                           <div id="PopUp_ServiceRequests" class="col PopupMenue AllPopUp" runat="server" visible="false">
+                                            <a class="RowMenue" href="ServiceRequests.aspx">כל הבקשות</a>
+                                            <a class="RowMenue" href="ServiceRequests.aspx?IsMyPerformance=1">בקשות לטיפולי</a>
+<%--                                            <a class="RowMenue" href="ChatList.aspx">תור תפעול הלוואות/פדיונות</a>--%>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <asp:Button ID="Button3" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="מספרי סוכנים" />
+                                    </div>
+                                    <div>
+                                        <asp:Button ID="Button4" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="דוחות" />
+                                    </div>
+                                </div>
+                         <%--       <div class="row">
+                                    <div  onclick="javascript: window.location = 'Notifications.aspx';">בקשת שירות מספר</div>
+                                    <div  onclick="javascript: window.location = 'PushNotifications_Send.aspx';">הלוואה ממנורה מבטחים</div>
+                                    <div  onclick="javascript: window.location = 'Banners.aspx';">ניהול איש קשר</div>
+                                    <div  onclick="javascript: window.location = 'ChatList.aspx';"></div>
+                                    <div  onclick="javascript: window.location = 'Business.aspx';">בקשת שירות חדשה</div>
+                                    <div  onclick="javascript: window.location = 'Leads.aspx';">ניהול ליד</div>
+                                    <div  onclick="javascript: window.location = 'ChatList.aspx';">נתון חודשי</div>
+                                    <div  onclick="javascript: window.location = 'LeadAdd.aspx';">עריכה ניהול ליד</div>
+                                    <div  onclick="javascript: window.location = 'Customers.aspx';">הצעה חדשה</div>
+                                    <div  onclick="javascript: window.location = 'DeliveryMan.aspx';">ניהול ליד</div>
+                                </div>--%>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                    </div>
+                    <div style="display:flex">
+                        <div style="width: 14.5%; padding-left: 2%;" id="AfterSignIn3" runat="server" class="col">
+                                <div style="background-color: white; background-color: white;">
+                                    <div style="margin: 15px 10px; display: flex; justify-content: center; align-items: center;">
+                                        <label style="margin-inline-end: 10px;">היסטוריית פעולות</label>
+                                        <asp:ImageButton ID="BtnDeleteAllHistory" runat="server" Class="ImgCleanAll" src="images/icons/History_Delete_All_Message_Button.png" OnClick="BtnDeleteAllHistory_Click" />
+                                    </div>
+                                    <%-- Gila auto --%>
+                                    <div style="overflow-y: auto; height: 353px; margin-top: 20px;">
+                                        <asp:Repeater ID="Repeater2" runat="server" OnItemDataBound="Repeater2_ItemDataBound">
+                                            <ItemTemplate>
+                                                <div style="background-color: whitesmoke; border-radius: 12px; margin: 10px 10px; padding-right: 16px; padding-bottom: 8px;">
+                                                    <div style="text-align: left; padding-left: 10px;">
+                                                        <asp:ImageButton ID="BtnDeleteHistory" runat="server" CommandArgument='<%#Eval("ID")%>' src="images/icons/1212121.png" OnClick="BtnDeleteHistory_Click" />
+                                                    </div>
+                                                    <div class="LblDate FontWeightBold"><%#Eval("CreateDate")%></div>
+                                                    <div class="FontWeightBold" style="text-align: right; color: #0098ff; font-size: 10pt;"><%#Eval("Details")%></div>
+                                                    <%--<div class="FontWeightBold" style="text-align: right; color: #0098ff; font-size: 10pt;"><%#Eval("userFullName")%></div>--%>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:Repeater>
+                                    </div>
+                                </div>
+                                <div class="row" style="height: 1px; margin: 16px 20%; background-color: #afa6a6;">
+                                </div>
+                                <div style="background-color: white; background-color: white; height: 291px; padding: 0px 4%;">
+                                    <asp:Calendar CssClass="myCalendar myCalendarMaster" DayHeaderStyle-Font-Bold="false" DayHeaderStyle-Font-Size="10pt" TitleStyle-CssClass="calendar-title calendar-title-master" BorderStyle="None" OnSelectionChanged="activitiesCal_SelectionChanged" OnDayRender="activitiesCal_DayRender" Width="100%" runat="server" ID="activitiesCal">
+                                        <SelectedDayStyle BackColor="#669EFF" ForeColor="Black" Font-Bold="true"></SelectedDayStyle>
+                                    </asp:Calendar>
+                                </div>
+
+                            </div>
+                    <div class="col" style="width: calc(100% - 14.5%);" id="MainContentDiv" runat="server">
+                        <div class="row" id="ContentDiv" runat="server">
+
+                        
+
+                            <div id="DivContentPlaceHolder" runat="server">
+                                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                                </asp:ContentPlaceHolder>
+                            </div>
+                        </div>
+                   
+                    </div>
+                        </div>
+                         <div class="Footer width100 ColorWhite">
+                            <div class="ColorWhite FontWeightBold FooterFinance">פיננסים</div>
+                            <div class="LableBlue">עיצוב ופיתוח | appgate </div>
+                          
+                        </div>
+                </div>
+            </div>
+
+        </div>
+              <div id="AllTasksList" class="popUpOut MainDivDocuments" visible="false" runat="server">
+                <div class="popUpIn" style="width: 35%; height: 700px; margin-top: 100px; margin-bottom: 100px; direction: rtl; text-align: center; border-width: 2px;" runat="server">  
+                    <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ImageButton4" OnClick="CloseTasksListPopUp_Click" />
+                    <div class="DivDownPopUp" style="width:85%;" >
+                        <label style="font-size:15pt" class="LableBlue">רשימת משימות פתוחות</label>
+                        <div class="MainDivDocuments DivRepeaterPopUp">
+                         <asp:Repeater ID="Repeater1" runat="server" >
+                             <ItemTemplate>
+                                 <div class="row DivRpwRepeaterPopUp">
+                                     <div style="width: 40%; text-align: right;" class="ColorLable"><%#Eval("Text") %></div>
+                                     <div style="width: 25%; text-align: right;" class="ColorLable"><%#Eval("PerformDate") %></div>
+                                     <div style="width: 15%; text-align: right;" class="ColorLable"><%#Eval("Status") %></div>
+                                     <div style="width: 15%; text-align: right;" class="ColorLable"><%#Eval("FullName") %></div>
+                                        <div style="width: 5%; text-align: right;" class="ColorLable">
+                                              <asp:ImageButton ID="DeleteTask" runat="server" OnClientClick="return confirm('האם אתה בטוח שברצונך למחוק את המשימה?');" CommandArgument='<%#Eval("ID") %>' OnCommand="DeleteTask_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icons/Open_Mession_Delete_Button.png" />
+
+                                        </div>
+                                    
+                                 </div>
+                                 <div class="RowWhitePopUp"></div>
+                             </ItemTemplate>
+
+
+                         </asp:Repeater>
+                     </div>
+                    </div>
+                 </div>
+            </div>
+    </form>
+</body>
+</html>
+
+<script type="text/javascript">
+    function navigateToOtherPage() {
+        window.location.href = 'HomePage.aspx';
+    }
+    //function showPopup() {
+    //    var popup = document.getElementById("PopUpMenu");
+    //    popup.style.display = "block";
+    //}
+
+    //function showDiv() {
+    //    var popup = document.getElementById("PopUpMenu");
+    //    popup.style.display = "block";
+    //}
+
+    //function hideDiv() {
+    //    var popup = document.getElementById("PopUpMenu");
+    //    popup.style.display = "none";
+    //}
+
+     //document.addEventListener("mouseover", function(event) {
+     //   var targetElement = event.target;
+     //   var popup = document.getElementById("PopUpMenu");
+
+     //   if (targetElement.id !== "bar-item" && targetElement.id !== "PopUpMenu") {
+     //      popup.style.display = "none";
+     //   }
+     //});
+
+
+     //document.addEventListener("mouseover", function (event) {
+
+     //    var targetElement = event.target;
+     //    var popup = document.getElementById("PopUpMenu");
+
+     //    if (targetElement.id === "PopUpMenu" || targetElement === "input.BtnBarItem") {
+     //        popup.style.display = "block";
+     //    } else {
+     //        popup.style.display = "none";
+     //    }
+     //});
+
+</script>
+
+
+<%--   <div class="bar-item" onclick="javascript: window.location = 'Notifications.aspx';">בקשת שירות מספר</div>
+                                    <div class="bar-item" onclick="javascript: window.location = 'PushNotifications_Send.aspx';">הלוואה ממנורה מבטחים</div>
+                                    <div class="bar-item" onclick="javascript: window.location = 'Banners.aspx';">ניהול איש קשר</div>
+                                    <div class="bar-item" onclick="javascript: window.location = 'ChatList.aspx';"></div>                      
+                                    <div class="bar-item" onclick="javascript: window.location = 'Business.aspx';">בקשת שירות חדשה</div>
+                                    <div class="bar-item" onclick="javascript: window.location = 'DeliveryMan.aspx';">ניהול ליד</div>
+                                    <div class="bar-item" onclick="javascript: window.location = 'ChatList.aspx';">נתון חודשי</div>
+                                    <div class="bar-item" onclick="javascript: window.location = 'Menu.aspx';">עריכה ניהול ליד</div>
+                                    <div class="bar-item" onclick="javascript: window.location = 'Customers.aspx';">הצעה חדשה</div>--%>

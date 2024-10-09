@@ -23,7 +23,7 @@ namespace ControlPanel.HelpersFunctions
         public static async void SendPushNotification(string vMessage, string DeviceToken, int OsType, string NotificationType)
         {
 
-            string AppName = "AdarApp";
+            string AppName = "arvoot-crm";
             string Message = vMessage;
             string Sound = "";
 

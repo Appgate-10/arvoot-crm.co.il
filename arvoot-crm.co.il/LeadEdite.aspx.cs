@@ -81,13 +81,7 @@ namespace ControlPanel
                 SelectGender.DataBind();
                 SelectGender.Items.Insert(0, new ListItem("בחר", ""));
 
-                SqlCommand cmdTaskStatuses = new SqlCommand("SELECT * FROM TaskStatuses");
-                DataSet dsTaskStatuses = DbProvider.GetDataSet(cmdTaskStatuses);
-                SelectStatusTask.DataSource = dsTaskStatuses;
-                SelectStatusTask.DataTextField = "Status";
-                SelectStatusTask.DataValueField = "ID";
-                SelectStatusTask.DataBind();
-                SelectStatusTask.Items.Insert(0, new ListItem("סטטוס", ""));
+
 
                 HttpContext.Current.Session["FirstStatusLeadID"] = null;
 
@@ -228,28 +222,28 @@ namespace ControlPanel
             var x = 1;
         }    
         
-        protected void DeleteTask_Command(object sender, CommandEventArgs e)
-        {
-            string strDel = "delete from Tasks where ID = @ID ";
-            SqlCommand cmdDel = new SqlCommand(strDel);
-            cmdDel.Parameters.AddWithValue("@ID", e.CommandArgument);
-            if (DbProvider.ExecuteCommand(cmdDel) <= 0)
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-                FormError_lable.Text = "* התרחשה שגיאה";
-                FormError_lable.Visible = true;
-            }
-            PopUpTasksList_Click(sender,null);
-        }
-        protected void PopUpTasksList_Click(object sender, EventArgs e)
-        {
-            OpenTasksList.Visible = true;
-            SqlCommand cmdSelectTasks = new SqlCommand("select t.ID, Text,ts.Status,CONVERT(varchar,PerformDate, 104) as PerformDate from Tasks t left join TaskStatuses ts on t.Status = ts.ID where LeadID = @ID");
-            cmdSelectTasks.Parameters.AddWithValue("@ID", Request.QueryString["LeadID"]);
-            DataSet ds = DbProvider.GetDataSet(cmdSelectTasks);
-            Repeater2.DataSource = ds;
-            Repeater2.DataBind();
-        }
+        //protected void DeleteTask_Command(object sender, CommandEventArgs e)
+        //{
+        //    string strDel = "delete from Tasks where ID = @ID ";
+        //    SqlCommand cmdDel = new SqlCommand(strDel);
+        //    cmdDel.Parameters.AddWithValue("@ID", e.CommandArgument);
+        //    if (DbProvider.ExecuteCommand(cmdDel) <= 0)
+        //    {
+        //        ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+        //        FormError_lable.Text = "* התרחשה שגיאה";
+        //        FormError_lable.Visible = true;
+        //    }
+        //    PopUpTasksList_Click(sender,null);
+        //}
+        //protected void PopUpTasksList_Click(object sender, EventArgs e)
+        //{
+        //    OpenTasksList.Visible = true;
+        //    SqlCommand cmdSelectTasks = new SqlCommand("select t.ID, Text,ts.Status,CONVERT(varchar,PerformDate, 104) as PerformDate from Tasks t left join TaskStatuses ts on t.Status = ts.ID where LeadID = @ID");
+        //    cmdSelectTasks.Parameters.AddWithValue("@ID", Request.QueryString["LeadID"]);
+        //    DataSet ds = DbProvider.GetDataSet(cmdSelectTasks);
+        //    Repeater2.DataSource = ds;
+        //    Repeater2.DataBind();
+        //}
 
         //protected void FirstStatus_Click(object sender, EventArgs e)
         //{
@@ -1091,97 +1085,84 @@ namespace ControlPanel
 
             return false;
         }
-        public bool funcSaveTask(object sender, EventArgs e)
-        {
-            //שם פרטי שם משפחה תאריך לידה תז טלפון אימייל סטטוס ראשי
-            int ErrorCount = 0;
-            FormErrorTask_lable.Visible = false;
-            if (TextTask.Value == "")
-            {
-                ErrorCount++;
-                FormErrorTask_lable.Visible = true;
-                FormErrorTask_lable.Text = "יש להזין תוכן";
-                return false;
-            }
-            if (Date.Value == "")
-            {
-                ErrorCount++;
-                FormErrorTask_lable.Visible = true;
-                FormErrorTask_lable.Text = "יש להזין תאריך";
-                return false;
-            }
-            if (SelectStatusTask.Value == "")
-            {
-                ErrorCount++;
-                FormErrorTask_lable.Visible = true;
-                FormErrorTask_lable.Text = "יש להזין סטטוס";
-                return false;
-            }
+        //public bool funcSaveTask(object sender, EventArgs e)
+        //{
+        //    //שם פרטי שם משפחה תאריך לידה תז טלפון אימייל סטטוס ראשי
+        //    int ErrorCount = 0;
+        //    FormErrorTask_lable.Visible = false;
+        //    if (TextTask.Value == "")
+        //    {
+        //        ErrorCount++;
+        //        FormErrorTask_lable.Visible = true;
+        //        FormErrorTask_lable.Text = "יש להזין תוכן";
+        //        return false;
+        //    }
+        //    if (Date.Value == "")
+        //    {
+        //        ErrorCount++;
+        //        FormErrorTask_lable.Visible = true;
+        //        FormErrorTask_lable.Text = "יש להזין תאריך";
+        //        return false;
+        //    }
+        //    if (SelectStatusTask.Value == "")
+        //    {
+        //        ErrorCount++;
+        //        FormErrorTask_lable.Visible = true;
+        //        FormErrorTask_lable.Text = "יש להזין סטטוס";
+        //        return false;
+        //    }
 
 
 
 
-            if (ErrorCount == 0)
-            {
-                string sql = @" INSERT INTO [Tasks]( Text
-                ,Status
-                ,LeadID
-                ,PerformDate)
-                 VALUES (
-	              @Text
-                 ,@Status
-                 ,@LeadID
-                 ,@PerformDate)";
+        //    if (ErrorCount == 0)
+        //    {
+        //        string sql = @" INSERT INTO [Tasks]( Text
+        //        ,Status
+        //        ,LeadID
+        //        ,PerformDate)
+        //         VALUES (
+	       //       @Text
+        //         ,@Status
+        //         ,@LeadID
+        //         ,@PerformDate)";
 
-                SqlCommand cmd = new SqlCommand(sql);
+        //        SqlCommand cmd = new SqlCommand(sql);
 
-                cmd.Parameters.AddWithValue("@Text", TextTask.Value);
-                cmd.Parameters.AddWithValue("@Status", SelectStatusTask.Value);
-                cmd.Parameters.AddWithValue("@LeadID", Request.QueryString["LeadID"]);
-                cmd.Parameters.AddWithValue("@PerformDate", Date.Value);
+        //        cmd.Parameters.AddWithValue("@Text", TextTask.Value);
+        //        cmd.Parameters.AddWithValue("@Status", SelectStatusTask.Value);
+        //        cmd.Parameters.AddWithValue("@LeadID", Request.QueryString["LeadID"]);
+        //        cmd.Parameters.AddWithValue("@PerformDate", Date.Value);
 
-                if (DbProvider.ExecuteCommand(cmd) > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-                    FormError_lable.Text = "* התרחשה שגיאה";
-                    FormError_lable.Visible = true;
-                }
+        //        if (DbProvider.ExecuteCommand(cmd) > 0)
+        //        {
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+        //            FormError_lable.Text = "* התרחשה שגיאה";
+        //            FormError_lable.Visible = true;
+        //        }
 
-            }
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        protected void OpenNewTask_Click(object sender, EventArgs e)
-        {
+        //protected void OpenNewTask_Click(object sender, EventArgs e)
+        //{
 
-            bool success = funcSaveTask(sender, e);
-            if (!success)
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-            }
-            else
-            {
-                TaskDiv.Visible = false;
-            }
-        }
-        protected void CloseTaskPopUp_Click(object sender, EventArgs e)
-        {
-            TaskDiv.Visible = false;
-        }
-        protected void CloseTasksListPopUp_Click(object sender, EventArgs e)
-        {
-            OpenTasksList.Visible = false;
-        }
-
-        protected void OpenTask_Click(object sender, ImageClickEventArgs e)
-        {
-            TaskDiv.Visible = true;
-
-        }
+        //    bool success = funcSaveTask(sender, e);
+        //    if (!success)
+        //    {
+        //        ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+        //    }
+        //    else
+        //    {
+        //        TaskDiv.Visible = false;
+        //    }
+        //}
+      
     }
 }

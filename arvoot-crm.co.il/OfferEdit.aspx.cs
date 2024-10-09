@@ -112,19 +112,19 @@ namespace ControlPanel
             {
                 string sql = @" INSERT INTO [Tasks]( Text
                 ,Status
-                ,LeadID
+                ,OfferID
                 ,PerformDate)
                  VALUES (
 	              @Text
                  ,@Status
-                 ,@LeadID
+                 ,@OfferID
                  ,@PerformDate)";
 
                 SqlCommand cmd = new SqlCommand(sql);
 
                 cmd.Parameters.AddWithValue("@Text", TextTask.Value);
                 cmd.Parameters.AddWithValue("@Status", SelectStatusTask.Value);
-                cmd.Parameters.AddWithValue("@LeadID", Request.QueryString["ContactID"]);
+                cmd.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
                 cmd.Parameters.AddWithValue("@PerformDate", Date.Value);
 
                 if (DbProvider.ExecuteCommand(cmd) > 0)
@@ -415,8 +415,8 @@ namespace ControlPanel
         protected void PopUpTasksList_Click(object sender, EventArgs e)
         {
             OpenTasksList.Visible = true;
-            SqlCommand cmdSelectTasks = new SqlCommand("select t.ID, Text,ts.Status,CONVERT(varchar,PerformDate, 104) as PerformDate from Tasks t left join TaskStatuses ts on t.Status = ts.ID where LeadID = @ID");
-            cmdSelectTasks.Parameters.AddWithValue("@ID", Request.QueryString["ContactID"]);
+            SqlCommand cmdSelectTasks = new SqlCommand("select t.ID, Text,ts.Status,CONVERT(varchar,PerformDate, 104) as PerformDate from Tasks t left join TaskStatuses ts on t.Status = ts.ID where OfferID = @ID");
+            cmdSelectTasks.Parameters.AddWithValue("@ID", Request.QueryString["OfferID"]);
             DataSet ds = DbProvider.GetDataSet(cmdSelectTasks);
             Repeater3.DataSource = ds;
             Repeater3.DataBind();

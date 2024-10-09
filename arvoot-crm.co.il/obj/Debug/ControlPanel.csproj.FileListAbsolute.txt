@@ -31,4 +31,4 @@ C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\arvoot-crm.co.il.dll
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\arvoot-crm.co.il.pdb
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\arvoot-crm.co.il.dll
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\arvoot-crm.co.il.pdb
-C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\ControlPanel.csproj.CopyComplete
+C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\ControlPanel.csproj.AssemblyReference.cache

@@ -229,6 +229,29 @@ namespace ControlPanel
             return rowsCountaffected;
         }
 
+        public static int ExecuteIntScalar(SqlCommand command)
+        {
+            int newId = 0;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    command.Connection = connection;
+                    newId = Convert.ToInt32(command.ExecuteScalar());
+
+                }
+                catch (Exception ex)
+                {
+                    string ss = ex.Message;
+                    return 0;
+                }
+            }
+
+            return newId;
+        }
+
 
 
     }

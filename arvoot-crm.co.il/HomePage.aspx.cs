@@ -97,13 +97,13 @@ namespace ControlPanel
             Pageinit.CheckManagerPermissions();
             int percentage = int.Parse(dt.Rows[0]["Percentage1"].ToString());
             int percentage1 = int.Parse(dt.Rows[0]["Percentage2"].ToString());
-            int percentage2 = int.Parse(dt.Rows[0]["Percentage3"].ToString());
+            //int percentage2 = int.Parse(dt.Rows[0]["Percentage3"].ToString());
             int percentage3 = int.Parse(dt.Rows[0]["Percentage4"].ToString());
             double paidServices = 1000;
             double serviceBalance = 2000;
             PercentageText.Text = percentage + "%";
             PercentageText1.Text = percentage1 + "%";
-            PercentageText2.Text = percentage2 + "%";
+            //PercentageText2.Text = percentage2 + "%";
             PercentageText3.Text = percentage3 + "%";
             PercentageText4.Text = paidServices.ToString() + "₪";
             PercentageText5.Text = serviceBalance.ToString() + "₪";
@@ -111,7 +111,7 @@ namespace ControlPanel
             double circumference = 2 * Math.PI * 54; // 2πr
             double offset = circumference - (percentage / 100.0 * circumference);
             double offset1 = circumference - (percentage1 / 100.0 * circumference);
-            double offset2 = circumference - (percentage2 / 100.0 * circumference);
+            //double offset2 = circumference - (percentage2 / 100.0 * circumference);
             double offset3 = circumference - (percentage3 / 100.0 * circumference);
             double offset4 = circumference - (paidServices / (paidServices + serviceBalance) * circumference);
             double offset5 = circumference - (serviceBalance / (paidServices + serviceBalance) * circumference);
@@ -124,9 +124,9 @@ namespace ControlPanel
                 $"document.getElementById('progressPath').style.strokeDasharray = '{circumference} {circumference}';" +
             $"document.getElementById('progressPath').style.strokeDashoffset = '{offset}';", true);
 
-            ClientScript.RegisterStartupScript(this.GetType(), "SetProgress2",
-                $"document.getElementById('progressPath2').style.strokeDasharray = '{circumference} {circumference}';" +
-            $"document.getElementById('progressPath2').style.strokeDashoffset = '{offset2}';", true);
+            //ClientScript.RegisterStartupScript(this.GetType(), "SetProgress2",
+            //    $"document.getElementById('progressPath2').style.strokeDasharray = '{circumference} {circumference}';" +
+            //$"document.getElementById('progressPath2').style.strokeDashoffset = '{offset2}';", true);
 
             ClientScript.RegisterStartupScript(this.GetType(), "SetProgress3",
                 $"document.getElementById('progressPath3').style.strokeDasharray = '{circumference} {circumference}';" +
@@ -229,8 +229,12 @@ namespace ControlPanel
                     e.Cell.BorderColor = System.Drawing.ColorTranslator.FromHtml("#669EFF");
                 
             }
+            if (e.Day.Date == TasksCalendar.SelectedDate.Date)
+            {
+                e.Day.IsSelectable = false;
+            }
 
-            
+
         }
 
         protected void TasksCalendar_VisibleMonthChanged(object sender, MonthChangedEventArgs e)
@@ -255,6 +259,24 @@ namespace ControlPanel
             Repeater3.DataBind();
 
             LoadTaskDates();
+        }
+
+        protected void BtnFutureTasks_Click(object sender, EventArgs e)
+        {
+            string strTasks = @"select Tasks.ID, FORMAT(Tasks.PerformDate, 'dd.MM.yy') as dateTask , 
+                                    CONVERT(varchar(5), Tasks.PerformDate, 108) as timeTask, Tasks.Text, ts.Status 
+                                    from Tasks inner join Lead on Lead.ID = Tasks.LeadID 
+                                    left join TaskStatuses ts on ts.ID = Tasks.Status
+                                    where Lead.AgentID = @AgentID
+                                    AND PerformDate between CAST(GETDATE() AS DATE) AND DATEADD(MONTH, 2, CAST(GETDATE() AS DATE))";
+            SqlCommand cmdTasks = new SqlCommand(strTasks);
+            cmdTasks.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+            DataTable dtTasks = DbProvider.GetDataTable(cmdTasks);
+            Repeater3.DataSource = dtTasks;
+            Repeater3.DataBind();
+
+            LoadTaskDates();
+            TasksCalendar.SelectedDates.Clear();
         }
     }
 }

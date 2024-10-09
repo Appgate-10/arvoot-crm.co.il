@@ -1740,6 +1740,15 @@ H2 {
     box-shadow: 0px 2px 5px 5px rgb(178 178 178 / 40%)
 }
 
+.tasks-div {
+    padding: 25px 0px 14px 0px;
+    height: auto;
+    border-bottom: 1px #EEF2F4 solid;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+
 .DivBackgroundTasks {
     background-color: #f6f6f6;
     width: 96%;
@@ -2250,6 +2259,21 @@ H2 {
     margin-inline-start: 5px;
     cursor: pointer;
     font-family: 'Open Sans Hebrew', sans-serif; /*Gila*/
+}
+
+.btnBlue {
+    background-color: #0098FF;
+    color: white;
+    padding: 0px 2%;
+    border: none;
+    border-radius: 40px;
+    font-size: medium;
+    font-weight: bold;
+    margin-inline-start: 5px;
+    cursor: pointer;
+    font-family: 'Open Sans Hebrew', sans-serif;
+    height: 30px;
+}
 }
 .BorderNone {
     border: none;

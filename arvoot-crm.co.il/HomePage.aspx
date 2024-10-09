@@ -18,6 +18,11 @@
             margin: auto;
         }
 
+        .svg-circle {
+            width: 120px;
+            height: 120px;
+        }
+
         .progress-ring__circle {
             stroke: #F1F1F1;
             fill: transparent;
@@ -66,11 +71,6 @@
             font-weight: bold;
         }
 
-        .text-green-paid {
-            color: #4CAF50;
-            font-weight: bold;
-        }
-
         .text-red {
             color: #F44336;
             font-weight: bold;
@@ -82,6 +82,21 @@
             font-weight: 500;
             font-size: 14px;
         }
+
+        
+/*@media screen and (max-width: 1300px) {
+    .progress-ring {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: auto;
+        }
+
+        .svg-circle {
+            width: 100px;
+            height: 100px;
+        }
+}*/
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -90,7 +105,7 @@
 
 
             <div class="rowHome">
-                <div class="colHome" style="width: 70%;">
+                <div class="colHome" style="width: 60%;">
                     <%--                 <asp:Label ID="Label5" Text="נתון כללי" class="text-blue" style="font-size:11pt"  runat="server" />--%>
                     <div class="rowHome" style="padding: 25px 25px 0px 25px; height: auto;">
                         <asp:Button ID="Label6" OnClick="Month_General_Click" Text="נתון כללי" class="text-blue" Style="font-size: 11pt; color: #05025f; margin-right: 3%; background: none; border: none; font-family: 'Open Sans Hebrew', sans-serif; /*Gila*/" runat="server" />
@@ -98,37 +113,37 @@
                     <div class="rowHome" style="height: 80%;">
 
                         <div style="width: 5%"></div>
-                        <div style="width: 15%; margin: auto">
+                        <div style="width: 18%; margin: auto">
                             <div class="progress-ring">
-                                <svg width="120" height="120">
+                                <svg class="svg-circle">
                                     <circle class="progress-ring__background" cx="60" cy="60" r="45"></circle>
                                     <circle class="progress-ring__circle" cx="60" cy="60" r="54"></circle>
-                                    <circle id="progressPath" class="progress-ring__path" style="stroke: #F5C065;" cx="60" cy="60" r="54"></circle>
+                                    <circle id="progressPath" class="progress-ring__path" style="stroke: #F44336;" cx="60" cy="60" r="54"></circle>
                                 </svg>
                                 <span class="progress-ring__text">
-                                    <asp:Label ID="PercentageText" class="text-yellow" runat="server" />
+                                    <asp:Label ID="PercentageText" class="text-red" runat="server" />
                                 </span>
                             </div>
-                            <asp:Label ID="Label1" Text="חוסרים" class="text-yellow" Style="font-size: 11pt" runat="server" />
+                            <asp:Label ID="Label1" Text="חוסרים" class="text-red" Style="font-size: 11pt" runat="server" />
 
                         </div>
-                        <div style="width: 15%; margin: auto">
+                        <div style="width: 18%; margin: auto">
                             <div class="progress-ring">
-                                <svg width="120" height="120">
+                                <svg class="svg-circle">
                                     <circle class="progress-ring__background" cx="60" cy="60" r="45"></circle>
                                     <circle class="progress-ring__circle" cx="60" cy="60" r="54"></circle>
-                                    <circle id="progressPath1" class="progress-ring__path" style="stroke: #10B049;" cx="60" cy="60" r="54"></circle>
+                                    <circle id="progressPath1" class="progress-ring__path" style="stroke: #F5C065;" cx="60" cy="60" r="54"></circle>
                                 </svg>
                                 <span class="progress-ring__text">
-                                    <asp:Label ID="PercentageText1" class="text-green" runat="server" />
+                                    <asp:Label ID="PercentageText1" class="text-yellow" runat="server" />
                                 </span>
                             </div>
-                            <asp:Label ID="Label2" Text="בטיפול" class="text-green" Style="font-size: 11pt" runat="server" />
+                            <asp:Label ID="Label2" Text="בטיפול" class="text-yellow" Style="font-size: 11pt" runat="server" />
 
                         </div>
-                        <div style="width: 15%; margin: auto">
+                        <%--<div style="width: 15%; margin: auto">
                             <div class="progress-ring">
-                                <svg width="120" height="120">
+                                <svg class="svg-circle">
                                     <circle class="progress-ring__background" cx="60" cy="60" r="45"></circle>
                                     <circle class="progress-ring__circle" cx="60" cy="60" r="54"></circle>
                                     <circle id="progressPath2" class="progress-ring__path" style="stroke: #800080;" cx="60" cy="60" r="54"></circle>
@@ -139,10 +154,10 @@
                             </div>
                             <asp:Label ID="Label3" Text="בוטל" class="text-purple" Style="font-size: 11pt" runat="server" />
 
-                        </div>
-                        <div style="width: 15%; margin: auto">
+                        </div>--%>
+                        <div style="width: 18%; margin: auto">
                             <div class="progress-ring">
-                                <svg width="120" height="120">
+                                <svg class="svg-circle">
                                     <circle class="progress-ring__background" cx="60" cy="60" r="45"></circle>
                                     <circle class="progress-ring__circle" cx="60" cy="60" r="54"></circle>
                                     <circle id="progressPath3" class="progress-ring__path" style="stroke: #0098FF;" cx="60" cy="60" r="54"></circle>
@@ -155,40 +170,40 @@
 
                         </div>
 
-                        <div style="width: 15%; margin: auto">
+                        <div style="width: 18%; margin: auto">
                             <div class="progress-ring">
-                                <svg width="120" height="120">
+                                <svg class="svg-circle">
                                     <circle class="progress-ring__background" cx="60" cy="60" r="45"></circle>
                                     <circle class="progress-ring__circle" cx="60" cy="60" r="54"></circle>
-                                    <circle id="progressPath4" class="progress-ring__path" style="stroke: #4CAF50;" cx="60" cy="60" r="54"></circle>
+                                    <circle id="progressPath4" class="progress-ring__path" style="stroke: #10B049;" cx="60" cy="60" r="54"></circle>
                                 </svg>
                                 <span class="progress-ring__text" style="font-size:18px;">
-                                    <asp:Label ID="PercentageText4" class="text-green-paid" runat="server" />
+                                    <asp:Label ID="PercentageText4" class="text-green" runat="server" />
                                 </span>
                             </div>
-                            <asp:Label ID="Label11" Text="שולם" class="text-green-paid" Style="font-size: 11pt" runat="server" />
+                            <asp:Label ID="Label11" Text="שולם" class="text-green" Style="font-size: 11pt" runat="server" />
 
                         </div>
 
-                        <div style="width: 15%; margin: auto">
+                        <div style="width: 18%; margin: auto">
                             <div class="progress-ring">
-                                <svg width="120" height="120">
+                                <svg class="svg-circle">
                                     <circle class="progress-ring__background" cx="60" cy="60" r="45"></circle>
                                     <circle class="progress-ring__circle" cx="60" cy="60" r="54"></circle>
-                                    <circle id="progressPath5" class="progress-ring__path" style="stroke: #F44336;" cx="60" cy="60" r="54"></circle>
+                                    <circle id="progressPath5" class="progress-ring__path" style="stroke: #800080;" cx="60" cy="60" r="54"></circle>
                                 </svg>
                                 <span class="progress-ring__text" style="font-size:18px;">
-                                    <asp:Label ID="PercentageText5" class="text-red" runat="server" />
+                                    <asp:Label ID="PercentageText5" class="text-purple" runat="server" />
                                 </span>
                             </div>
-                            <asp:Label ID="Label13" Text="יתרת תשלום" class="text-red" Style="font-size: 11pt" runat="server" />
+                            <asp:Label ID="Label13" Text="יתרת תשלום" class="text-purple" Style="font-size: 11pt" runat="server" />
 
                         </div>
                         <div style="width: 5%"></div>
 
                     </div>
                 </div>
-                <div class="colHome" style="width: 30%">
+                <div class="colHome" style="width: 40%">
                     <div class="rowHome" style="padding: 25px 25px 0px 25px; height: auto;">
                         <img src="images/icons/Last_Message_Icon.png" runat="server" style="width: 17px; height: 18px;" />
 
@@ -217,8 +232,9 @@
             <div class="rowHome with-last-child">
                 <div class="colHome" style="width: 50%; height: 400px;">
                     <%-- Gila --%>
-                    <div class="rowHome" style="padding: 25px 25px 14px 25px; height: auto; border-bottom: 1px #EEF2F4 solid; width:90%;">
+                    <div class="rowHome tasks-div">
                         <asp:Label ID="Label7" Text="משימות פתוחות" class="text-blue" Style="font-size: 11pt; padding-right: 10px" runat="server" />
+                        <asp:Button ID="BtnFutureTasks" CssClass="btnBlue" runat="server" Text="משימות עתידיות" OnClick="BtnFutureTasks_Click"/>
                     </div>
                     <div style="padding-bottom: 12%; margin: 10px 10px 10px 30px;">
                         <asp:Repeater ID="Repeater3" runat="server" OnItemDataBound="Repeater3_ItemDataBound">

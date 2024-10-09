@@ -216,15 +216,17 @@
 
 
 
-
-            <div class="col MarginDiv SecondaryDiv">
+            <asp:Repeater ID="RepeaterPayments" runat="server" OnItemDataBound="RepeaterPayments_ItemDataBound">
+                <ItemTemplate>
+                    <div class="col MarginDiv SecondaryDiv">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
                     <div class="row">
                         <div>
                             <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
                         </div>
                         <div>
-                            <label class="LableBlue">פירוט תשלום ראשון</label>
+                            <label id="paymentTitle" runat="server" class="LableBlue">פירוט תשלום ראשון</label>
+                           <%-- <%#numberToHebrewOrdinal(Container.ItemIndex + 1) %>--%>
                         </div>
                     </div>
                 </div>
@@ -235,9 +237,7 @@
                     </div>
                     <div style="width: 15%; margin-left: 35%;" class="row">
                         <label class="InputLable">תאריך תשלום:</label>
-                    
                         <input id="DatePayment1" name="DatePayment1" type="date" runat="server" style="width: 100%;" class="InputAdd" />
-
                     </div>
                     <div style="width: 28%; direction: rtl; float: right;">
                         <asp:CheckBox runat="server" ID="IsApprove1" />
@@ -253,12 +253,13 @@
                         <label class="InputLable">אסמכתא:</label>
                         <input id="ReferencePayment1" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                     </div>
-
                 </div>
-
             </div>
+                </ItemTemplate>
+            </asp:Repeater>
+            
 
-            <div class="col SecondaryDiv  MarginDiv">
+       <%--     <div class="col SecondaryDiv  MarginDiv">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
                     <div class="row">
                         <div>
@@ -298,7 +299,7 @@
 
             </div>
 
-              <div class="col SecondaryDiv  MarginDiv">
+            <div class="col SecondaryDiv  MarginDiv">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
                     <div class="row">
                         <div>
@@ -318,7 +319,6 @@
                         <label class="InputLable">תאריך תשלום:</label>
                         <input id="DatePayment3" name="DatePayment3" type="date" runat="server" style="width: 100%;" class="InputAdd" />
 
-<%--                        <input id="Text17" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />--%>
                     </div>
                     <div style="width: 28%; direction: rtl; float: right;">
                         <asp:CheckBox runat="server" ID="IsApprove3" />
@@ -337,8 +337,8 @@
 
                 </div>
 
-            </div>
-
+            </div>--%>
+            <asp:Button ID="AddPayment" runat="server" OnClick="AddPayment_Click" Text="+ Add Payment"/>
             <div class="col SecondaryDiv MarginDiv">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
                     <div class="row">
@@ -498,6 +498,10 @@
     <br />
 
 
-    <%--    <script type="text/javascript">MarkMenuCss('Users');</script>--%>
+        <script type="text/javascript">
+            //MarkMenuCss('Users');
+
+            
+        </script>
 </asp:Content>
 

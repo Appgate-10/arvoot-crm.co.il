@@ -10,6 +10,8 @@ using System.Data;
 using System.Configuration;
 using System.Web.UI.HtmlControls;
 using System.Data.SqlClient;
+using System.Text;
+
 namespace ControlPanel
 {
     public partial class _serviceRequestAdd : System.Web.UI.Page
@@ -19,6 +21,23 @@ namespace ControlPanel
         public string StrSrc { get { return strSrc; } }
         public string ListPageUrl = "OfferEdit.aspx";
 
+        // Dictionary to store irregular ordinals (1-10)
+        private static readonly Dictionary<int, string> IrregularOrdinals = new Dictionary<int, string>
+    {
+        {1, "ראשון"},
+        {2, "שני"},
+        {3, "שלישי"},
+        {4, "רביעי"},
+        {5, "חמישי"},
+        {6, "שישי"},
+        {7, "שביעי"},
+        {8, "שמיני"},
+        {9, "תשיעי"},
+        {10, "עשירי"}
+    };
+
+        // Array of Hebrew letters used for constructing ordinals
+        private static readonly string[] HebrewLetters = { "", "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י", "כ", "ל", "מ", "נ", "ס", "ע", "פ", "צ", "ק", "ר", "ש", "ת" };
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -35,7 +54,7 @@ namespace ControlPanel
                 SelectPurpose.DataValueField = "ID";
                 SelectPurpose.DataBind();
                 SelectPurpose.Items.Insert(0, new ListItem("ללא", ""));
-                
+
                 SqlCommand cmdtMethodsPayment = new SqlCommand("SELECT * FROM MethodsPayment");
                 DataSet dsMethodsPayment = DbProvider.GetDataSet(cmdtMethodsPayment);
                 SelectMethodsPayment.DataSource = dsMethodsPayment;
@@ -48,25 +67,50 @@ namespace ControlPanel
             }
         }
 
-    
+
         protected void Repeater1_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-
         }
         public void loadData()
         {
-             string sql = @"select Lead.FirstName + ' ' + Lead.LastName as FullName from Lead 
+            string sql = @"select Lead.FirstName + ' ' + Lead.LastName as FullName from Lead 
                             left join Offer o on o.LeadID =Lead.ID  where o.ID = @ID ";
-             
-             SqlCommand cmd = new SqlCommand(sql);
-             cmd.Parameters.AddWithValue("@ID", Request.QueryString["OfferID"]);  
+
+            SqlCommand cmd = new SqlCommand(sql);
+            cmd.Parameters.AddWithValue("@ID", Request.QueryString["OfferID"]);
 
             DataTable dt = DbProvider.GetDataTable(cmd);
-             if (dt.Rows.Count > 0)
-             {
-                 FullName.Text = dt.Rows[0]["FullName"].ToString();
+            if (dt.Rows.Count > 0)
+            {
+                FullName.Text = dt.Rows[0]["FullName"].ToString();
 
-             }
+            }
+
+            List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
+            serviceRequestPayment payment = new serviceRequestPayment
+            {
+                ID = 0,
+                ServiceRequestID = 0,
+                DatePayment = "",
+                NumPayment = 0,
+                SumPayment = 0,
+                ReferencePayment = "",
+                IsApprovedPayment = false
+            };
+            serviceRequestPayment payment2 = new serviceRequestPayment
+            {
+                ID = 0,
+                ServiceRequestID = 0,
+                DatePayment = "",
+                NumPayment = 0,
+                SumPayment = 0,
+                ReferencePayment = "",
+                IsApprovedPayment = false
+            };
+            payments.Add(payment);
+            payments.Add(payment2);
+            RepeaterPayments.DataSource = payments;
+            RepeaterPayments.DataBind();
         }
         //protected void Repeater1_ItemDataBound(object sender, RepeaterItemEventArgs e)
         //{
@@ -207,85 +251,119 @@ namespace ControlPanel
             FormError_lable.Visible = false;
             //שם פרטי שם משפחה תאריך לידה תז טלפון אימייל סטטוס ראשי
 
-              if (Invoice.Value == "")
-               {
-                   ErrorCount++;
-                   FormError_lable.Visible = true;
-                   FormError_lable.Text = "יש להזין חשבון";
-                   return false;
-               }
+            if (Invoice.Value == "")
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין חשבון";
+                return false;
+            }
             if (AllSum.Value == "")
-               {
-                   ErrorCount++;
-                   FormError_lable.Visible = true;
-                   FormError_lable.Text = "יש להזין סכום כולל לגבייה";
-                   return false;
-               }   
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין סכום כולל לגבייה";
+                return false;
+            }
             if (Policy.Value == "")
-               {
-                   ErrorCount++;
-                   FormError_lable.Visible = true;
-                   FormError_lable.Text = "יש להזין פוליסה";
-                   return false;
-               }
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין פוליסה";
+                return false;
+            }
             if (Balance.Value == "")
-               {
-                   ErrorCount++;
-                   FormError_lable.Visible = true;
-                   FormError_lable.Text = "יש להזין יתרת הגבייה";
-                   return false;
-               }  
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין יתרת הגבייה";
+                return false;
+            }
             if (SelectPurpose.SelectedIndex == 0)
-               {
-                   ErrorCount++;
-                   FormError_lable.Visible = true;
-                   FormError_lable.Text = "יש להזין מטרת הגבייה";
-                   return false;
-               } 
-            if (Sum1.Value =="")
-               {
-                   ErrorCount++;
-                   FormError_lable.Visible = true;
-                   FormError_lable.Text = "יש להזין סכום לתשלום ראשון";
-                   return false;
-               }
-            if (DatePayment1.Value =="")
-               {
-                   ErrorCount++;
-                   FormError_lable.Visible = true;
-                   FormError_lable.Text = "יש להזין תאריך תשלום ראשון";
-                   return false;
-               }
-            if (Num1.Value =="")
-               {
-                   ErrorCount++;
-                   FormError_lable.Visible = true;
-                   FormError_lable.Text = "יש להזין מספר תשלומים לתשלום ראשון";
-                   return false;
-               }
-            if (Num1.Value =="")
-               {
-                   ErrorCount++;
-                   FormError_lable.Visible = true;
-                   FormError_lable.Text = "יש להזין מספר תשלומים לתשלום ראשון";
-                   return false;
-               }
-      
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין מטרת הגבייה";
+                return false;
+            }
 
-            
+
+            List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
+            foreach (RepeaterItem item in RepeaterPayments.Items)
+            {
+                HtmlInputControl Sum = (HtmlInputControl)item.FindControl("Sum1");
+                HtmlInputControl DatePayment = (HtmlInputControl)item.FindControl("DatePayment1");
+                HtmlInputControl Num = (HtmlInputControl)item.FindControl("Num1");
+                HtmlInputControl ReferencePayment = (HtmlInputControl)item.FindControl("ReferencePayment1");
+                CheckBox IsApprove = (CheckBox)item.FindControl("IsApprove1");
+
+                serviceRequestPayment payment = new serviceRequestPayment
+                {
+                    ID = 0,
+                    ServiceRequestID = 0,
+                    SumPayment = (!string.IsNullOrWhiteSpace(Sum.Value) ? double.Parse(Sum.Value) : 0),
+                    NumPayment = (!string.IsNullOrWhiteSpace(Num.Value) ? int.Parse(Num.Value) : 0),
+                    DatePayment = DatePayment.Value,
+                    ReferencePayment = ReferencePayment.Value,
+                    IsApprovedPayment = IsApprove.Checked
+
+                };
+
+                payments.Add(payment);
+            }
+            if (payments.Count == 0)
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין פרטי תשלום ראשון";
+                return false;
+            }
+            if (payments[0].SumPayment == 0)
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין סכום לתשלום ראשון";
+                return false;
+            }
+            if (payments[0].DatePayment == "")
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין תאריך תשלום ראשון";
+                return false;
+            }
+            if (payments[0].NumPayment == 0)
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין מספר תשלומים לתשלום ראשון";
+                return false;
+            }
+
+
+
+
 
             if (ErrorCount == 0)
             {
 
 
-                string sql = @" INSERT INTO ServiceRequest (OfferID,Invoice,Sum,Note,Policy,Balance,PurposeID,SumPayment1,DatePayment1,NumPayment1,ReferencePayment1,
-                                IsApprovedPayment1,SumPayment2,DatePayment2,NumPayment2,ReferencePayment2,IsApprovedPayment2,SumPayment3,DatePayment3,NumPayment3,
-                                ReferencePayment3,IsApprovedPayment3,SumCreditOrDenial,DateCreditOrDenial,NumCreditOrDenial,ReferenceCreditOrDenial,NoteCreditOrDenial,
+                string sql = @" INSERT INTO ServiceRequest (OfferID,Invoice,Sum,Note,Policy,Balance,PurposeID,
+                                SumCreditOrDenial,DateCreditOrDenial,NumCreditOrDenial,ReferenceCreditOrDenial,NoteCreditOrDenial,
                                 IsApprovedCreditOrDenial,PaymentMethodID,BankName,Branch,AccountNumber,CreditNumber,CreditValidity,CardholdersID)
-                                VALUES (@OfferID,@Invoice,@Sum,@Note,@Policy,@Balance,@PurposeID,@SumPayment1,@DatePayment1,@NumPayment1,@ReferencePayment1,
-                                @IsApprovedPayment1,@SumPayment2,@DatePayment2,@NumPayment2,@ReferencePayment2,@IsApprovedPayment2,@SumPayment3,@DatePayment3,@NumPayment3,
-                                @ReferencePayment3,@IsApprovedPayment3,@SumCreditOrDenial,@DateCreditOrDenial,@NumCreditOrDenial,@ReferenceCreditOrDenial,@NoteCreditOrDenial,
+                                OUTPUT Inserted.ID 
+                                VALUES (@OfferID,@Invoice,@Sum,@Note,@Policy,@Balance,@PurposeID,@SumCreditOrDenial,@DateCreditOrDenial,@NumCreditOrDenial,@ReferenceCreditOrDenial,@NoteCreditOrDenial,
                                 @IsApprovedCreditOrDenial,@PaymentMethodID,@BankName,@Branch,@AccountNumber,@CreditNumber,@CreditValidity,@CardholdersID )";
+
+
+                /*SumPayment1,DatePayment1,NumPayment1,ReferencePayment1,
+                                IsApprovedPayment1,SumPayment2,DatePayment2,NumPayment2,ReferencePayment2,IsApprovedPayment2,SumPayment3,DatePayment3,NumPayment3,
+                                ReferencePayment3,IsApprovedPayment3,
+                
+                 ,@SumPayment1,@DatePayment1,@NumPayment1,@ReferencePayment1,
+                                @IsApprovedPayment1,@SumPayment2,@DatePayment2,@NumPayment2,@ReferencePayment2,@IsApprovedPayment2,@SumPayment3,@DatePayment3,@NumPayment3,
+                                @ReferencePayment3,@IsApprovedPayment3
+                 */
 
                 SqlCommand cmd = new SqlCommand(sql);
 
@@ -296,21 +374,21 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@Policy", Policy.Value);
                 cmd.Parameters.AddWithValue("@Balance", Balance.Value);
                 cmd.Parameters.AddWithValue("@PurposeID", SelectPurpose.Value);
-                cmd.Parameters.AddWithValue("@SumPayment1", Sum1.Value);
-                cmd.Parameters.AddWithValue("@DatePayment1", DatePayment1.Value);
-                cmd.Parameters.AddWithValue("@NumPayment1", Num1.Value);
-                cmd.Parameters.AddWithValue("@ReferencePayment1", string.IsNullOrEmpty(ReferencePayment1.Value) ? (object)DBNull.Value : ReferencePayment1.Value);
-                cmd.Parameters.AddWithValue("@IsApprovedPayment1", IsApprove1.Checked?"1":"0");
-                cmd.Parameters.AddWithValue("@SumPayment2", string.IsNullOrEmpty(Sum2.Value) ? (object)DBNull.Value : Sum2.Value);
-                cmd.Parameters.AddWithValue("@DatePayment2", string.IsNullOrEmpty(DatePayment2.Value) ? (object)DBNull.Value : DatePayment2.Value);
-                cmd.Parameters.AddWithValue("@NumPayment2", string.IsNullOrEmpty(Num2.Value) ? (object)DBNull.Value : Num2.Value);
-                cmd.Parameters.AddWithValue("@ReferencePayment2", string.IsNullOrEmpty(ReferencePayment2.Value) ? (object)DBNull.Value : ReferencePayment2.Value);
-                cmd.Parameters.AddWithValue("@IsApprovedPayment2", IsApprove2.Checked ? "1" : "0");
-                cmd.Parameters.AddWithValue("@SumPayment3", string.IsNullOrEmpty(Sum3.Value) ? (object)DBNull.Value : Sum3.Value);
-                cmd.Parameters.AddWithValue("@DatePayment3", string.IsNullOrEmpty(DatePayment3.Value) ? (object)DBNull.Value : DatePayment3.Value);
-                cmd.Parameters.AddWithValue("@NumPayment3", string.IsNullOrEmpty(Num3.Value) ? (object)DBNull.Value : Num3.Value);
-                cmd.Parameters.AddWithValue("@ReferencePayment3", string.IsNullOrEmpty(ReferencePayment3.Value) ? (object)DBNull.Value : ReferencePayment3.Value);
-                cmd.Parameters.AddWithValue("@IsApprovedPayment3", IsApprove3.Checked ? "1" : "0");
+                //cmd.Parameters.AddWithValue("@SumPayment1", Sum1.Value);
+                //cmd.Parameters.AddWithValue("@DatePayment1", DatePayment1.Value);
+                //cmd.Parameters.AddWithValue("@NumPayment1", Num1.Value);
+                //cmd.Parameters.AddWithValue("@ReferencePayment1", string.IsNullOrEmpty(ReferencePayment1.Value) ? (object)DBNull.Value : ReferencePayment1.Value);
+                //cmd.Parameters.AddWithValue("@IsApprovedPayment1", IsApprove1.Checked?"1":"0");
+                //cmd.Parameters.AddWithValue("@SumPayment2", string.IsNullOrEmpty(Sum2.Value) ? (object)DBNull.Value : Sum2.Value);
+                //cmd.Parameters.AddWithValue("@DatePayment2", string.IsNullOrEmpty(DatePayment2.Value) ? (object)DBNull.Value : DatePayment2.Value);
+                //cmd.Parameters.AddWithValue("@NumPayment2", string.IsNullOrEmpty(Num2.Value) ? (object)DBNull.Value : Num2.Value);
+                //cmd.Parameters.AddWithValue("@ReferencePayment2", string.IsNullOrEmpty(ReferencePayment2.Value) ? (object)DBNull.Value : ReferencePayment2.Value);
+                //cmd.Parameters.AddWithValue("@IsApprovedPayment2", IsApprove2.Checked ? "1" : "0");
+                //cmd.Parameters.AddWithValue("@SumPayment3", string.IsNullOrEmpty(Sum3.Value) ? (object)DBNull.Value : Sum3.Value);
+                //cmd.Parameters.AddWithValue("@DatePayment3", string.IsNullOrEmpty(DatePayment3.Value) ? (object)DBNull.Value : DatePayment3.Value);
+                //cmd.Parameters.AddWithValue("@NumPayment3", string.IsNullOrEmpty(Num3.Value) ? (object)DBNull.Value : Num3.Value);
+                //cmd.Parameters.AddWithValue("@ReferencePayment3", string.IsNullOrEmpty(ReferencePayment3.Value) ? (object)DBNull.Value : ReferencePayment3.Value);
+                //cmd.Parameters.AddWithValue("@IsApprovedPayment3", IsApprove3.Checked ? "1" : "0");
                 cmd.Parameters.AddWithValue("@SumCreditOrDenial", string.IsNullOrEmpty(Sum4.Value) ? (object)DBNull.Value : Sum4.Value);
                 cmd.Parameters.AddWithValue("@DateCreditOrDenial", string.IsNullOrEmpty(DateCreditOrDenial.Value) ? (object)DBNull.Value : DateCreditOrDenial.Value);
                 cmd.Parameters.AddWithValue("@NumCreditOrDenial", string.IsNullOrEmpty(Num4.Value) ? (object)DBNull.Value : Num4.Value);
@@ -321,14 +399,28 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@BankName", string.IsNullOrEmpty(BankName.Value) ? (object)DBNull.Value : BankName.Value);
                 cmd.Parameters.AddWithValue("@Branch", string.IsNullOrEmpty(Branch.Value) ? (object)DBNull.Value : Branch.Value);
                 cmd.Parameters.AddWithValue("@AccountNumber", string.IsNullOrEmpty(AccountNumber.Value) ? (object)DBNull.Value : AccountNumber.Value);
-                cmd.Parameters.AddWithValue("@CreditNumber", string.IsNullOrEmpty(CreditNumber.Value) ? (object)DBNull.Value : CreditNumber.Value );
+                cmd.Parameters.AddWithValue("@CreditNumber", string.IsNullOrEmpty(CreditNumber.Value) ? (object)DBNull.Value : CreditNumber.Value);
                 cmd.Parameters.AddWithValue("@CreditValidity", string.IsNullOrEmpty(CreditValidity.Value) ? (object)DBNull.Value : CreditValidity.Value);
                 cmd.Parameters.AddWithValue("@CardholdersID", string.IsNullOrEmpty(CardholdersID.Value) ? (object)DBNull.Value : CardholdersID.Value);
 
+                int serviceRequestID = DbProvider.ExecuteIntScalar(cmd);
 
-
-                if (DbProvider.ExecuteCommand(cmd) > 0)
+                if (serviceRequestID > 0)
                 {
+                    foreach (serviceRequestPayment payment in payments)
+                    {
+                        string sqlPayment = @"INSERT INTO ServiceRequestPayment 
+                                            (ServiceRequestID,SumPayment,DatePayment,NumPayment,ReferencePayment,IsApprovedPayment)
+                                            VALUES (@serviceID, @sumP, @dateP, @numP, @referenceP, @isApproved)";
+                        SqlCommand cmdPayment = new SqlCommand(sqlPayment);
+                        cmdPayment.Parameters.AddWithValue("@serviceID", serviceRequestID);
+                        cmdPayment.Parameters.AddWithValue("@sumP", payment.SumPayment);
+                        cmdPayment.Parameters.AddWithValue("@dateP", payment.DatePayment);
+                        cmdPayment.Parameters.AddWithValue("@numP", payment.NumPayment);
+                        cmdPayment.Parameters.AddWithValue("@referenceP", string.IsNullOrEmpty(payment.ReferencePayment) ? (object)DBNull.Value : payment.ReferencePayment);
+                        cmdPayment.Parameters.AddWithValue("@isApproved", payment.IsApprovedPayment == true ? 1 : 0);
+                        DbProvider.ExecuteCommand(cmdPayment);
+                    }
                     return true;
                 }
                 else
@@ -388,7 +480,7 @@ namespace ControlPanel
 
         }
 
-       
+
         protected void BtnFamilyStatus_Click(object sender, EventArgs e)
         {
             //bool isOpen = DivRBFamilyStatus.Visible;
@@ -426,5 +518,67 @@ namespace ControlPanel
             //BtnMethodsPayment.Text = RadioButttonMethodsPayment.SelectedItem.Text;
         }
 
+        protected void RepeaterPayments_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                HtmlGenericControl paymentTitle = (HtmlGenericControl)e.Item.FindControl("paymentTitle");
+                paymentTitle.InnerText = "פירוט תשלום " + NumberToHebrewOrdinal(e.Item.ItemIndex + 1);
+            }
+        }
+
+        public static string NumberToHebrewOrdinal(int number)
+        {
+            // Check for invalid input
+            if (number < 1)
+            {
+                return "Invalid input";
+            }
+
+            // Check for irregular ordinals (1-10)
+            if (IrregularOrdinals.TryGetValue(number, out string irregularOrdinal))
+            {
+                return irregularOrdinal;
+            }
+
+            StringBuilder result = new StringBuilder();
+
+            // Handle tens (20 and above)
+            if (number >= 20)
+            {
+                int tens = number / 10;
+                result.Append(HebrewLetters[tens]);
+                number %= 10;
+            }
+
+            // Handle units
+            if (number > 0)
+            {
+                result.Append(HebrewLetters[number]);
+            }
+
+            // Add the final 'yod' to complete the ordinal form
+            result.Append("י");
+
+            return result.ToString();
+        }
+
+        protected void AddPayment_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+
+    public class serviceRequestPayment
+    {
+        public int ID { get; set; }
+        public int ServiceRequestID { get; set; }
+        public double SumPayment { get; set; }
+        public string DatePayment { get; set; }
+        public int NumPayment { get; set; }
+        public string ReferencePayment { get; set; }
+        public bool IsApprovedPayment { get; set; }
+
     }
 }
+

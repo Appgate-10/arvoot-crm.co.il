@@ -69,12 +69,12 @@ namespace ControlPanel
                 SelectGender.DataBind();
                 SelectGender.Items.Insert(0, new ListItem("בחר", ""));
 
-                SqlCommand cmdTaskStatuses = new SqlCommand("SELECT * FROM TaskStatuses");
-                DataSet dsTaskStatuses = DbProvider.GetDataSet(cmdTaskStatuses);
-                SelectStatusTask.DataSource = dsTaskStatuses;
-                SelectStatusTask.DataTextField = "Status";
-                SelectStatusTask.DataValueField = "ID";
-                SelectStatusTask.DataBind();
+                //SqlCommand cmdTaskStatuses = new SqlCommand("SELECT * FROM TaskStatuses");
+                //DataSet dsTaskStatuses = DbProvider.GetDataSet(cmdTaskStatuses);
+                //SelectStatusTask.DataSource = dsTaskStatuses;
+                //SelectStatusTask.DataTextField = "Status";
+                //SelectStatusTask.DataValueField = "ID";
+                //SelectStatusTask.DataBind();
 
                 SqlCommand cmd = new SqlCommand("SELECT * FROM StatusContact");
                 DataSet ds = DbProvider.GetDataSet(cmd);
@@ -90,8 +90,8 @@ namespace ControlPanel
         public void loadData()
         {
             string sqlLead = @"
-                          select lead.FirstName,lead.LastName,GenderID,Year(GetDate())-Year(DateBirth) Age,CONVERT(varchar,DateBirth, 104) DateBirth,Address,lead.FamilyStatusID,lead.Tz, CONVERT(varchar,IssuanceDateTz, 104) IssuanceDateTz,IsValidIssuanceDateTz
-                           ,IsValidBdi,lead.Phone1,lead.Phone2,lead.Email,SourceLeadID,InterestedIn,TrackingTime,Note
+                          select lead.FirstName,lead.LastName,GenderID,Year(GetDate())-Year(DateBirth) Age,CONVERT(varchar,DateBirth, 104) DateBirth,Address,lead.FamilyStatusID,lead.Tz, CONVERT(varchar,IssuanceDateTz, 104) IssuanceDateTz
+                           ,IsValidBdi,InvalidBdiReason,lead.Phone1,lead.Phone2,lead.Email,SourceLeadID,InterestedIn,TrackingTime,Note
                            ,FirstStatusLead.Status FirstStatus,SecondStatusLead.Status SecondStatus
                            ,Lead.FirstStatusLeadID,Lead.SecondStatusLeadID,DateChangeFirstStatus
                            ,BusinessName,BusinessSeniority,BusinessProfession,BusinessCity,BusinessEmail,BusinessPhone,BusinessGrossSalary,BusinessLineBusiness
@@ -130,8 +130,9 @@ namespace ControlPanel
                 SelectFamilyStatus.Value = dtLead.Rows[0]["FamilyStatusID"].ToString();
                 Tz.Value = dtLead.Rows[0]["Tz"].ToString();
                 IssuanceDateTz.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["IssuanceDateTz"].ToString()) ? "" : Convert.ToDateTime(dtLead.Rows[0]["IssuanceDateTz"]).ToString("yyyy-MM-dd");
-                IsValidIssuanceDateTz.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidIssuanceDateTz"].ToString()));
-                IsValidBdi.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString()));
+                //IsValidIssuanceDateTz.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidIssuanceDateTz"].ToString()));
+                BdiValidity.SelectedIndex =int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString())==0?1:0;
+                InvalidBdiReason.Value = dtLead.Rows[0]["InvalidBdiReason"].ToString();
                 Phone1.Value = dtLead.Rows[0]["Phone1"].ToString();
                 Phone2.Value = dtLead.Rows[0]["Phone2"].ToString();
                 Email.Value = dtLead.Rows[0]["Email"].ToString();
@@ -226,120 +227,120 @@ namespace ControlPanel
 
         }
 
-        protected void OpenTask_Click(object sender, ImageClickEventArgs e)
-        {
-            TaskDiv.Visible = true;
+        //protected void OpenTask_Click(object sender, ImageClickEventArgs e)
+        //{
+        //    TaskDiv.Visible = true;
 
-        }
-        public bool funcSaveTask(object sender, EventArgs e)
-        {
-            //שם פרטי שם משפחה תאריך לידה תז טלפון אימייל סטטוס ראשי
-            int ErrorCount = 0;
-            FormErrorTask_lable.Visible = false;
-            if (TextTask.Value == "")
-            {
-                ErrorCount++;
-                FormErrorTask_lable.Visible = true;
-                FormErrorTask_lable.Text = "יש להזין תוכן";
-                return false;
-            }
-            if (Date.Value == "")
-            {
-                ErrorCount++;
-                FormErrorTask_lable.Visible = true;
-                FormErrorTask_lable.Text = "יש להזין תאריך";
-                return false;
-            }
-            if (SelectStatusTask.Value == "")
-            {
-                ErrorCount++;
-                FormErrorTask_lable.Visible = true;
-                FormErrorTask_lable.Text = "יש להזין סטטוס";
-                return false;
-            }
-
-
+        //}
+        //public bool funcSaveTask(object sender, EventArgs e)
+        //{
+        //    //שם פרטי שם משפחה תאריך לידה תז טלפון אימייל סטטוס ראשי
+        //    int ErrorCount = 0;
+        //    FormErrorTask_lable.Visible = false;
+        //    if (TextTask.Value == "")
+        //    {
+        //        ErrorCount++;
+        //        FormErrorTask_lable.Visible = true;
+        //        FormErrorTask_lable.Text = "יש להזין תוכן";
+        //        return false;
+        //    }
+        //    if (Date.Value == "")
+        //    {
+        //        ErrorCount++;
+        //        FormErrorTask_lable.Visible = true;
+        //        FormErrorTask_lable.Text = "יש להזין תאריך";
+        //        return false;
+        //    }
+        //    if (SelectStatusTask.Value == "")
+        //    {
+        //        ErrorCount++;
+        //        FormErrorTask_lable.Visible = true;
+        //        FormErrorTask_lable.Text = "יש להזין סטטוס";
+        //        return false;
+        //    }
 
 
-            if (ErrorCount == 0)
-            {
-                string sql = @" INSERT INTO [Tasks]( Text
-                ,Status
-                ,LeadID
-                ,PerformDate)
-                 VALUES (
-	              @Text
-                 ,@Status
-                 ,@LeadID
-                 ,@PerformDate)";
 
-                SqlCommand cmd = new SqlCommand(sql);
 
-                cmd.Parameters.AddWithValue("@Text", TextTask.Value);
-                cmd.Parameters.AddWithValue("@Status", SelectStatusTask.Value);
-                cmd.Parameters.AddWithValue("@LeadID", Request.QueryString["ContactID"]);
-                cmd.Parameters.AddWithValue("@PerformDate", Date.Value);
+        //    if (ErrorCount == 0)
+        //    {
+        //        string sql = @" INSERT INTO [Tasks]( Text
+        //        ,Status
+        //        ,LeadID
+        //        ,PerformDate)
+        //         VALUES (
+	       //       @Text
+        //         ,@Status
+        //         ,@LeadID
+        //         ,@PerformDate)";
 
-                if (DbProvider.ExecuteCommand(cmd) > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-                    FormError_lable.Text = "* התרחשה שגיאה";
-                    FormError_lable.Visible = true;
-                }
+        //        SqlCommand cmd = new SqlCommand(sql);
 
-            }
+        //        cmd.Parameters.AddWithValue("@Text", TextTask.Value);
+        //        cmd.Parameters.AddWithValue("@Status", SelectStatusTask.Value);
+        //        cmd.Parameters.AddWithValue("@LeadID", Request.QueryString["ContactID"]);
+        //        cmd.Parameters.AddWithValue("@PerformDate", Date.Value);
 
-            return false;
-        }
+        //        if (DbProvider.ExecuteCommand(cmd) > 0)
+        //        {
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+        //            FormError_lable.Text = "* התרחשה שגיאה";
+        //            FormError_lable.Visible = true;
+        //        }
 
-        protected void OpenNewTask_Click(object sender, EventArgs e)
-        {
+        //    }
 
-            bool success = funcSaveTask(sender, e);
-            if (!success)
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-            }
-            else
-            {
-                TaskDiv.Visible = false;
-            }
-        }
-        protected void DeleteTask_Command(object sender, CommandEventArgs e)
-        {
-            string strDel = "delete from Tasks where ID = @ID ";
-            SqlCommand cmdDel = new SqlCommand(strDel);
-            cmdDel.Parameters.AddWithValue("@ID", e.CommandArgument);
-            if (DbProvider.ExecuteCommand(cmdDel) <= 0)
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-                FormError_lable.Text = "* התרחשה שגיאה";
-                FormError_lable.Visible = true;
-            }
-            PopUpTasksList_Click(sender, null);
-        }
-        protected void CloseTaskPopUp_Click(object sender, EventArgs e)
-        {
-            TaskDiv.Visible = false;
-        }
+        //    return false;
+        //}
 
-        protected void PopUpTasksList_Click(object sender, EventArgs e)
-        {
-            OpenTasksList.Visible = true;
-            SqlCommand cmdSelectTasks = new SqlCommand("select t.ID, Text,ts.Status,CONVERT(varchar,PerformDate, 104) as PerformDate from Tasks t left join TaskStatuses ts on t.Status = ts.ID where LeadID = @ID");
-            cmdSelectTasks.Parameters.AddWithValue("@ID", Request.QueryString["ContactID"]);
-            DataSet ds = DbProvider.GetDataSet(cmdSelectTasks);
-            Repeater3.DataSource = ds;
-            Repeater3.DataBind();
-        }
-        protected void CloseTasksListPopUp_Click(object sender, EventArgs e)
-        {
-            OpenTasksList.Visible = false;
-        }
+        //protected void OpenNewTask_Click(object sender, EventArgs e)
+        //{
+
+        //    bool success = funcSaveTask(sender, e);
+        //    if (!success)
+        //    {
+        //        ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+        //    }
+        //    else
+        //    {
+        //        TaskDiv.Visible = false;
+        //    }
+        //}
+        //protected void DeleteTask_Command(object sender, CommandEventArgs e)
+        //{
+        //    string strDel = "delete from Tasks where ID = @ID ";
+        //    SqlCommand cmdDel = new SqlCommand(strDel);
+        //    cmdDel.Parameters.AddWithValue("@ID", e.CommandArgument);
+        //    if (DbProvider.ExecuteCommand(cmdDel) <= 0)
+        //    {
+        //        ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+        //        FormError_lable.Text = "* התרחשה שגיאה";
+        //        FormError_lable.Visible = true;
+        //    }
+        //    PopUpTasksList_Click(sender, null);
+        //}
+        //protected void CloseTaskPopUp_Click(object sender, EventArgs e)
+        //{
+        //    TaskDiv.Visible = false;
+        //}
+
+        //protected void PopUpTasksList_Click(object sender, EventArgs e)
+        //{
+        //    OpenTasksList.Visible = true;
+        //    SqlCommand cmdSelectTasks = new SqlCommand("select t.ID, Text,ts.Status,CONVERT(varchar,PerformDate, 104) as PerformDate from Tasks t left join TaskStatuses ts on t.Status = ts.ID where LeadID = @ID");
+        //    cmdSelectTasks.Parameters.AddWithValue("@ID", Request.QueryString["ContactID"]);
+        //    DataSet ds = DbProvider.GetDataSet(cmdSelectTasks);
+        //    Repeater3.DataSource = ds;
+        //    Repeater3.DataBind();
+        //}
+        //protected void CloseTasksListPopUp_Click(object sender, EventArgs e)
+        //{
+        //    OpenTasksList.Visible = false;
+        //}
         protected void BtnDetailsOffer_Command(object sender, CommandEventArgs e)
         {
             System.Web.HttpContext.Current.Response.Redirect("OfferEdit.aspx?OfferID=" + e.CommandArgument.ToString());
@@ -817,8 +818,8 @@ namespace ControlPanel
 ,FamilyStatusID=@FamilyStatusID
 ,Tz=@Tz
 ,IssuanceDateTz=@IssuanceDateTz
-,IsValidIssuanceDateTz=@IsValidIssuanceDateTz
 ,IsValidBdi=@IsValidBdi
+,InvalidBdiReason=@InvalidBdiReason
 ,Phone1=@Phone1
 ,Phone2=@Phone2
 ,Email=@Email
@@ -867,8 +868,9 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@FamilyStatusID", string.IsNullOrEmpty(SelectFamilyStatus.Value) ? (object)DBNull.Value : SelectFamilyStatus.Value);
                 cmd.Parameters.AddWithValue("@Tz", Tz.Value);
                 cmd.Parameters.AddWithValue("@IssuanceDateTz", string.IsNullOrEmpty(IssuanceDateTz.Value) ? (object)DBNull.Value : DateTime.Parse(IssuanceDateTz.Value));
-                cmd.Parameters.AddWithValue("@IsValidIssuanceDateTz", IsValidIssuanceDateTz.Checked == true ? 1 : 0);
-                cmd.Parameters.AddWithValue("@IsValidBdi", IsValidBdi.Checked == true ? 1 : 0);
+                //cmd.Parameters.AddWithValue("@IsValidIssuanceDateTz", IsValidIssuanceDateTz.Checked == true ? 1 : 0);
+                cmd.Parameters.AddWithValue("@IsValidBdi",/* IsValidBdi.Checked == true ? 1 : 0*/ BdiValidity.SelectedIndex == 0 ? 1 : 0);
+                cmd.Parameters.AddWithValue("@InvalidBdiReason", InvalidBdiReason.Value);
                 cmd.Parameters.AddWithValue("@Phone1", Phone1.Value);
                 cmd.Parameters.AddWithValue("@Phone2", string.IsNullOrEmpty(Phone2.Value) ? (object)DBNull.Value : Phone2.Value);
                 cmd.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(Email.Value) ? (object)DBNull.Value : (Email.Value));

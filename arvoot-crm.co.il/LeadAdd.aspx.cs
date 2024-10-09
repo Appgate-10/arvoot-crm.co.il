@@ -398,8 +398,8 @@ namespace ControlPanel
       ,FamilyStatusID
       ,Tz
       ,IssuanceDateTz
-      ,IsValidIssuanceDateTz
       ,IsValidBdi
+      ,InvalidBdiReason
       ,Phone1
       ,Phone2
       ,Email
@@ -446,8 +446,8 @@ namespace ControlPanel
       ,@FamilyStatusID
       ,@Tz
       ,@IssuanceDateTz
-      ,@IsValidIssuanceDateTz
       ,@IsValidBdi
+      ,@InvalidBdiReason
       ,@Phone1
       ,@Phone2
       ,@Email
@@ -500,8 +500,9 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@Tz", Tz.Value);
                 cmd.Parameters.AddWithValue("@IssuanceDateTz", string.IsNullOrEmpty(IssuanceDateTz.Value) ? (object)DBNull.Value : DateTime.Parse(IssuanceDateTz.Value));
                 //Gila
-                cmd.Parameters.AddWithValue("@IsValidIssuanceDateTz", /*CBIsValidIssuanceDateTz.Checked == true ? 1 : 0*/0);
+                //cmd.Parameters.AddWithValue("@IsValidIssuanceDateTz", /*CBIsValidIssuanceDateTz.Checked == true ? 1 : 0*/0);
                 cmd.Parameters.AddWithValue("@IsValidBdi", /*IsValidBdi.Checked == true*/ BdiValidity.SelectedIndex == 0 ? 1 : 0);
+                cmd.Parameters.AddWithValue("@InvalidBdiReason", string.IsNullOrEmpty(InvalidBdiReason.Value) ? (object)DBNull.Value : InvalidBdiReason.Value );
                 cmd.Parameters.AddWithValue("@Phone1", Phone1.Value);
                 cmd.Parameters.AddWithValue("@Phone2", string.IsNullOrEmpty(Phone2.Value) ? (object)DBNull.Value : Phone2.Value);
                 cmd.Parameters.AddWithValue("@Email", Email.Value);

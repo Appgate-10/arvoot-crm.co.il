@@ -68,35 +68,35 @@ namespace ControlPanel
                 SelectPurpose.Value = ds.Rows[0]["PurposeID"].ToString();
                 Note.Value = ds.Rows[0]["Note"].ToString();
 
-                Sum1.Value = ds.Rows[0]["SumPayment1"].ToString();
-                if (!string.IsNullOrEmpty(ds.Rows[0]["DatePayment1"].ToString()))
-                {
-                    DateTime Date1 = Convert.ToDateTime(ds.Rows[0]["DatePayment1"]);
-                    DatePayment1.Value = (Date1).ToString("yyyy-MM-dd");
-                }
-                Num1.Value = ds.Rows[0]["NumPayment1"].ToString();
-                ReferencePayment1.Value = ds.Rows[0]["ReferencePayment1"].ToString();
-                IsApprove1.Checked = ds.Rows[0]["IsApprovedPayment1"].ToString().Equals("1");
+                //Sum1.Value = ds.Rows[0]["SumPayment1"].ToString();
+                //if (!string.IsNullOrEmpty(ds.Rows[0]["DatePayment1"].ToString()))
+                //{
+                //    DateTime Date1 = Convert.ToDateTime(ds.Rows[0]["DatePayment1"]);
+                //    DatePayment1.Value = (Date1).ToString("yyyy-MM-dd");
+                //}
+                //Num1.Value = ds.Rows[0]["NumPayment1"].ToString();
+                //ReferencePayment1.Value = ds.Rows[0]["ReferencePayment1"].ToString();
+                //IsApprove1.Checked = ds.Rows[0]["IsApprovedPayment1"].ToString().Equals("1");
 
-                Sum2.Value = ds.Rows[0]["SumPayment2"].ToString();
-                if (!string.IsNullOrEmpty(ds.Rows[0]["DatePayment2"].ToString()))
-                {
-                    DateTime Date2 = Convert.ToDateTime(ds.Rows[0]["DatePayment2"]);
-                    DatePayment2.Value = (Date2).ToString("yyyy-MM-dd");
-                }
-                Num2.Value = ds.Rows[0]["NumPayment2"].ToString();
-                ReferencePayment2.Value = ds.Rows[0]["ReferencePayment2"].ToString();
-                IsApprove2.Checked = ds.Rows[0]["IsApprovedPayment2"].ToString().Equals("1");  
+                //Sum2.Value = ds.Rows[0]["SumPayment2"].ToString();
+                //if (!string.IsNullOrEmpty(ds.Rows[0]["DatePayment2"].ToString()))
+                //{
+                //    DateTime Date2 = Convert.ToDateTime(ds.Rows[0]["DatePayment2"]);
+                //    DatePayment2.Value = (Date2).ToString("yyyy-MM-dd");
+                //}
+                //Num2.Value = ds.Rows[0]["NumPayment2"].ToString();
+                //ReferencePayment2.Value = ds.Rows[0]["ReferencePayment2"].ToString();
+                //IsApprove2.Checked = ds.Rows[0]["IsApprovedPayment2"].ToString().Equals("1");  
                 
-                Sum3.Value = ds.Rows[0]["SumPayment3"].ToString();
-                if (!string.IsNullOrEmpty(ds.Rows[0]["DatePayment3"].ToString()))
-                {
-                    DateTime Date3 = Convert.ToDateTime(ds.Rows[0]["DatePayment3"]);
-                    DatePayment3.Value = (Date3).ToString("yyyy-MM-dd");
-                }
-                Num3.Value = ds.Rows[0]["NumPayment3"].ToString();
-                ReferencePayment3.Value = ds.Rows[0]["ReferencePayment3"].ToString();
-                IsApprove3.Checked = ds.Rows[0]["IsApprovedPayment3"].ToString().Equals("1");
+                //Sum3.Value = ds.Rows[0]["SumPayment3"].ToString();
+                //if (!string.IsNullOrEmpty(ds.Rows[0]["DatePayment3"].ToString()))
+                //{
+                //    DateTime Date3 = Convert.ToDateTime(ds.Rows[0]["DatePayment3"]);
+                //    DatePayment3.Value = (Date3).ToString("yyyy-MM-dd");
+                //}
+                //Num3.Value = ds.Rows[0]["NumPayment3"].ToString();
+                //ReferencePayment3.Value = ds.Rows[0]["ReferencePayment3"].ToString();
+                //IsApprove3.Checked = ds.Rows[0]["IsApprovedPayment3"].ToString().Equals("1");
 
                 Sum4.Value = ds.Rows[0]["SumCreditOrDenial"].ToString();
                 if (!string.IsNullOrEmpty(ds.Rows[0]["DateCreditOrDenial"].ToString()))
@@ -115,6 +115,47 @@ namespace ControlPanel
                 CreditNumber.Value = ds.Rows[0]["CreditNumber"].ToString(); 
                 CreditValidity.Value = ds.Rows[0]["CreditValidity"].ToString(); 
                 CardholdersID.Value = ds.Rows[0]["CardholdersID"].ToString();
+
+                SqlCommand cmdPayments = new SqlCommand("SELECT * FROM ServiceRequestPayment WHERE ServiceRequestID = @serviceReqID");
+                cmdPayments.Parameters.AddWithValue("@serviceReqID", Request.QueryString["ServiceRequestID"]);
+                DataTable dtPayments = DbProvider.GetDataTable(cmdPayments);
+
+
+            List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
+
+                foreach (DataRow row in dtPayments.Rows)
+                {
+                    DateTime DateP = Convert.ToDateTime(row["DatePayment"]);
+                    serviceRequestPayment payment = new serviceRequestPayment
+                    {
+                        ID = int.Parse(row["ID"].ToString()),
+                        ServiceRequestID = int.Parse(row["ServiceRequestID"].ToString()),
+                        DatePayment = DateP.ToString("yyyy-MM-dd"),
+                        NumPayment = int.Parse(row["NumPayment"].ToString()),
+                        SumPayment = double.Parse(row["SumPayment"].ToString()),
+                        ReferencePayment = row["ReferencePayment"].ToString(),
+                        IsApprovedPayment = row["IsApprovedPayment"].ToString() == "0" ? false : true
+                    };
+                    payments.Add(payment);
+                }
+
+                if (payments.Count == 0)
+                {
+                    serviceRequestPayment payment2 = new serviceRequestPayment
+                    {
+                        ID = 0,
+                        ServiceRequestID = int.Parse(Request.QueryString["ServiceRequestID"].ToString()),
+                        DatePayment = "",
+                        NumPayment = 0,
+                        SumPayment = 0,
+                        ReferencePayment = "",
+                        IsApprovedPayment = false
+                    };
+                    payments.Add(payment2);
+                }
+                Session["payments"] = payments;
+                RepeaterPayments.DataSource = payments;
+                RepeaterPayments.DataBind();
             }
         }
         protected void RadioButttonMethodsPayment_SelectedIndexChanged(object sender, EventArgs e)
@@ -125,7 +166,30 @@ namespace ControlPanel
    
         public bool funcSave(object sender, EventArgs e)
         {
-            //return false;
+            List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
+            foreach (RepeaterItem item in RepeaterPayments.Items)
+            {
+                HtmlInputControl Sum = (HtmlInputControl)item.FindControl("Sum1");
+                HtmlInputControl DatePayment = (HtmlInputControl)item.FindControl("DatePayment1");
+                HtmlInputControl Num = (HtmlInputControl)item.FindControl("Num1");
+                HtmlInputControl ReferencePayment = (HtmlInputControl)item.FindControl("ReferencePayment1");
+                CheckBox IsApprove = (CheckBox)item.FindControl("IsApprove1");
+                HiddenField hiddenPaymentID = (HiddenField)item.FindControl("hiddenPaymentID");
+
+                serviceRequestPayment payment = new serviceRequestPayment
+                {
+                    ID = int.Parse(hiddenPaymentID.Value),
+                    ServiceRequestID = int.Parse(Request.QueryString["ServiceRequestID"].ToString()),
+                    SumPayment = (!string.IsNullOrWhiteSpace(Sum.Value) ? double.Parse(Sum.Value) : 0),
+                    NumPayment = (!string.IsNullOrWhiteSpace(Num.Value) ? int.Parse(Num.Value) : 0),
+                    DatePayment = DatePayment.Value,
+                    ReferencePayment = ReferencePayment.Value,
+                    IsApprovedPayment = IsApprove.Checked
+                };
+
+                payments.Add(payment);
+            }
+            Session["payments"] = payments;
 
             int ErrorCount = 0;
             FormError_lable.Visible = false;
@@ -166,20 +230,20 @@ namespace ControlPanel
                 FormError_lable.Text = "יש להזין מטרת הגבייה";
                 return false;
             }
-            if (Sum1.Value == "")
-            {
-                ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין סכום לתשלום ראשון";
-                return false;
-            }
-            if (DatePayment1.Value == "")
-            {
-                ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין תאריך תשלום ראשון";
-                return false;
-            }
+            //if (Sum1.Value == "")
+            //{
+            //    ErrorCount++;
+            //    FormError_lable.Visible = true;
+            //    FormError_lable.Text = "יש להזין סכום לתשלום ראשון";
+            //    return false;
+            //}
+            //if (DatePayment1.Value == "")
+            //{
+            //    ErrorCount++;
+            //    FormError_lable.Visible = true;
+            //    FormError_lable.Text = "יש להזין תאריך תשלום ראשון";
+            //    return false;
+            //}
             //if (Num1.Value == "")
             //{
             //    ErrorCount++;
@@ -187,7 +251,30 @@ namespace ControlPanel
             //    FormError_lable.Text = "יש להזין מספר תשלומים לתשלום ראשון";
             //    return false;
             //}
-            if (Num1.Value == "")
+
+
+            if (payments.Count == 0)
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין פרטי תשלום ראשון";
+                return false;
+            }
+            if (payments[0].SumPayment == 0)
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין סכום לתשלום ראשון";
+                return false;
+            }
+            if (payments[0].DatePayment == "")
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין תאריך תשלום ראשון";
+                return false;
+            }
+            if (payments[0].NumPayment == 0)
             {
                 ErrorCount++;
                 FormError_lable.Visible = true;
@@ -195,21 +282,47 @@ namespace ControlPanel
                 return false;
             }
 
+            if (payments.Count > 1)
+            {
+                for (int i = 1; i < payments.Count; i++)
+                {
+                    if (payments[i].SumPayment > 0 || payments[i].DatePayment != "" || payments[i].NumPayment > 0)
+                    {
+                        if (payments[i].SumPayment == 0)
+                        {
+                            FormError_lable.Visible = true;
+                            FormError_lable.Text = "יש להזין סכום לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1);
+                            return false;
+                        }
+                        if (payments[i].DatePayment == "")
+                        {
+                            FormError_lable.Visible = true;
+                            FormError_lable.Text = "יש להזין תאריך תשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
+                            return false;
+                        }
+                        if (payments[i].NumPayment == 0)
+                        {
+                            FormError_lable.Visible = true;
+                            FormError_lable.Text = "יש להזין מספר תשלומים לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
+                            return false;
+                        }
+                    }
+                }
 
-
+            }
 
             if (ErrorCount == 0)
             {
 
-
-                string sql = @" Update ServiceRequest set Invoice = @Invoice, Sum=@Sum, Note=@Note, Policy=@Policy, Balance=@Balance, PurposeID=@PurposeID, SumPayment1=@SumPayment1,
-                                DatePayment1=@DatePayment1, NumPayment1=@NumPayment1, ReferencePayment1=@ReferencePayment1, IsApprovedPayment1=@IsApprovedPayment1, SumPayment2=@SumPayment2, 
-                                DatePayment2=@DatePayment2, NumPayment2=@NumPayment2, ReferencePayment2=@ReferencePayment2, IsApprovedPayment2=@IsApprovedPayment2, SumPayment3=@SumPayment3,
-                                DatePayment3=@DatePayment3, NumPayment3=@NumPayment3, ReferencePayment3=@ReferencePayment3, IsApprovedPayment3=@IsApprovedPayment3, SumCreditOrDenial=@SumCreditOrDenial,
-                                DateCreditOrDenial=@DateCreditOrDenial, NumCreditOrDenial=@NumCreditOrDenial, ReferenceCreditOrDenial=@ReferenceCreditOrDenial, NoteCreditOrDenial=@NoteCreditOrDenial,
+                string sql = @" Update ServiceRequest set Invoice = @Invoice, Sum=@Sum, Note=@Note, Policy=@Policy, Balance=@Balance, PurposeID=@PurposeID, 
+                                SumCreditOrDenial=@SumCreditOrDenial,DateCreditOrDenial=@DateCreditOrDenial, NumCreditOrDenial=@NumCreditOrDenial, ReferenceCreditOrDenial=@ReferenceCreditOrDenial, NoteCreditOrDenial=@NoteCreditOrDenial,
                                 IsApprovedCreditOrDenial=@IsApprovedCreditOrDenial, PaymentMethodID=@PaymentMethodID, BankName=@BankName, Branch=@Branch, AccountNumber=@AccountNumber, CreditNumber=@CreditNumber,
                                 CreditValidity=@CreditValidity, CardholdersID=@CardholdersID  where ID = @ID";
-                              
+
+                /*SumPayment1=@SumPayment1,DatePayment1=@DatePayment1, NumPayment1=@NumPayment1, ReferencePayment1=@ReferencePayment1, IsApprovedPayment1=@IsApprovedPayment1, 
+SumPayment2=@SumPayment2,DatePayment2=@DatePayment2, NumPayment2=@NumPayment2, ReferencePayment2=@ReferencePayment2, IsApprovedPayment2=@IsApprovedPayment2, 
+SumPayment3=@SumPayment3,DatePayment3=@DatePayment3, NumPayment3=@NumPayment3, ReferencePayment3=@ReferencePayment3, IsApprovedPayment3=@IsApprovedPayment3, */
+
                 SqlCommand cmd = new SqlCommand(sql);
 
                 cmd.Parameters.AddWithValue("@ID", Request.QueryString["ServiceRequestID"]);
@@ -219,21 +332,21 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@Policy", Policy.Value);
                 cmd.Parameters.AddWithValue("@Balance", Balance.Value);
                 cmd.Parameters.AddWithValue("@PurposeID", SelectPurpose.Value);
-                cmd.Parameters.AddWithValue("@SumPayment1", Sum1.Value);
-                cmd.Parameters.AddWithValue("@DatePayment1", DatePayment1.Value);
-                cmd.Parameters.AddWithValue("@NumPayment1", Num1.Value);
-                cmd.Parameters.AddWithValue("@ReferencePayment1", string.IsNullOrEmpty(ReferencePayment1.Value) ? (object)DBNull.Value : ReferencePayment1.Value);
-                cmd.Parameters.AddWithValue("@IsApprovedPayment1", IsApprove1.Checked ? "1" : "0");
-                cmd.Parameters.AddWithValue("@SumPayment2", string.IsNullOrEmpty(Sum2.Value) ? (object)DBNull.Value : Sum2.Value);
-                cmd.Parameters.AddWithValue("@DatePayment2", string.IsNullOrEmpty(DatePayment2.Value) ? (object)DBNull.Value : DatePayment2.Value);
-                cmd.Parameters.AddWithValue("@NumPayment2", string.IsNullOrEmpty(Num2.Value) ? (object)DBNull.Value : Num2.Value);
-                cmd.Parameters.AddWithValue("@ReferencePayment2", string.IsNullOrEmpty(ReferencePayment2.Value) ? (object)DBNull.Value : ReferencePayment2.Value);
-                cmd.Parameters.AddWithValue("@IsApprovedPayment2", IsApprove2.Checked ? "1" : "0");
-                cmd.Parameters.AddWithValue("@SumPayment3", string.IsNullOrEmpty(Sum3.Value) ? (object)DBNull.Value : Sum3.Value);
-                cmd.Parameters.AddWithValue("@DatePayment3", string.IsNullOrEmpty(DatePayment3.Value) ? (object)DBNull.Value : DatePayment3.Value);
-                cmd.Parameters.AddWithValue("@NumPayment3", string.IsNullOrEmpty(Num3.Value) ? (object)DBNull.Value : Num3.Value);
-                cmd.Parameters.AddWithValue("@ReferencePayment3", string.IsNullOrEmpty(ReferencePayment3.Value) ? (object)DBNull.Value : ReferencePayment3.Value);
-                cmd.Parameters.AddWithValue("@IsApprovedPayment3", IsApprove3.Checked ? "1" : "0");
+                //cmd.Parameters.AddWithValue("@SumPayment1", Sum1.Value);
+                //cmd.Parameters.AddWithValue("@DatePayment1", DatePayment1.Value);
+                //cmd.Parameters.AddWithValue("@NumPayment1", Num1.Value);
+                //cmd.Parameters.AddWithValue("@ReferencePayment1", string.IsNullOrEmpty(ReferencePayment1.Value) ? (object)DBNull.Value : ReferencePayment1.Value);
+                //cmd.Parameters.AddWithValue("@IsApprovedPayment1", IsApprove1.Checked ? "1" : "0");
+                //cmd.Parameters.AddWithValue("@SumPayment2", string.IsNullOrEmpty(Sum2.Value) ? (object)DBNull.Value : Sum2.Value);
+                //cmd.Parameters.AddWithValue("@DatePayment2", string.IsNullOrEmpty(DatePayment2.Value) ? (object)DBNull.Value : DatePayment2.Value);
+                //cmd.Parameters.AddWithValue("@NumPayment2", string.IsNullOrEmpty(Num2.Value) ? (object)DBNull.Value : Num2.Value);
+                //cmd.Parameters.AddWithValue("@ReferencePayment2", string.IsNullOrEmpty(ReferencePayment2.Value) ? (object)DBNull.Value : ReferencePayment2.Value);
+                //cmd.Parameters.AddWithValue("@IsApprovedPayment2", IsApprove2.Checked ? "1" : "0");
+                //cmd.Parameters.AddWithValue("@SumPayment3", string.IsNullOrEmpty(Sum3.Value) ? (object)DBNull.Value : Sum3.Value);
+                //cmd.Parameters.AddWithValue("@DatePayment3", string.IsNullOrEmpty(DatePayment3.Value) ? (object)DBNull.Value : DatePayment3.Value);
+                //cmd.Parameters.AddWithValue("@NumPayment3", string.IsNullOrEmpty(Num3.Value) ? (object)DBNull.Value : Num3.Value);
+                //cmd.Parameters.AddWithValue("@ReferencePayment3", string.IsNullOrEmpty(ReferencePayment3.Value) ? (object)DBNull.Value : ReferencePayment3.Value);
+                //cmd.Parameters.AddWithValue("@IsApprovedPayment3", IsApprove3.Checked ? "1" : "0");
                 cmd.Parameters.AddWithValue("@SumCreditOrDenial", string.IsNullOrEmpty(Sum4.Value) ? (object)DBNull.Value : Sum4.Value);
                 cmd.Parameters.AddWithValue("@DateCreditOrDenial", string.IsNullOrEmpty(DateCreditOrDenial.Value) ? (object)DBNull.Value : DateCreditOrDenial.Value);
                 cmd.Parameters.AddWithValue("@NumCreditOrDenial", string.IsNullOrEmpty(Num4.Value) ? (object)DBNull.Value : Num4.Value);
@@ -252,6 +365,51 @@ namespace ControlPanel
 
                 if (DbProvider.ExecuteCommand(cmd) > 0)
                 {
+
+                    foreach (serviceRequestPayment payment in payments)
+                    {
+                        if (payment.SumPayment > 0)
+                        {
+                            if (payment.ID > 0)
+                            {
+                                string sqlEditPayment = @"UPDATE ServiceRequestPayment SET SumPayment = @sumP, DatePayment = @dateP,
+                                                        NumPayment = @numP, ReferencePayment = @referenceP, IsApprovedPayment = @isApproved
+                                                        WHERE ID = @paymentID";
+                                SqlCommand cmdEditPayment = new SqlCommand(sqlEditPayment);
+                                cmdEditPayment.Parameters.AddWithValue("@paymentID", payment.ID);
+                                cmdEditPayment.Parameters.AddWithValue("@sumP", payment.SumPayment);
+                                cmdEditPayment.Parameters.AddWithValue("@dateP", payment.DatePayment);
+                                cmdEditPayment.Parameters.AddWithValue("@numP", payment.NumPayment);
+                                cmdEditPayment.Parameters.AddWithValue("@referenceP", string.IsNullOrEmpty(payment.ReferencePayment) ? (object)DBNull.Value : payment.ReferencePayment);
+                                cmdEditPayment.Parameters.AddWithValue("@isApproved", payment.IsApprovedPayment == true ? 1 : 0);
+                                DbProvider.ExecuteCommand(cmdEditPayment);
+                            }
+                            else
+                            {
+                                string sqlNewPayment = @"INSERT INTO ServiceRequestPayment 
+                                            (ServiceRequestID,SumPayment,DatePayment,NumPayment,ReferencePayment,IsApprovedPayment)
+                                            VALUES (@serviceID, @sumP, @dateP, @numP, @referenceP, @isApproved)";
+                                SqlCommand cmdPayment = new SqlCommand(sqlNewPayment);
+                                cmdPayment.Parameters.AddWithValue("@serviceID", Request.QueryString["ServiceRequestID"]);
+                                cmdPayment.Parameters.AddWithValue("@sumP", payment.SumPayment);
+                                cmdPayment.Parameters.AddWithValue("@dateP", payment.DatePayment);
+                                cmdPayment.Parameters.AddWithValue("@numP", payment.NumPayment);
+                                cmdPayment.Parameters.AddWithValue("@referenceP", string.IsNullOrEmpty(payment.ReferencePayment) ? (object)DBNull.Value : payment.ReferencePayment);
+                                cmdPayment.Parameters.AddWithValue("@isApproved", payment.IsApprovedPayment == true ? 1 : 0);
+                                DbProvider.ExecuteCommand(cmdPayment);
+                            }
+                            
+                        }
+                        else if (payment.ID > 0)
+                        {
+                            SqlCommand cmdDelPayment = new SqlCommand("DELETE TOP (1) FROM ServiceRequestPayment WHERE ID = @paymentID");
+                            cmdDelPayment.Parameters.AddWithValue("@paymentID", payment.ID);
+                            DbProvider.ExecuteCommand(cmdDelPayment);
+                        }
+
+                    }
+
+
                     return true;
                 }
                 else
@@ -275,6 +433,7 @@ namespace ControlPanel
             }
             else
             {
+                Session["payments"] = null;
                 System.Web.HttpContext.Current.Response.Redirect(ListPageUrl + "?OfferID=" + OfferID.Value);
             }
         }
@@ -310,7 +469,69 @@ namespace ControlPanel
             }
 
         }
-     
 
+        protected void RepeaterPayments_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                HtmlGenericControl paymentTitle = (HtmlGenericControl)e.Item.FindControl("paymentTitle");
+                HtmlGenericControl sumTitle = (HtmlGenericControl)e.Item.FindControl("sumTitle");
+
+                paymentTitle.InnerText = "פירוט תשלום " + Helpers.NumberToHebrewOrdinal(e.Item.ItemIndex + 1);
+                sumTitle.InnerText = "סכום לתשלום " + Helpers.NumberToHebrewOrdinal(e.Item.ItemIndex + 1) + ":";
+
+            }
+        }
+
+        protected void AddPayment_Click(object sender, EventArgs e)
+        {
+            //List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
+            //if (Session["payments"] != null)
+            //{
+            //    payments = Session["payments"] as List<serviceRequestPayment>;
+            //}
+
+            List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
+            foreach (RepeaterItem item in RepeaterPayments.Items)
+            {
+                HtmlInputControl Sum = (HtmlInputControl)item.FindControl("Sum1");
+                HtmlInputControl DatePayment = (HtmlInputControl)item.FindControl("DatePayment1");
+                HtmlInputControl Num = (HtmlInputControl)item.FindControl("Num1");
+                HtmlInputControl ReferencePayment = (HtmlInputControl)item.FindControl("ReferencePayment1");
+                CheckBox IsApprove = (CheckBox)item.FindControl("IsApprove1");
+                HiddenField hiddenPaymentID = (HiddenField)item.FindControl("hiddenPaymentID");
+
+                serviceRequestPayment paymentFromRepeater = new serviceRequestPayment
+                {
+                    ID = int.Parse(hiddenPaymentID.Value),
+                    ServiceRequestID = int.Parse(Request.QueryString["ServiceRequestID"].ToString()),
+                    SumPayment = (!string.IsNullOrWhiteSpace(Sum.Value) ? double.Parse(Sum.Value) : 0),
+                    NumPayment = (!string.IsNullOrWhiteSpace(Num.Value) ? int.Parse(Num.Value) : 0),
+                    DatePayment = DatePayment.Value,
+                    ReferencePayment = ReferencePayment.Value,
+                    IsApprovedPayment = IsApprove.Checked
+
+                };
+
+                payments.Add(paymentFromRepeater);
+            }
+
+
+            serviceRequestPayment payment = new serviceRequestPayment
+            {
+                ID = 0,
+                ServiceRequestID = int.Parse(Request.QueryString["ServiceRequestID"].ToString()),
+                DatePayment = "",
+                NumPayment = 0,
+                SumPayment = 0,
+                ReferencePayment = "",
+                IsApprovedPayment = false
+            };
+
+            payments.Add(payment);
+            Session["payments"] = payments;
+            RepeaterPayments.DataSource = payments;
+            RepeaterPayments.DataBind();
+        }
     }
 }

@@ -19,7 +19,20 @@ namespace ControlPanel.HelpersFunctions
 {
     class Helpers
     {
-
+        // Dictionary to store irregular ordinals (1-10)
+        private static readonly Dictionary<int, string> IrregularOrdinals = new Dictionary<int, string>
+    {
+        {1, "ראשון"},
+        {2, "שני"},
+        {3, "שלישי"},
+        {4, "רביעי"},
+        {5, "חמישי"},
+        {6, "שישי"},
+        {7, "שביעי"},
+        {8, "שמיני"},
+        {9, "תשיעי"},
+        {10, "עשירי"}
+    };
         public static async void SendPushNotification(string vMessage, string DeviceToken, int OsType, string NotificationType)
         {
 
@@ -536,6 +549,22 @@ namespace ControlPanel.HelpersFunctions
                 return "true";
             }
 
+        }
+
+        public static string NumberToHebrewOrdinal(int number)
+        {
+            // Check for invalid input
+            if (number < 1)
+            {
+                return "Invalid input";
+            }
+
+            if (IrregularOrdinals.TryGetValue(number, out string irregularOrdinal))
+            {
+                return irregularOrdinal;
+            }
+
+            return number.ToString();
         }
 
 

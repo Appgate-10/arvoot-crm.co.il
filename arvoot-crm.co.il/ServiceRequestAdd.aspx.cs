@@ -21,20 +21,6 @@ namespace ControlPanel
         public string StrSrc { get { return strSrc; } }
         public string ListPageUrl = "OfferEdit.aspx";
 
-        // Dictionary to store irregular ordinals (1-10)
-        private static readonly Dictionary<int, string> IrregularOrdinals = new Dictionary<int, string>
-    {
-        {1, "ראשון"},
-        {2, "שני"},
-        {3, "שלישי"},
-        {4, "רביעי"},
-        {5, "חמישי"},
-        {6, "שישי"},
-        {7, "שביעי"},
-        {8, "שמיני"},
-        {9, "תשיעי"},
-        {10, "עשירי"}
-    };
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -262,12 +248,12 @@ namespace ControlPanel
                     DatePayment = DatePayment.Value,
                     ReferencePayment = ReferencePayment.Value,
                     IsApprovedPayment = IsApprove.Checked
-
                 };
 
                 payments.Add(payment);
-                Session["payments"] = payments;
             }
+            Session["payments"] = payments;
+
             int ErrorCount = 0;
             FormError_lable.Visible = false;
             //שם פרטי שם משפחה תאריך לידה תז טלפון אימייל סטטוס ראשי
@@ -346,19 +332,19 @@ namespace ControlPanel
                         if (payments[i].SumPayment == 0)
                         {
                             FormError_lable.Visible = true;
-                            FormError_lable.Text = "יש להזין סכום לתשלום " + NumberToHebrewOrdinal(i + 1);
+                            FormError_lable.Text = "יש להזין סכום לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1);
                             return false;
                         }
                         if (payments[i].DatePayment == "")
                         {
                             FormError_lable.Visible = true;
-                            FormError_lable.Text = "יש להזין תאריך תשלום " + NumberToHebrewOrdinal(i + 1); ;
+                            FormError_lable.Text = "יש להזין תאריך תשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
                             return false;
                         }
                         if (payments[i].NumPayment == 0)
                         {
                             FormError_lable.Visible = true;
-                            FormError_lable.Text = "יש להזין מספר תשלומים לתשלום " + NumberToHebrewOrdinal(i + 1); ;
+                            FormError_lable.Text = "יש להזין מספר תשלומים לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
                             return false;
                         }
                     }
@@ -470,6 +456,7 @@ namespace ControlPanel
             }
             else
             {
+                Session["payments"] = null;
                 System.Web.HttpContext.Current.Response.Redirect(ListPageUrl + "?OfferID=" + Request.QueryString["OfferID"]);
             }
         }
@@ -550,27 +537,13 @@ namespace ControlPanel
                 HtmlGenericControl paymentTitle = (HtmlGenericControl)e.Item.FindControl("paymentTitle");
                 HtmlGenericControl sumTitle = (HtmlGenericControl)e.Item.FindControl("sumTitle");
                 
-                paymentTitle.InnerText = "פירוט תשלום " + NumberToHebrewOrdinal(e.Item.ItemIndex + 1);
-                sumTitle.InnerText = "סכום לתשלום " + NumberToHebrewOrdinal(e.Item.ItemIndex + 1) + ":";
+                paymentTitle.InnerText = "פירוט תשלום " + Helpers.NumberToHebrewOrdinal(e.Item.ItemIndex + 1);
+                sumTitle.InnerText = "סכום לתשלום " + Helpers.NumberToHebrewOrdinal(e.Item.ItemIndex + 1) + ":";
 
             }
         }
 
-        public static string NumberToHebrewOrdinal(int number)
-        {
-            // Check for invalid input
-            if (number < 1)
-            {
-                return "Invalid input";
-            }
-
-            if (IrregularOrdinals.TryGetValue(number, out string irregularOrdinal))
-            {
-                return irregularOrdinal;
-            }
-
-            return number.ToString();
-        }
+        
 
         protected void AddPayment_Click(object sender, EventArgs e)
         {

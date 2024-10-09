@@ -164,7 +164,6 @@ namespace ControlPanel
             loadCountAlert();
             loadActivityHistory(DateTime.Today);
 
-
         }     
         
         public void loadCountAlert()

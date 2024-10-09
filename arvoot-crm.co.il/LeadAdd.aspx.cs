@@ -52,7 +52,7 @@ namespace ControlPanel
                 SelectSourceLead.Items.Insert(0, new ListItem("בחר", ""));
 
 
-                SqlCommand cmdLineBusiness = new SqlCommand("SELECT * FROM LineBusiness");
+                SqlCommand cmdLineBusiness = new SqlCommand("SELECT * FROM EmploymentStatus");
                 DataSet dsLineBusiness = DbProvider.GetDataSet(cmdLineBusiness);
                 SelectBusinessLineBusiness.DataSource = dsLineBusiness;
                 SelectBusinessLineBusiness.DataTextField = "Name";

@@ -39,19 +39,19 @@ namespace ControlPanel
                 SelectSourceLead.Items.Insert(0, new ListItem("בחר", ""));
 
 
-                SqlCommand cmdLineBusiness = new SqlCommand("SELECT * FROM LineBusiness");
-                DataSet dsLineBusiness = DbProvider.GetDataSet(cmdLineBusiness);
-                SelectBusinessLineBusiness.DataSource = dsLineBusiness;
-                SelectBusinessLineBusiness.DataTextField = "Name";
-                SelectBusinessLineBusiness.DataValueField = "ID";
-                SelectBusinessLineBusiness.DataBind();
-                SelectBusinessLineBusiness.Items.Insert(0, new ListItem("בחר", ""));
+                SqlCommand cmdEmploymentStatus = new SqlCommand("SELECT * FROM EmploymentStatus");
+                DataSet dsEmploymentStatus = DbProvider.GetDataSet(cmdEmploymentStatus);
+                SelectBusinessEmploymentStatus.DataSource = dsEmploymentStatus;
+                SelectBusinessEmploymentStatus.DataTextField = "Name";
+                SelectBusinessEmploymentStatus.DataValueField = "ID";
+                SelectBusinessEmploymentStatus.DataBind();
+                SelectBusinessEmploymentStatus.Items.Insert(0, new ListItem("בחר", ""));
 
-                SelectPartnerLineBusiness.DataSource = dsLineBusiness;
-                SelectPartnerLineBusiness.DataTextField = "Name";
-                SelectPartnerLineBusiness.DataValueField = "ID";
-                SelectPartnerLineBusiness.DataBind();
-                SelectPartnerLineBusiness.Items.Insert(0, new ListItem("בחר", ""));
+                SelectPartnerEmploymentStatus.DataSource = dsEmploymentStatus;
+                SelectPartnerEmploymentStatus.DataTextField = "Name";
+                SelectPartnerEmploymentStatus.DataValueField = "ID";
+                SelectPartnerEmploymentStatus.DataBind();
+                SelectPartnerEmploymentStatus.Items.Insert(0, new ListItem("בחר", ""));
 
                 SqlCommand cmdFamilyStatus = new SqlCommand("SELECT * FROM FamilyStatus");
                 DataSet dsFamilyStatus = DbProvider.GetDataSet(cmdFamilyStatus);
@@ -149,9 +149,9 @@ namespace ControlPanel
 
                 BusinessPhone.Value = dtLead.Rows[0]["BusinessPhone"].ToString();
                 BusinessGrossSalary.Value = dtLead.Rows[0]["BusinessGrossSalary"].ToString();
-                SelectBusinessLineBusiness.Value = dtLead.Rows[0]["BusinessLineBusiness"].ToString();
+                SelectBusinessEmploymentStatus.Value = dtLead.Rows[0]["BusinessLineBusiness"].ToString();
 
-                SelectPartnerLineBusiness.Value = dtLead.Rows[0]["PartnerLineBusiness"].ToString();
+                SelectPartnerEmploymentStatus.Value = dtLead.Rows[0]["PartnerLineBusiness"].ToString();
                 PartnerName.Value = dtLead.Rows[0]["PartnerName"].ToString();
                 PartnerGrossSalary.Value = dtLead.Rows[0]["PartnerGrossSalary"].ToString();
                 PartnerAge.Value = dtLead.Rows[0]["PartnerAge"].ToString();
@@ -901,8 +901,8 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@BusinessEmail", string.IsNullOrEmpty(BusinessEmail.Value) ? (object)DBNull.Value : BusinessEmail.Value);
                 cmd.Parameters.AddWithValue("@BusinessPhone", string.IsNullOrEmpty(BusinessPhone.Value) ? (object)DBNull.Value : BusinessPhone.Value);
                 cmd.Parameters.AddWithValue("@BusinessGrossSalary", string.IsNullOrEmpty(BusinessGrossSalary.Value) ? (object)DBNull.Value : BusinessGrossSalary.Value);
-                cmd.Parameters.AddWithValue("@BusinessLineBusiness", string.IsNullOrEmpty(SelectBusinessLineBusiness.Value) ? (object)DBNull.Value : int.Parse(SelectBusinessLineBusiness.Value));
-                cmd.Parameters.AddWithValue("@PartnerLineBusiness", string.IsNullOrEmpty(SelectPartnerLineBusiness.Value) ? (object)DBNull.Value : int.Parse(SelectPartnerLineBusiness.Value));
+                cmd.Parameters.AddWithValue("@BusinessLineBusiness", string.IsNullOrEmpty(SelectBusinessEmploymentStatus.Value) ? (object)DBNull.Value : int.Parse(SelectBusinessEmploymentStatus.Value));
+                cmd.Parameters.AddWithValue("@PartnerLineBusiness", string.IsNullOrEmpty(SelectPartnerEmploymentStatus.Value) ? (object)DBNull.Value : int.Parse(SelectPartnerEmploymentStatus.Value));
                 cmd.Parameters.AddWithValue("@PartnerName", string.IsNullOrEmpty(PartnerName.Value) ? (object)DBNull.Value : PartnerName.Value);
                 cmd.Parameters.AddWithValue("@PartnerGrossSalary", string.IsNullOrEmpty(PartnerGrossSalary.Value) ? (object)DBNull.Value : PartnerGrossSalary.Value);
                 cmd.Parameters.AddWithValue("@PartnerAge", string.IsNullOrEmpty(PartnerAge.Value) ? (object)DBNull.Value : PartnerAge.Value);

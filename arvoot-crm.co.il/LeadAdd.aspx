@@ -285,7 +285,7 @@
                             <input id="BusinessGrossSalary" name="BusinessGrossSalary" type="number" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row ColUpLid">
-                            <label class="InputLable">תחום עיסוק:</label>
+                            <label class="InputLable">מצב תעסוקתי:</label>
                         
                             <select runat="server" id="SelectBusinessLineBusiness" class="selectGlobal"></select>
 
@@ -322,7 +322,7 @@
                     </div>
                     <div class="row MarginRow" style="width: 100%;">
                         <div class="row ColUpLid">
-                            <label class="InputLable">תחום עיסוק:</label>
+                            <label class="InputLable">מצב תעסוקתי:</label>
                           
                             <select runat="server" id="SelectPartnerLineBusiness" class="selectGlobal"></select>
 

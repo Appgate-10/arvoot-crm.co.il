@@ -348,7 +348,7 @@
                             <input id="BusinessGrossSalary" name="BusinessGrossSalary" type="number" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row ColUpLid">
-                            <label class="InputLable">תחום עיסוק:</label>
+                            <label class="InputLable">מצב תעסוקתי:</label>
                             <%--                            <asp:Button ID="BtnLineBusiness" Text="בחר" runat="server" class="BtnGender " OnCommand="LineBusiness_Click" />--%>
                             <%--  <select id="SelectLineBusiness" runat="server" class="selectGlobal">
                                 <option value="">בחר</option>
@@ -357,7 +357,7 @@
                                 <option value="3">עצמאי/ת</option>
                                 <option value="4">פנסיונר/ית</option>
                             </select>--%>
-                            <select runat="server" id="SelectBusinessLineBusiness" class="selectGlobal"></select>
+                            <select runat="server" id="SelectBusinessEmploymentStatus" class="selectGlobal"></select>
 
                         </div>
                     </div>
@@ -425,7 +425,7 @@
                     </div>
                     <div class="row MarginRow" style="width: 100%;">
                         <div class="row ColUpLid">
-                            <label class="InputLable">תחום עיסוק:</label>
+                            <label class="InputLable">מצב תעסוקתי:</label>
                             <%--                            <asp:Button ID="PartnerLineBusiness" Text="בחר" runat="server" class="BtnGender " OnCommand="PartnerLineBusiness_Click" />--%>
                             <%--   <select id="SelectPartnerLineBusiness" runat="server" class="selectGlobal">
                                 <option value="">בחר</option>
@@ -434,7 +434,7 @@
                                 <option value="3">עצמאי/ת</option>
                                 <option value="4">פנסיונר/ית</option>
                             </select>--%>
-                            <select runat="server" id="SelectPartnerLineBusiness" class="selectGlobal"></select>
+                            <select runat="server" id="SelectPartnerEmploymentStatus" class="selectGlobal"></select>
 
                         </div>
                     </div>

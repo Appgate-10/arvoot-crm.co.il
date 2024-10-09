@@ -195,15 +195,6 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl IssuanceDateTz;
 
         /// <summary>
-        /// InvalidBdiReason control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText InvalidBdiReason;
-
-        /// <summary>
         /// BdiValidity control.
         /// </summary>
         /// <remarks>
@@ -211,6 +202,15 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlSelect BdiValidity;
+
+        /// <summary>
+        /// InvalidBdiReason control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText InvalidBdiReason;
 
         /// <summary>
         /// Phone1 control.

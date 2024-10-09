@@ -136,7 +136,7 @@ namespace ControlPanel
                 IssuanceDateTz.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["IssuanceDateTz"].ToString()) ? "" : Convert.ToDateTime(dtLead.Rows[0]["IssuanceDateTz"]).ToString("yyyy-MM-dd");
                /* IsValidIssuanceDateTz.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidIssuanceDateTz"].ToString()));
                 IsValidBdi.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString()));*/
-                BdiValidity.SelectedIndex = int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString()) == 0 ? 1 : 0;
+                BdiValidity.SelectedIndex = int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString());
                 InvalidBdiReason.Value = dtLead.Rows[0]["InvalidBdiReason"].ToString();
                 Phone1.Value = dtLead.Rows[0]["Phone1"].ToString();
                 Phone2.Value = dtLead.Rows[0]["Phone2"].ToString();
@@ -622,6 +622,24 @@ namespace ControlPanel
                 ExportNewContact_lable.Visible = true;
                 ExportNewContact_lable.Text = "יש להזין כתובת עסק";//Gila נראה שאמור להיות כתוב כתובת נכס
             }
+            else if (SelectFamilyStatus.SelectedIndex == 0)
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש לבחור מצב תעסוקתי";
+            }
+            else if (BdiValidity.SelectedIndex == 0)
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "תקין/ לא תקין BDI יש לבחור";
+            }
+            else if (BdiValidity.SelectedIndex == 2 && InvalidBdiReason.Value == "")
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין סיבה לאי תקינות";
+            }
             if (ErrorCount == 0)
             {
                 string sql = @" Update Lead set 
@@ -1000,7 +1018,7 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@Tz", Tz.Value);
                 cmd.Parameters.AddWithValue("@IssuanceDateTz", string.IsNullOrEmpty(IssuanceDateTz.Value) ? (object)DBNull.Value : DateTime.Parse(IssuanceDateTz.Value));
                 //cmd.Parameters.AddWithValue("@IsValidIssuanceDateTz", IsValidIssuanceDateTz.Checked == true ? 1 : 0);
-                cmd.Parameters.AddWithValue("@IsValidBdi", /*IsValidBdi.Checked == true*/ BdiValidity.SelectedIndex == 0 ? 1 : 0);
+                cmd.Parameters.AddWithValue("@IsValidBdi", /*IsValidBdi.Checked == true*/ BdiValidity.SelectedIndex);
                 cmd.Parameters.AddWithValue("@InvalidBdiReason", string.IsNullOrEmpty(InvalidBdiReason.Value) ? (object)DBNull.Value : InvalidBdiReason.Value);
                 cmd.Parameters.AddWithValue("@Phone1", Phone1.Value);
                 cmd.Parameters.AddWithValue("@Phone2", string.IsNullOrEmpty(Phone2.Value) ? (object)DBNull.Value : Phone2.Value);

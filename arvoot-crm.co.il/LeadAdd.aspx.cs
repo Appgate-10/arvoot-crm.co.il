@@ -198,7 +198,7 @@ namespace ControlPanel
                 FormError_lable.Text = "יש להזין שם משפחה";
                 return false;
             }
-            if (DateBirth.Value == "")
+           /* if (DateBirth.Value == "")
             {
                 ErrorCount++;
                 FormError_lable.Visible = true;
@@ -225,7 +225,7 @@ namespace ControlPanel
                 FormError_lable.Text = "יש להזין ת.ז תקינה";
                 FormError_lable.Visible = true;
                 return false;
-            }
+            }*/
             if (Phone1.Value == "")
             {
                 ErrorCount++;
@@ -240,7 +240,7 @@ namespace ControlPanel
                 FormError_lable.Text = "יש להזין מספר טלפון תקין";
                 return false;
             }
-            if (Email.Value == "")
+          /*  if (Email.Value == "")
             {
                 ErrorCount++;
                 FormError_lable.Visible = true;
@@ -283,7 +283,7 @@ namespace ControlPanel
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין מספר טלפון תקין";
                 return false;
-            }
+            }*/
 
             //if (CBHaveAsset.Checked == true)
             //{
@@ -310,84 +310,84 @@ namespace ControlPanel
             //    }
 
             //}
-            if (CBHaveAsset.Checked == false)
-            {
-                if (AssetValue.Value != "")
-                {
-                    ErrorCount++;
-                    FormError_lable.Visible = true;
-                    FormError_lable.Text = "עליך לסמן האם קיים נכס בבעלות הלקוח";
-                    return false;
-                }
-                else if (AssetType.Value != "")
-                {
-                    ErrorCount++;
-                    FormError_lable.Visible = true;
-                    FormError_lable.Text = "עליך לסמן האם קיים נכס בבעלות הלקוח";
-                    return false;
-                }
-                else if (AssetAddress.Value != "")
-                {
-                    ErrorCount++;
-                    FormError_lable.Visible = true;
-                    FormError_lable.Text = "עליך לסמן האם קיים נכס בבעלות הלקוח";
-                    return false;
-                }
+            //if (CBHaveAsset.Checked == false)
+            //{
+            //    if (AssetValue.Value != "")
+            //    {
+            //        ErrorCount++;
+            //        FormError_lable.Visible = true;
+            //        FormError_lable.Text = "עליך לסמן האם קיים נכס בבעלות הלקוח";
+            //        return false;
+            //    }
+            //    else if (AssetType.Value != "")
+            //    {
+            //        ErrorCount++;
+            //        FormError_lable.Visible = true;
+            //        FormError_lable.Text = "עליך לסמן האם קיים נכס בבעלות הלקוח";
+            //        return false;
+            //    }
+            //    else if (AssetAddress.Value != "")
+            //    {
+            //        ErrorCount++;
+            //        FormError_lable.Visible = true;
+            //        FormError_lable.Text = "עליך לסמן האם קיים נכס בבעלות הלקוח";
+            //        return false;
+            //    }
 
-            }
-            if (CBHaveMortgageOnAsset.Checked == false)
-            {
-                if (MortgageAmount.Value != "")
-                {
-                    ErrorCount++;
-                    FormError_lable.Visible = true;
-                    FormError_lable.Text = "עליך לסמן האם קיימת משכנתא על נכס";
-                    return false;
-                }
-                else if (MonthlyRepaymentAmount.Value != "")
-                {
-                    ErrorCount++;
-                    FormError_lable.Visible = true;
-                    FormError_lable.Text = "עליך לסמן האם קיימת משכנתא על נכס";
-                    return false;
-                }
-                else if (LendingBank.Value != "")
-                {
-                    ErrorCount++;
-                    FormError_lable.Visible = true;
-                    FormError_lable.Text = "עליך לסמן האם קיימת משכנתא על נכס";
-                    return false;
-                }
-                else if (PurposeTest.Value != "")
-                {
-                    ErrorCount++;
-                    FormError_lable.Visible = true;
-                    FormError_lable.Text = "עליך לסמן האם קיימת משכנתא על נכס";
-                    return false;
-                }
-                else if (RequestedLoanAmount.Value != "")
-                {
-                    ErrorCount++;
-                    FormError_lable.Visible = true;
-                    FormError_lable.Text = "עליך לסמן האם קיימת משכנתא על נכס";
-                    return false;
-                }
-                else if (PurposeLoan.Value != "")
-                {
-                    ErrorCount++;
-                    FormError_lable.Visible = true;
-                    FormError_lable.Text = "עליך לסמן האם קיימת משכנתא על נכס";
-                    return false;
-                }
-                else if (MortgageBalance.Value != "")
-                {
-                    ErrorCount++;
-                    FormError_lable.Visible = true;
-                    FormError_lable.Text = "עליך לסמן האם קיימת משכנתא על נכס";
-                    return false;
-                }
+            //}
+            //if (CBHaveMortgageOnAsset.Checked == false)
+            //{
+            //    if (MortgageAmount.Value != "")
+            //    {
+            //        ErrorCount++;
+            //        FormError_lable.Visible = true;
+            //        FormError_lable.Text = "עליך לסמן האם קיימת משכנתא על נכס";
+            //        return false;
+            //    }
+            //    else if (MonthlyRepaymentAmount.Value != "")
+            //    {
+            //        ErrorCount++;
+            //        FormError_lable.Visible = true;
+            //        FormError_lable.Text = "עליך לסמן האם קיימת משכנתא על נכס";
+            //        return false;
+            //    }
+            //    else if (LendingBank.Value != "")
+            //    {
+            //        ErrorCount++;
+            //        FormError_lable.Visible = true;
+            //        FormError_lable.Text = "עליך לסמן האם קיימת משכנתא על נכס";
+            //        return false;
+            //    }
+            //    else if (PurposeTest.Value != "")
+            //    {
+            //        ErrorCount++;
+            //        FormError_lable.Visible = true;
+            //        FormError_lable.Text = "עליך לסמן האם קיימת משכנתא על נכס";
+            //        return false;
+            //    }
+            //    else if (RequestedLoanAmount.Value != "")
+            //    {
+            //        ErrorCount++;
+            //        FormError_lable.Visible = true;
+            //        FormError_lable.Text = "עליך לסמן האם קיימת משכנתא על נכס";
+            //        return false;
+            //    }
+            //    else if (PurposeLoan.Value != "")
+            //    {
+            //        ErrorCount++;
+            //        FormError_lable.Visible = true;
+            //        FormError_lable.Text = "עליך לסמן האם קיימת משכנתא על נכס";
+            //        return false;
+            //    }
+            //    else if (MortgageBalance.Value != "")
+            //    {
+            //        ErrorCount++;
+            //        FormError_lable.Visible = true;
+            //        FormError_lable.Text = "עליך לסמן האם קיימת משכנתא על נכס";
+            //        return false;
+            //    }
 
-            }
+            //}
             if (ErrorCount == 0)
             {
                 string sql = @" INSERT INTO [Lead]( FirstName
@@ -501,7 +501,7 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@IssuanceDateTz", string.IsNullOrEmpty(IssuanceDateTz.Value) ? (object)DBNull.Value : DateTime.Parse(IssuanceDateTz.Value));
                 //Gila
                 //cmd.Parameters.AddWithValue("@IsValidIssuanceDateTz", /*CBIsValidIssuanceDateTz.Checked == true ? 1 : 0*/0);
-                cmd.Parameters.AddWithValue("@IsValidBdi", /*IsValidBdi.Checked == true*/ BdiValidity.SelectedIndex == 0 ? 1 : 0);
+                cmd.Parameters.AddWithValue("@IsValidBdi", /*IsValidBdi.Checked == true*/ BdiValidity.SelectedIndex);
                 cmd.Parameters.AddWithValue("@InvalidBdiReason", string.IsNullOrEmpty(InvalidBdiReason.Value) ? (object)DBNull.Value : InvalidBdiReason.Value );
                 cmd.Parameters.AddWithValue("@Phone1", Phone1.Value);
                 cmd.Parameters.AddWithValue("@Phone2", string.IsNullOrEmpty(Phone2.Value) ? (object)DBNull.Value : Phone2.Value);

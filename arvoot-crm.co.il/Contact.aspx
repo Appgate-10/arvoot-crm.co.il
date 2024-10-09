@@ -207,18 +207,22 @@
                         <asp:CheckBox runat="server" ID="IsValidBdi" />
                         <asp:Label ID="LblIsValidBdi" AssociatedControlID="IsValidBdi" runat="server" CssClass="lblAns InputLable" Text="תקין BDI"></asp:Label>
                     </div>--%>
-                    <div class="row MarginRow " style="width: 100%;">
+                 <div class="row MarginRow " style="width: 100%;">
                         <div class="row ColUpLid">
-                            <%--<asp:CheckBox runat="server" ID="IsValidIssuanceDateTz" />
-                            <asp:Label ID="Label1" AssociatedControlID="IsValidIssuanceDateTz" runat="server" CssClass="lblAns InputLable" Text="תאריך תעודת זהות לא תקין"></asp:Label>--%>
-                             <label class="InputLable">סיבה לאי תקינות הBDI</label>
-                            <input id="InvalidBdiReason" name="InvalidBdiReason" type="text" runat="server" style="width: 100%;" class="InputAdd" />
-                        </div>
-                        <div class="row ColUpLid">
-                               <select runat="server" id="BdiValidity" class="selectGlobal">
+                             <label class="InputLable">תקינות BDI</label>
+
+                            <select runat="server" id="BdiValidity" class="selectGlobal">
+                                <option value="בחר"></option>
                                 <option value="BDI תקין"></option>
                                 <option value="BDI לא תקין"></option>
                             </select>
+                           <%-- <asp:CheckBox runat="server" ID="IsValidIssuanceDateTz" />
+                            <asp:Label ID="Label1" AssociatedControlID="IsValidIssuanceDateTz" runat="server" CssClass="lblAns InputLable" Text="תאריך תעודת זהות לא תקין"></asp:Label>--%>
+                            
+                        </div>
+                        <div class="row ColUpLid">
+                             <label class="InputLable">סיבה לאי תקינות הBDI</label>
+                            <input id="InvalidBdiReason" name="InvalidBdiReason" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                            <%-- <asp:CheckBox runat="server" ID="IsValidBdi" />
                             <asp:Label ID="LblIsValidBdi" AssociatedControlID="IsValidBdi" runat="server" CssClass="lblAns InputLable" Text="תקין BDI"></asp:Label>--%>
                         </div>
@@ -638,8 +642,9 @@
                     <asp:Repeater ID="Repeater2" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
                         <ItemTemplate>
                             <div class='ListDivParams' style="position: relative;">
+                                <asp:Button ID="ButtonDiv" runat="server" CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsOffer_Command" CssClass="ButtonDiv" />
                                 <div style="width: 5%; text-align: center">
-                                <asp:ImageButton ID="BtnDetailsOffer"  CommandArgument='<%#Eval("ID") %>' style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png" OnCommand="BtnDetailsOffer_Command" />
+                                <asp:ImageButton ID="BtnDetailsOffer" style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
                                 </div>
                                 <div style="width: 33%; text-align: right"><%#Eval("StatusOffer") %></div>
                                 <div style="width: 30%; text-align: right;"><%#Eval("FullNameAgent") %></div>

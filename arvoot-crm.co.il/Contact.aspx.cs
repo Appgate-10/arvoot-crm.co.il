@@ -131,7 +131,7 @@ namespace ControlPanel
                 Tz.Value = dtLead.Rows[0]["Tz"].ToString();
                 IssuanceDateTz.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["IssuanceDateTz"].ToString()) ? "" : Convert.ToDateTime(dtLead.Rows[0]["IssuanceDateTz"]).ToString("yyyy-MM-dd");
                 //IsValidIssuanceDateTz.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidIssuanceDateTz"].ToString()));
-                BdiValidity.SelectedIndex =int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString())==0?1:0;
+                BdiValidity.SelectedIndex =int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString());
                 InvalidBdiReason.Value = dtLead.Rows[0]["InvalidBdiReason"].ToString();
                 Phone1.Value = dtLead.Rows[0]["Phone1"].ToString();
                 Phone2.Value = dtLead.Rows[0]["Phone2"].ToString();
@@ -870,7 +870,7 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@Tz", Tz.Value);
                 cmd.Parameters.AddWithValue("@IssuanceDateTz", string.IsNullOrEmpty(IssuanceDateTz.Value) ? (object)DBNull.Value : DateTime.Parse(IssuanceDateTz.Value));
                 //cmd.Parameters.AddWithValue("@IsValidIssuanceDateTz", IsValidIssuanceDateTz.Checked == true ? 1 : 0);
-                cmd.Parameters.AddWithValue("@IsValidBdi",/* IsValidBdi.Checked == true ? 1 : 0*/ BdiValidity.SelectedIndex == 0 ? 1 : 0);
+                cmd.Parameters.AddWithValue("@IsValidBdi",/* IsValidBdi.Checked == true ? 1 : 0*/ BdiValidity.SelectedIndex);
                 cmd.Parameters.AddWithValue("@InvalidBdiReason", InvalidBdiReason.Value);
                 cmd.Parameters.AddWithValue("@Phone1", Phone1.Value);
                 cmd.Parameters.AddWithValue("@Phone2", string.IsNullOrEmpty(Phone2.Value) ? (object)DBNull.Value : Phone2.Value);

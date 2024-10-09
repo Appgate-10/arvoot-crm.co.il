@@ -157,18 +157,22 @@
                         </div>
                     </div>
              <%-- Gila --%>
-                    <div class="row MarginRow " syle="width: 100%;">
+                            <div class="row MarginRow " style="width: 100%;">
                         <div class="row ColUpLid">
-                            <%--<asp:CheckBox runat="server" ID="CBIsValidIssuanceDateTz" />
-                            <asp:Label ID="Label1" AssociatedControlID="CBIsValidIssuanceDateTz" runat="server" CssClass="lblAns InputLable" Text="תאריך תעודת זהות לא תקין"></asp:Label>--%>
-                        <label class="InputLable">סיבה לאי תקינות הBDI</label>
-                            <input id="InvalidBdiReason" name="InvalidBdiReason" type="text" runat="server" style="width: 100%;" class="InputAdd" />
-                        </div>
-                        <div class="row ColUpLid">
+                             <label class="InputLable">תקינות BDI</label>
+
                             <select runat="server" id="BdiValidity" class="selectGlobal">
+                                <option value="בחר"></option>
                                 <option value="BDI תקין"></option>
                                 <option value="BDI לא תקין"></option>
                             </select>
+                           <%-- <asp:CheckBox runat="server" ID="IsValidIssuanceDateTz" />
+                            <asp:Label ID="Label1" AssociatedControlID="IsValidIssuanceDateTz" runat="server" CssClass="lblAns InputLable" Text="תאריך תעודת זהות לא תקין"></asp:Label>--%>
+                            
+                        </div>
+                        <div class="row ColUpLid">
+                             <label class="InputLable">סיבה לאי תקינות הBDI</label>
+                            <input id="InvalidBdiReason" name="InvalidBdiReason" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                            <%-- <asp:CheckBox runat="server" ID="IsValidBdi" />
                             <asp:Label ID="LblIsValidBdi" AssociatedControlID="IsValidBdi" runat="server" CssClass="lblAns InputLable" Text="תקין BDI"></asp:Label>--%>
                         </div>

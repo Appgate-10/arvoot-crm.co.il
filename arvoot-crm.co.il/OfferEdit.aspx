@@ -280,8 +280,9 @@
                     <asp:Repeater ID="Repeater2" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
                         <ItemTemplate>
                             <div class='ListDivParams' style="position: relative;padding-left: 18px;">
+                                <asp:Button ID="ButtonDiv" runat="server" CommandArgument='<%#Eval("ID") %>' OnCommand="BtnServiceRequest_Command" CssClass="ButtonDiv" />
                                 <div style="width: 5%; text-align: center">
-                                <asp:ImageButton OnCommand="BtnServiceRequest_Command"  CommandArgument='<%#Eval("ID") %>' ID="BtnServiceRequest" Style="vertical-align: middle;" ImageUrl="~/images/icons/Arrow_Left_1.png" runat="server" />
+                                <asp:ImageButton  ID="BtnServiceRequest" Style="vertical-align: middle;" ImageUrl="~/images/icons/Arrow_Left_1.png" runat="server" />
                                 </div>
                                 <div style="width: 33%; text-align: right"><%#Eval("PurposeName") %></div>
                                 <div style="width: 15%; text-align: right;"><%#Eval("Balance") %></div>

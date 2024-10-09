@@ -240,7 +240,7 @@
 
             <div class="col MarginDiv SecondaryDiv ">
                 <div class="row MarginRow ServiceRequestDiv">
-                    <label class="InputLable">פרטי העסק</label>
+                    <label class="InputLable">פרטי העסקה</label>
                 </div>
                 <div class="row MarginRow" style="width: 100%;">
                     <div style="width: 23%;" class="row">

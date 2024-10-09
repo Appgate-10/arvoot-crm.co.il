@@ -68,10 +68,10 @@
                         </div>
                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
-                                <div style="width: 85.5%;position: relative;" class="row">
-                                    <div>
-                                        <asp:Button ID="BtnBarItem_AllLeads" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="ניהול לידים" />
-                                        <div id="PopUp_AllLeads" class="col PopupMenue AllPopUp" runat="server" visible="false">
+                                <div style="width: 100%;position: relative;" class="row">
+                                    <div><%-- OnCommand="BtnBarItem_Command"--%> 
+                                        <a  href="Leads.aspx" id="BtnBarItem_AllLeads"  class="bar-item buttonWithOneImages buttonWithImages">ניהול לידים</a>
+                                  <%--      <div id="PopUp_AllLeads" class="col PopupMenue AllPopUp" runat="server" visible="false">
                                             <a class="RowMenue" href="Leads.aspx?ID=1">כל הלידים</a>
                                             <a class="RowMenue" href="Leads.aspx">אין מענה</a>
                                             <a class="RowMenue" href="Leads.aspx">לא רלוונטי/לא מעוניין</a>
@@ -83,46 +83,54 @@
                                         <asp:Button runat="server" OnCommand="OrderReciveTime_Command" class="RowMenue" Text="לא רלוונטי/לא מעוניין"></asp:Button>
                                         <asp:Button runat="server" OnCommand="OrderReciveTime_Command" class="RowMenue" Text="לידים-חדש"></asp:Button>
                                         <asp:Button runat="server" OnCommand="OrderReciveTime_Command" class="RowMenue" Text="לידים-משכנתאות"></asp:Button>
-                                        <asp:Button runat="server" OnCommand="OrderReciveTime_Command" class="RowMenue" Text="לידים-בחודש האחרון"></asp:Button>--%>
-                                            <%--  </div>--%>
-                                        </div>
+                                        <asp:Button runat="server" OnCommand="OrderReciveTime_Command" class="RowMenue" Text="לידים-בחודש האחרון"></asp:Button>
+                                       
+                                        </div>--%>
                                     </div>
                                     <div>
-                                        <asp:Button ID="BtnBarItem_Contacts" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="אנשי קשר" />
+                                         <a  href="Contacts.aspx" id="BtnBarItem_Contacts"  class="bar-item buttonWithOneImages buttonWithImages">אנשי קשר</a>
+
+                                       <%-- <asp:Button ID="BtnBarItem_Contacts" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="אנשי קשר" />
                                         <div id="PopUp_Contacts" class="col PopupMenue AllPopUp" runat="server" visible="false">
                                             <a class="RowMenue" href="Contacts.aspx">כל אנשי קשר</a>
                                             <a class="RowMenue" href="Contacts.aspx">אנשי קשר בבעלותי</a>
                                             <a class="RowMenue" href="Contacts.aspx?filter=new">אנשי קשר חדשים</a>
-<%--                                            <a class="RowMenue" href="Contacts.aspx">בעלי קרנות השתלמות נזילות בקרוב</a>--%>
+<%--                                            <a class="RowMenue" href="Contacts.aspx">בעלי קרנות השתלמות נזילות בקרוב</a>
                                             <a class="RowMenue" href="Contacts.aspx?filter=birthday">אנשי קשר חוגגים יום הולדת השבוע</a>
-                                        </div>
+                                        </div>--%>
                                     </div>
-                                    <div>
-                                        <asp:Button ID="BtnBarItem_Households" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="משקי בית" />
+                                     <%--   <div>
+
+                                    <asp:Button ID="BtnBarItem_Households" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="משקי בית" />
                                         <div id="PopUp_Households" class="col PopupMenue AllPopUp" runat="server" visible="false">
-<%--                                            <a class="RowMenue" href="DeliveryMan.aspx">כל משקי הבית במערכת</a>--%>
+<%--                                            <a class="RowMenue" href="DeliveryMan.aspx">כל משקי הבית במערכת</a>
                                             <a class="RowMenue" href="HouseHolds.aspx">משקי הבית שלי</a>
                                             <a class="RowMenue" href="HouseHolds.aspx">משקי הבית שהוקמו בשבוע האחרון</a>
                                         </div>
-                                    </div>
+                                    </div>--%>
                                     <div>
-                                        <asp:Button ID="BtnBarItem_Proposals" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="הצעות" />
+                                       <a  href="Offers.aspx" id="BtnBarItem_Proposals"  class="bar-item buttonWithOneImages buttonWithImages">הצעות</a>
+
+                                      <%--  <asp:Button ID="BtnBarItem_Proposals" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="הצעות" />
                                         <div id="PopUp_Proposals" class="col PopupMenue AllPopUp" runat="server" visible="false">
                                             <a class="RowMenue" href="Offers.aspx">כל הצעות</a>
                                             <a class="RowMenue" href="Offers.aspx?IsMyPerformance=1">הצעות לטיפולי</a>
-<%--                                            <a class="RowMenue" href="ChatList.aspx">תור תפעול הלוואות/פדיונות</a>--%>
-                                        </div>
+<%--                                            <a class="RowMenue" href="ChatList.aspx">תור תפעול הלוואות/פדיונות</a>
+                                        </div>--%>
                                     </div>
                                     <div>
-                                        <asp:Button ID="Button1" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="פוליסות" />
+                                        <a  href="Offers.aspx" id="BtnBarItem_Proposals2"  class="bar-item buttonWithOneImages buttonWithImages">פוליסות</a>
+
+<%--                                        <asp:Button ID="Button1" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="פוליסות" />--%>
                                     </div>
                                     <div>
-                                        <asp:Button ID="BtnBarItem_ServiceRequests" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="בקשות" />
+                                        <a  href="ServiceRequests.aspx" id="BtnBarItem_ServiceRequests"  class="bar-item buttonWithOneImages buttonWithImages">בקשות</a>
+                                      <%--  <asp:Button ID="BtnBarItem_ServiceRequests" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="בקשות" />
                                            <div id="PopUp_ServiceRequests" class="col PopupMenue AllPopUp" runat="server" visible="false">
                                             <a class="RowMenue" href="ServiceRequests.aspx">כל הבקשות</a>
                                             <a class="RowMenue" href="ServiceRequests.aspx?IsMyPerformance=1">בקשות לטיפולי</a>
-<%--                                            <a class="RowMenue" href="ChatList.aspx">תור תפעול הלוואות/פדיונות</a>--%>
-                                        </div>
+<%--                                            <a class="RowMenue" href="ChatList.aspx">תור תפעול הלוואות/פדיונות</a>
+                                        </div>--%>
                                     </div>
                                     <div>
                                         <asp:Button ID="Button3" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="מספרי סוכנים" />

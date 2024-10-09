@@ -98,8 +98,8 @@ namespace ControlPanel
         public void loadData()
         {
             string sqlLead = @"
-                          select lead.FirstName,lead.LastName,GenderID,Year(GetDate())-Year(DateBirth) Age,CONVERT(varchar,DateBirth, 104) DateBirth,Address,lead.FamilyStatusID,lead.Tz, CONVERT(varchar,IssuanceDateTz, 104) IssuanceDateTz,IsValidIssuanceDateTz
-                           ,IsValidBdi,lead.Phone1,lead.Phone2,lead.Email,SourceLeadID,InterestedIn,TrackingTime,Note
+                          select lead.FirstName,lead.LastName,GenderID,Year(GetDate())-Year(DateBirth) Age,CONVERT(varchar,DateBirth, 104) DateBirth,Address,lead.FamilyStatusID,lead.Tz, CONVERT(varchar,IssuanceDateTz, 104) IssuanceDateTz
+                           ,IsValidBdi,InvalidBdiReason,lead.Phone1,lead.Phone2,lead.Email,SourceLeadID,InterestedIn,TrackingTime,Note
                            ,FirstStatusLead.Status FirstStatus,SecondStatusLead.Status SecondStatus
                            ,Lead.FirstStatusLeadID,Lead.SecondStatusLeadID,DateChangeFirstStatus
                            ,BusinessName,BusinessSeniority,BusinessProfession,BusinessCity,BusinessEmail,BusinessPhone,BusinessGrossSalary,BusinessLineBusiness
@@ -140,8 +140,10 @@ namespace ControlPanel
                 SelectFamilyStatus.Value = dtLead.Rows[0]["FamilyStatusID"].ToString();
                 Tz.Value = dtLead.Rows[0]["Tz"].ToString();
                 IssuanceDateTz.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["IssuanceDateTz"].ToString()) ? "" : Convert.ToDateTime(dtLead.Rows[0]["IssuanceDateTz"]).ToString("yyyy-MM-dd");
-                IsValidIssuanceDateTz.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidIssuanceDateTz"].ToString()));
-                IsValidBdi.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString()));
+               /* IsValidIssuanceDateTz.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidIssuanceDateTz"].ToString()));
+                IsValidBdi.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString()));*/
+                BdiValidity.SelectedIndex = int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString()) == 0 ? 1 : 0;
+                InvalidBdiReason.Value = dtLead.Rows[0]["InvalidBdiReason"].ToString();
                 Phone1.Value = dtLead.Rows[0]["Phone1"].ToString();
                 Phone2.Value = dtLead.Rows[0]["Phone2"].ToString();
                 Email.Value = dtLead.Rows[0]["Email"].ToString();
@@ -948,8 +950,8 @@ namespace ControlPanel
 ,FamilyStatusID=@FamilyStatusID
 ,Tz=@Tz
 ,IssuanceDateTz=@IssuanceDateTz
-,IsValidIssuanceDateTz=@IsValidIssuanceDateTz
 ,IsValidBdi=@IsValidBdi
+,InvalidBdiReason=@InvalidBdiReason
 ,Phone1=@Phone1
 ,Phone2=@Phone2
 ,Email=@Email
@@ -1003,8 +1005,9 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@FamilyStatusID", string.IsNullOrEmpty(SelectFamilyStatus.Value) ? (object)DBNull.Value : SelectFamilyStatus.Value);
                 cmd.Parameters.AddWithValue("@Tz", Tz.Value);
                 cmd.Parameters.AddWithValue("@IssuanceDateTz", string.IsNullOrEmpty(IssuanceDateTz.Value) ? (object)DBNull.Value : DateTime.Parse(IssuanceDateTz.Value));
-                cmd.Parameters.AddWithValue("@IsValidIssuanceDateTz", IsValidIssuanceDateTz.Checked == true ? 1 : 0);
-                cmd.Parameters.AddWithValue("@IsValidBdi", IsValidBdi.Checked == true ? 1 : 0);
+                //cmd.Parameters.AddWithValue("@IsValidIssuanceDateTz", IsValidIssuanceDateTz.Checked == true ? 1 : 0);
+                cmd.Parameters.AddWithValue("@IsValidBdi", /*IsValidBdi.Checked == true*/ BdiValidity.SelectedIndex == 0 ? 1 : 0);
+                cmd.Parameters.AddWithValue("@InvalidBdiReason", string.IsNullOrEmpty(InvalidBdiReason.Value) ? (object)DBNull.Value : InvalidBdiReason.Value);
                 cmd.Parameters.AddWithValue("@Phone1", Phone1.Value);
                 cmd.Parameters.AddWithValue("@Phone2", string.IsNullOrEmpty(Phone2.Value) ? (object)DBNull.Value : Phone2.Value);
                 cmd.Parameters.AddWithValue("@Email", Email.Value);

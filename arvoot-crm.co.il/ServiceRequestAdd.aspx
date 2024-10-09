@@ -230,28 +230,35 @@
                         </div>
                     </div>
                 </div>
+
+                        <%--         public double SumPayment { get; set; }
+        public string DatePayment { get; set; }
+        public int NumPayment { get; set; }
+        public string ReferencePayment { get; set; }
+        public bool IsApprovedPayment { get; set; } --%>
+
                 <div class="row PaddingRow" style="width: 100%;">
                     <div style="width: 18%; margin-left: 3%;" class="row">
-                        <label class="InputLable">סכום לתשלום ראשון:</label>
-                        <input id="Sum1" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" />
+                        <label id="sumTitle" runat="server" class="InputLable">סכום לתשלום ראשון:</label>
+                        <input id="Sum1" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" value='<%# Eval("SumPayment").ToString() == "0" ? "" : Eval("SumPayment").ToString() %>'/>
                     </div>
                     <div style="width: 15%; margin-left: 35%;" class="row">
                         <label class="InputLable">תאריך תשלום:</label>
-                        <input id="DatePayment1" name="DatePayment1" type="date" runat="server" style="width: 100%;" class="InputAdd" />
+                        <input id="DatePayment1" name="DatePayment1" type="date" runat="server" style="width: 100%;" class="InputAdd" value='<%# Eval("DatePayment").ToString() %>' />
                     </div>
                     <div style="width: 28%; direction: rtl; float: right;">
-                        <asp:CheckBox runat="server" ID="IsApprove1" />
+                        <asp:CheckBox runat="server" ID="IsApprove1" Checked='<%# Eval("IsApprovedPayment").ToString() == "1" ? true : false %>' />
                         <asp:Label ID="lblIsApprove1" AssociatedControlID="IsApprove1" runat="server" CssClass="lblAns" Text=" נבדק ואושר לביצוע"></asp:Label>
                     </div>
                 </div>
                 <div class="row MarginRow PaddingRow" style="width: 100%;">
                     <div style="width: 18%; margin-left: 3%;" class="row">
                         <label class="InputLable">מספר תשלומים:</label>
-                        <input id="Num1" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" />
+                        <input id="Num1" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" value='<%#Eval("NumPayment").ToString() == "0" ? "" : Eval("NumPayment").ToString() %>' />
                     </div>
                     <div style="width: 15%; margin-left: 35%;" class="row">
                         <label class="InputLable">אסמכתא:</label>
-                        <input id="ReferencePayment1" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
+                        <input id="ReferencePayment1" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" value='<%# Eval("ReferencePayment").ToString() %>'/>
                     </div>
                 </div>
             </div>
@@ -338,8 +345,8 @@
                 </div>
 
             </div>--%>
-            <asp:Button ID="AddPayment" runat="server" OnClick="AddPayment_Click" Text="+ Add Payment"/>
-            <div class="col SecondaryDiv MarginDiv">
+            <asp:Button ID="AddPayment" runat="server" CssClass="btnBlue" Style="float: right; margin-bottom: 38px;" OnClick="AddPayment_Click" Text="+ הוספת תשלום"/>
+            <div class="col SecondaryDiv MarginDiv" style="width:100%;">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
                     <div class="row">
                         <div>

@@ -154,14 +154,14 @@ namespace ControlPanel
                 }
                 strSrc = Request.QueryString["Q"].ToString();
             }
-            if (Request.QueryString["IsMyPerformance"] != null)
-            {
-                sqlWhere = " and l.AgentID =@AgentID";
-                cmd.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
-                cmdCount.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
-                sql2 = " inner join Tasks t on l.ID = t.LeadID ";
+            //if (Request.QueryString["IsMyPerformance"] != null)
+            //{
+            //    sqlWhere = " and l.AgentID =@AgentID";
+            //    cmd.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+            //    cmdCount.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+            //    sql2 = " inner join Tasks t on l.ID = t.LeadID ";
 
-            }
+            //}
             string sql = @"SELECT DISTINCT l.ID, l.Phone1, l.Tz, l.LastName, l.FirstName, 
                           a.FullName AS FullNameAgent,l.DateBirth,
                           CONVERT(varchar, l.CreateDate, 104) as CreateDate

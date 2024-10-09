@@ -61,6 +61,14 @@ namespace ControlPanel
                 
 
             }
+            else
+            {
+                if (_datesWithTasks == null)
+                {
+                    LoadTaskDates();
+                }
+            }
+            
             //Gila
             loadGraf();
 

@@ -36,9 +36,6 @@ namespace ControlPanel
         {10, "עשירי"}
     };
 
-        // Array of Hebrew letters used for constructing ordinals
-        private static readonly string[] HebrewLetters = { "", "א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י", "כ", "ל", "מ", "נ", "ס", "ע", "פ", "צ", "ק", "ר", "ש", "ת" };
-
         protected void Page_Load(object sender, EventArgs e)
         {
             Page.Form.Attributes.Add("enctype", "multipart/form-data");
@@ -109,6 +106,7 @@ namespace ControlPanel
             };
             payments.Add(payment);
             payments.Add(payment2);
+            Session["payments"] = payments;
             RepeaterPayments.DataSource = payments;
             RepeaterPayments.DataBind();
         }
@@ -246,7 +244,30 @@ namespace ControlPanel
         public bool funcSave(object sender, EventArgs e)
         {
             //return false;
+            List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
+            foreach (RepeaterItem item in RepeaterPayments.Items)
+            {
+                HtmlInputControl Sum = (HtmlInputControl)item.FindControl("Sum1");
+                HtmlInputControl DatePayment = (HtmlInputControl)item.FindControl("DatePayment1");
+                HtmlInputControl Num = (HtmlInputControl)item.FindControl("Num1");
+                HtmlInputControl ReferencePayment = (HtmlInputControl)item.FindControl("ReferencePayment1");
+                CheckBox IsApprove = (CheckBox)item.FindControl("IsApprove1");
 
+                serviceRequestPayment payment = new serviceRequestPayment
+                {
+                    ID = 0,
+                    ServiceRequestID = 0,
+                    SumPayment = (!string.IsNullOrWhiteSpace(Sum.Value) ? double.Parse(Sum.Value) : 0),
+                    NumPayment = (!string.IsNullOrWhiteSpace(Num.Value) ? int.Parse(Num.Value) : 0),
+                    DatePayment = DatePayment.Value,
+                    ReferencePayment = ReferencePayment.Value,
+                    IsApprovedPayment = IsApprove.Checked
+
+                };
+
+                payments.Add(payment);
+                Session["payments"] = payments;
+            }
             int ErrorCount = 0;
             FormError_lable.Visible = false;
             //שם פרטי שם משפחה תאריך לידה תז טלפון אימייל סטטוס ראשי
@@ -287,30 +308,6 @@ namespace ControlPanel
                 return false;
             }
 
-
-            List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
-            foreach (RepeaterItem item in RepeaterPayments.Items)
-            {
-                HtmlInputControl Sum = (HtmlInputControl)item.FindControl("Sum1");
-                HtmlInputControl DatePayment = (HtmlInputControl)item.FindControl("DatePayment1");
-                HtmlInputControl Num = (HtmlInputControl)item.FindControl("Num1");
-                HtmlInputControl ReferencePayment = (HtmlInputControl)item.FindControl("ReferencePayment1");
-                CheckBox IsApprove = (CheckBox)item.FindControl("IsApprove1");
-
-                serviceRequestPayment payment = new serviceRequestPayment
-                {
-                    ID = 0,
-                    ServiceRequestID = 0,
-                    SumPayment = (!string.IsNullOrWhiteSpace(Sum.Value) ? double.Parse(Sum.Value) : 0),
-                    NumPayment = (!string.IsNullOrWhiteSpace(Num.Value) ? int.Parse(Num.Value) : 0),
-                    DatePayment = DatePayment.Value,
-                    ReferencePayment = ReferencePayment.Value,
-                    IsApprovedPayment = IsApprove.Checked
-
-                };
-
-                payments.Add(payment);
-            }
             if (payments.Count == 0)
             {
                 ErrorCount++;
@@ -340,14 +337,38 @@ namespace ControlPanel
                 return false;
             }
 
-
-
+            if (payments.Count > 1)
+            {
+                for (int i = 1; i < payments.Count; i++)
+                {
+                    if (payments[i].SumPayment > 0 || payments[i].DatePayment != "" || payments[i].NumPayment > 0)
+                    {
+                        if (payments[i].SumPayment == 0)
+                        {
+                            FormError_lable.Visible = true;
+                            FormError_lable.Text = "יש להזין סכום לתשלום " + NumberToHebrewOrdinal(i + 1);
+                            return false;
+                        }
+                        if (payments[i].DatePayment == "")
+                        {
+                            FormError_lable.Visible = true;
+                            FormError_lable.Text = "יש להזין תאריך תשלום " + NumberToHebrewOrdinal(i + 1); ;
+                            return false;
+                        }
+                        if (payments[i].NumPayment == 0)
+                        {
+                            FormError_lable.Visible = true;
+                            FormError_lable.Text = "יש להזין מספר תשלומים לתשלום " + NumberToHebrewOrdinal(i + 1); ;
+                            return false;
+                        }
+                    }
+                }
+                
+            }
 
 
             if (ErrorCount == 0)
             {
-
-
                 string sql = @" INSERT INTO ServiceRequest (OfferID,Invoice,Sum,Note,Policy,Balance,PurposeID,
                                 SumCreditOrDenial,DateCreditOrDenial,NumCreditOrDenial,ReferenceCreditOrDenial,NoteCreditOrDenial,
                                 IsApprovedCreditOrDenial,PaymentMethodID,BankName,Branch,AccountNumber,CreditNumber,CreditValidity,CardholdersID)
@@ -409,17 +430,21 @@ namespace ControlPanel
                 {
                     foreach (serviceRequestPayment payment in payments)
                     {
-                        string sqlPayment = @"INSERT INTO ServiceRequestPayment 
+                        if (payment.SumPayment > 0)
+                        {
+                            string sqlPayment = @"INSERT INTO ServiceRequestPayment 
                                             (ServiceRequestID,SumPayment,DatePayment,NumPayment,ReferencePayment,IsApprovedPayment)
                                             VALUES (@serviceID, @sumP, @dateP, @numP, @referenceP, @isApproved)";
-                        SqlCommand cmdPayment = new SqlCommand(sqlPayment);
-                        cmdPayment.Parameters.AddWithValue("@serviceID", serviceRequestID);
-                        cmdPayment.Parameters.AddWithValue("@sumP", payment.SumPayment);
-                        cmdPayment.Parameters.AddWithValue("@dateP", payment.DatePayment);
-                        cmdPayment.Parameters.AddWithValue("@numP", payment.NumPayment);
-                        cmdPayment.Parameters.AddWithValue("@referenceP", string.IsNullOrEmpty(payment.ReferencePayment) ? (object)DBNull.Value : payment.ReferencePayment);
-                        cmdPayment.Parameters.AddWithValue("@isApproved", payment.IsApprovedPayment == true ? 1 : 0);
-                        DbProvider.ExecuteCommand(cmdPayment);
+                            SqlCommand cmdPayment = new SqlCommand(sqlPayment);
+                            cmdPayment.Parameters.AddWithValue("@serviceID", serviceRequestID);
+                            cmdPayment.Parameters.AddWithValue("@sumP", payment.SumPayment);
+                            cmdPayment.Parameters.AddWithValue("@dateP", payment.DatePayment);
+                            cmdPayment.Parameters.AddWithValue("@numP", payment.NumPayment);
+                            cmdPayment.Parameters.AddWithValue("@referenceP", string.IsNullOrEmpty(payment.ReferencePayment) ? (object)DBNull.Value : payment.ReferencePayment);
+                            cmdPayment.Parameters.AddWithValue("@isApproved", payment.IsApprovedPayment == true ? 1 : 0);
+                            DbProvider.ExecuteCommand(cmdPayment);
+                        }
+                            
                     }
                     return true;
                 }
@@ -523,7 +548,11 @@ namespace ControlPanel
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 HtmlGenericControl paymentTitle = (HtmlGenericControl)e.Item.FindControl("paymentTitle");
+                HtmlGenericControl sumTitle = (HtmlGenericControl)e.Item.FindControl("sumTitle");
+                
                 paymentTitle.InnerText = "פירוט תשלום " + NumberToHebrewOrdinal(e.Item.ItemIndex + 1);
+                sumTitle.InnerText = "סכום לתשלום " + NumberToHebrewOrdinal(e.Item.ItemIndex + 1) + ":";
+
             }
         }
 
@@ -535,37 +564,62 @@ namespace ControlPanel
                 return "Invalid input";
             }
 
-            // Check for irregular ordinals (1-10)
             if (IrregularOrdinals.TryGetValue(number, out string irregularOrdinal))
             {
                 return irregularOrdinal;
             }
 
-            StringBuilder result = new StringBuilder();
-
-            // Handle tens (20 and above)
-            if (number >= 20)
-            {
-                int tens = number / 10;
-                result.Append(HebrewLetters[tens]);
-                number %= 10;
-            }
-
-            // Handle units
-            if (number > 0)
-            {
-                result.Append(HebrewLetters[number]);
-            }
-
-            // Add the final 'yod' to complete the ordinal form
-            result.Append("י");
-
-            return result.ToString();
+            return number.ToString();
         }
 
         protected void AddPayment_Click(object sender, EventArgs e)
         {
+            //List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
+            //if (Session["payments"] != null)
+            //{
+            //    payments = Session["payments"] as List<serviceRequestPayment>;
+            //}
 
+            List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
+            foreach (RepeaterItem item in RepeaterPayments.Items)
+            {
+                HtmlInputControl Sum = (HtmlInputControl)item.FindControl("Sum1");
+                HtmlInputControl DatePayment = (HtmlInputControl)item.FindControl("DatePayment1");
+                HtmlInputControl Num = (HtmlInputControl)item.FindControl("Num1");
+                HtmlInputControl ReferencePayment = (HtmlInputControl)item.FindControl("ReferencePayment1");
+                CheckBox IsApprove = (CheckBox)item.FindControl("IsApprove1");
+
+                serviceRequestPayment paymentFromRepeater = new serviceRequestPayment
+                {
+                    ID = 0,
+                    ServiceRequestID = 0,
+                    SumPayment = (!string.IsNullOrWhiteSpace(Sum.Value) ? double.Parse(Sum.Value) : 0),
+                    NumPayment = (!string.IsNullOrWhiteSpace(Num.Value) ? int.Parse(Num.Value) : 0),
+                    DatePayment = DatePayment.Value,
+                    ReferencePayment = ReferencePayment.Value,
+                    IsApprovedPayment = IsApprove.Checked
+
+                };
+
+                payments.Add(paymentFromRepeater);
+            }
+
+
+            serviceRequestPayment payment = new serviceRequestPayment
+            {
+                ID = 0,
+                ServiceRequestID = 0,
+                DatePayment = "",
+                NumPayment = 0,
+                SumPayment = 0,
+                ReferencePayment = "",
+                IsApprovedPayment = false
+            };
+            
+            payments.Add(payment);
+            Session["payments"] = payments;
+            RepeaterPayments.DataSource = payments;
+            RepeaterPayments.DataBind();
         }
     }
 

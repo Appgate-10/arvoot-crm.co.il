@@ -121,9 +121,9 @@
                          <div class="col DivDetails">
                     <div class="row" style="justify-content: space-between; align-items: center; padding: 0px 2%;">
                   
-                        <asp:Button ID="Button2" runat="server" class="buttonWithOneImages listOpenTasks buttonWithImages LableBlue" OnClick="PopUpTasksList_Click" Text="לרשימת המשימות הפתוחות" />
+                       <%-- <asp:Button ID="Button2" runat="server" class="buttonWithOneImages listOpenTasks buttonWithImages LableBlue" OnClick="PopUpTasksList_Click" Text="לרשימת המשימות הפתוחות" />
 
-                        <asp:ImageButton ID="ImageButton1" Style="margin: 17px 0px 17px 7px; width: 24%;" runat="server" ImageUrl="~/images/icons/Open_Mession_Button.png" OnClick="OpenTask_Click" />
+                        <asp:ImageButton ID="ImageButton1" Style="margin: 17px 0px 17px 7px; width: 24%;" runat="server" ImageUrl="~/images/icons/Open_Mession_Button.png" OnClick="OpenTask_Click" />--%>
 
                     </div>
                     <div class="DivGray"></div>
@@ -226,12 +226,18 @@
                     </div>--%>
                     <div class="row MarginRow " style="width: 100%;">
                         <div class="row ColUpLid">
-                            <asp:CheckBox runat="server" ID="IsValidIssuanceDateTz" />
-                            <asp:Label ID="Label1" AssociatedControlID="IsValidIssuanceDateTz" runat="server" CssClass="lblAns InputLable" Text="תאריך תעודת זהות לא תקין"></asp:Label>
+                           <%-- <asp:CheckBox runat="server" ID="IsValidIssuanceDateTz" />
+                            <asp:Label ID="Label1" AssociatedControlID="IsValidIssuanceDateTz" runat="server" CssClass="lblAns InputLable" Text="תאריך תעודת זהות לא תקין"></asp:Label>--%>
+                             <label class="InputLable">סיבה לאי תקינות הBDI</label>
+                            <input id="InvalidBdiReason" name="InvalidBdiReason" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row ColUpLid">
-                            <asp:CheckBox runat="server" ID="IsValidBdi" />
-                            <asp:Label ID="LblIsValidBdi" AssociatedControlID="IsValidBdi" runat="server" CssClass="lblAns InputLable" Text="תקין BDI"></asp:Label>
+                            <select runat="server" id="BdiValidity" class="selectGlobal">
+                                <option value="BDI תקין"></option>
+                                <option value="BDI לא תקין"></option>
+                            </select>
+                           <%-- <asp:CheckBox runat="server" ID="IsValidBdi" />
+                            <asp:Label ID="LblIsValidBdi" AssociatedControlID="IsValidBdi" runat="server" CssClass="lblAns InputLable" Text="תקין BDI"></asp:Label>--%>
                         </div>
                     </div>
                 </div>
@@ -335,7 +341,7 @@
             <div class="row" style="position: relative;">
                 <div class="col MarginDiv SecondaryDiv DivDetailsCusWidth" style="margin-inline-end: 2%;">
                     <div class="row MarginRow ServiceRequestDiv">
-                        <label class="InputLable">פרטי העסק</label>
+                        <label class="InputLable">פרטי העסקה</label>
                     </div>
                     <div class="row MarginRow " style="width: 100%;">
                         <div class="row ColUpLid">
@@ -973,7 +979,7 @@
         }
         function checkDate() {
             var issuanceDate = document.getElementById('<% =IssuanceDateTz.ClientID%>').value;
-            var checkBox = document.getElementById('<% =IsValidIssuanceDateTz.ClientID%>');
+<%--            var checkBox = document.getElementById('<% =IsValidIssuanceDateTz.ClientID%>');--%>
             //var vOn = document.getElementById("VOn");
             //var vOff = document.getElementById("VOff");
             if (issuanceDate == '') {

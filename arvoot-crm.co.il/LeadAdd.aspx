@@ -256,7 +256,7 @@
             <div class="row" style="position: relative;">
                 <div class="col MarginDiv SecondaryDiv DivDetailsCusWidth" style="margin-inline-end: 2%;">
                     <div class="row MarginRow ServiceRequestDiv">
-                        <label class="InputLable">פרטי העסק</label>
+                        <label class="InputLable">פרטי העסקה</label>
                     </div>
                     <div class="row MarginRow " style="width: 100%;">
                         <div class="row ColUpLid">

@@ -41,7 +41,6 @@ namespace ControlPanel
                 ManagementPermission_Click(this, EventArgs.Empty);
 
                 loadUsers(1);
-                loadUsers(2);
             }
         }
 

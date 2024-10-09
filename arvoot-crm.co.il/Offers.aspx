@@ -43,8 +43,10 @@
                 <asp:Repeater ID="Repeater1" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
                     <ItemTemplate>
                         <div class='ListDivParams'>
+                             <asp:Button ID="ButtonDiv" runat="server" CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsContact_Command" CssClass="ButtonDiv" />
+
                             <div style="width: 5%; text-align: center">
-                                <asp:ImageButton ID="BtnDetailsContact" CommandArgument='<%#Eval("ID") %>' Style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png" OnCommand="BtnDetailsContact_Command" />
+                                <asp:ImageButton ID="BtnDetailsContact" Style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
                             </div>
                             <div style="width: 30%; text-align: right"><%#Eval("FullNameAgent") %></div>
                             <div style="width: 10%; text-align: right"><%#Eval("DateBirth") %></div>

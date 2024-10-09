@@ -53,8 +53,9 @@
                 <asp:Repeater ID="Repeater1" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
                     <ItemTemplate>
                         <div class="ListDivParamsBig" >
+                            <asp:Button ID="ButtonDiv" runat="server" CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsLead_Command" CssClass="ButtonDiv" />
                             <div style="width: 5%; text-align: center">
-                                <asp:ImageButton ID="BtnDetailsLead"  CommandArgument='<%#Eval("ID") %>' style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png" OnCommand="BtnDetailsLead_Command" />
+                                <asp:ImageButton ID="BtnDetailsLead"   style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
                             </div>
                             <div style="width: 19%; text-align: right"><%#Eval("Note") %></div>
                             <div style="width: 8%; text-align: right;"><%#Eval("TrackingTime") %></div>

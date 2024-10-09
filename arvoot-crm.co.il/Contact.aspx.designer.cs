@@ -312,13 +312,13 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl BusinessGrossSalary;
 
         /// <summary>
-        /// SelectBusinessLineBusiness control.
+        /// SelectBusinessEmploymentStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectBusinessLineBusiness;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectBusinessEmploymentStatus;
 
         /// <summary>
         /// PartnerName control.
@@ -357,13 +357,13 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl PartnerSeniority;
 
         /// <summary>
-        /// SelectPartnerLineBusiness control.
+        /// SelectPartnerEmploymentStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectPartnerLineBusiness;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectPartnerEmploymentStatus;
 
         /// <summary>
         /// CBHaveAsset control.

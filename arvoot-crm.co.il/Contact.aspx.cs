@@ -511,14 +511,15 @@ namespace ControlPanel
                     SqlCommand cmdDelDocuments = new SqlCommand("delete from OfferDocuments where OfferID = @ID");
                     cmdDelDocuments.Parameters.AddWithValue("@ID", dt.Rows[i]["ID"]);
                     DbProvider.ExecuteCommand(cmdDelDocuments);
+                    SqlCommand cmdDelTasks = new SqlCommand("delete from Tasks where OfferID = @ID");
+                    cmdDelTasks.Parameters.AddWithValue("@ID", dt.Rows[i]["ID"]);
+                    DbProvider.ExecuteCommand(cmdDelTasks);
                 }
                 SqlCommand cmdDelOffer = new SqlCommand("delete from Offer where LeadID = @ID");
                 cmdDelOffer.Parameters.AddWithValue("@ID", Request.QueryString["ContactID"]);
                 DbProvider.ExecuteCommand(cmdDelOffer);
             }
-            SqlCommand cmdDelTasks = new SqlCommand("delete from Tasks where LeadID = @ID");
-            cmdDelTasks.Parameters.AddWithValue("@ID", Request.QueryString["ContactID"]);
-            DbProvider.ExecuteCommand(cmdDelTasks);
+           
             
             SqlCommand cmdDelLead = new SqlCommand("delete from Lead where ID = @ID");
             cmdDelLead.Parameters.AddWithValue("@ID", Request.QueryString["ContactID"]);

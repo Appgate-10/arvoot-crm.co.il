@@ -94,31 +94,23 @@
             </div>
 
             <div class="row MarginDiv">
-                <div class="col DivDetails" style="margin-inline-end: 3%;">
+                <div class="col DivDetails" style="width:100%">
                     <div class="row" style="height: 113px; align-items: center;">
-                        <div style="width: 20%; text-align: center;">
+                        <div style="width: 10%; text-align: center;">
                             <img src="~/images/icons/User_Image_Avatar.png" style="border: 3px solid; border-radius: 40px; color: #0098ff;" runat="server" id="ImageFile" name="ImageFile" />
                         </div>
-                        <div class="col" style="width: 45%;">
+                        <div class="col" style="width: 15%;">
                             <label style="font-weight: 700; font-size: 18pt;" id="FullName" runat="server"></label>
                         </div>
-                          <div style="width: 30%;" class="row ContactDetailsStatus">
+                          <div style="width: 15%;" class="row ContactDetailsStatus">
                             <label class="InputLable">סטטוס:</label>
                             <select runat="server" id="SelectContactStatus" class="selectGlobal"></select>
                         </div>
+                        <div style="width:60%"></div>
                     </div>
                     <div class="DivGray"></div>
                 </div>
-                <div class="col DivDetails">
-                      <div class="row" style="justify-content: space-between; align-items: center; padding: 0px 2%;">
-                  
-                      <%--  <asp:Button ID="Button2" runat="server" class="buttonWithOneImages listOpenTasks buttonWithImages LableBlue" OnClick="PopUpTasksList_Click" Text="לרשימת המשימות הפתוחות" />
-
-                        <asp:ImageButton ID="ImageButton1" Style="margin: 17px 0px 17px 7px; width: 24%;" runat="server" ImageUrl="~/images/icons/Open_Mession_Button.png" OnClick="OpenTask_Click" />--%>
-
-                    </div>
-                    <div class="DivGray"></div>
-                </div>
+             
             </div>
 
 

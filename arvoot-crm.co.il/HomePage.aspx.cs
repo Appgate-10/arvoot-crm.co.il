@@ -41,7 +41,7 @@ namespace ControlPanel
                     //Gila
                     string strTasks = @"select Tasks.ID, FORMAT(Tasks.PerformDate, 'dd.MM.yy') as dateTask , 
                                     CONVERT(varchar(5), Tasks.PerformDate, 108) as timeTask, Tasks.Text, ts.Status 
-                                    from Tasks inner join Lead on Lead.ID = Tasks.LeadID 
+                                    from Tasks inner join Offer on Offer.ID = Tasks.OfferID  inner join Lead on Lead.ID = Offer.LeadID 
                                     left join TaskStatuses ts on ts.ID = Tasks.Status
                                     where Lead.AgentID = @AgentID
                                     AND PerformDate = CAST(@selectedDate AS DATE)";
@@ -191,7 +191,8 @@ namespace ControlPanel
             //Gila
             //2do - צריך לבדוק לפי הדרגה - אם מנהל, לא צריך את הסינון לפי סוכן
             string sqlDates = @"SELECT DISTINCT CAST(PerformDate AS DATE) AS TaskDate FROM Tasks
-                                INNER JOIN Lead on Lead.ID = Tasks.LeadID 
+                                inner join Offer on Offer.ID = Tasks.OfferID 
+                                INNER JOIN Lead on Lead.ID = Offer.LeadID 
                                 WHERE PerformDate BETWEEN @startDate AND @endDate AND Lead.AgentID = @AgentID";
             SqlCommand cmdDates = new SqlCommand(sqlDates);
             cmdDates.Parameters.AddWithValue("@startDate", startDate);
@@ -255,7 +256,7 @@ namespace ControlPanel
         {
             string strTasks = @"select Tasks.ID, FORMAT(Tasks.PerformDate, 'dd.MM.yy') as dateTask , 
                                     CONVERT(varchar(5), Tasks.PerformDate, 108) as timeTask, Tasks.Text, ts.Status 
-                                    from Tasks inner join Lead on Lead.ID = Tasks.LeadID 
+                                    from Tasks inner join Offer on Offer.ID = Tasks.OfferID inner join Lead on Lead.ID = Offer.LeadID 
                                     left join TaskStatuses ts on ts.ID = Tasks.Status
                                     where Lead.AgentID = @AgentID
                                     AND PerformDate = CAST(@selectedDate AS DATE)";
@@ -273,7 +274,9 @@ namespace ControlPanel
         {
             string strTasks = @"select Tasks.ID, FORMAT(Tasks.PerformDate, 'dd.MM.yy') as dateTask , 
                                     CONVERT(varchar(5), Tasks.PerformDate, 108) as timeTask, Tasks.Text, ts.Status 
-                                    from Tasks inner join Lead on Lead.ID = Tasks.LeadID 
+                                    from Tasks 
+                                inner join Offer on Offer.ID = Tasks.OfferID 
+                                INNER JOIN Lead on Lead.ID = Offer.LeadID 
                                     left join TaskStatuses ts on ts.ID = Tasks.Status
                                     where Lead.AgentID = @AgentID
                                     AND PerformDate between CAST(GETDATE() AS DATE) AND DATEADD(MONTH, 2, CAST(GETDATE() AS DATE))";

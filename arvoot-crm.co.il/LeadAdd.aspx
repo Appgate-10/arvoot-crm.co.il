@@ -69,39 +69,29 @@
             </div>
 
             <div class="row MarginDiv">
-                <div class="col DivDetails" style="margin-inline-end: 3%;">
+                       <div class="col DivDetails" style="width:100%">
                     <div class="row">
-                        <div style="width: 20%; text-align: center; padding-top: 44px;">
+                        <div style="width: 10%; text-align: center; padding-top: 44px;">
                             <img src="images/icons/Agent_Avatar_Icon.png" id="ImageFileAgent" runat="server" />
                         </div>
-                        <div class="col" style="width: 25%;">
+                        <div class="col" style="width: 10%;">
                             <label class="LableDetails">סוכן</label>
                             <label class="PaddingAgentCus ColorLable" id="FullNameAgent" runat="server"></label>
                         </div>
-                        <div class="col" style="width: 20%;">
+                        <div class="col" style="width: 10%;">
+                            <%--                            תאריך יצירת הליד--%>
                             <label class="LableDetails">תאריך</label>
-                            <%--   תאריך של היום--%>
                             <label class="PaddingAgentCus ColorLable" id="TodayDate" runat="server"></label>
                         </div>
-                        <div class="col" style="width: 22%;">
+                        <div class="col" style="width: 10%;">
                             <label class="LableDetails">טלפון</label>
                             <label class="PaddingAgentCus ColorLable" id="PhoneAgent" runat="server"></label>
                         </div>
-                        <div class="col" style="width: 33%;">
+                        <div class="col" style="width: 10%;">
                             <label class="LableDetails">מייל</label>
                             <label class="PaddingAgentCus ColorLable" id="EmailAgent" runat="server"></label>
                         </div>
-
-                    </div>
-                    <div class="DivGray"></div>
-                </div>
-                <div class="col DivDetails">
-                    <div class="row" style="justify-content: space-between; align-items: center; padding: 0px 2%;">
-                  
-                      <%--  <asp:Button ID="Button2" runat="server" class="buttonWithOneImages listOpenTasks buttonWithImages LableBlue" OnClick="Status_Click" Text="לרשימת המשימות הפתוחות" />
-
-                        <asp:ImageButton ID="ImageButton1" Style="margin: 17px 0px 17px 7px; width: 24%;" runat="server" ImageUrl="~/images/icons/Open_Mession_Button.png" OnClick="OpenTask_Click" />--%>
-
+                         <div class="col" style="width: 50%;"> </div>
                     </div>
                     <div class="DivGray"></div>
                 </div>

@@ -49,7 +49,9 @@ namespace ControlPanel
         {
             AllTasksList.Visible = true;
             SqlCommand cmdSelectTasks = new SqlCommand(@"select t.ID, Text,ts.Status,CONVERT(varchar,PerformDate, 104) as PerformDate, Agent.FullName from Tasks t 
-                                                         left join TaskStatuses ts on t.Status = ts.ID left join Lead on Lead.ID = t.LeadID
+                                                         left join TaskStatuses ts on t.Status = ts.ID 
+                                                         left join Offer on Offer.ID = t.OfferID
+                                                         left join Lead on Lead.ID = Offer.LeadID
                                                          left join Agent on Agent.ID = Lead.AgentID");
             DataSet ds = DbProvider.GetDataSet(cmdSelectTasks);
             Repeater1.DataSource = ds;

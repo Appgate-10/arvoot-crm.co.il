@@ -87,34 +87,69 @@ namespace ControlPanel
                                     (SELECT COUNT(*) FROM Lead WHERE IsContact = 1)
                                     AS INT
                                 ) AS Percentage2,
-                                CAST(
-                                    (SELECT COUNT(*) FROM Lead WHERE IsContact = 1 AND StatusContact = 4) *100.0
-                                    /
-                                    (SELECT COUNT(*) FROM Lead WHERE IsContact = 1)
-                                    AS INT
-                                ) AS Percentage3,
+                                
                                 CAST(
                                     (SELECT COUNT(*) FROM Lead WHERE IsContact = 1 AND StatusContact = 5) *100.0
                                     /
                                     (SELECT COUNT(*) FROM Lead WHERE IsContact = 1)
                                     AS INT
                                 ) AS Percentage4";
+
+            /* סטטוס "בוטל" כרגע לא להציג
+             * CAST(
+                                    (SELECT COUNT(*) FROM Lead WHERE IsContact = 1 AND StatusContact = 4) *100.0
+                                    /
+                                    (SELECT COUNT(*) FROM Lead WHERE IsContact = 1)
+                                    AS INT
+                                ) AS Percentage3,*/
+
+            /*to get paid and balance in the same query
+             (SELECT SUM(sumPayment) FROM ServiceRequestPayment payments
+								INNER JOIN ServiceRequest ON payments.ServiceRequestID = ServiceRequest.ID 
+								WHERE IsApprovedPayment = 1) as paid,
+								(SELECT Sum(ServiceRequest.[Sum]) - (SELECT SUM(sumPayment) FROM ServiceRequestPayment payments
+								INNER JOIN ServiceRequest ON payments.ServiceRequestID = ServiceRequest.ID 
+								WHERE IsApprovedPayment = 1) 
+								+ Sum(CASE WHEN IsApprovedCreditOrDenial = 1 THEN SumCreditOrDenial ELSE 0 END) 
+								from ServiceRequest  ) as balance1*/
+
             SqlCommand cmd = new SqlCommand(select);
             DataTable dt = DbProvider.GetDataTable(cmd);
+
+            string sqlPayments = @"WITH ApprovedPayments AS (
+    SELECT ServiceRequestID, SUM(sumPayment) AS TotalPayment
+    FROM ServiceRequestPayment
+    WHERE IsApprovedPayment = 1
+    GROUP BY ServiceRequestID)
+SELECT SUM(sr.[Sum]) 
+    - COALESCE(SUM(ap.TotalPayment), 0) 
+    + SUM(CASE WHEN sr.IsApprovedCreditOrDenial = 1 THEN sr.SumCreditOrDenial ELSE 0 END) AS balanceToPay,
+	COALESCE(SUM(ap.TotalPayment), 0) - SUM(CASE WHEN sr.IsApprovedCreditOrDenial = 1 THEN sr.SumCreditOrDenial ELSE 0 END) as paid
+FROM  ServiceRequest sr
+LEFT JOIN ApprovedPayments ap ON sr.ID = ap.ServiceRequestID";
+            SqlCommand cmdPayments = new SqlCommand(sqlPayments);
+            DataTable dtPayments = DbProvider.GetDataTable(cmdPayments);
+
 
             Pageinit.CheckManagerPermissions();
             int percentage = int.Parse(dt.Rows[0]["Percentage1"].ToString());
             int percentage1 = int.Parse(dt.Rows[0]["Percentage2"].ToString());
             //int percentage2 = int.Parse(dt.Rows[0]["Percentage3"].ToString());
             int percentage3 = int.Parse(dt.Rows[0]["Percentage4"].ToString());
-            double paidServices = 1000;
-            double serviceBalance = 2000;
+            double paidServices = double.Parse(dtPayments.Rows[0]["paid"].ToString());
+            Double serviceBalance = double.Parse(dtPayments.Rows[0]["balanceToPay"].ToString());
+
             PercentageText.Text = percentage + "%";
             PercentageText1.Text = percentage1 + "%";
             //PercentageText2.Text = percentage2 + "%";
             PercentageText3.Text = percentage3 + "%";
-            PercentageText4.Text = paidServices.ToString() + "₪";
-            PercentageText5.Text = serviceBalance.ToString() + "₪";
+
+            if (dtPayments.Rows.Count > 0)
+            {
+                PercentageText4.Text = paidServices.ToString() + "₪";
+                PercentageText5.Text = serviceBalance.ToString() + "₪";
+            }
+           
 
             double circumference = 2 * Math.PI * 54; // 2πr
             double offset = circumference - (percentage / 100.0 * circumference);

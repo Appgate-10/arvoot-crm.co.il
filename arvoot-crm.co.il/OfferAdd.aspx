@@ -89,8 +89,8 @@
 
             <div class="col MarginDiv SecondaryDiv ">
                 <div class="row MarginRow ServiceRequestDiv">
-                    <div class="row">
-                        <div>
+                    <div class="row" style="align-items: center;">
+                        <div class="div-arrows-img">
                             <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
                         </div>
                         <div>
@@ -193,8 +193,8 @@
 
             <div class="col MarginDiv SecondaryDiv PaddingDiv">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
-                    <div class="row">
-                        <div>
+                    <div class="row" style="align-items: center;">
+                        <div class="div-arrows-img">
                             <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
                         </div>
                         <div>

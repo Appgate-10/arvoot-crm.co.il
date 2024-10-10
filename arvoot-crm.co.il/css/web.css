@@ -2218,7 +2218,7 @@ H2 {
     background-color: rgba(255, 255, 255, 0); /* צבע שקוף */
     background-repeat: no-repeat;
     background-position: left 10px center;
-    font-family: 'Open Sans Hebrew', sans-serif;/*Gila*/
+    font-family: 'Open Sans Hebrew', sans-serif;
 }
 
 .listOpenTasks {
@@ -2248,7 +2248,7 @@ H2 {
     border-radius: 38px;
     width: 11%;
     cursor: pointer;
-    font-family: 'Open Sans Hebrew', sans-serif;/*Gila*/
+    font-family: 'Open Sans Hebrew', sans-serif;
 }
 
 .AllPopUp {
@@ -2267,7 +2267,7 @@ H2 {
     font-weight: bold;
     margin-inline-start: 5px;
     cursor: pointer;
-    font-family: 'Open Sans Hebrew', sans-serif; /*Gila*/
+    font-family: 'Open Sans Hebrew', sans-serif; 
 }
 
 .btnBlue {
@@ -2343,7 +2343,7 @@ H2 {
     color: #932B90;
     border: 1px solid #932B90;
     cursor: pointer;
-    font-family: 'Open Sans Hebrew', sans-serif; /*Gila*/
+    font-family: 'Open Sans Hebrew', sans-serif;
 }
 .Permissions {
     height: 42px;
@@ -2358,7 +2358,7 @@ H2 {
     /*  width: 69%;*/
     /* color: #027aff;*/
     /* border: 1px solid #027aff;*/
-    font-family: 'Open Sans Hebrew', sans-serif; /*Gila*/
+    font-family: 'Open Sans Hebrew', sans-serif; 
 }
 .SpanPermissions {
     font-size: 10pt;
@@ -2407,7 +2407,7 @@ H2 {
     border: none;
     width: 100%;
     cursor: pointer;
-    font-family: 'Open Sans Hebrew', sans-serif; /*Gila*/
+    font-family: 'Open Sans Hebrew', sans-serif; 
 }
 
 
@@ -2449,3 +2449,8 @@ H2 {
         background-color: #669EFF;
         border-radius: 50%;
     }
+
+.div-arrows-img {
+    align-items: center;
+    display: flex;
+}

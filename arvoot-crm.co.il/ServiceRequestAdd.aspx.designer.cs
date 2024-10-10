@@ -120,7 +120,16 @@ namespace ControlPanel
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl Balance;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Balance;
+
+        /// <summary>
+        /// btnReloadBalance control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnReloadBalance;
 
         /// <summary>
         /// RepeaterPayments control.

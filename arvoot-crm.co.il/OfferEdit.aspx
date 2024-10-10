@@ -74,8 +74,8 @@
 
             <div class="col MarginDiv SecondaryDiv ">
                 <div class="row MarginRow ServiceRequestDiv">
-                    <div class="row">
-                        <div>
+                    <div class="row" style="align-items: center;">
+                        <div class="div-arrows-img">
                             <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
                         </div>
                         <div>
@@ -183,8 +183,8 @@
 
             <div class="col MarginDiv SecondaryDiv PaddingDiv">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
-                    <div class="row">
-                        <div>
+                    <div class="row" style="align-items: center;">
+                        <div class="div-arrows-img">
                             <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
                         </div>
                         <div>
@@ -249,8 +249,8 @@
              
                    <div class="col MarginDiv SecondaryDiv PaddingDiv">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
-                    <div class="row">
-                        <div>
+                   <div class="row" style="align-items: center;">
+                        <div class="div-arrows-img">
                             <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
                         </div>
                         <div>
@@ -284,7 +284,8 @@
                                 <asp:ImageButton OnCommand="BtnServiceRequest_Command"  CommandArgument='<%#Eval("ID") %>' ID="BtnServiceRequest" Style="vertical-align: middle;" ImageUrl="~/images/icons/Arrow_Left_1.png" runat="server" />
                                 </div>
                                 <div style="width: 33%; text-align: right"><%#Eval("PurposeName") %></div>
-                                <div style="width: 15%; text-align: right;"><%#Eval("Balance") %></div>
+                                <div style="width: 15%; text-align: right;">
+                                    <%#(double.Parse(Eval("Sum").ToString()) - (!string.IsNullOrWhiteSpace(Eval("paid").ToString()) ?double.Parse(Eval("paid").ToString()) : 0) + (Eval("IsApprovedCreditOrDenial").ToString() == "1" && !string.IsNullOrWhiteSpace(Eval("SumCreditOrDenial").ToString()) ? double.Parse(Eval("SumCreditOrDenial").ToString()) : 0)).ToString() %></div>
                                 <div style="width: 15%; text-align: right;"><%#Eval("Sum") %></div>
                                 <div style="width: 15%; text-align: right"><%#Eval("Invoice") %></div>
                                 <div style="width: 17%; text-align: right; padding-right: 4%"><%#Eval("CreateDate") %></div>

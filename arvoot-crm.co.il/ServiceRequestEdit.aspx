@@ -221,48 +221,51 @@
 
 
 
-            <div class="col MarginDiv SecondaryDiv">
+           <asp:Repeater ID="RepeaterPayments" runat="server" OnItemDataBound="RepeaterPayments_ItemDataBound">
+                <ItemTemplate>
+                    <div class="col MarginDiv SecondaryDiv">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
                     <div class="row">
                         <div>
                             <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
                         </div>
                         <div>
-                            <label class="LableBlue">פירוט תשלום ראשון</label>
+                            <label id="paymentTitle" runat="server" class="LableBlue">פירוט תשלום ראשון</label>
                         </div>
                     </div>
                 </div>
+
                 <div class="row PaddingRow" style="width: 100%;">
                     <div style="width: 18%; margin-left: 3%;" class="row">
-                        <label class="InputLable">סכום לתשלום ראשון:</label>
-                        <input id="Sum1" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" />
+                        <label id="sumTitle" runat="server" class="InputLable">סכום לתשלום ראשון:</label>
+                        <input id="Sum1" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" value='<%# Eval("SumPayment").ToString() == "0" ? "" : Eval("SumPayment").ToString() %>'/>
                     </div>
                     <div style="width: 15%; margin-left: 35%;" class="row">
                         <label class="InputLable">תאריך תשלום:</label>
-                    
-                        <input id="DatePayment1" name="DatePayment1" type="date" runat="server" style="width: 100%;" class="InputAdd" />
-
+                        <input id="DatePayment1" name="DatePayment1" type="date" runat="server" style="width: 100%;" class="InputAdd" value='<%# Eval("DatePayment").ToString() %>' />
                     </div>
                     <div style="width: 28%; direction: rtl; float: right;">
-                        <asp:CheckBox runat="server" ID="IsApprove1" />
+                        <asp:CheckBox runat="server" ID="IsApprove1" Checked='<%# Eval("IsApprovedPayment").ToString() == "1" ? true : false %>' />
                         <asp:Label ID="lblIsApprove1" AssociatedControlID="IsApprove1" runat="server" CssClass="lblAns" Text=" נבדק ואושר לביצוע"></asp:Label>
                     </div>
                 </div>
                 <div class="row MarginRow PaddingRow" style="width: 100%;">
                     <div style="width: 18%; margin-left: 3%;" class="row">
                         <label class="InputLable">מספר תשלומים:</label>
-                        <input id="Num1" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" />
+                        <input id="Num1" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" value='<%#Eval("NumPayment").ToString() == "0" ? "" : Eval("NumPayment").ToString() %>' />
                     </div>
                     <div style="width: 15%; margin-left: 35%;" class="row">
                         <label class="InputLable">אסמכתא:</label>
-                        <input id="ReferencePayment1" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
+                        <input id="ReferencePayment1" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" value='<%# Eval("ReferencePayment").ToString() %>'/>
                     </div>
-
                 </div>
-
+                        <asp:HiddenField ID="hiddenPaymentID" runat="server" Value='<%# Eval("ID").ToString() %>'/>
             </div>
+                </ItemTemplate>
+            </asp:Repeater>
+            <asp:Button ID="AddPayment" runat="server" CssClass="btnBlue" Style="float: right; margin-bottom: 38px;" OnClick="AddPayment_Click" Text="+ הוספת תשלום"/>
 
-            <div class="col SecondaryDiv  MarginDiv">
+            <%--<div class="col SecondaryDiv  MarginDiv">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
                     <div class="row">
                         <div>
@@ -300,9 +303,9 @@
 
                 </div>
 
-            </div>
+            </div>--%>
 
-              <div class="col SecondaryDiv  MarginDiv">
+              <%--<div class="col SecondaryDiv  MarginDiv">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
                     <div class="row">
                         <div>
@@ -321,14 +324,12 @@
                     <div style="width: 15%; margin-left: 35%;" class="row">
                         <label class="InputLable">תאריך תשלום:</label>
                         <input id="DatePayment3" name="DatePayment3" type="date" runat="server" style="width: 100%;" class="InputAdd" />
-
-<%--                        <input id="Text17" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />--%>
                     </div>
                     <div style="width: 28%; direction: rtl; float: right;">
                         <asp:CheckBox runat="server" ID="IsApprove3" />
                         <asp:Label ID="lblIsApprove3" AssociatedControlID="IsApprove3" runat="server" CssClass="lblAns" Text=" נבדק ואושר לביצוע"></asp:Label>
                     </div>
-                </div>
+                </div>>
                 <div class="row MarginRow PaddingRow" style="width: 100%;">
                     <div style="width: 18%; margin-left: 3%;" class="row">
                         <label class="InputLable">מספר תשלומים:</label>
@@ -341,9 +342,9 @@
 
                 </div>
 
-            </div>
+            </div--%>
 
-            <div class="col SecondaryDiv MarginDiv">
+            <div class="col SecondaryDiv MarginDiv" style="width:100%;">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
                     <div class="row">
                         <div>

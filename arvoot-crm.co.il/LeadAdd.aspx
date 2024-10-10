@@ -104,11 +104,11 @@
                     </div>
                     <div class="row MarginRow " style="width: 100%;">
                         <div class="row ColUpLid">
-                            <label class="InputLable">שם פרטי:</label>
+                            <label class="InputLable">*שם פרטי:</label>
                             <input id="FirstName" name="FirstName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row ColUpLid">
-                            <label class="InputLable">שם משפחה:</label>
+                            <label class="InputLable">*שם משפחה:</label>
                             <input id="LastName" name="LastName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                     </div>
                     <div class="row  MarginRow" style="width: 100%; align-items: flex-end;">
                         <div style="width: 31%; margin-inline-end: 2%;" class="row">
-                            <label class="InputLable">טלפון 1:</label>
+                            <label class="InputLable">*טלפון 1:</label>
                             <input id="Phone1" name="Phone1" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row" style="width: 30%; margin-inline-end: 7%;">
@@ -268,23 +268,26 @@
                             <input id="BusinessProfession" name="BusinessProfession" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row ColUpLid">
-                            <label class="InputLable">עיר בה ממקום העסק:</label>
-                            <input id="BusinessCity" name="BusinessCity" type="text" runat="server" style="width: 100%;" class="InputAdd" />
+                            <label class="InputLable">ותק במקום העבודה הקודם:</label>
+                            <input id="PrevBusinessSeniority" name="PrevBusinessSeniority" type="number" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
+                        
 
                     </div>
                     <div class="row MarginRow" style="width: 100%;">
-                        <div class="row ColUpLid">
-                            <label class="InputLable">אימייל:</label>
-                            <input id="BusinessEmail" type="text" runat="server" style="width: 100%;" class="InputAdd" />
-                        </div>
+                    
                         <div class="row ColUpLid">
                             <label class="InputLable">טלפון:</label>
                             <input id="BusinessPhone" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
+                        <div class="row ColUpLid">
+                            <label class="InputLable">עיר בה ממקום העסק:</label>
+                            <input id="BusinessCity" name="BusinessCity" type="text" runat="server" style="width: 100%;" class="InputAdd" />
+                        </div>
+                       
                     </div>
                     <div class="row MarginRow" style="width: 100%;">
-                        <div class="row ColUpLid">
+                         <div class="row ColUpLid">
                             <label class="InputLable">שכר ברוטו:</label>
                             <input id="BusinessGrossSalary" name="BusinessGrossSalary" type="number" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
@@ -351,9 +354,12 @@
                 <div class="row">
                     <div class="col MarginDiv SecondaryDiv DivDetailsCusWidth" style="margin-inline-end: 2%;">
                         <div class="row AlignItemsCenter MarginRow" style="width: 31%; margin-left: 24%;">
-                            <asp:CheckBox runat="server" ID="CBHaveAsset" />
-                            <asp:Label ID="Label2" AssociatedControlID="CBHaveAsset" runat="server" CssClass="lblAns InputLable" Text="האם קיים נכס בבעלות הלקוח"></asp:Label>
-                        </div>
+                             <asp:Label ID="Label2"  runat="server" CssClass="lblAns InputLable" Text="נכס בבעלות הלקוח"></asp:Label>
+                              <select runat="server" id="SelectHaveAsset" class="selectGlobal">
+                                <option value="בחר"></option>
+                                <option value="קיים"></option>
+                                <option value="לא קיים"></option>
+                            </select>      </div>
                         <div class="row MarginRow " style="width: 100%;">
                             <div class="row ColUpLid">
                                 <label class="InputLable">שווי הנכס:</label>
@@ -365,8 +371,12 @@
                             </div>
                         </div>
                         <div class="row AlignItemsCenter MarginRow" style="width: 31%; margin-left: 24%;">
-                            <asp:CheckBox runat="server" ID="CBHaveMortgageOnAsset" />
-                            <asp:Label ID="Label3" AssociatedControlID="CBHaveMortgageOnAsset" runat="server" CssClass="lblAns InputLable" Text="האם קיימת משכנתא על נכס"></asp:Label>
+                            <asp:Label ID="Label3"  runat="server" CssClass="lblAns InputLable" Text="משכנתא על נכס"></asp:Label>
+                             <select runat="server" id="SelectHaveMortgageOnAsset" class="selectGlobal">
+                                <option value="בחר"></option>
+                                <option value="קיים"></option>
+                                <option value="לא קיים"></option>
+                            </select>
                         </div>
                         <div class="row MarginRow" style="width: 100%;">
                             <div class="row ColUpLid">

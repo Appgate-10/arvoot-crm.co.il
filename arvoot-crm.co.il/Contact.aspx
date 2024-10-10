@@ -121,17 +121,17 @@
                     </div>
                     <div class="row MarginRow " style="width: 100%;">
                         <div class="row ColUpLid">
-                            <label class="InputLable">שם פרטי:</label>
+                            <label class="InputLable">*שם פרטי:</label>
                             <input id="FirstName" name="FirstName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row ColUpLid">
-                            <label class="InputLable">שם משפחה:</label>
+                            <label class="InputLable">*שם משפחה:</label>
                             <input id="LastName" name="LastName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                     </div>
                     <div class="row MarginRow " style="width: 100%;">
                         <div class="row ColUpLid">
-                            <label class="InputLable">מין:</label>
+                            <label class="InputLable">*מין:</label>
                             <%--   <select id="SelectGender" runat="server" class="selectGlobal">
                                 <option value="">בחר</option>
                                 <option value="other">אחר</option>
@@ -167,11 +167,11 @@
                     </div>--%>
                     <div class="row MarginRow" style="width: 100%;">
                         <div class="row ColUpLid">
-                            <label class="InputLable">תאריך לידה:</label>
+                            <label class="InputLable">*תאריך לידה:</label>
                             <input id="DateBirth" name="DateBirth" type="date" onchange="CalculationAge(this)" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row ColUpLid">
-                            <label class="InputLable">כתובת:</label>
+                            <label class="InputLable">*כתובת:</label>
                             <input id="Address" name="Address" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                     </div>
@@ -191,7 +191,7 @@
                     </div>
                     <div class="row MarginRow " style="width: 100%;">
                         <div class="row ColUpLid">
-                            <label class="InputLable">תעודת זהות:</label>
+                            <label class="InputLable">*תעודת זהות:</label>
                             <input id="Tz" name="Tz" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row ColUpLid">
@@ -209,7 +209,7 @@
                     </div>--%>
                  <div class="row MarginRow " style="width: 100%;">
                         <div class="row ColUpLid">
-                             <label class="InputLable">תקינות BDI</label>
+                             <label class="InputLable">*תקינות BDI</label>
 
                             <select runat="server" id="BdiValidity" class="selectGlobal">
                                 <option value="בחר"></option>
@@ -235,7 +235,7 @@
                     </div>
                     <div class="row MarginRow " style="width: 100%; align-items: flex-end;">
                         <div style="width: 31%; margin-inline-end: 2%;" class="row">
-                            <label class="InputLable">טלפון 1:</label>
+                            <label class="InputLable">*טלפון 1:</label>
                             <input id="Phone1" name="Phone1" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row" style="width: 30%; margin-inline-end: 7%;">
@@ -256,7 +256,7 @@
                     </div>
                     <div class="row  ">
                         <div style="width: 25%;" class="row">
-                            <lable class="InputLable">מקור הליד</lable>
+                            <lable class="InputLable">*מקור הליד</lable>
                         </div>
                         <div class="row" style="width: 20%;">
                             <lable class="InputLable">מתעניין ב</lable>
@@ -317,38 +317,41 @@
                     </div>
                     <div class="row MarginRow " style="width: 100%;">
                         <div class="row ColUpLid">
-                            <label class="InputLable">שם העסק:</label>
+                            <label class="InputLable">*שם העסק:</label>
                             <input id="BusinessName" name="BusinessName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row ColUpLid">
-                            <label class="InputLable">ותק במקום העבודה הנוכחי:</label>
+                            <label class="InputLable">*ותק במקום העבודה הנוכחי:</label>
                             <input id="BusinessSeniority" name="BusinessSeniority" type="number" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                     </div>
                     <div class="row MarginRow " style="width: 100%;">
                         <div class="row ColUpLid">
-                            <label class="InputLable">מקצוע:</label>
+                            <label class="InputLable">*מקצוע:</label>
                             <input id="BusinessProfession" name="BusinessProfession" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row ColUpLid">
-                            <label class="InputLable">עיר בה ממקום העסק:</label>
-                            <input id="BusinessCity" name="BusinessCity" type="text" runat="server" style="width: 100%;" class="InputAdd" />
+                            <label class="InputLable">*ותק במקום העבודה הקודם:</label>
+                            <input id="PrevBusinessSeniority" name="PrevBusinessSeniority" type="number" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
+                       
 
                     </div>
                     <div class="row MarginRow " style="width: 100%;">
-                        <div class="row ColUpLid">
-                            <label class="InputLable">אימייל:</label>
-                            <input id="BusinessEmail" type="text" runat="server" style="width: 100%;" class="InputAdd" />
-                        </div>
+                     
                         <div class="row ColUpLid">
                             <label class="InputLable">טלפון:</label>
                             <input id="BusinessPhone" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
+                         <div class="row ColUpLid">
+                            <label class="InputLable">*עיר בה ממקום העסק:</label>
+                            <input id="BusinessCity" name="BusinessCity" type="text" runat="server" style="width: 100%;" class="InputAdd" />
+                        </div>
+                   
                     </div>
                     <div class="row MarginRow" style="width: 100%;">
                         <div class="row ColUpLid">
-                            <label class="InputLable">שכר ברוטו:</label>
+                            <label class="InputLable">*שכר ברוטו:</label>
                             <input id="BusinessGrossSalary" name="BusinessGrossSalary" type="number" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row ColUpLid">
@@ -364,6 +367,7 @@
                             <select runat="server" id="SelectBusinessEmploymentStatus" class="selectGlobal"></select>
 
                         </div>
+
                     </div>
                     <%--   <div class="row  MarginRow" style="width: 100%; justify-content: end;">
                         <div class="row ColUpLid">
@@ -528,8 +532,13 @@
           <div class="row">
                     <div class="col MarginDiv SecondaryDiv DivDetailsCusWidth" style="margin-inline-end: 2%;">
                         <div class="row AlignItemsCenter MarginRow" style="width: 31%; margin-left: 24%;">
-                            <asp:CheckBox runat="server" ID="CBHaveAsset" />
-                            <asp:Label ID="Label2" AssociatedControlID="CBHaveAsset" runat="server" CssClass="lblAns InputLable" Text="האם קיים נכס בבעלות הלקוח"></asp:Label>
+                             <asp:Label ID="Label2"  runat="server" CssClass="lblAns InputLable" Text="*נכס בבעלות הלקוח"></asp:Label>
+                              <select runat="server" id="SelectHaveAsset" class="selectGlobal">
+                                <option value="בחר"></option>
+                                <option value="קיים"></option>
+                                <option value="לא קיים"></option>
+                            </select>
+
                         </div>
                         <div class="row MarginRow " style="width: 100%;">
                             <div class="row ColUpLid">
@@ -542,8 +551,13 @@
                             </div>
                         </div>
                         <div class="row AlignItemsCenter MarginRow" style="width: 31%; margin-left: 24%;">
-                            <asp:CheckBox runat="server" ID="CBHaveMortgageOnAsset" />
-                            <asp:Label ID="Label3" AssociatedControlID="CBHaveMortgageOnAsset" runat="server" CssClass="lblAns InputLable" Text="האם קיימת משכנתא על נכס"></asp:Label>
+                      <asp:Label ID="Label3"  runat="server" CssClass="lblAns InputLable" Text="משכנתא על נכס"></asp:Label>
+                             <select runat="server" id="SelectHaveMortgageOnAsset" class="selectGlobal">
+                                <option value="בחר"></option>
+                                <option value="קיים"></option>
+                                <option value="לא קיים"></option>
+                            </select>
+
                         </div>
                         <div class="row MarginRow" style="width: 100%;">
                             <div class="row ColUpLid">
@@ -641,16 +655,18 @@
                 <div runat="server" id="divRepeat" style="height: 463px; overflow-x: auto; margin-bottom: 20px">
                     <asp:Repeater ID="Repeater2" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
                         <ItemTemplate>
-                            <div class='ListDivParams' style="position: relative;">
-                                <asp:Button ID="ButtonDiv" runat="server" CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsOffer_Command" CssClass="ButtonDiv" />
-                                <div style="width: 5%; text-align: center">
-                                <asp:ImageButton ID="BtnDetailsOffer" style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
+                            <asp:LinkButton ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsOffer_Command" CssClass="ButtonDiv" >
+
+                                <div class='ListDivParams' style="position: relative;">
+                                    <div style="width: 5%; text-align: center">
+                                    <asp:Image ID="BtnDetailsOffer" style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
+                                    </div>
+                                    <div style="width: 33%; text-align: right"><%#Eval("StatusOffer") %></div>
+                                    <div style="width: 30%; text-align: right;"><%#Eval("FullNameAgent") %></div>
+                                    <div style="width: 15%; text-align: right"><%#Eval("OfferType") %></div>
+                                    <div style="width: 17%; text-align: right; padding-right: 4%"><%#Eval("CreateDate") %></div>
                                 </div>
-                                <div style="width: 33%; text-align: right"><%#Eval("StatusOffer") %></div>
-                                <div style="width: 30%; text-align: right;"><%#Eval("FullNameAgent") %></div>
-                                <div style="width: 15%; text-align: right"><%#Eval("OfferType") %></div>
-                                <div style="width: 17%; text-align: right; padding-right: 4%"><%#Eval("CreateDate") %></div>
-                            </div>
+                            </asp:LinkButton>
                         </ItemTemplate>
                     </asp:Repeater>
                 </div>

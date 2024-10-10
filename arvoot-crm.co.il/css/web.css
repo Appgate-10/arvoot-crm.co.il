@@ -1942,14 +1942,9 @@ H2 {
 }
 
 .ButtonDiv {
-    cursor: pointer;
-    width: 100%;
-    position: absolute;
-    margin-top: 0px;
-    left: 0px;
-    height: 76px;
-    background-color: transparent;
-    border-color: transparent;
+    display: block;
+    text-decoration: none;
+    color: inherit;
 }
 
 

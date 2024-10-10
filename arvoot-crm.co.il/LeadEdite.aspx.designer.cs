@@ -33,15 +33,6 @@ namespace ControlPanel
         protected global::System.Web.UI.WebControls.ImageButton ExportNewContact;
 
         /// <summary>
-        /// DeleteLid control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton DeleteLid;
-
-        /// <summary>
         /// btn_save control.
         /// </summary>
         /// <remarks>
@@ -321,22 +312,13 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputText BusinessProfession;
 
         /// <summary>
-        /// BusinessCity control.
+        /// PrevBusinessSeniority control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText BusinessCity;
-
-        /// <summary>
-        /// BusinessEmail control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText BusinessEmail;
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl PrevBusinessSeniority;
 
         /// <summary>
         /// BusinessPhone control.
@@ -346,6 +328,15 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText BusinessPhone;
+
+        /// <summary>
+        /// BusinessCity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText BusinessCity;
 
         /// <summary>
         /// BusinessGrossSalary control.
@@ -411,15 +402,6 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlSelect SelectPartnerLineBusiness;
 
         /// <summary>
-        /// CBHaveAsset control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CBHaveAsset;
-
-        /// <summary>
         /// Label2 control.
         /// </summary>
         /// <remarks>
@@ -427,6 +409,15 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label2;
+
+        /// <summary>
+        /// SelectHaveAsset control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectHaveAsset;
 
         /// <summary>
         /// AssetValue control.
@@ -447,15 +438,6 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputText AssetType;
 
         /// <summary>
-        /// CBHaveMortgageOnAsset control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CBHaveMortgageOnAsset;
-
-        /// <summary>
         /// Label3 control.
         /// </summary>
         /// <remarks>
@@ -463,6 +445,15 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label3;
+
+        /// <summary>
+        /// SelectHaveMortgageOnAsset control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectHaveMortgageOnAsset;
 
         /// <summary>
         /// MortgageAmount control.

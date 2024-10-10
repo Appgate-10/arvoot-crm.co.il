@@ -279,17 +279,19 @@
                 <div runat="server" id="divRepeat" style="height: 463px; overflow-x: auto; margin-bottom: 20px">
                     <asp:Repeater ID="Repeater2" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
                         <ItemTemplate>
-                            <div class='ListDivParams' style="position: relative;padding-left: 18px;">
-                                <asp:Button ID="ButtonDiv" runat="server" CommandArgument='<%#Eval("ID") %>' OnCommand="BtnServiceRequest_Command" CssClass="ButtonDiv" />
-                                <div style="width: 5%; text-align: center">
-                                <asp:ImageButton  ID="BtnServiceRequest" Style="vertical-align: middle;" ImageUrl="~/images/icons/Arrow_Left_1.png" runat="server" />
+                            <asp:LinkButton ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnServiceRequest_Command" CssClass="ButtonDiv" >
+
+                                <div class='ListDivParams' style="position: relative;padding-left: 18px;">
+                                    <div style="width: 5%; text-align: center">
+                                    <asp:Image  ID="BtnServiceRequest" Style="vertical-align: middle;" ImageUrl="~/images/icons/Arrow_Left_1.png" runat="server" />
+                                    </div>
+                                    <div style="width: 33%; text-align: right"><%#Eval("PurposeName") %></div>
+                                    <div style="width: 15%; text-align: right;"><%#Eval("Balance") %></div>
+                                    <div style="width: 15%; text-align: right;"><%#Eval("Sum") %></div>
+                                    <div style="width: 15%; text-align: right"><%#Eval("Invoice") %></div>
+                                    <div style="width: 17%; text-align: right; padding-right: 4%"><%#Eval("CreateDate") %></div>
                                 </div>
-                                <div style="width: 33%; text-align: right"><%#Eval("PurposeName") %></div>
-                                <div style="width: 15%; text-align: right;"><%#Eval("Balance") %></div>
-                                <div style="width: 15%; text-align: right;"><%#Eval("Sum") %></div>
-                                <div style="width: 15%; text-align: right"><%#Eval("Invoice") %></div>
-                                <div style="width: 17%; text-align: right; padding-right: 4%"><%#Eval("CreateDate") %></div>
-                            </div>
+                            </asp:LinkButton>
                         </ItemTemplate>
                     </asp:Repeater>
                 </div>

@@ -238,7 +238,7 @@ namespace ControlPanel
             catch(Exception) { }
 
             //להציג את הלידים מהישן לחדש
-            string sqlOrder = " Order by Lead.CreateDate  OFFSET  " + CurrentRow.ToString() + "  ROWS FETCH NEXT " + PageSize.ToString() + " ROWS ONLY ";
+            string sqlOrder = " Order by Lead.CreateDate desc  OFFSET  " + CurrentRow.ToString() + "  ROWS FETCH NEXT " + PageSize.ToString() + " ROWS ONLY ";
 
             //-- ניהול Paging
             string sqlCnt = "Select Count(ID) FROM Lead where Lead.IsContact=0";

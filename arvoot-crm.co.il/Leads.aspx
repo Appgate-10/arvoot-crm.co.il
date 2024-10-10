@@ -52,31 +52,33 @@
             <div runat="server" id="div2">
                 <asp:Repeater ID="Repeater1" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
                     <ItemTemplate>
-                        <div class="ListDivParamsBig" >
-                            <asp:Button ID="ButtonDiv" runat="server" CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsLead_Command" CssClass="ButtonDiv" />
-                            <div style="width: 5%; text-align: center">
-                                <asp:ImageButton ID="BtnDetailsLead"   style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
-                            </div>
-                            <div style="width: 19%; text-align: right"><%#Eval("Note") %></div>
-                            <div style="width: 8%; text-align: right;"><%#Eval("TrackingTime") %></div>
-                            <div style="width: 15%; text-align: right;"><%--<%#Eval("SecondStatus") %>--%>
-                                  <asp:TextBox  ID="SubStatus"   Text='<%#Eval("SecondStatus ") %>'  style="vertical-align: middle;width: 90%;height: 40%;font-weight: bold;color: #35508C;background-repeat: no-repeat;
-                                                background-size: 100% 100%;text-align: center;border: none; background-image: url(../images/icons/Secondary_Status_6.png);" runat="server"   />
+                       <asp:LinkButton ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsLead_Command" CssClass="ButtonDiv" >
 
-                            </div>
-                            <div style="width: 12%; text-align: right;"><%--<%#Eval("FirstStatus ") %>--%>
-                                   <asp:Image  ID="MainStatus" style="vertical-align: middle;width:auto;height:40%;" runat="server" ImageUrl="~/images/icons/Status_1.png"  />
+                            <div class="ListDivParamsBig" >
+                                <div style="width: 5%; text-align: center">
+                                    <asp:Image ID="BtnDetailsLead"   style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
+                                </div>
+                                <div style="width: 19%; text-align: right"><%#Eval("Note") %></div>
+                                <div style="width: 8%; text-align: right;"><%#Eval("TrackingTime") %></div>
+                                <div style="width: 15%; text-align: right;"><%--<%#Eval("SecondStatus") %>--%>
+                                      <asp:TextBox  ID="SubStatus"   Text='<%#Eval("SecondStatus ") %>'  style="vertical-align: middle;width: 90%;height: 40%;font-weight: bold;color: #35508C;background-repeat: no-repeat;
+                                                    background-size: 100% 100%;text-align: center;border: none; background-image: url(../images/icons/Secondary_Status_6.png);" runat="server"   />
 
+                                </div>
+                                <div style="width: 12%; text-align: right;"><%--<%#Eval("FirstStatus ") %>--%>
+                                       <asp:Image  ID="MainStatus" style="vertical-align: middle;width:auto;height:40%;" runat="server" ImageUrl="~/images/icons/Status_1.png"  />
+
+                                </div>
+                                <div style="width: 8%; text-align: right"><%#Eval("Phone1") %></div>
+                                <div style="width: 7%; text-align: right"><%#Eval("Tz") %></div>
+                                <div style="width: 7%; text-align: right"><%#Eval("LastName") %></div>
+                                <div style="width: 7%; text-align: right"><%#Eval("FirstName") %></div>
+                                <div style="width: 7%; text-align: right"><%#Eval("CreateDate") %></div>
+                                <div style="width: 5%; text-align: center">
+                                    <asp:CheckBox ID="chk" runat="server" />
+                                </div>
                             </div>
-                            <div style="width: 8%; text-align: right"><%#Eval("Phone1") %></div>
-                            <div style="width: 7%; text-align: right"><%#Eval("Tz") %></div>
-                            <div style="width: 7%; text-align: right"><%#Eval("LastName") %></div>
-                            <div style="width: 7%; text-align: right"><%#Eval("FirstName") %></div>
-                            <div style="width: 7%; text-align: right"><%#Eval("CreateDate") %></div>
-                            <div style="width: 5%; text-align: center">
-                                <asp:CheckBox ID="chk" runat="server" />
-                            </div>
-                        </div>
+                       </asp:LinkButton>
                     </ItemTemplate>
                 </asp:Repeater>
                 <div id="PageingDiv" class="PageingDiv" runat="server"></div>

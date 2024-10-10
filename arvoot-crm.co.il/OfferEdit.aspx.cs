@@ -260,7 +260,11 @@ namespace ControlPanel
                 Repeater1.DataSource = dtOfferDocument;
                 Repeater1.DataBind();
                 
-                string sqlServiceRequest = @"select s.ID, Invoice,Sum,CONVERT(varchar, CreateDate, 104)  CreateDate ,Balance, p.purpose as PurposeName from ServiceRequest s left join ServiceRequestPurpose p on s.PurposeID = p.ID where s.OfferID = @OfferID";
+                string sqlServiceRequest = @"select s.ID, Invoice,Sum,CONVERT(varchar, CreateDate, 104)  CreateDate, p.purpose as PurposeName,
+(select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1) as paid, SumCreditOrDenial, IsApprovedCreditOrDenial
+from ServiceRequest s 
+left join ServiceRequestPurpose p on s.PurposeID = p.ID 
+where s.OfferID = @OfferID";
                 SqlCommand cmdServiceRequest = new SqlCommand(sqlServiceRequest);
                 cmdServiceRequest.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
                 dtServiceRequest = DbProvider.GetDataTable(cmdServiceRequest);

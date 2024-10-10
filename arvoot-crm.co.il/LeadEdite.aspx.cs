@@ -715,14 +715,134 @@ namespace ControlPanel
             }
             if (ErrorCount == 0)
             {
+
                 string sql = @" Update Lead set 
-                                       IsContact=1
-                                       ,ConvertContactDate=getdate()
-                                       where ID=@LeadID";
+                    FirstName=@FirstName
+,LastName=@LastName
+,GenderID=@GenderID
+,DateBirth=@DateBirth
+,Address=@Address
+,FamilyStatusID=@FamilyStatusID
+,Tz=@Tz
+,IssuanceDateTz=@IssuanceDateTz
+,IsValidBdi=@IsValidBdi
+,InvalidBdiReason=@InvalidBdiReason
+,Phone1=@Phone1
+,Phone2=@Phone2
+,Email=@Email
+,FirstStatusLeadID=@FirstStatusLeadID
+,SecondStatusLeadID=@SecondStatusLeadID
+,SourceLeadID=@SourceLeadID
+,InterestedIn=@InterestedIn
+,TrackingTime=@TrackingTime
+,Note=@Note
+,AgentID=@AgentID
+,BusinessName=@BusinessName
+,BusinessSeniority=@BusinessSeniority
+,PrevBusinessSeniority=@PrevBusinessSeniority
+,BusinessProfession=@BusinessProfession
+,BusinessCity=@BusinessCity
+,BusinessPhone=@BusinessPhone
+,BusinessGrossSalary=@BusinessGrossSalary
+,BusinessLineBusiness=@BusinessLineBusiness
+,PartnerLineBusiness=@PartnerLineBusiness
+,PartnerName=@PartnerName
+,PartnerGrossSalary=@PartnerGrossSalary
+,PartnerAge=@PartnerAge
+,PartnerSeniority=@PartnerSeniority
+,HaveAsset=@HaveAsset
+,AssetValue=@AssetValue
+,AssetType=@AssetType
+,AssetAddress=@AssetAddress
+,HaveMortgageOnAsset=@HaveMortgageOnAsset
+,MortgageAmount=@MortgageAmount
+,MonthlyRepaymentAmount=MonthlyRepaymentAmount
+,LendingBank=@LendingBank
+,PurposeTest=@PurposeTest
+,RequestedLoanAmount=@RequestedLoanAmount
+,PurposeLoan =@PurposeLoan
+,MortgageBalance=@MortgageBalance
+,IsContact=1
+,ConvertContactDate=getdate()
+";
 
 
-
+                if (HttpContext.Current.Session["FirstStatusLeadID"].ToString() != SelectFirstStatus.Value)
+                {
+                    sql += " ,DateChangeFirstStatus = GETDATE()";
+                }
+                sql += " where ID = @LeadID";
                 SqlCommand cmd = new SqlCommand(sql);
+
+                cmd.Parameters.AddWithValue("@FirstName", FirstName.Value);
+                cmd.Parameters.AddWithValue("@LastName", LastName.Value);
+                cmd.Parameters.AddWithValue("@GenderID", string.IsNullOrEmpty(SelectGender.Value) ? (object)DBNull.Value : SelectGender.Value);
+                cmd.Parameters.AddWithValue("@DateBirth", string.IsNullOrEmpty(DateBirth.Value) ? (object)DBNull.Value : DateBirth.Value);
+                cmd.Parameters.AddWithValue("@Address", string.IsNullOrEmpty(Address.Value) ? (object)DBNull.Value : Address.Value);
+                cmd.Parameters.AddWithValue("@FamilyStatusID", string.IsNullOrEmpty(SelectFamilyStatus.Value) ? (object)DBNull.Value : SelectFamilyStatus.Value);
+                cmd.Parameters.AddWithValue("@Tz", string.IsNullOrEmpty(Tz.Value) ? (object)DBNull.Value : Tz.Value);
+                cmd.Parameters.AddWithValue("@IssuanceDateTz", string.IsNullOrEmpty(IssuanceDateTz.Value) ? (object)DBNull.Value : DateTime.Parse(IssuanceDateTz.Value));
+                //cmd.Parameters.AddWithValue("@IsValidIssuanceDateTz", IsValidIssuanceDateTz.Checked == true ? 1 : 0);
+                cmd.Parameters.AddWithValue("@IsValidBdi", /*IsValidBdi.Checked == true*/ BdiValidity.SelectedIndex);
+                cmd.Parameters.AddWithValue("@InvalidBdiReason", string.IsNullOrEmpty(InvalidBdiReason.Value) ? (object)DBNull.Value : InvalidBdiReason.Value);
+                cmd.Parameters.AddWithValue("@Phone1", Phone1.Value);
+                cmd.Parameters.AddWithValue("@Phone2", string.IsNullOrEmpty(Phone2.Value) ? (object)DBNull.Value : Phone2.Value);
+                cmd.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(Email.Value) ? (object)DBNull.Value : Email.Value);
+                cmd.Parameters.AddWithValue("@FirstStatusLeadID", SelectFirstStatus.Value);
+                //DateChangeFirstStatus
+
+                cmd.Parameters.AddWithValue("@SecondStatusLeadID", string.IsNullOrEmpty(SelectSecondStatus.Value) ? (object)DBNull.Value : int.Parse(SelectSecondStatus.Value));
+                cmd.Parameters.AddWithValue("@SourceLeadID", string.IsNullOrEmpty(SelectSourceLead.Value) ? (object)DBNull.Value : int.Parse(SelectSourceLead.Value));
+                cmd.Parameters.AddWithValue("@InterestedIn", string.IsNullOrEmpty(InterestedIn.Value) ? (object)DBNull.Value : InterestedIn.Value);
+                cmd.Parameters.AddWithValue("@TrackingTime", string.IsNullOrEmpty(TrackingTime.Value) ? (object)DBNull.Value : DateTime.Parse(TrackingTime.Value));
+
+                cmd.Parameters.AddWithValue("@Note", string.IsNullOrEmpty(Note.Value) ? (object)DBNull.Value : Note.Value);
+
+
+
+                try
+                {
+                    Pageinit.CheckManagerPermissions();
+                    cmd.Parameters.AddWithValue("@AgentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
+                }
+                catch (Exception ex)
+                {
+                    System.Web.HttpContext.Current.Response.Redirect("SignIn.aspx");
+                }
+
+
+                cmd.Parameters.AddWithValue("@BusinessName", string.IsNullOrEmpty(BusinessName.Value) ? (object)DBNull.Value : BusinessName.Value);
+                cmd.Parameters.AddWithValue("@BusinessSeniority", string.IsNullOrEmpty(BusinessSeniority.Value) ? (object)DBNull.Value : BusinessSeniority.Value);
+                cmd.Parameters.AddWithValue("@PrevBusinessSeniority", string.IsNullOrEmpty(PrevBusinessSeniority.Value) ? (object)DBNull.Value : PrevBusinessSeniority.Value);
+                cmd.Parameters.AddWithValue("@BusinessProfession", string.IsNullOrEmpty(BusinessProfession.Value) ? (object)DBNull.Value : BusinessProfession.Value);
+                cmd.Parameters.AddWithValue("@BusinessCity", string.IsNullOrEmpty(BusinessCity.Value) ? (object)DBNull.Value : BusinessCity.Value);
+                //    cmd.Parameters.AddWithValue("@BusinessEmail", string.IsNullOrEmpty(BusinessEmail.Value) ? (object)DBNull.Value : BusinessEmail.Value);
+                cmd.Parameters.AddWithValue("@BusinessPhone", string.IsNullOrEmpty(BusinessPhone.Value) ? (object)DBNull.Value : BusinessPhone.Value);
+                cmd.Parameters.AddWithValue("@BusinessGrossSalary", string.IsNullOrEmpty(BusinessGrossSalary.Value) ? (object)DBNull.Value : BusinessGrossSalary.Value);
+                cmd.Parameters.AddWithValue("@BusinessLineBusiness", string.IsNullOrEmpty(SelectBusinessLineBusiness.Value) ? (object)DBNull.Value : int.Parse(SelectBusinessLineBusiness.Value));
+                cmd.Parameters.AddWithValue("@PartnerLineBusiness", string.IsNullOrEmpty(SelectPartnerLineBusiness.Value) ? (object)DBNull.Value : int.Parse(SelectPartnerLineBusiness.Value));
+                cmd.Parameters.AddWithValue("@PartnerName", string.IsNullOrEmpty(PartnerName.Value) ? (object)DBNull.Value : PartnerName.Value);
+                cmd.Parameters.AddWithValue("@PartnerGrossSalary", string.IsNullOrEmpty(PartnerGrossSalary.Value) ? (object)DBNull.Value : PartnerGrossSalary.Value);
+                cmd.Parameters.AddWithValue("@PartnerAge", string.IsNullOrEmpty(PartnerAge.Value) ? (object)DBNull.Value : PartnerAge.Value);
+                cmd.Parameters.AddWithValue("@PartnerSeniority", string.IsNullOrEmpty(PartnerSeniority.Value) ? (object)DBNull.Value : PartnerSeniority.Value);
+
+                cmd.Parameters.AddWithValue("@HaveAsset", SelectHaveAsset.SelectedIndex);
+                cmd.Parameters.AddWithValue("@AssetValue", string.IsNullOrEmpty(AssetValue.Value) ? (object)DBNull.Value : int.Parse(AssetValue.Value));
+                cmd.Parameters.AddWithValue("@AssetType", string.IsNullOrEmpty(AssetType.Value) ? (object)DBNull.Value : AssetType.Value);
+                cmd.Parameters.AddWithValue("@AssetAddress", string.IsNullOrEmpty(AssetAddress.Value) ? (object)DBNull.Value : AssetAddress.Value);
+
+                cmd.Parameters.AddWithValue("@HaveMortgageOnAsset", SelectHaveMortgageOnAsset.SelectedIndex);
+
+                cmd.Parameters.AddWithValue("@MortgageAmount", string.IsNullOrEmpty(MortgageAmount.Value) ? (object)DBNull.Value : long.Parse(MortgageAmount.Value));
+                cmd.Parameters.AddWithValue("@MonthlyRepaymentAmount", string.IsNullOrEmpty(MonthlyRepaymentAmount.Value) ? (object)DBNull.Value : int.Parse(MonthlyRepaymentAmount.Value));
+                cmd.Parameters.AddWithValue("@LendingBank", string.IsNullOrEmpty(LendingBank.Value) ? (object)DBNull.Value : LendingBank.Value);
+                cmd.Parameters.AddWithValue("@PurposeTest", string.IsNullOrEmpty(PurposeTest.Value) ? (object)DBNull.Value : PurposeTest.Value);
+                cmd.Parameters.AddWithValue("@RequestedLoanAmount", string.IsNullOrEmpty(RequestedLoanAmount.Value) ? (object)DBNull.Value : long.Parse(RequestedLoanAmount.Value));
+                cmd.Parameters.AddWithValue("@PurposeLoan", string.IsNullOrEmpty(PurposeLoan.Value) ? (object)DBNull.Value : PurposeLoan.Value);
+                cmd.Parameters.AddWithValue("@MortgageBalance", string.IsNullOrEmpty(MortgageBalance.Value) ? (object)DBNull.Value : long.Parse(MortgageBalance.Value));
+
+
+               
                 cmd.Parameters.AddWithValue("@LeadID", Request.QueryString["LeadID"]);
 
                 if (DbProvider.ExecuteCommand(cmd) > 0)

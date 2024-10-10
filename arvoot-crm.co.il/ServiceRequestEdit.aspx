@@ -119,8 +119,8 @@
 
             <div class="col MarginDiv SecondaryDiv" style="position: relative;">
                 <div class="row MarginRow ServiceRequestDiv">
-                    <div class="row">
-                        <div>
+                    <div class="row" style="align-items: center;">
+                        <div class="div-arrows-img">
                             <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
                         </div>
                         <div>
@@ -210,9 +210,13 @@
                             <input id="Policy" name="FullName" type="text" style="width: 100%;" runat="server" class="InputAdd" />
                         </div>
                     </div>
-                    <div style="width: 17%; margin-left: 3%;" class="row">
+                    <div style="width: 20%; margin-left: 3%;" class="row">
                         <label class="InputLable">יתרת הגבייה:</label>
-                        <input id="Balance" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" />
+<%--                        <input id="Balance" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" />--%>
+                        <label id="Balance" name="Balance" runat="server" style="width: 40%;" class="InputAdd"></label>
+                        <button id="btnReloadBalance" runat="server" onserverclick="btnReloadBalance_ServerClick" style="margin-right: 5px; width: 23px; background-color: transparent; border: 1px solid black; border-radius: 4px;">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -225,8 +229,8 @@
                 <ItemTemplate>
                     <div class="col MarginDiv SecondaryDiv">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
-                    <div class="row">
-                        <div>
+                    <div class="row" style="align-items: center;">
+                        <div class="div-arrows-img">
                             <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
                         </div>
                         <div>
@@ -245,7 +249,7 @@
                         <input id="DatePayment1" name="DatePayment1" type="date" runat="server" style="width: 100%;" class="InputAdd" value='<%# Eval("DatePayment").ToString() %>' />
                     </div>
                     <div style="width: 28%; direction: rtl; float: right;">
-                        <asp:CheckBox runat="server" ID="IsApprove1" Checked='<%# Eval("IsApprovedPayment").ToString() == "1" ? true : false %>' />
+                        <asp:CheckBox runat="server" ID="IsApprove1" Checked='<%# Boolean.Parse(Eval("IsApprovedPayment").ToString()) %>' AutoPostBack="true" OnCheckedChanged="IsApprove1_CheckedChanged" />
                         <asp:Label ID="lblIsApprove1" AssociatedControlID="IsApprove1" runat="server" CssClass="lblAns" Text=" נבדק ואושר לביצוע"></asp:Label>
                     </div>
                 </div>
@@ -265,89 +269,11 @@
             </asp:Repeater>
             <asp:Button ID="AddPayment" runat="server" CssClass="btnBlue" Style="float: right; margin-bottom: 38px;" OnClick="AddPayment_Click" Text="+ הוספת תשלום"/>
 
-            <%--<div class="col SecondaryDiv  MarginDiv">
-                <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
-                    <div class="row">
-                        <div>
-                            <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
-                        </div>
-                        <div>
-                            <label class="LableBlue">פירוט תשלום שני</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row PaddingRow" style="width: 100%;">
-                    <div style="width: 18%; margin-left: 3%;" class="row">
-                        <label class="InputLable">סכום לתשלום ראשון:</label>
-                        <input id="Sum2" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" />
-                    </div>
-                    <div style="width: 15%; margin-left: 35%;" class="row">
-                        <label class="InputLable">תאריך תשלום:</label>
-                         <input id="DatePayment2" name="DatePayment2" type="date" runat="server" style="width: 100%;" class="InputAdd" />
-
-                    </div>
-                    <div style="width: 28%; direction: rtl; float: right;">
-                        <asp:CheckBox runat="server" ID="IsApprove2" />
-                        <asp:Label ID="lblIsApprove2" AssociatedControlID="IsApprove2" runat="server" CssClass="lblAns" Text=" נבדק ואושר לביצוע"></asp:Label>
-                    </div>
-                </div>
-                <div class="row MarginRow PaddingRow" style="width: 100%;">
-                    <div style="width: 18%; margin-left: 3%;" class="row">
-                        <label class="InputLable">מספר תשלומים:</label>
-                        <input id="Num2" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" />
-                    </div>
-                    <div style="width: 15%; margin-left: 35%;" class="row">
-                        <label class="InputLable">אסמכתא:</label>
-                        <input id="ReferencePayment2" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
-                    </div>
-
-                </div>
-
-            </div>--%>
-
-              <%--<div class="col SecondaryDiv  MarginDiv">
-                <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
-                    <div class="row">
-                        <div>
-                            <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
-                        </div>
-                        <div>
-                            <label class="LableBlue">פירוט תשלום שלישי</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row PaddingRow" style="width: 100%;">
-                    <div style="width: 18%; margin-left: 3%;" class="row">
-                        <label class="InputLable">סכום לתשלום ראשון:</label>
-                        <input id="Sum3" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" />
-                    </div>
-                    <div style="width: 15%; margin-left: 35%;" class="row">
-                        <label class="InputLable">תאריך תשלום:</label>
-                        <input id="DatePayment3" name="DatePayment3" type="date" runat="server" style="width: 100%;" class="InputAdd" />
-                    </div>
-                    <div style="width: 28%; direction: rtl; float: right;">
-                        <asp:CheckBox runat="server" ID="IsApprove3" />
-                        <asp:Label ID="lblIsApprove3" AssociatedControlID="IsApprove3" runat="server" CssClass="lblAns" Text=" נבדק ואושר לביצוע"></asp:Label>
-                    </div>
-                </div>>
-                <div class="row MarginRow PaddingRow" style="width: 100%;">
-                    <div style="width: 18%; margin-left: 3%;" class="row">
-                        <label class="InputLable">מספר תשלומים:</label>
-                        <input id="Num3" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" />
-                    </div>
-                    <div style="width: 15%; margin-left: 35%;" class="row">
-                        <label class="InputLable">אסמכתא:</label>
-                        <input id="ReferencePayment3" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
-                    </div>
-
-                </div>
-
-            </div--%>
 
             <div class="col SecondaryDiv MarginDiv" style="width:100%;">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
-                    <div class="row">
-                        <div>
+                    <div class="row" style="align-items: center;">
+                        <div class="div-arrows-img">
                             <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
                         </div>
                         <div>
@@ -365,7 +291,7 @@
                         <input id="DateCreditOrDenial" name="DateCreditOrDenial" type="date" runat="server" style="width: 100%;" class="InputAdd" />
                     </div>
                     <div style="width: 28%; direction: rtl; float: right;">
-                        <asp:CheckBox runat="server" ID="IsApprove4" />
+                        <asp:CheckBox runat="server" ID="IsApprove4" AutoPostBack="true" OnCheckedChanged="IsApprove4_CheckedChanged" />
                         <asp:Label ID="lblIsApprove4" AssociatedControlID="IsApprove4" runat="server" CssClass="lblAns" Text=" נבדק ואושר לביצוע"></asp:Label>
                     </div>
                 </div>
@@ -424,8 +350,8 @@
 
             <div class="col SecondaryDiv ">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
-                    <div class="row">
-                        <div>
+                    <div class="row" style="align-items: center;">
+                        <div class="div-arrows-img">
                             <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
                         </div>
                         <div>

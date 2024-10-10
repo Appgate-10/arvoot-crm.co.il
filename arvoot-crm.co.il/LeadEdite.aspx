@@ -540,8 +540,8 @@
             </div>
             <div class="BackgroundColorWhite MarginDiv">
                 <div class="row MarginRow ServiceRequestDiv" style="padding: 0px 2%;">
-                    <div class="row">
-                        <div>
+                    <div class="row" style="align-items: center;">
+                        <div class="div-arrows-img">
                             <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
                         </div>
                         <div>

@@ -17,6 +17,8 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/html-duration-picker@latest/dist/html-duration-picker.min.js"></script>
     <script type="text/javascript" src="js/js.js?v=<% = DateTime.Now %>"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
 
     <style type="text/css">
         @import url("css/web.css?v=<% = DateTime.Now %>");
@@ -161,7 +163,6 @@
                                         <label style="margin-inline-end: 10px;">היסטוריית פעולות</label>
                                         <asp:ImageButton ID="BtnDeleteAllHistory" runat="server" Class="ImgCleanAll" src="images/icons/History_Delete_All_Message_Button.png" OnClick="BtnDeleteAllHistory_Click" />
                                     </div>
-                                    <%-- Gila auto --%>
                                     <div style="overflow-y: auto; height: 353px; margin-top: 20px;">
                                         <asp:Repeater ID="Repeater2" runat="server" OnItemDataBound="Repeater2_ItemDataBound">
                                             <ItemTemplate>

@@ -279,13 +279,13 @@ namespace ControlPanel
                 FormError_lable.Text = "יש להזין פוליסה";
                 return false;
             }
-            if (Balance.Value == "")
-            {
-                ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין יתרת הגבייה";
-                return false;
-            }
+            //if (Balance.inner == "")
+            //{
+            //    ErrorCount++;
+            //    FormError_lable.Visible = true;
+            //    FormError_lable.Text = "יש להזין יתרת הגבייה";
+            //    return false;
+            //}
             if (SelectPurpose.SelectedIndex == 0)
             {
                 ErrorCount++;
@@ -355,13 +355,14 @@ namespace ControlPanel
 
             if (ErrorCount == 0)
             {
-                string sql = @" INSERT INTO ServiceRequest (OfferID,Invoice,Sum,Note,Policy,Balance,PurposeID,
+                string sql = @" INSERT INTO ServiceRequest (OfferID,Invoice,Sum,Note,Policy,PurposeID,
                                 SumCreditOrDenial,DateCreditOrDenial,NumCreditOrDenial,ReferenceCreditOrDenial,NoteCreditOrDenial,
                                 IsApprovedCreditOrDenial,PaymentMethodID,BankName,Branch,AccountNumber,CreditNumber,CreditValidity,CardholdersID)
                                 OUTPUT Inserted.ID 
-                                VALUES (@OfferID,@Invoice,@Sum,@Note,@Policy,@Balance,@PurposeID,@SumCreditOrDenial,@DateCreditOrDenial,@NumCreditOrDenial,@ReferenceCreditOrDenial,@NoteCreditOrDenial,
+                                VALUES (@OfferID,@Invoice,@Sum,@Note,@Policy,@PurposeID,@SumCreditOrDenial,@DateCreditOrDenial,@NumCreditOrDenial,@ReferenceCreditOrDenial,@NoteCreditOrDenial,
                                 @IsApprovedCreditOrDenial,@PaymentMethodID,@BankName,@Branch,@AccountNumber,@CreditNumber,@CreditValidity,@CardholdersID )";
 
+                //Balance,@Balance
 
                 /*SumPayment1,DatePayment1,NumPayment1,ReferencePayment1,
                                 IsApprovedPayment1,SumPayment2,DatePayment2,NumPayment2,ReferencePayment2,IsApprovedPayment2,SumPayment3,DatePayment3,NumPayment3,
@@ -379,7 +380,7 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@Sum", AllSum.Value);
                 cmd.Parameters.AddWithValue("@Note", Note.Value);
                 cmd.Parameters.AddWithValue("@Policy", Policy.Value);
-                cmd.Parameters.AddWithValue("@Balance", Balance.Value);
+                //cmd.Parameters.AddWithValue("@Balance", Balance.Value);
                 cmd.Parameters.AddWithValue("@PurposeID", SelectPurpose.Value);
                 //cmd.Parameters.AddWithValue("@SumPayment1", Sum1.Value);
                 //cmd.Parameters.AddWithValue("@DatePayment1", DatePayment1.Value);
@@ -554,6 +555,7 @@ namespace ControlPanel
             //}
 
             List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
+            double SumPaid = 0;
             foreach (RepeaterItem item in RepeaterPayments.Items)
             {
                 HtmlInputControl Sum = (HtmlInputControl)item.FindControl("Sum1");
@@ -574,7 +576,24 @@ namespace ControlPanel
 
                 };
 
+                if (paymentFromRepeater.IsApprovedPayment == true)
+                {
+                    SumPaid += paymentFromRepeater.SumPayment;
+                }
+
                 payments.Add(paymentFromRepeater);
+            }
+
+            double AllSumVal;
+            if (!string.IsNullOrWhiteSpace(AllSum.Value) && double.TryParse(AllSum.Value, out AllSumVal) == true)
+            {
+                double balanceToPay = AllSumVal - SumPaid;
+                double sum4Val;
+                if (IsApprove4.Checked == true && double.TryParse(Sum4.Value, out sum4Val) == true)
+                {
+                    balanceToPay += sum4Val;
+                }
+                Balance.InnerText = balanceToPay.ToString();
             }
 
 
@@ -593,6 +612,66 @@ namespace ControlPanel
             Session["payments"] = payments;
             RepeaterPayments.DataSource = payments;
             RepeaterPayments.DataBind();
+        }
+
+        protected void IsApprove1_CheckedChanged(object sender, EventArgs e)
+        {
+            updateBalanceValue();
+        }
+
+        public void updateBalanceValue()
+        {
+            List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
+            double SumPaid = 0;
+            foreach (RepeaterItem item in RepeaterPayments.Items)
+            {
+                HtmlInputControl Sum = (HtmlInputControl)item.FindControl("Sum1");
+                HtmlInputControl DatePayment = (HtmlInputControl)item.FindControl("DatePayment1");
+                HtmlInputControl Num = (HtmlInputControl)item.FindControl("Num1");
+                HtmlInputControl ReferencePayment = (HtmlInputControl)item.FindControl("ReferencePayment1");
+                CheckBox IsApprove = (CheckBox)item.FindControl("IsApprove1");
+
+                serviceRequestPayment payment = new serviceRequestPayment
+                {
+                    ID = 0,
+                    ServiceRequestID = 0,
+                    SumPayment = (!string.IsNullOrWhiteSpace(Sum.Value) ? double.Parse(Sum.Value) : 0),
+                    NumPayment = (!string.IsNullOrWhiteSpace(Num.Value) ? int.Parse(Num.Value) : 0),
+                    DatePayment = DatePayment.Value,
+                    ReferencePayment = ReferencePayment.Value,
+                    IsApprovedPayment = IsApprove.Checked
+                };
+
+                if (payment.IsApprovedPayment == true)
+                {
+                    SumPaid += payment.SumPayment;
+                }
+                payments.Add(payment);
+            }
+
+            double AllSumVal;
+            if (!string.IsNullOrWhiteSpace(AllSum.Value) && double.TryParse(AllSum.Value, out AllSumVal) == true)
+            {
+                double balanceToPay = AllSumVal - SumPaid;
+                double sum4Val;
+                if (IsApprove4.Checked == true && double.TryParse(Sum4.Value, out sum4Val) == true)
+                {
+                    balanceToPay += sum4Val;
+                }
+                Balance.InnerText = balanceToPay.ToString();
+            }
+
+            Session["payments"] = payments;
+        }
+
+        protected void IsApprove4_CheckedChanged(object sender, EventArgs e)
+        {
+            updateBalanceValue();
+        }
+
+        protected void btnReloadBalance_ServerClick(object sender, EventArgs e)
+        {
+            updateBalanceValue();
         }
     }
 

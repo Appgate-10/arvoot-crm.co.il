@@ -94,7 +94,7 @@ namespace ControlPanel
                            ,IsValidBdi,InvalidBdiReason,lead.Phone1,lead.Phone2,lead.Email,SourceLeadID,InterestedIn,TrackingTime,Note
                            ,FirstStatusLead.Status FirstStatus,SecondStatusLead.Status SecondStatus
                            ,Lead.FirstStatusLeadID,Lead.SecondStatusLeadID,DateChangeFirstStatus
-                           ,BusinessName,BusinessSeniority,BusinessProfession,BusinessCity,BusinessEmail,BusinessPhone,BusinessGrossSalary,BusinessLineBusiness
+                           ,BusinessName,BusinessSeniority,PrevBusinessSeniority,BusinessProfession,BusinessCity,BusinessPhone,BusinessGrossSalary,BusinessLineBusiness
                            ,Lead.PartnerLineBusiness
                            ,PartnerName,PartnerGrossSalary,PartnerAge,PartnerSeniority
                            ,HaveAsset,Lead.AssetValue,Lead.AssetType,Lead.AssetAddress,HaveMortgageOnAsset
@@ -113,9 +113,15 @@ namespace ControlPanel
             DataTable dtLead = DbProvider.GetDataTable(cmdLead);
             if (dtLead.Rows.Count > 0)
             {
-                DateTime dateOfBirth = Convert.ToDateTime(dtLead.Rows[0]["DateBirth"]);
-                DateTime currentDate = DateTime.Now;
-                int age = currentDate.Year - dateOfBirth.Year;
+
+                if (!string.IsNullOrEmpty(dtLead.Rows[0]["DateBirth"].ToString()))
+                {
+                    DateTime dateOfBirth = Convert.ToDateTime(dtLead.Rows[0]["DateBirth"]);
+                    DateTime currentDate = DateTime.Now;
+                    int age = currentDate.Year - dateOfBirth.Year;
+                    Age.InnerText = age.ToString();
+                    DateBirth.Value = (dateOfBirth).ToString("yyyy-MM-dd");
+                }
                 FullName.InnerText= dtLead.Rows[0]["FirstName"].ToString()+" "+dtLead.Rows[0]["LastName"].ToString();
                 FirstName.Value = dtLead.Rows[0]["FirstName"].ToString();
                 LastName.Value = dtLead.Rows[0]["LastName"].ToString();
@@ -123,15 +129,14 @@ namespace ControlPanel
                 //if (dtLead.Rows[0]["Gender"].ToString() == "other") { BtnGender.Text = "אחר"; }
                 //else if (dtLead.Rows[0]["Gender"].ToString() == "male") { BtnGender.Text = "זכר"; }
                 //else if (dtLead.Rows[0]["Gender"].ToString() == "female") { BtnGender.Text = "נקבה"; }
-                Age.InnerText = age.ToString();
-                DateBirth.Value = (dateOfBirth).ToString("yyyy-MM-dd");
+           
                 //DateBirth.Value =DateTime.Parse(dtLead.Rows[0]["DateBirth"].ToString()).ToString("dd/mm/yyyy");
                 Address.Value = dtLead.Rows[0]["Address"].ToString();
                 SelectFamilyStatus.Value = dtLead.Rows[0]["FamilyStatusID"].ToString();
                 Tz.Value = dtLead.Rows[0]["Tz"].ToString();
                 IssuanceDateTz.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["IssuanceDateTz"].ToString()) ? "" : Convert.ToDateTime(dtLead.Rows[0]["IssuanceDateTz"]).ToString("yyyy-MM-dd");
                 //IsValidIssuanceDateTz.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidIssuanceDateTz"].ToString()));
-                BdiValidity.SelectedIndex =int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString())==0?1:0;
+                BdiValidity.SelectedIndex =int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString());
                 InvalidBdiReason.Value = dtLead.Rows[0]["InvalidBdiReason"].ToString();
                 Phone1.Value = dtLead.Rows[0]["Phone1"].ToString();
                 Phone2.Value = dtLead.Rows[0]["Phone2"].ToString();
@@ -143,9 +148,10 @@ namespace ControlPanel
                 Note.Value = dtLead.Rows[0]["Note"].ToString();
                 BusinessName.Value = dtLead.Rows[0]["BusinessName"].ToString();
                 BusinessSeniority.Value = dtLead.Rows[0]["BusinessSeniority"].ToString();
+                PrevBusinessSeniority.Value = dtLead.Rows[0]["PrevBusinessSeniority"].ToString();
                 BusinessProfession.Value = dtLead.Rows[0]["BusinessProfession"].ToString();
                 BusinessCity.Value = dtLead.Rows[0]["BusinessCity"].ToString();
-                BusinessEmail.Value = dtLead.Rows[0]["BusinessEmail"].ToString();
+                //BusinessEmail.Value = dtLead.Rows[0]["BusinessEmail"].ToString();
 
                 BusinessPhone.Value = dtLead.Rows[0]["BusinessPhone"].ToString();
                 BusinessGrossSalary.Value = dtLead.Rows[0]["BusinessGrossSalary"].ToString();
@@ -157,11 +163,11 @@ namespace ControlPanel
                 PartnerAge.Value = dtLead.Rows[0]["PartnerAge"].ToString();
                 PartnerSeniority.Value = dtLead.Rows[0]["PartnerSeniority"].ToString();
                 //IsOpen24H.Checked = Convert.ToBoolean(int.Parse(dt.Rows[0]["IsOpen24H"].ToString()));
-                CBHaveAsset.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["HaveAsset"].ToString()));
+                SelectHaveAsset.SelectedIndex = int.Parse(dtLead.Rows[0]["HaveAsset"].ToString());
                 AssetValue.Value = dtLead.Rows[0]["AssetValue"].ToString();
                 AssetType.Value = dtLead.Rows[0]["AssetType"].ToString();
                 AssetAddress.Value = dtLead.Rows[0]["AssetAddress"].ToString();
-                CBHaveMortgageOnAsset.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["HaveMortgageOnAsset"].ToString()));
+                SelectHaveMortgageOnAsset.SelectedIndex = int.Parse(dtLead.Rows[0]["HaveMortgageOnAsset"].ToString());
 
                 MortgageAmount.Value = dtLead.Rows[0]["MortgageAmount"].ToString();
                 MonthlyRepaymentAmount.Value = dtLead.Rows[0]["MonthlyRepaymentAmount"].ToString();
@@ -611,64 +617,156 @@ namespace ControlPanel
             if (FirstName.Value == "")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין שם פרטי";
-                return false;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין שם פרטי";
             }
-            if (LastName.Value == "")
+            else if (LastName.Value == "")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין שם משפחה";
-                return false;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין שם משפחה";
             }
-            if (DateBirth.Value == "")
+            else if (SelectGender.Value == "")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין תאריך לידה";
-                return false;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין מין";
             }
-            if (DateTime.Parse(DateBirth.Value) > DateTime.Now)
+            else if (DateBirth.Value == "")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין תאריך לידה תקין";
-                return false;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין תאריך לידה";
             }
-            if (Tz.Value == "")
+            else if (DateTime.Parse(DateBirth.Value) > DateTime.Now)
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין ת.ז";
-                return false;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין תאריך לידה תקין";
             }
-            if (Tz.Value.Length != 9)
+            else if (Tz.Value == "")
             {
                 ErrorCount++;
-                FormError_lable.Text = "יש להזין ת.ז תקינה";
-                FormError_lable.Visible = true;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין ת.ז";
+            }
+            else if (Tz.Value.Length != 9)
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין ת.ז תקינה";
+            }
+            else if (Helpers.insuredTzExist(Tz.Value, -1) == "true")
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "ת.ז קיימת במערכת";
                 return false;
             }
-            //if (Helpers.insuredTzExist(Tz.Value, long.Parse(HttpContext.Current.Session["AgentID"].ToString())) == "true")
+            else if (Address.Value == "")
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין כתובת";
+            }
+            else if (SelectHaveAsset.SelectedIndex == 0)
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש לבחור האם קיים נכס בבעלות הלקוח";
+            }
+            else if (AssetAddress.Value == "")
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין כתובת עסק";//Gila נראה שאמור להיות כתוב כתובת נכס
+            }
+          
+            /*   else if (SelectFamilyStatus.SelectedIndex == 0)
+               {
+                   ErrorCount++;
+                   ExportNewContact_lable.Visible = true;
+                   ExportNewContact_lable.Text = "יש לבחור מצב תעסוקתי";
+               }*/
+            else if (BdiValidity.SelectedIndex == 0)
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "תקין/ לא תקין BDI יש לבחור";
+            }
+            else if (BdiValidity.SelectedIndex == 2 && InvalidBdiReason.Value == "")
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין סיבה לאי תקינות";
+            }
+            else if (BusinessName.Value == "")
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין שם העסק";
+            }
+            else if (BusinessSeniority.Value == "")
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין ותק במקום העבודה הנוכחי";
+            }
+            else if (PrevBusinessSeniority.Value == "")
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין ותק במקום העבודה הקודם";
+            }
+            else if (PrevBusinessSeniority.Value == "")
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין ותק במקום העבודה הקודם";
+            }
+            else if (BusinessCity.Value == "")
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין עיר בה ממוקם העסק";
+            }
+            //else if (SelectBusinessLineBusiness.SelectedIndex == 0)
             //{
             //    ErrorCount++;
-            //    FormError_lable.Visible = true;
-            //    FormError_lable.Text = "ת.ז קיימת במערכת";
-            //    return false;
-            //}
-            if (Phone1.Value == "")
+            //    ExportNewContact_lable.Visible = true;
+            //    ExportNewContact_lable.Text = "יש לבחור מצב תעסוקתי";
+            //}            
+            else if (BusinessProfession.Value == "")
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש לבחור מקצוע";
+            }
+            else if (BusinessGrossSalary.Value == "")
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין שכר ברוטו";
+            }
+            else if (Phone1.Value == "")
             {
                 ErrorCount++;
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין מספר טלפון";
                 return false;
             }
-            if (Phone1.Value.Length < 9 || Phone1.Value.Substring(0, 1) != "0")
+            else if (Phone1.Value.Length < 9 || Phone1.Value.Substring(0, 1) != "0")
             {
                 ErrorCount++;
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין מספר טלפון תקין";
+                return false;
+            }
+            else if (Helpers.insuredPhoneExist(Phone1.Value, long.Parse(Request.QueryString["LeadID"])) == "true")
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "מספר הטלפון קיים במערכת";
                 return false;
             }
             if (Email.Value != "" && !Email.Value.Contains("@"))
@@ -686,14 +784,14 @@ namespace ControlPanel
                 FormError_lable.Text = "יש להזין מספר טלפון תקין";
                 return false;
             }
-            if (BusinessEmail.Value != "" && !BusinessEmail.Value.Contains("@"))
-            {
-                ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין אימייל תקין";
-                return false;
+            //if (BusinessEmail.Value != "" && !BusinessEmail.Value.Contains("@"))
+            //{
+            //    ErrorCount++;
+            //    FormError_lable.Visible = true;
+            //    FormError_lable.Text = "יש להזין אימייל תקין";
+            //    return false;
 
-            }
+            //}
 
             if (BusinessPhone.Value != "" && (BusinessPhone.Value.Length < 9 || BusinessPhone.Value.Substring(0, 1) != "0"))
             {
@@ -728,7 +826,7 @@ namespace ControlPanel
             //    }
 
             //}
-            if (CBHaveAsset.Checked == false)
+            if (SelectHaveAsset.SelectedIndex == 0)
             {
                 if (AssetValue.Value != "")
                 {
@@ -753,7 +851,17 @@ namespace ControlPanel
                 }
 
             }
-            if (CBHaveMortgageOnAsset.Checked == false)
+            else if(SelectHaveAsset.SelectedIndex == 1)
+            {
+                if (AssetAddress.Value == "")
+                {
+                    ErrorCount++;
+                    FormError_lable.Visible = true;
+                    FormError_lable.Text = "עליך להזין כתובת נכס";
+                    return false;
+                }
+            }
+            if (SelectHaveMortgageOnAsset.SelectedIndex == 0)
             {
                 if (MortgageAmount.Value != "")
                 {
@@ -806,6 +914,16 @@ namespace ControlPanel
                 }
 
             }
+            else if(SelectHaveMortgageOnAsset.SelectedIndex == 1)
+            {
+                if (MortgageAmount.Value == "")
+                {
+                    ErrorCount++;
+                    FormError_lable.Visible = true;
+                    FormError_lable.Text = "עליך להזין גובה משכנתא";
+                    return false;
+                }
+            }
 //,FirstStatusLeadID = @FirstStatusLeadID
 //,SecondStatusLeadID = @SecondStatusLeadID
             if (ErrorCount == 0)
@@ -831,9 +949,9 @@ namespace ControlPanel
 ,AgentID=@AgentID
 ,BusinessName=@BusinessName
 ,BusinessSeniority=@BusinessSeniority
+,PrevBusinessSeniority=@PrevBusinessSeniority
 ,BusinessProfession=@BusinessProfession
 ,BusinessCity=@BusinessCity
-,BusinessEmail=@BusinessEmail
 ,BusinessPhone=@BusinessPhone
 ,BusinessGrossSalary=@BusinessGrossSalary
 ,BusinessLineBusiness=@BusinessLineBusiness
@@ -870,7 +988,7 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@Tz", Tz.Value);
                 cmd.Parameters.AddWithValue("@IssuanceDateTz", string.IsNullOrEmpty(IssuanceDateTz.Value) ? (object)DBNull.Value : DateTime.Parse(IssuanceDateTz.Value));
                 //cmd.Parameters.AddWithValue("@IsValidIssuanceDateTz", IsValidIssuanceDateTz.Checked == true ? 1 : 0);
-                cmd.Parameters.AddWithValue("@IsValidBdi",/* IsValidBdi.Checked == true ? 1 : 0*/ BdiValidity.SelectedIndex == 0 ? 1 : 0);
+                cmd.Parameters.AddWithValue("@IsValidBdi",/* IsValidBdi.Checked == true ? 1 : 0*/ BdiValidity.SelectedIndex);
                 cmd.Parameters.AddWithValue("@InvalidBdiReason", InvalidBdiReason.Value);
                 cmd.Parameters.AddWithValue("@Phone1", Phone1.Value);
                 cmd.Parameters.AddWithValue("@Phone2", string.IsNullOrEmpty(Phone2.Value) ? (object)DBNull.Value : Phone2.Value);
@@ -896,9 +1014,10 @@ namespace ControlPanel
 
                 cmd.Parameters.AddWithValue("@BusinessName", string.IsNullOrEmpty(BusinessName.Value) ? (object)DBNull.Value : BusinessName.Value);
                 cmd.Parameters.AddWithValue("@BusinessSeniority", string.IsNullOrEmpty(BusinessSeniority.Value) ? (object)DBNull.Value : BusinessSeniority.Value);
+                cmd.Parameters.AddWithValue("@PrevBusinessSeniority", string.IsNullOrEmpty(PrevBusinessSeniority.Value) ? (object)DBNull.Value : PrevBusinessSeniority.Value);
                 cmd.Parameters.AddWithValue("@BusinessProfession", string.IsNullOrEmpty(BusinessProfession.Value) ? (object)DBNull.Value : BusinessProfession.Value);
                 cmd.Parameters.AddWithValue("@BusinessCity", string.IsNullOrEmpty(BusinessCity.Value) ? (object)DBNull.Value : BusinessCity.Value);
-                cmd.Parameters.AddWithValue("@BusinessEmail", string.IsNullOrEmpty(BusinessEmail.Value) ? (object)DBNull.Value : BusinessEmail.Value);
+                //cmd.Parameters.AddWithValue("@BusinessEmail", string.IsNullOrEmpty(BusinessEmail.Value) ? (object)DBNull.Value : BusinessEmail.Value);
                 cmd.Parameters.AddWithValue("@BusinessPhone", string.IsNullOrEmpty(BusinessPhone.Value) ? (object)DBNull.Value : BusinessPhone.Value);
                 cmd.Parameters.AddWithValue("@BusinessGrossSalary", string.IsNullOrEmpty(BusinessGrossSalary.Value) ? (object)DBNull.Value : BusinessGrossSalary.Value);
                 cmd.Parameters.AddWithValue("@BusinessLineBusiness", string.IsNullOrEmpty(SelectBusinessEmploymentStatus.Value) ? (object)DBNull.Value : int.Parse(SelectBusinessEmploymentStatus.Value));
@@ -908,12 +1027,12 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@PartnerAge", string.IsNullOrEmpty(PartnerAge.Value) ? (object)DBNull.Value : PartnerAge.Value);
                 cmd.Parameters.AddWithValue("@PartnerSeniority", string.IsNullOrEmpty(PartnerSeniority.Value) ? (object)DBNull.Value : PartnerSeniority.Value);
 
-                cmd.Parameters.AddWithValue("@HaveAsset", CBHaveAsset.Checked == true ? 1 : 0);
+                cmd.Parameters.AddWithValue("@HaveAsset", SelectHaveAsset.SelectedIndex );
                 cmd.Parameters.AddWithValue("@AssetValue", string.IsNullOrEmpty(AssetValue.Value) ? (object)DBNull.Value : int.Parse(AssetValue.Value));
                 cmd.Parameters.AddWithValue("@AssetType", string.IsNullOrEmpty(AssetType.Value) ? (object)DBNull.Value : AssetType.Value);
                 cmd.Parameters.AddWithValue("@AssetAddress", string.IsNullOrEmpty(AssetAddress.Value) ? (object)DBNull.Value : AssetAddress.Value);
 
-                cmd.Parameters.AddWithValue("@HaveMortgageOnAsset", CBHaveMortgageOnAsset.Checked == true ? 1 : 0);
+                cmd.Parameters.AddWithValue("@HaveMortgageOnAsset", SelectHaveMortgageOnAsset);
                 cmd.Parameters.AddWithValue("@MortgageAmount", string.IsNullOrEmpty(MortgageAmount.Value) ? (object)DBNull.Value : long.Parse(MortgageAmount.Value));
                 cmd.Parameters.AddWithValue("@MonthlyRepaymentAmount", string.IsNullOrEmpty(MonthlyRepaymentAmount.Value) ? (object)DBNull.Value : int.Parse(MonthlyRepaymentAmount.Value));
                 cmd.Parameters.AddWithValue("@LendingBank", string.IsNullOrEmpty(LendingBank.Value) ? (object)DBNull.Value : LendingBank.Value);

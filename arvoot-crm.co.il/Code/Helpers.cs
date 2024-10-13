@@ -549,6 +549,34 @@ namespace ControlPanel.HelpersFunctions
                 return "true";
             }
 
+        }      
+        public static string insuredPhoneExist(string Phone, long IDLead)
+        {
+
+            //-- בדיקה שלא חסרים פרמטרים נדרשים
+            if (string.IsNullOrWhiteSpace(Phone))
+            {
+                return "missing parameter";
+            }
+            string sql = "Select Top 1 Phone1 from Lead where Phone1 = @Phone1";
+            if (IDLead != -1)
+            {
+                sql += " and ID<>" + IDLead;
+            }
+
+            SqlCommand cmd = new SqlCommand(sql);
+            cmd.Parameters.AddWithValue("@Phone1", Phone);
+
+            var res = DbProvider.GetOneParamValueString(cmd);
+            if (res == null)
+            {
+                return "false";
+            }
+            else
+            {
+                return "true";
+            }
+
         }
 
         public static string NumberToHebrewOrdinal(int number)

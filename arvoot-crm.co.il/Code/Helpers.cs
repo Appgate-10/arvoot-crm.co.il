@@ -15,6 +15,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Web.UI;
 using System.Data.SqlClient;
+using System.Globalization;
+
 namespace ControlPanel.HelpersFunctions
 {
     class Helpers
@@ -387,7 +389,11 @@ namespace ControlPanel.HelpersFunctions
         {
 
         }
-        public static async Task<string> GetCoordinatesForAddress(string address)
+
+
+    
+    
+    public static async Task<string> GetCoordinatesForAddress(string address)
         {
             string strReq1 = "https://maps.googleapis.com/maps/api/geocode/json?address=";
             strReq1=strReq1+address+"&key="+ConfigurationManager.AppSettings["GoogleMapsApiKey"] ;

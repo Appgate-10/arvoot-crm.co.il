@@ -1110,7 +1110,8 @@ namespace ControlPanel
                 try
                 {
                     Pageinit.CheckManagerPermissions();
-                    cmd.Parameters.AddWithValue("@AgentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
+                    //heni - 13.10.24 - אין מענה פעם שלישית להעביר ליד למנהל
+                    cmd.Parameters.AddWithValue("@AgentID", int.Parse(SelectFirstStatus.Value) == 5? (object)DBNull.Value : long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
                 }
                 catch (Exception ex)
                 {
@@ -1151,15 +1152,37 @@ namespace ControlPanel
 
                 cmd.Parameters.AddWithValue("@LeadID", long.Parse(Request.QueryString["LeadID"]));
 
+              //  long LeadID = DbProvider.GetOneParamValueLong(cmd);
                 if (DbProvider.ExecuteCommand(cmd) > 0)
-                {
-
+                { 
                     if (HttpContext.Current.Session["FirstStatusLeadID"].ToString() != SelectFirstStatus.Value)
                     {
                         SqlCommand cmdHistory = new SqlCommand("INSERT INTO ActivityHistory (AgentID, Details, CreateDate, Show) VALUES (@agentID, @details, GETDATE(), 1)");
                         cmdHistory.Parameters.AddWithValue("@agentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
                         cmdHistory.Parameters.AddWithValue("@details", ("שינוי סטטוס ליד " + FirstName.Value + " " + LastName.Value + " - " + SelectFirstStatus.Items[SelectFirstStatus.SelectedIndex].Text));
                         DbProvider.ExecuteCommand(cmdHistory);
+                        if (!string.IsNullOrEmpty(TrackingTime.Value))
+                        {
+                            string sqlTasks = @" INSERT INTO [Tasks]( Text
+                                        ,Status
+                                        ,LeadID
+                                        ,PerformDate)
+                                         VALUES (
+	                                      @Text
+                                         ,@Status
+                                         ,@LeadID
+                                         ,@PerformDate)";
+
+                            SqlCommand cmdTasks = new SqlCommand(sqlTasks);
+
+                            cmdTasks.Parameters.AddWithValue("@Text", "מעקב ליד " + Phone1.Value);
+                            cmdTasks.Parameters.AddWithValue("@Status", 3);
+                            cmdTasks.Parameters.AddWithValue("@LeadID", long.Parse(Request.QueryString["LeadID"]));
+                            cmdTasks.Parameters.AddWithValue("@PerformDate", DateTime.Parse(TrackingTime.Value));
+
+                            DbProvider.ExecuteCommand(cmdTasks);
+
+                        }
                         return true;
                     }
 

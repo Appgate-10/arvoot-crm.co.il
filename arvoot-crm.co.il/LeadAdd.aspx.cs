@@ -317,7 +317,7 @@ namespace ControlPanel
       ,RequestedLoanAmount
       ,PurposeLoan
       ,MortgageBalance
-      ,CreateDate)
+      ,CreateDate) output INSERTED.ID
       VALUES (
 	   @FirstName
       ,@LastName
@@ -400,7 +400,8 @@ namespace ControlPanel
                 try
                 {
                     Pageinit.CheckManagerPermissions();
-                    cmd.Parameters.AddWithValue("@AgentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
+                    //heni - 13.10.24 - אין מענה פעם שלישית להעביר ליד למנהל
+                    cmd.Parameters.AddWithValue("@AgentID", int.Parse(SelectFirstStatus.Value) == 5 ? (object)DBNull.Value : long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
                 }
                 catch (Exception ex)
                 {
@@ -440,13 +441,35 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@PurposeLoan", string.IsNullOrEmpty(PurposeLoan.Value) ? (object)DBNull.Value : PurposeLoan.Value);
                 cmd.Parameters.AddWithValue("@MortgageBalance", string.IsNullOrEmpty(MortgageBalance.Value) ? (object)DBNull.Value : long.Parse(MortgageBalance.Value));
 
-
-                if (DbProvider.ExecuteCommand(cmd) > 0)
+                long LeadID = DbProvider.GetOneParamValueLong(cmd);
+                if (LeadID > 0)
                 {
                     SqlCommand cmdHistory = new SqlCommand("INSERT INTO ActivityHistory (AgentID, Details, CreateDate, Show) VALUES (@agentID, @details, GETDATE(), 1)");
                     cmdHistory.Parameters.AddWithValue("@agentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
                     cmdHistory.Parameters.AddWithValue("@details", ("הוספת ליד חדש " + FirstName.Value + " " + LastName.Value));
                     DbProvider.ExecuteCommand(cmdHistory);
+                    if (!string.IsNullOrEmpty(TrackingTime.Value))
+                    {
+                        string sqlTasks = @" INSERT INTO [Tasks]( Text
+                                        ,Status
+                                        ,LeadID
+                                        ,PerformDate)
+                                         VALUES (
+	                                      @Text
+                                         ,@Status
+                                         ,@LeadID
+                                         ,@PerformDate)";
+
+                        SqlCommand cmdTasks = new SqlCommand(sqlTasks);
+
+                        cmdTasks.Parameters.AddWithValue("@Text", "מעקב ליד " + Phone1.Value);
+                        cmdTasks.Parameters.AddWithValue("@Status", 3); 
+                        cmdTasks.Parameters.AddWithValue("@LeadID", LeadID);
+                        cmdTasks.Parameters.AddWithValue("@PerformDate", DateTime.Parse(TrackingTime.Value));
+
+                        DbProvider.ExecuteCommand(cmdTasks);
+                        
+                    }
                     return true;
                 }
                 else

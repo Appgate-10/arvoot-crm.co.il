@@ -194,13 +194,14 @@ namespace ControlPanel
             long ItemCount = 0;
             string sqlWhere = "";
             SqlCommand cmd = new SqlCommand();
-            string sql = @"select   Lead.ID ,CONVERT(varchar, CreateDate, 104) AS  CreateDate,FirstName,LastName,Tz,Phone1,FirstStatusLeadID FirstStatus,SecondStatusLead.Status SecondStatus, SecondStatusLeadID
-                                 ,CONCAT(CONVERT(varchar, TrackingTime, 104), ' ', CONVERT(VARCHAR(5), TrackingTime, 108)) AS TrackingTime,Note
+            string sql = @"select   Lead.ID ,CONVERT(varchar, Lead.CreateDate, 104) AS  CreateDate,FirstName,LastName,Lead.Tz,Phone1,FirstStatusLeadID FirstStatus,SecondStatusLead.Status SecondStatus, SecondStatusLeadID
+                                 ,CONCAT(CONVERT(varchar, TrackingTime, 104), ' ', CONVERT(VARCHAR(5), TrackingTime, 108)) AS TrackingTime,Note,Agent.FullName as AgentName
                                   from Lead
                                   left join SecondStatusLead on Lead.SecondStatusLeadID=SecondStatusLead.ID
+                                  left join Agent on Agent.ID = Lead.AgentID
                                   where Lead.IsContact=0
                                   ";
-
+            
 
             if (Request.QueryString["Q"] != null)
             {
@@ -223,6 +224,19 @@ namespace ControlPanel
                 }
             }
             catch(Exception) { }
+
+            try
+            {
+                if (int.Parse(Session["selectedAgent"].ToString()) > 1)
+                {
+
+                    AgentsList.SelectedValue = Session["selectedAgent"].ToString();
+
+                    sqlWhere += " and agent.id = @agentID";
+                    cmd.Parameters.AddWithValue("@agentID", Session["selectedAgent"].ToString());
+                }
+            }
+            catch (Exception) { }
 
             try
             {
@@ -297,6 +311,14 @@ namespace ControlPanel
             SubStatusList.DataValueField = "ID";
             SubStatusList.DataBind();
             SubStatusList.Items.Insert(0, new ListItem("סטטוס משני", ""));
+
+            SqlCommand cmdAgents = new SqlCommand("SELECT  FullName as AgentName,ID FROM Agent");
+            DataSet dsAgents = DbProvider.GetDataSet(cmdAgents);
+            AgentsList.DataSource = dsAgents;
+            AgentsList.DataTextField = "AgentName";
+            AgentsList.DataValueField = "ID";
+            AgentsList.DataBind();
+            AgentsList.Items.Insert(0, new ListItem("סוכן", ""));
         }
 
         protected void SuspensionBU_Click(object sender, CommandEventArgs e)
@@ -659,6 +681,13 @@ namespace ControlPanel
         protected void BtnDetailsLead_Command(object sender, CommandEventArgs e)
         {
             Response.Redirect("LeadEdite.aspx?LeadID=" + e.CommandArgument.ToString());
+        }
+
+        protected void AgentsList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Session["selectedAgent"] = AgentsList.SelectedValue.ToString();
+
+            loadUsers(1);
         }
     }
 }

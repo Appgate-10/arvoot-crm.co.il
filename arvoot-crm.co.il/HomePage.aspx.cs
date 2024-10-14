@@ -296,11 +296,12 @@ LEFT JOIN ApprovedPayments ap ON sr.ID = ap.ServiceRequestID";
                                     left join TaskStatuses ts on ts.ID = Tasks.Status left join Lead lead2 on Tasks.LeadID = lead2.ID
                                     where isnull(Lead.AgentID,lead2.AgentID) = @AgentID
                                     AND CAST(PerformDate  AS DATE) = CAST(@selectedDate AS DATE)";
+
             SqlCommand cmdTasks = new SqlCommand(strTasks);
             cmdTasks.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
             cmdTasks.Parameters.AddWithValue("@selectedDate", TasksCalendar.SelectedDate);
-            DataTable dtTasks = DbProvider.GetDataTable(cmdTasks);
-            Repeater3.DataSource = dtTasks;
+            DataSet dsTasks = DbProvider.GetDataSet(cmdTasks);
+            Repeater3.DataSource = dsTasks;
             Repeater3.DataBind();
 
             LoadTaskDates();

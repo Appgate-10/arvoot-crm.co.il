@@ -24,15 +24,18 @@
         <div style="width: 7%; text-align: right;">ת.ז.</div>
         <div style="width: 8%; text-align: right;">טלפון</div>
         <div style="width: 12%; text-align: right;">          
-             <asp:DropDownList style="width:60%" runat="server" ID="MainStatusList" OnSelectedIndexChanged="StatusList_SelectedIndexChanged"  class="StatusClaims" ToolTip="סטטוס ראשי" AutoPostBack="true"></asp:DropDownList>
+             <asp:DropDownList style="width:60%" runat="server" ID="MainStatusList" OnSelectedIndexChanged="StatusList_SelectedIndexChanged" CssClass="StatusClaims" ToolTip="סטטוס ראשי" AutoPostBack="true"></asp:DropDownList>
 
         </div>
         <div style="width: 15%; text-align: right;">
-             <asp:DropDownList style="width:60%" runat="server" ID="SubStatusList" OnSelectedIndexChanged="SubStatusList_SelectedIndexChanged"  class="StatusClaims" ToolTip="סטטוס משני" AutoPostBack="true"></asp:DropDownList>
+             <asp:DropDownList style="width:60%" runat="server" ID="SubStatusList" OnSelectedIndexChanged="SubStatusList_SelectedIndexChanged" CssClass="StatusClaims" ToolTip="סטטוס משני" AutoPostBack="true"></asp:DropDownList>
 
            </div>
+        <div style="width: 9%; text-align: right;">
+            <asp:DropDownList  style="width:60%" runat="server" ID="AgentsList" OnSelectedIndexChanged="AgentsList_SelectedIndexChanged" CssClass="StatusClaims" ToolTip="סוכן" AutoPostBack="true"></asp:DropDownList>
+        </div>
         <div style="width: 8%; text-align: right;">זמן מעקב</div>
-        <div class="row" style="width: 23%; text-align: right; align-items: center; justify-content: space-between;">
+        <div class="row" style="width: 14%; text-align: right; align-items: center; justify-content: space-between;">
             <label style="margin-left: 2%;">הערות</label>
             <div class="row">
 <%--                <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="~/images/icons/Upload_Button.png" OnClick="CopyLid_Click" />--%>
@@ -58,8 +61,9 @@
                                 <div style="width: 5%; text-align: center">
                                     <asp:Image ID="BtnDetailsLead"   style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
                                 </div>
-                                <div style="width: 19%; text-align: right"><%#Eval("Note") %></div>
+                                <div style="width: 10%; text-align: right"><%#Eval("Note") %></div>
                                 <div style="width: 8%; text-align: right;"><%#Eval("TrackingTime") %></div>
+                                <div style="width: 9%; text-align: right;"><%#Eval("AgentName") %></div>
                                 <div style="width: 15%; text-align: right;"><%--<%#Eval("SecondStatus") %>--%>
                                       <asp:TextBox  ID="SubStatus"   Text='<%#Eval("SecondStatus ") %>'  style="vertical-align: middle;width: 90%;height: 40%;font-weight: bold;color: #35508C;background-repeat: no-repeat;
                                                     background-size: 100% 100%;text-align: center;border: none; background-image: url(../images/icons/Secondary_Status_6.png);" runat="server"   />

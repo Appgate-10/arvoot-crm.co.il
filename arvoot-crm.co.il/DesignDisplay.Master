@@ -157,7 +157,12 @@
                         </asp:UpdatePanel>
                     </div>
                     <div style="display:flex">
-                        <div style="width: 14.5%; padding-left: 2%;" id="AfterSignIn3" runat="server" class="col">
+                        <%-- Heni --%>
+                   <div style="width: 14.5%; padding-left: 2%;" id="Div1" runat="server" class="col">
+
+                    <asp:UpdatePanel ID="AddForm2" UpdateMode="Conditional" runat="server" >
+                    <ContentTemplate>
+                        <div style="width: 100%; padding-left: 2%;" id="AfterSignIn3" runat="server" class="col">
                                 <div style="background-color: white; background-color: white;">
                                     <div style="margin: 15px 10px; display: flex; justify-content: center; align-items: center;">
                                         <label style="margin-inline-end: 10px;">היסטוריית פעולות</label>
@@ -187,6 +192,9 @@
                                 </div>
 
                             </div>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                                                    </div>
                     <div class="col" style="width: calc(100% - 14.5%);" id="MainContentDiv" runat="server">
                         <div class="row" id="ContentDiv" runat="server">
 

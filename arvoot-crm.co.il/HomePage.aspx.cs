@@ -41,9 +41,9 @@ namespace ControlPanel
                     //Gila
                     string strTasks = @"select Tasks.ID, FORMAT(Tasks.PerformDate, 'dd.MM.yy') as dateTask , 
                                     CONVERT(varchar(5), Tasks.PerformDate, 108) as timeTask, Tasks.Text, ts.Status 
-                                    from Tasks inner join Offer on Offer.ID = Tasks.OfferID  inner join Lead on Lead.ID = Offer.LeadID 
-                                    left join TaskStatuses ts on ts.ID = Tasks.Status
-                                    where Lead.AgentID = @AgentID
+                                    from Tasks left join Offer on Offer.ID = Tasks.OfferID  left join Lead on Lead.ID = Offer.LeadID 
+                                    left join TaskStatuses ts on ts.ID = Tasks.Status left join Lead lead2 on Tasks.LeadID = lead2.ID
+                                    where isnull(Lead.AgentID,lead2.AgentID) = @AgentID
                                     AND PerformDate = CAST(@selectedDate AS DATE)";
                     SqlCommand cmdTasks = new SqlCommand(strTasks);
 
@@ -228,7 +228,8 @@ LEFT JOIN ApprovedPayments ap ON sr.ID = ap.ServiceRequestID";
             string sqlDates = @"SELECT DISTINCT CAST(PerformDate AS DATE) AS TaskDate FROM Tasks
                                 inner join Offer on Offer.ID = Tasks.OfferID 
                                 INNER JOIN Lead on Lead.ID = Offer.LeadID 
-                                WHERE PerformDate BETWEEN @startDate AND @endDate AND Lead.AgentID = @AgentID";
+                                left join Lead lead2 on Tasks.LeadID = lead2.ID
+                                WHERE PerformDate BETWEEN @startDate AND @endDate AND isnull(Lead.AgentID,lead2.AgentID) = @AgentID";
             SqlCommand cmdDates = new SqlCommand(sqlDates);
             cmdDates.Parameters.AddWithValue("@startDate", startDate);
             cmdDates.Parameters.AddWithValue("@endDate", endDate);
@@ -291,10 +292,11 @@ LEFT JOIN ApprovedPayments ap ON sr.ID = ap.ServiceRequestID";
         {
             string strTasks = @"select Tasks.ID, FORMAT(Tasks.PerformDate, 'dd.MM.yy') as dateTask , 
                                     CONVERT(varchar(5), Tasks.PerformDate, 108) as timeTask, Tasks.Text, ts.Status 
-                                    from Tasks inner join Offer on Offer.ID = Tasks.OfferID inner join Lead on Lead.ID = Offer.LeadID 
-                                    left join TaskStatuses ts on ts.ID = Tasks.Status
-                                    where Lead.AgentID = @AgentID
-                                    AND  CAST(PerformDate AS DATE) = CAST(@selectedDate AS DATE)";
+                                    from Tasks left join Offer on Offer.ID = Tasks.OfferID left join Lead on Lead.ID = Offer.LeadID 
+                                    left join TaskStatuses ts on ts.ID = Tasks.Status left join Lead lead2 on Tasks.LeadID = lead2.ID
+                                    where isnull(Lead.AgentID,lead2.AgentID) = @AgentID
+                                    AND CAST(PerformDate  AS DATE) = CAST(@selectedDate AS DATE)";
+
             SqlCommand cmdTasks = new SqlCommand(strTasks);
             cmdTasks.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
             cmdTasks.Parameters.AddWithValue("@selectedDate", TasksCalendar.SelectedDate);
@@ -310,10 +312,11 @@ LEFT JOIN ApprovedPayments ap ON sr.ID = ap.ServiceRequestID";
             string strTasks = @"select Tasks.ID, FORMAT(Tasks.PerformDate, 'dd.MM.yy') as dateTask , 
                                     CONVERT(varchar(5), Tasks.PerformDate, 108) as timeTask, Tasks.Text, ts.Status 
                                     from Tasks 
-                                inner join Offer on Offer.ID = Tasks.OfferID 
-                                INNER JOIN Lead on Lead.ID = Offer.LeadID 
-                                    left join TaskStatuses ts on ts.ID = Tasks.Status
-                                    where Lead.AgentID = @AgentID
+                                left join Offer on Offer.ID = Tasks.OfferID 
+                                left JOIN Lead on Lead.ID = Offer.LeadID 
+                                    left join TaskStatuses ts on ts.ID = Tasks.Status 
+                                    left join Lead lead2 on Tasks.LeadID = lead2.ID
+                                    where isnull(Lead.AgentID,lead2.AgentID) = @AgentID
                                     AND PerformDate between CAST(GETDATE() AS DATE) AND DATEADD(MONTH, 2, CAST(GETDATE() AS DATE))";
             SqlCommand cmdTasks = new SqlCommand(strTasks);
             cmdTasks.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);

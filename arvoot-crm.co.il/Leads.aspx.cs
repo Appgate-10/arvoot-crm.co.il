@@ -109,76 +109,84 @@ namespace ControlPanel
 
         protected void Repeater1_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            Image image = (Image)e.Item.FindControl("MainStatus");
-            if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 2)
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                image.ImageUrl = "~/images/icons/Status_1.png";
+                //CheckBox cb = (CheckBox)e.Item.FindControl("chk");
+                //cb.ID = "CheckBox_" + DataBinder.Eval(e.Item.DataItem, "ID").ToString();
 
-            }
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 3)
-            {
-                image.ImageUrl = "~/images/icons/Status_3_1.png";
+                Image image = (Image)e.Item.FindControl("MainStatus");
+                if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 2)
+                {
+                    image.ImageUrl = "~/images/icons/Status_1.png";
 
-            }
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 4)
-            {
-        
-                image.ImageUrl = "~/images/icons/Status_3_2.png";
-            }
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 5)
-            {
-                image.ImageUrl = "~/images/icons/Status_3_3.png";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 3)
+                {
+                    image.ImageUrl = "~/images/icons/Status_3_1.png";
 
-            }
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 6)
-            {
-                image.ImageUrl = "~/images/icons/Status_5.png";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 4)
+                {
 
-            }
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 7)
-            {
-                image.ImageUrl = "~/images/icons/Status_6.png";
+                    image.ImageUrl = "~/images/icons/Status_3_2.png";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 5)
+                {
+                    image.ImageUrl = "~/images/icons/Status_3_3.png";
 
-            }
-            else image.ImageUrl = "";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 6)
+                {
+                    image.ImageUrl = "~/images/icons/Status_5.png";
+
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 7)
+                {
+                    image.ImageUrl = "~/images/icons/Status_6.png";
+
+                }
+                else image.ImageUrl = "";
 
 
-            TextBox image2 = (TextBox)e.Item.FindControl("SubStatus");
-            if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 2) {
+                TextBox image2 = (TextBox)e.Item.FindControl("SubStatus");
+                if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 2)
+                {
 
-                image2.Style["background-image"] = "url('../images/icons/Secondary_Status_1.png')";
-                image2.Style["color"] = "#CD9CCA";
-            } else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 3)
-            {
+                    image2.Style["background-image"] = "url('../images/icons/Secondary_Status_1.png')";
+                    image2.Style["color"] = "#CD9CCA";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 3)
+                {
 
-                image2.Style["background-image"] = "url('../images/icons/Secondary_Status_2.png')";
-                image2.Style["color"] = "#77C9FF";
+                    image2.Style["background-image"] = "url('../images/icons/Secondary_Status_2.png')";
+                    image2.Style["color"] = "#77C9FF";
 
-            }
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 4)
-            {
-                image2.Style["color"] = "#FFC253";
-                image2.Style["background-image"] = "url('../images/icons/Secondary_Status_3.png')";
-            }
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 5)
-            {
-                image2.Style["color"] = "#8DD980";
-                image2.Style["background-image"] = "url('../images/icons/Secondary_Status_4.png')";
-            } 
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 6)
-            {
-                image2.Style["color"] = "#A3A3A3";
-                image2.Style["background-image"] = "url('../images/icons/Secondary_Status_5.png')";
-            } 
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 7)
-            {
-                image2.Style["color"] = "#35508C";
-                image2.Style["background-image"] = "url('../images/icons/Secondary_Status_6.png')";
-            }
-            else
-            {
-                image2.Style["color"] = "#35508C";
-                image2.Style["background-image"] = "url('../images/icons/Secondary_Status_6.png')";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 4)
+                {
+                    image2.Style["color"] = "#FFC253";
+                    image2.Style["background-image"] = "url('../images/icons/Secondary_Status_3.png')";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 5)
+                {
+                    image2.Style["color"] = "#8DD980";
+                    image2.Style["background-image"] = "url('../images/icons/Secondary_Status_4.png')";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 6)
+                {
+                    image2.Style["color"] = "#A3A3A3";
+                    image2.Style["background-image"] = "url('../images/icons/Secondary_Status_5.png')";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 7)
+                {
+                    image2.Style["color"] = "#35508C";
+                    image2.Style["background-image"] = "url('../images/icons/Secondary_Status_6.png')";
+                }
+                else
+                {
+                    image2.Style["color"] = "#35508C";
+                    image2.Style["background-image"] = "url('../images/icons/Secondary_Status_6.png')";
+                }
             }
         }
         public void loadUsers(int page)
@@ -567,16 +575,29 @@ namespace ControlPanel
                 FormError_lable.Text = "יש לבחור סוכן";
                 return;
             };
-            string IdsLeads = "";
-            for(int i =0; i< Repeater2.Items.Count; i++)
+            string IdsLeads ="";
+
+
+
+            for (int i = 0; i < Repeater1.Items.Count; i++)
             {
-                if (((CheckBox)Repeater2.Items[i].FindControl("ChkBox")).Checked)
+                if (((CheckBox)Repeater1.Items[i].FindControl("chk")).Checked)
                 {
-                    IdsLeads += ((HiddenField)Repeater2.Items[i].FindControl("LeadID")).Value;
+                    IdsLeads += ((HiddenField)Repeater1.Items[i].FindControl("LeadID")).Value;
                     IdsLeads += ",";
                 }
 
             }
+            
+            //for (int i =0; i< Repeater2.Items.Count; i++)
+            //{
+            //    if (((CheckBox)Repeater2.Items[i].FindControl("ChkBox")).Checked)
+            //    {
+            //        IdsLeads += ((HiddenField)Repeater2.Items[i].FindControl("LeadID")).Value;
+            //        IdsLeads += ",";
+            //    }
+
+            //}
             if (string.IsNullOrEmpty(IdsLeads))
             {
                 FormError_lable.Visible = true;
@@ -584,15 +605,16 @@ namespace ControlPanel
                 return;
             }
 
-            SqlCommand cmd = new SqlCommand("update Lead set AgentID = @AgentID where ID in(@IdsLeads)");
+            SqlCommand cmd = new SqlCommand("update Lead set AgentID = @AgentID where ID in(" + IdsLeads.Remove(IdsLeads.Length - 1, 1) + ")");
             cmd.Parameters.AddWithValue("@AgentID", AgentList.SelectedValue);
-            cmd.Parameters.AddWithValue("@IdsLeads", IdsLeads.Remove(IdsLeads.Length-1,1));
+            //cmd.Parameters.AddWithValue("@IdsLeads", IdsLeads.Remove(IdsLeads.Length-1,1));
             if (DbProvider.ExecuteCommand(cmd) <= 0)
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('An error occurred');", true);
 
             }
             MoveLeadPopUp.Visible = false;
+            loadUsers(1);
 
 
         } 
@@ -663,11 +685,15 @@ namespace ControlPanel
             Repeater2.DataSource = dsLeads;
             Repeater2.DataBind();
 
+            UpdatePanel2.Update();
+
+            
+
         }    
         protected void CreateEmployee_Click(object sender, EventArgs e)
         {
-
             AddAgentPopUp.Visible = true;
+            UpdatePanel2.Update();
         }
         protected void AddTimeOK_Click(object sender, ImageClickEventArgs e)
         {

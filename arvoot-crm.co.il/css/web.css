@@ -1947,6 +1947,20 @@ H2 {
     color: inherit;
 }
 
+.repeaterButton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    border-color: transparent;
+    cursor:pointer;
+}
+
+    .repeaterButton:focus {
+        outline: none;
+    }
 
 .selectGlobal {
     width: 100%;
@@ -2184,7 +2198,7 @@ H2 {
 
 .DivAgentVAll {
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 100px;
     justify-content: center;
     border-top: 1px solid #dddddd;
     padding-top: 40px

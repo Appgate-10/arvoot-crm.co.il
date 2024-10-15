@@ -37,10 +37,11 @@ namespace ControlPanel
                 {
                     MoveTo.Visible = true;
                     CreateEmployee.Visible = true;
+                    SetStatus.Visible = true;
                 }
                 ManagementPermission_Click(this, EventArgs.Empty);
 
-                loadUsers(1);
+                loadUsers(1,false);
             }
         }
 
@@ -109,48 +110,53 @@ namespace ControlPanel
 
         protected void Repeater1_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            Image image = (Image)e.Item.FindControl("MainStatus");
-            if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 2)
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                image.ImageUrl = "~/images/icons/Status_1.png";
+                //CheckBox cb = (CheckBox)e.Item.FindControl("chk");
+                //cb.ID = "CheckBox_" + DataBinder.Eval(e.Item.DataItem, "ID").ToString();
 
-            }
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 3)
-            {
-                image.ImageUrl = "~/images/icons/Status_3_1.png";
+                Image image = (Image)e.Item.FindControl("MainStatus");
+                if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 2)
+                {
+                    image.ImageUrl = "~/images/icons/Status_1.png";
 
-            }
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 4)
-            {
-        
-                image.ImageUrl = "~/images/icons/Status_3_2.png";
-            }
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 5)
-            {
-                image.ImageUrl = "~/images/icons/Status_3_3.png";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 3)
+                {
+                    image.ImageUrl = "~/images/icons/Status_3_1.png";
 
-            }
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 6)
-            {
-                image.ImageUrl = "~/images/icons/Status_5.png";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 4)
+                {
 
-            }
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 7)
-            {
-                image.ImageUrl = "~/images/icons/Status_6.png";
+                    image.ImageUrl = "~/images/icons/Status_3_2.png";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 5)
+                {
+                    image.ImageUrl = "~/images/icons/Status_3_3.png";
 
-            }
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 8)
-            {
-                image.ImageUrl = "~/images/icons/Status_2.png";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 6)
+                {
+                    image.ImageUrl = "~/images/icons/Status_5.png";
 
-            } 
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 9)
-            {
-                image.ImageUrl = "~/images/icons/Not_Relevant_Button.png";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 7)
+                {
+                    image.ImageUrl = "~/images/icons/Status_6.png";
 
-            }
-            else image.ImageUrl = "";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 8)
+                {
+                    image.ImageUrl = "~/images/icons/Status_2.png";
+
+                } 
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 9)
+                {
+                    image.ImageUrl = "~/images/icons/Not_Relevant_Button.png";
+
+                }
+                else image.ImageUrl = "";
 
 
             TextBox image2 = (TextBox)e.Item.FindControl("SubStatus");
@@ -161,44 +167,48 @@ namespace ControlPanel
                 //image2.Style["color"] = "#CD9CCA";
             }
             else
-            if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 2) {
+          
+                if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 2)
+                {
 
-                image2.Style["background-image"] = "url('../images/icons/Secondary_Status_1.png')";
-                image2.Style["color"] = "#CD9CCA";
-            } else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 3)
-            {
+                    image2.Style["background-image"] = "url('../images/icons/Secondary_Status_1.png')";
+                    image2.Style["color"] = "#CD9CCA";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 3)
+                {
 
-                image2.Style["background-image"] = "url('../images/icons/Secondary_Status_2.png')";
-                image2.Style["color"] = "#77C9FF";
+                    image2.Style["background-image"] = "url('../images/icons/Secondary_Status_2.png')";
+                    image2.Style["color"] = "#77C9FF";
 
-            }
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 4)
-            {
-                image2.Style["color"] = "#FFC253";
-                image2.Style["background-image"] = "url('../images/icons/Secondary_Status_3.png')";
-            }
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 5)
-            {
-                image2.Style["color"] = "#8DD980";
-                image2.Style["background-image"] = "url('../images/icons/Secondary_Status_4.png')";
-            } 
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 6)
-            {
-                image2.Style["color"] = "#A3A3A3";
-                image2.Style["background-image"] = "url('../images/icons/Secondary_Status_5.png')";
-            } 
-            else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 7)
-            {
-                image2.Style["color"] = "#35508C";
-                image2.Style["background-image"] = "url('../images/icons/Secondary_Status_6.png')";
-            }
-            else
-            {
-                image2.Style["color"] = "#35508C";
-                image2.Style["background-image"] = "url('../images/icons/Secondary_Status_6.png')";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 4)
+                {
+                    image2.Style["color"] = "#FFC253";
+                    image2.Style["background-image"] = "url('../images/icons/Secondary_Status_3.png')";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 5)
+                {
+                    image2.Style["color"] = "#8DD980";
+                    image2.Style["background-image"] = "url('../images/icons/Secondary_Status_4.png')";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 6)
+                {
+                    image2.Style["color"] = "#A3A3A3";
+                    image2.Style["background-image"] = "url('../images/icons/Secondary_Status_5.png')";
+                }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 7)
+                {
+                    image2.Style["color"] = "#35508C";
+                    image2.Style["background-image"] = "url('../images/icons/Secondary_Status_6.png')";
+                }
+                else
+                {
+                    image2.Style["color"] = "#35508C";
+                    image2.Style["background-image"] = "url('../images/icons/Secondary_Status_6.png')";
+                }
             }
         }
-        public void loadUsers(int page)
+        public void loadUsers(int page, bool shouldUpdate = false)
         {
             //int PageNumber = 1;
             int PageNumber = page;
@@ -336,6 +346,11 @@ namespace ControlPanel
             AgentsList.DataValueField = "ID";
             AgentsList.DataBind();
             AgentsList.Items.Insert(0, new ListItem("סוכן", ""));
+
+            if (shouldUpdate == true)
+            {
+                AddForm.Update();
+            }
         }
 
         protected void SuspensionBU_Click(object sender, CommandEventArgs e)
@@ -584,16 +599,29 @@ namespace ControlPanel
                 FormError_lable.Text = "יש לבחור סוכן";
                 return;
             };
-            string IdsLeads = "";
-            for(int i =0; i< Repeater2.Items.Count; i++)
+            string IdsLeads ="";
+
+
+
+            for (int i = 0; i < Repeater1.Items.Count; i++)
             {
-                if (((CheckBox)Repeater2.Items[i].FindControl("ChkBox")).Checked)
+                if (((CheckBox)Repeater1.Items[i].FindControl("chk")).Checked)
                 {
-                    IdsLeads += ((HiddenField)Repeater2.Items[i].FindControl("LeadID")).Value;
+                    IdsLeads += ((HiddenField)Repeater1.Items[i].FindControl("LeadID")).Value;
                     IdsLeads += ",";
                 }
 
             }
+            
+            //for (int i =0; i< Repeater2.Items.Count; i++)
+            //{
+            //    if (((CheckBox)Repeater2.Items[i].FindControl("ChkBox")).Checked)
+            //    {
+            //        IdsLeads += ((HiddenField)Repeater2.Items[i].FindControl("LeadID")).Value;
+            //        IdsLeads += ",";
+            //    }
+
+            //}
             if (string.IsNullOrEmpty(IdsLeads))
             {
                 FormError_lable.Visible = true;
@@ -601,15 +629,16 @@ namespace ControlPanel
                 return;
             }
 
-            SqlCommand cmd = new SqlCommand("update Lead set AgentID = @AgentID where ID in(@IdsLeads)");
+            SqlCommand cmd = new SqlCommand("update Lead set AgentID = @AgentID where ID in(" + IdsLeads.Remove(IdsLeads.Length - 1, 1) + ")");
             cmd.Parameters.AddWithValue("@AgentID", AgentList.SelectedValue);
-            cmd.Parameters.AddWithValue("@IdsLeads", IdsLeads.Remove(IdsLeads.Length-1,1));
+            //cmd.Parameters.AddWithValue("@IdsLeads", IdsLeads.Remove(IdsLeads.Length-1,1));
             if (DbProvider.ExecuteCommand(cmd) <= 0)
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('An error occurred');", true);
 
             }
             MoveLeadPopUp.Visible = false;
+            loadUsers(1,true);
 
 
         } 
@@ -618,14 +647,14 @@ namespace ControlPanel
         {
             Session["mainStatus"] = MainStatusList.SelectedValue.ToString();
 
-            loadUsers(1);
+            loadUsers(1,false);
         } 
         
         protected void SubStatusList_SelectedIndexChanged(object sender, EventArgs e)
         {
             Session["subStatus"] = SubStatusList.SelectedValue.ToString();
 
-            loadUsers(1);
+            loadUsers(1,false);
         }
         protected void ActivatingBU_Click(object sender, CommandEventArgs e)
         {
@@ -665,6 +694,7 @@ namespace ControlPanel
         }        
         protected void MoveTo_Click(object sender, EventArgs e)
         {
+            FormError_lable.Visible = false;
             MoveLeadPopUp.Visible = true;
            
             SqlCommand cmdAgents = new SqlCommand("SELECT  FullName as AgentName,ID FROM Agent where Level =3");
@@ -680,11 +710,13 @@ namespace ControlPanel
             Repeater2.DataSource = dsLeads;
             Repeater2.DataBind();
 
+            UpdatePanel2.Update();
+
         }    
         protected void CreateEmployee_Click(object sender, EventArgs e)
         {
-
             AddAgentPopUp.Visible = true;
+            UpdatePanel2.Update();
         }
         protected void AddTimeOK_Click(object sender, ImageClickEventArgs e)
         {
@@ -704,7 +736,72 @@ namespace ControlPanel
         {
             Session["selectedAgent"] = AgentsList.SelectedValue.ToString();
 
-            loadUsers(1);
+            loadUsers(1,false);
+        }
+
+        protected void SetStatus_Click(object sender, EventArgs e)
+        {
+            StatusError_label.Visible = false;
+            SetStatusPopUp.Visible = true;
+
+            SqlCommand cmdStatus = new SqlCommand("SELECT * FROM FirstStatusLead");
+            DataSet dsStatus = DbProvider.GetDataSet(cmdStatus);
+            StatusEditList.DataSource = dsStatus;
+            StatusEditList.DataTextField = "Status";
+            StatusEditList.DataValueField = "ID";
+            StatusEditList.DataBind();
+            StatusEditList.Items.Insert(0, new ListItem("סטטוס ראשי", ""));
+
+            UpdatePanel2.Update();
+        }
+
+        protected void CloseStatusPopUp_Click(object sender, ImageClickEventArgs e)
+        {
+            SetStatusPopUp.Visible = false;
+        }
+
+        protected void btnSetStatusNow_Click(object sender, EventArgs e)
+        {
+            if (StatusEditList.SelectedIndex == 0)
+            {
+                StatusError_label.Visible = true;
+                StatusError_label.Text = "יש לבחור סטטוס ראשי";
+                return;
+            };
+            string IdsLeads = "";
+
+
+
+            for (int i = 0; i < Repeater1.Items.Count; i++)
+            {
+                if (((CheckBox)Repeater1.Items[i].FindControl("chk")).Checked)
+                {
+                    IdsLeads += ((HiddenField)Repeater1.Items[i].FindControl("LeadID")).Value;
+                    IdsLeads += ",";
+                }
+
+            }
+
+            
+            if (string.IsNullOrEmpty(IdsLeads))
+            {
+                StatusError_label.Visible = true;
+                StatusError_label.Text = "יש לסמן ליד";
+                return;
+            }
+
+            SqlCommand cmd = new SqlCommand("update Lead set FirstStatusLeadID = @FirstStatusLeadID where ID in(" + IdsLeads.Remove(IdsLeads.Length - 1, 1) + ")");
+            cmd.Parameters.AddWithValue("@FirstStatusLeadID", StatusEditList.SelectedValue);
+            //cmd.Parameters.AddWithValue("@IdsLeads", IdsLeads.Remove(IdsLeads.Length-1,1));
+            if (DbProvider.ExecuteCommand(cmd) <= 0)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('An error occurred');", true);
+
+            }
+            SetStatusPopUp.Visible = false;
+            loadUsers(1,true);
+
+           
         }
     }
 }

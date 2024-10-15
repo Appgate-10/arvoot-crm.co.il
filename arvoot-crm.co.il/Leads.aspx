@@ -12,10 +12,16 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:Button  ID="NewLidBtn" Class="NewLid" Text="ליד חדש" Style="width: 110px; height: 35px;" runat="server" OnClick="NewLidBtn_Click" />
+    <asp:UpdatePanel ID="UpdatePanelButtons" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+             <asp:Button  ID="NewLidBtn" Class="NewLid" Text="ליד חדש" Style="width: 110px; height: 35px;" runat="server" OnClick="NewLidBtn_Click" />
     <asp:Button  ID="MoveTo" Class="NewLid"  Visible="false" Text="העבר ליד" Style="width: 110px; height: 35px; left:22%" runat="server" OnClick="MoveTo_Click" />
-    <asp:Button  ID="CreateEmployee" Class="NewLid"  Visible="false" Text="צור עובד/סוכן" Style="width: 110px; height: 35px; left:30%" runat="server" OnClick="CreateEmployee_Click" />
+    <asp:Button  ID="SetStatus" Class="NewLid"  Visible="false" Text="ערוך סטטוס" Style="width: 110px; height: 35px; left:30%" runat="server" OnClick="SetStatus_Click" />
+    <asp:Button  ID="CreateEmployee" Class="NewLid"  Visible="false" Text="צור עובד/סוכן" Style="width: 110px; height: 35px; left:38%" runat="server" OnClick="CreateEmployee_Click" />
 
+        </ContentTemplate>
+    </asp:UpdatePanel>
+   
     <div class="ListDivParamsHeadFlex">
         <div style="width: 5%; text-align: right;"></div>
         <div style="width: 7%; text-align: right;">ת.הקמה</div>
@@ -55,12 +61,13 @@
             <div runat="server" id="div2">
                 <asp:Repeater ID="Repeater1" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
                     <ItemTemplate>
-                       <asp:LinkButton ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsLead_Command" CssClass="ButtonDiv" >
+                      <%-- <asp:LinkButton ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsLead_Command" CssClass="ButtonDiv" >--%>
 
-                            <div class="ListDivParamsBig" >
+                            <div class="ListDivParamsBig" style="position:relative;" >
                                 <div style="width: 5%; text-align: center">
                                     <asp:Image ID="BtnDetailsLead"   style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
                                 </div>
+                                <asp:HiddenField ID="LeadID" Value='<%#Eval("ID") %>' runat="server"/>
                                 <div style="width: 10%; text-align: right"><%#Eval("Note") %></div>
                                 <div style="width: 8%; text-align: right;"><%#Eval("TrackingTime") %></div>
                                 <div style="width: 9%; text-align: right;"><%#Eval("AgentName") %></div>
@@ -79,10 +86,11 @@
                                 <div style="width: 7%; text-align: right"><%#Eval("FirstName") %></div>
                                 <div style="width: 7%; text-align: right"><%#Eval("CreateDate") %></div>
                                 <div style="width: 5%; text-align: center">
-                                    <asp:CheckBox ID="chk" runat="server" />
+                                    <asp:CheckBox ID="chk" runat="server" ClientIDMode="Static" />
                                 </div>
+                                <asp:Button ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsLead_Command" CssClass="repeaterButton" Style="width:95%;"/>
                             </div>
-                       </asp:LinkButton>
+                       <%--</asp:LinkButton>--%>
                     </ItemTemplate>
                 </asp:Repeater>
                 <div id="PageingDiv" class="PageingDiv" runat="server"></div>
@@ -91,8 +99,10 @@
            
         </ContentTemplate>
     </asp:UpdatePanel>
-    <div id="MoveLeadPopUp" class="popUpOut MainDivDocuments " visible="false" runat="server">
-                <div id="Div3" class="popUpIn" style="width: 57%; height: 1100px; margin-top: 160px; margin-bottom: 160px; direction: rtl; text-align: center; border-width: 2px;" runat="server">
+    <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+             <div id="MoveLeadPopUp" class="popUpOut MainDivDocuments " visible="false" runat="server">
+                <div id="Div3" class="popUpIn" style="width: 57%; height: 600px; margin-top: 160px; margin-bottom: 160px; direction: rtl; text-align: center; border-width: 2px;" runat="server">
                     <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="CloseMoveLeadPopUp" OnClick="CloseMoveLeadPopUp_Click" />
                     <div class="col MainDivPopup " style="width: 43%; margin-bottom: 30px;">
                         <label class="HeaderPopup">העבר לידים לסוכן חדש</label>
@@ -101,9 +111,9 @@
                     <div class="col" style="padding: 0px 5%; align-items: center;">
                         <div class="row DivAgentVAll">
                             <asp:DropDownList runat="server" ID="AgentList" class="DropDownList FontWeightBold" ToolTip="סוכן"></asp:DropDownList>
-                            <asp:ImageButton ID="ImageButton4" runat="server" ImageUrl="images/icons/Forward_Leads_To_Agent_Mark_All_Button.png"  OnClientClick="checkAllBoxes(); return false;" />
+                            <asp:ImageButton ID="ImageButton4" runat="server" ImageUrl="images/icons/Forward_Leads_To_Agent_Mark_All_Button.png" style="display:none;" OnClientClick="checkAllBoxes(); return false;" />
                         </div>
-                        <div class="MainDivDocuments DivRepeaterMoveLead">
+                        <div class="MainDivDocuments DivRepeaterMoveLead" style="display:none;">
                             <asp:Repeater ID="Repeater2" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
                                 <ItemTemplate>
                                     <div class="row RepeaterMoveLead " runat="server">
@@ -131,8 +141,29 @@
                             </asp:Repeater>
                         </div>
                     
-                        <asp:ImageButton ID="ImageButton3" runat="server" OnClick="ForwardLeadsToAgent_Click" ImageUrl="~/images/icons/Forward_Leads_To_Agent_Forward_Button.png"  />
+                        <asp:ImageButton ID="ImageButton3" runat="server" OnClick="ForwardLeadsToAgent_Click" Style="max-width:95%;" ImageUrl="~/images/icons/Forward_Leads_To_Agent_Forward_Button.png"  />
                          <asp:Label ID="FormError_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
+
+                        <%-- </div>--%>
+                    </div>
+
+                </div>
+            </div>
+
+             <div id="SetStatusPopUp" class="popUpOut MainDivDocuments " visible="false" runat="server">
+                <div class="popUpIn" style="width: 57%; height: 600px; margin-top: 160px; margin-bottom: 160px; direction: rtl; text-align: center; border-width: 2px;" >
+                    <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="CloseStatusPopUp" OnClick="CloseStatusPopUp_Click" />
+                    <div class="col MainDivPopup " style="width: 43%; margin-bottom: 30px;">
+                        <label class="HeaderPopup">ערוך סטטוס ליד</label>
+                        <label class="SecondaryHeaderPopup">בחר סטטוס ראשי:</label>
+                    </div>
+                    <div class="col" style="padding: 0px 5%; align-items: center;">
+                        <div class="row DivAgentVAll">
+                            <asp:DropDownList runat="server" ID="StatusEditList" class="DropDownList FontWeightBold" ToolTip="סטטוס"></asp:DropDownList>
+                        </div>
+                       
+                        <asp:Button ID="btnSetStatusNow" runat="server" OnClick="btnSetStatusNow_Click" Text="ערוך סטטוס" CssClass="setStatusBtn"  />
+                         <asp:Label ID="StatusError_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
 
                         <%-- </div>--%>
                     </div>
@@ -244,6 +275,9 @@
 
 
      </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+   
 
    <input type="text" runat="server" name="ImageFile_1" id="ImageFile_1" style="display: none" />
     <asp:FileUpload ID="ImageFile_1_FileUpload" runat="server" onchange="ImageFile_UploadFile(this)" Style="display: none" />
@@ -261,17 +295,17 @@
             }
         }
         function checkAllBoxes() {
-            debugger;
             var checkboxes = document.querySelectorAll('span.itemCheckbox input[type="checkbox"]');
            // var checkboxes = document.getElementsByClassName('itemCheckbox');
             //var checkboxes = document.querySelectorAll('input[type="checkbox"][id*="chkItem"]');
             for (var i = 0; i < checkboxes.length; i++) {
             
                 checkboxes[i].checked = true;
-                
             }
-            
-    }
+
+        }
+
+       
     </script>
 
 </asp:Content>

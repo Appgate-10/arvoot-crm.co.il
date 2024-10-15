@@ -1974,6 +1974,20 @@ H2 {
     color: inherit;
 }
 
+.repeaterButton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    border-color: transparent;
+    cursor:pointer;
+}
+
+    .repeaterButton:focus {
+        outline: none;
+    }
 
 .selectGlobal {
     width: 100%;
@@ -2211,7 +2225,7 @@ H2 {
 
 .DivAgentVAll {
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 100px;
     justify-content: center;
     border-top: 1px solid #dddddd;
     padding-top: 40px
@@ -2475,4 +2489,17 @@ H2 {
 .div-arrows-img {
     align-items: center;
     display: flex;
+}
+
+.setStatusBtn {
+    background-color: #932B90;
+    border-radius: 20px;
+    width: 480px;
+    height: 60px;
+    color: white;
+    border: none;
+    font-size: 18px;
+    font-family: 'Open Sans Hebrew', sans-serif;
+    max-width: 95%;
+}
 }

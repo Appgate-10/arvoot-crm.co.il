@@ -16,7 +16,8 @@
         <ContentTemplate>
              <asp:Button  ID="NewLidBtn" Class="NewLid" Text="ליד חדש" Style="width: 110px; height: 35px;" runat="server" OnClick="NewLidBtn_Click" />
     <asp:Button  ID="MoveTo" Class="NewLid"  Visible="false" Text="העבר ליד" Style="width: 110px; height: 35px; left:22%" runat="server" OnClick="MoveTo_Click" />
-    <asp:Button  ID="CreateEmployee" Class="NewLid"  Visible="false" Text="צור עובד/סוכן" Style="width: 110px; height: 35px; left:30%" runat="server" OnClick="CreateEmployee_Click" />
+    <asp:Button  ID="SetStatus" Class="NewLid"  Visible="false" Text="ערוך סטטוס" Style="width: 110px; height: 35px; left:30%" runat="server" OnClick="SetStatus_Click" />
+    <asp:Button  ID="CreateEmployee" Class="NewLid"  Visible="false" Text="צור עובד/סוכן" Style="width: 110px; height: 35px; left:38%" runat="server" OnClick="CreateEmployee_Click" />
 
         </ContentTemplate>
     </asp:UpdatePanel>
@@ -140,8 +141,29 @@
                             </asp:Repeater>
                         </div>
                     
-                        <asp:ImageButton ID="ImageButton3" runat="server" OnClick="ForwardLeadsToAgent_Click" ImageUrl="~/images/icons/Forward_Leads_To_Agent_Forward_Button.png"  />
+                        <asp:ImageButton ID="ImageButton3" runat="server" OnClick="ForwardLeadsToAgent_Click" Style="max-width:95%;" ImageUrl="~/images/icons/Forward_Leads_To_Agent_Forward_Button.png"  />
                          <asp:Label ID="FormError_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
+
+                        <%-- </div>--%>
+                    </div>
+
+                </div>
+            </div>
+
+             <div id="SetStatusPopUp" class="popUpOut MainDivDocuments " visible="false" runat="server">
+                <div class="popUpIn" style="width: 57%; height: 600px; margin-top: 160px; margin-bottom: 160px; direction: rtl; text-align: center; border-width: 2px;" >
+                    <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="CloseStatusPopUp" OnClick="CloseStatusPopUp_Click" />
+                    <div class="col MainDivPopup " style="width: 43%; margin-bottom: 30px;">
+                        <label class="HeaderPopup">ערוך סטטוס ליד</label>
+                        <label class="SecondaryHeaderPopup">בחר סטטוס ראשי:</label>
+                    </div>
+                    <div class="col" style="padding: 0px 5%; align-items: center;">
+                        <div class="row DivAgentVAll">
+                            <asp:DropDownList runat="server" ID="StatusEditList" class="DropDownList FontWeightBold" ToolTip="סטטוס"></asp:DropDownList>
+                        </div>
+                       
+                        <asp:Button ID="btnSetStatusNow" runat="server" OnClick="btnSetStatusNow_Click" Text="ערוך סטטוס" CssClass="setStatusBtn"  />
+                         <asp:Label ID="StatusError_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
 
                         <%-- </div>--%>
                     </div>

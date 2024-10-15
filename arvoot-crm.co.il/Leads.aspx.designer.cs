@@ -42,6 +42,15 @@ namespace ControlPanel
         protected global::System.Web.UI.WebControls.Button MoveTo;
 
         /// <summary>
+        /// SetStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SetStatus;
+
+        /// <summary>
         /// CreateEmployee control.
         /// </summary>
         /// <remarks>
@@ -202,6 +211,51 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label FormError_lable;
+
+        /// <summary>
+        /// SetStatusPopUp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl SetStatusPopUp;
+
+        /// <summary>
+        /// CloseStatusPopUp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton CloseStatusPopUp;
+
+        /// <summary>
+        /// StatusEditList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList StatusEditList;
+
+        /// <summary>
+        /// btnSetStatusNow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSetStatusNow;
+
+        /// <summary>
+        /// StatusError_label control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label StatusError_label;
 
         /// <summary>
         /// AddAgentPopUp control.

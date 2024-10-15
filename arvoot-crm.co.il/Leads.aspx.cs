@@ -37,10 +37,11 @@ namespace ControlPanel
                 {
                     MoveTo.Visible = true;
                     CreateEmployee.Visible = true;
+                    SetStatus.Visible = true;
                 }
                 ManagementPermission_Click(this, EventArgs.Empty);
 
-                loadUsers(1);
+                loadUsers(1,false);
             }
         }
 
@@ -189,7 +190,7 @@ namespace ControlPanel
                 }
             }
         }
-        public void loadUsers(int page)
+        public void loadUsers(int page, bool shouldUpdate = false)
         {
             //int PageNumber = 1;
             int PageNumber = page;
@@ -327,6 +328,11 @@ namespace ControlPanel
             AgentsList.DataValueField = "ID";
             AgentsList.DataBind();
             AgentsList.Items.Insert(0, new ListItem("סוכן", ""));
+
+            if (shouldUpdate == true)
+            {
+                AddForm.Update();
+            }
         }
 
         protected void SuspensionBU_Click(object sender, CommandEventArgs e)
@@ -614,7 +620,7 @@ namespace ControlPanel
 
             }
             MoveLeadPopUp.Visible = false;
-            loadUsers(1);
+            loadUsers(1,true);
 
 
         } 
@@ -623,14 +629,14 @@ namespace ControlPanel
         {
             Session["mainStatus"] = MainStatusList.SelectedValue.ToString();
 
-            loadUsers(1);
+            loadUsers(1,false);
         } 
         
         protected void SubStatusList_SelectedIndexChanged(object sender, EventArgs e)
         {
             Session["subStatus"] = SubStatusList.SelectedValue.ToString();
 
-            loadUsers(1);
+            loadUsers(1,false);
         }
         protected void ActivatingBU_Click(object sender, CommandEventArgs e)
         {
@@ -670,6 +676,7 @@ namespace ControlPanel
         }        
         protected void MoveTo_Click(object sender, EventArgs e)
         {
+            FormError_lable.Visible = false;
             MoveLeadPopUp.Visible = true;
            
             SqlCommand cmdAgents = new SqlCommand("SELECT  FullName as AgentName,ID FROM Agent where Level =3");
@@ -686,8 +693,6 @@ namespace ControlPanel
             Repeater2.DataBind();
 
             UpdatePanel2.Update();
-
-            
 
         }    
         protected void CreateEmployee_Click(object sender, EventArgs e)
@@ -713,7 +718,72 @@ namespace ControlPanel
         {
             Session["selectedAgent"] = AgentsList.SelectedValue.ToString();
 
-            loadUsers(1);
+            loadUsers(1,false);
+        }
+
+        protected void SetStatus_Click(object sender, EventArgs e)
+        {
+            StatusError_label.Visible = false;
+            SetStatusPopUp.Visible = true;
+
+            SqlCommand cmdStatus = new SqlCommand("SELECT * FROM FirstStatusLead");
+            DataSet dsStatus = DbProvider.GetDataSet(cmdStatus);
+            StatusEditList.DataSource = dsStatus;
+            StatusEditList.DataTextField = "Status";
+            StatusEditList.DataValueField = "ID";
+            StatusEditList.DataBind();
+            StatusEditList.Items.Insert(0, new ListItem("סטטוס ראשי", ""));
+
+            UpdatePanel2.Update();
+        }
+
+        protected void CloseStatusPopUp_Click(object sender, ImageClickEventArgs e)
+        {
+            SetStatusPopUp.Visible = false;
+        }
+
+        protected void btnSetStatusNow_Click(object sender, EventArgs e)
+        {
+            if (StatusEditList.SelectedIndex == 0)
+            {
+                StatusError_label.Visible = true;
+                StatusError_label.Text = "יש לבחור סטטוס ראשי";
+                return;
+            };
+            string IdsLeads = "";
+
+
+
+            for (int i = 0; i < Repeater1.Items.Count; i++)
+            {
+                if (((CheckBox)Repeater1.Items[i].FindControl("chk")).Checked)
+                {
+                    IdsLeads += ((HiddenField)Repeater1.Items[i].FindControl("LeadID")).Value;
+                    IdsLeads += ",";
+                }
+
+            }
+
+            
+            if (string.IsNullOrEmpty(IdsLeads))
+            {
+                StatusError_label.Visible = true;
+                StatusError_label.Text = "יש לסמן ליד";
+                return;
+            }
+
+            SqlCommand cmd = new SqlCommand("update Lead set FirstStatusLeadID = @FirstStatusLeadID where ID in(" + IdsLeads.Remove(IdsLeads.Length - 1, 1) + ")");
+            cmd.Parameters.AddWithValue("@FirstStatusLeadID", StatusEditList.SelectedValue);
+            //cmd.Parameters.AddWithValue("@IdsLeads", IdsLeads.Remove(IdsLeads.Length-1,1));
+            if (DbProvider.ExecuteCommand(cmd) <= 0)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('An error occurred');", true);
+
+            }
+            SetStatusPopUp.Visible = false;
+            loadUsers(1,true);
+
+           
         }
     }
 }

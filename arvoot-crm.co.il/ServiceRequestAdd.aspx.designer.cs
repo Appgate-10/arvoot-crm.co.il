@@ -42,15 +42,6 @@ namespace ControlPanel
         protected global::System.Web.UI.WebControls.Label FormError_lable;
 
         /// <summary>
-        /// ImageButton1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ImageButton1;
-
-        /// <summary>
         /// FullName control.
         /// </summary>
         /// <remarks>
@@ -103,15 +94,6 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText Note;
-
-        /// <summary>
-        /// Policy control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText Policy;
 
         /// <summary>
         /// Balance control.
@@ -267,13 +249,22 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputText Branch;
 
         /// <summary>
-        /// CreditValidity control.
+        /// SelectYear control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl CreditValidity;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectYear;
+
+        /// <summary>
+        /// SelectMonth control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectMonth;
 
         /// <summary>
         /// AccountNumber control.

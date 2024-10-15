@@ -71,48 +71,28 @@
             </div>
 
             <div class="row MarginDiv">
-                <div class="col DivDetails" style="margin-inline-end: 3%;">
+                <div class="col DivDetails" style="width: 100%;">
                     <div class="row">
-                        <div style="width: 20%; text-align: center; padding-top: 44px;">
+                        <div style="width: 12%; text-align: center; padding-top: 44px;">
                             <img src="images/icons/Agent_Avatar_Icon.png" runat="server" />
                         </div>
-                        <div class="col" style="width: 25%;">
+                        <div class="col" style="width: 12%;">
                             <label class="LableDetails">סוכנות</label>
                             <label class="PaddingAgentCus">Lisanee</label>
                         </div>
-                        <div class="col" style="width: 25%;">
+                        <div class="col" style="width: 12%;">
                             <label class="LableDetails">בעלים</label>
                             <label class="PaddingAgentCus">Lisanee</label>
                         </div>
-                        <div class="col" style="width: 30%;">
+                        <div class="col" style="width: 14%;">
                             <label class="LableDetails">טלפון</label>
                             <label class="PaddingAgentCus">Lisanee</label>
                         </div>
-
+                        <div style="width:50%"></div>
                     </div>
                     <div class="DivGray"></div>
                 </div>
-                <div class="col DivDetails">
-                    <div class="row">
-                        <div style="width: 20%; text-align: center; padding-top: 44px;">
-                            <img src="images/icons/Customer_Avatar.png" runat="server" />
-                        </div>
-                        <div class="col" style="width: 25%;">
-                            <label class="LableDetails">סוכנות</label>
-                            <label class="PaddingAgentCus">Lisanee</label>
-                        </div>
-                        <div class="col" style="width: 25%;">
-                            <label class="LableDetails">בעלים</label>
-                            <label class="PaddingAgentCus">Lisanee</label>
-                        </div>
-                        <div class="col" style="width: 30%;">
-                            <label class="LableDetails">טלפון</label>
-                            <label class="PaddingAgentCus">Lisanee</label>
-                        </div>
-
-                    </div>
-                    <div class="DivGray"></div>
-                </div>
+            
             </div>
 
             <div class="col MarginDiv SecondaryDiv" style="position: relative;">
@@ -126,18 +106,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div style="padding-top: 5px; margin-inline-end: 16px;">
-                            <label style="font-weight: 700;">סטטוס:</label>
-                        </div>
-                        <div>
-                            <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="~/images/icons/In_Treatment_Status_Button.png" OnClick="CopyLid_Click" />
-                        </div>
+                        
                     </div>
                 </div>
                 <div class="row MarginRow " style="width: 100%;">
                     <div style="width: 31%; margin-left: 24%" class="row">
                         <div style="width: 132px;">
-                            <lable class="FontWeightBold">מבוטח'מוטב:</lable>
+                            <lable class="FontWeightBold">שם איש קשר:</lable>
                         </div>
                         <div style="width: 100%;">
                             <asp:Label ID="FullName" runat="server" name="FullName" type="text" Style="width: 100%; border-bottom: 0px;" runat="server" class="InputAdd" />
@@ -147,9 +122,7 @@
                         <label class="InputLable">הצעה:</label>
                         <input id="Text2" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                     </div>
-                    <div style="width: 18%">
-                        <label style="font-weight: 700;">סטטוס משני:</label>
-                    </div>
+               
                 </div>
                 <div class="row GrayLine" style="width: 100%;">
                     <div style="width: 31%; margin-left: 24%;" class="row">
@@ -175,12 +148,12 @@
                     </div>
                     <div style="width: 17%; margin-left: 3%;" class="row">
                         <label class="InputLable">סכום כולל לגבייה:</label>
-                        <input id="AllSum" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" />
+<%--                        <input id="AllSum" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd  Lable-symbol-shekel" />--%>
+                        <span class="input-symbol-shekel">
+                              <input type="number" runat="server" id="AllSum"  style="width: 85%;" class="InputAdd"/>
+                        </span>
                     </div>
-                    <div style="width: 25%;" class="row">
-                        <label class="InputLable">הערות:</label>
-                        <input id="Note" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
-                    </div>
+
                 </div>
 
                 <div class="row  MarginRow" style="width: 100%;">
@@ -199,16 +172,16 @@
 
                 <div class="row MarginRow " style="width: 100%;">
                     <div style="width: 31%; margin-left: 24%" class="row">
-                        <div style="width: 132px;">
-                            <lable class="FontWeightBold">פוליסה:</lable>
-                        </div>
-                        <div style="width: 100%;">
-                            <input id="Policy" name="FullName" type="text" style="width: 100%;" runat="server" class="InputAdd" />
+                        <div style="width: 100%;" class="row">
+                            <label class="InputLable">הערות:</label>
+                            <input id="Note" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                     </div>
                     <div style="width: 20%; margin-left: 3%;" class="row">
                         <label class="InputLable">יתרת הגבייה:</label>
-                        <label id="Balance" name="Balance" runat="server" style="width: 40%;" class="InputAdd"></label>
+                          <span class="Lable-symbol-shekel"  style="width: 40%;">
+                        <label id="Balance" name="Balance" runat="server" style="width: 73%; display:flex; height: 23px;" class="InputAdd"></label>
+                              </span>
                         <button id="btnReloadBalance" runat="server" onserverclick="btnReloadBalance_ServerClick" style="margin-right: 5px; width: 23px; background-color: transparent; border: 1px solid black; border-radius: 4px;">
                             <i class="fa-solid fa-rotate-right"></i>
                         </button>
@@ -238,7 +211,9 @@
                         <div class="row PaddingRow" style="width: 100%;">
                             <div style="width: 18%; margin-left: 3%;" class="row">
                                 <label id="sumTitle" runat="server" class="InputLable">סכום לתשלום ראשון:</label>
-                                <input id="Sum1" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" value='<%# Eval("SumPayment").ToString() == "0" ? "" : Eval("SumPayment").ToString() %>' />
+                                     <span class="input-symbol-shekel">
+                                          <input id="Sum1" name="FullName" type="number" runat="server" style="width: 85%;" class="InputAdd" value='<%# Eval("SumPayment").ToString() == "0" ? "" : Eval("SumPayment").ToString() %> '  />
+                                      </span>
                             </div>
                             <div style="width: 15%; margin-left: 35%;" class="row">
                                 <label class="InputLable">תאריך תשלום:</label>
@@ -277,7 +252,9 @@
                 <div class="row PaddingRow" style="width: 100%;">
                     <div style="width: 18%; margin-left: 3%;" class="row">
                         <label class="InputLable">סכום:</label>
-                        <input id="Sum4" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" />
+                             <span class="input-symbol-shekel">
+                                 <input id="Sum4" name="FullName" type="number" runat="server" style="width: 90%;" class="InputAdd" />
+                             </span>
                     </div>
                     <div style="width: 15%; margin-left: 35%;" class="row">
                         <label class="InputLable">תאריך תשלום:</label>
@@ -389,7 +366,9 @@
                     </div>
                     <div style="width: 20%; margin-left: 34%;" class="row">
                         <label class="InputLable">תוקף:</label>
-                        <input id="CreditValidity" name="FullName" type="date" runat="server" style="width: 100%;" class="InputAdd" />
+                          <select  runat="server"  ID="SelectYear"  class="selectGlobal"></select>                       
+                        <select  runat="server"  ID="SelectMonth" style="margin-right:25px" class="selectGlobal"></select>           
+<%--                        <input id="CreditValidity" name="FullName" type="date" runat="server" style="width: 100%;" class="InputAdd" />--%>
                     </div>
                 </div>
                 <div class="row PaddingRow MarginRow" style="width: 100%;">

@@ -145,10 +145,28 @@ namespace ControlPanel
                 {
                     image.ImageUrl = "~/images/icons/Status_6.png";
                 }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 8)
+                {
+                    image.ImageUrl = "~/images/icons/Status_2.png";
+
+                } 
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 9)
+                {
+                    image.ImageUrl = "~/images/icons/Not_Relevant_Button.png";
+
+                }
                 else image.ImageUrl = "";
 
 
-                TextBox image2 = (TextBox)e.Item.FindControl("SubStatus");
+            TextBox image2 = (TextBox)e.Item.FindControl("SubStatus");
+            if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 1)
+            {
+                image2.Visible = false;
+                //image2.Style["background-image"] = "url('../images/icons/Secondary_Status_1.png')";
+                //image2.Style["color"] = "#CD9CCA";
+            }
+            else
+          
                 if (int.Parse(DataBinder.Eval(e.Item.DataItem, "SecondStatusLeadID").ToString()) == 2)
                 {
 

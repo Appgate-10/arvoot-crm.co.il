@@ -45,7 +45,21 @@ namespace ControlPanel
                 SelectMethodsPayment.DataValueField = "ID";
                 SelectMethodsPayment.DataBind();
                 SelectMethodsPayment.Items.Insert(0, new ListItem("בחר אמצעי תשלום", ""));
+                SelectMethodsPayment.Items.Insert(0, new ListItem("בחר אמצעי תשלום", ""));
+                string[] months = {
+                     "01", "02", "03", "04", "05", "06",
+                     "07", "08", "09", "10", "11", "12"
+                };
+                SelectMonth.DataSource = months;
+                SelectMonth.DataBind();
+                List<string> years = new List<string>();
+                for (int i = DateTime.Now.Year; i <= DateTime.Now.Year + 30; i++)
+                {
+                    years.Add(i.ToString());
+                }
 
+                SelectYear.DataSource = years.ToArray();
+                SelectYear.DataBind();
                 loadData();
             }
         }
@@ -272,21 +286,7 @@ namespace ControlPanel
                 FormError_lable.Text = "יש להזין סכום כולל לגבייה";
                 return false;
             }
-            if (Policy.Value == "")
-            {
-                ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין פוליסה";
-                return false;
-            }
-            //if (Balance.inner == "")
-            //{
-            //    ErrorCount++;
-            //    FormError_lable.Visible = true;
-            //    FormError_lable.Text = "יש להזין יתרת הגבייה";
-            //    return false;
-            //}
-            if (SelectPurpose.SelectedIndex == 0)
+           if(SelectPurpose.SelectedIndex == 0)
             {
                 ErrorCount++;
                 FormError_lable.Visible = true;
@@ -352,14 +352,63 @@ namespace ControlPanel
                 
             }
 
+            if(SelectMethodsPayment.SelectedIndex == 1)
+            {
+                if (BankName.Value == "")
+                {
+                    ErrorCount++;
+                    FormError_lable.Visible = true;
+                    FormError_lable.Text = "יש להזין שם בנק";
+                    return false;
+                } 
+                if (Branch.Value == "")
+                {
+                    ErrorCount++;
+                    FormError_lable.Visible = true;
+                    FormError_lable.Text = "יש להזין סניף";
+                    return false;
+                }
+                if (AccountNumber.Value == "")
+                {
+                    ErrorCount++;
+                    FormError_lable.Visible = true;
+                    FormError_lable.Text = "יש להזין מספר חשבון";
+                    return false;
+                }
+            }
+            else if(SelectMethodsPayment.SelectedIndex == 2)
+            {
+                if (CreditNumber.Value == "")
+                {
+                    ErrorCount++;
+                    FormError_lable.Visible = true;
+                    FormError_lable.Text = "יש להזין מספר כרטיס";
+                    return false;
+                }
+                //if (CreditValidity.Value == "")
+                //{
+                //    ErrorCount++;
+                //    FormError_lable.Visible = true;
+                //    FormError_lable.Text = "יש להזין תוקף";
+                //    return false;
+                //}
+                if (CardholdersID.Value == "")
+                {
+                    ErrorCount++;
+                    FormError_lable.Visible = true;
+                    FormError_lable.Text = "יש להזין ת.ז. בעל הכרטיס";
+                    return false;
+                }
+            }
+
 
             if (ErrorCount == 0)
             {
-                string sql = @" INSERT INTO ServiceRequest (OfferID,Invoice,Sum,Note,Policy,PurposeID,
+                string sql = @" INSERT INTO ServiceRequest (OfferID,Invoice,Sum,Note,PurposeID,
                                 SumCreditOrDenial,DateCreditOrDenial,NumCreditOrDenial,ReferenceCreditOrDenial,NoteCreditOrDenial,
                                 IsApprovedCreditOrDenial,PaymentMethodID,BankName,Branch,AccountNumber,CreditNumber,CreditValidity,CardholdersID)
                                 OUTPUT Inserted.ID 
-                                VALUES (@OfferID,@Invoice,@Sum,@Note,@Policy,@PurposeID,@SumCreditOrDenial,@DateCreditOrDenial,@NumCreditOrDenial,@ReferenceCreditOrDenial,@NoteCreditOrDenial,
+                                VALUES (@OfferID,@Invoice,@Sum,@Note,@PurposeID,@SumCreditOrDenial,@DateCreditOrDenial,@NumCreditOrDenial,@ReferenceCreditOrDenial,@NoteCreditOrDenial,
                                 @IsApprovedCreditOrDenial,@PaymentMethodID,@BankName,@Branch,@AccountNumber,@CreditNumber,@CreditValidity,@CardholdersID )";
 
                 //Balance,@Balance
@@ -379,7 +428,6 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@Invoice", Invoice.Value);
                 cmd.Parameters.AddWithValue("@Sum", AllSum.Value);
                 cmd.Parameters.AddWithValue("@Note", Note.Value);
-                cmd.Parameters.AddWithValue("@Policy", Policy.Value);
                 //cmd.Parameters.AddWithValue("@Balance", Balance.Value);
                 cmd.Parameters.AddWithValue("@PurposeID", SelectPurpose.Value);
                 //cmd.Parameters.AddWithValue("@SumPayment1", Sum1.Value);
@@ -407,8 +455,8 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@BankName", string.IsNullOrEmpty(BankName.Value) ? (object)DBNull.Value : BankName.Value);
                 cmd.Parameters.AddWithValue("@Branch", string.IsNullOrEmpty(Branch.Value) ? (object)DBNull.Value : Branch.Value);
                 cmd.Parameters.AddWithValue("@AccountNumber", string.IsNullOrEmpty(AccountNumber.Value) ? (object)DBNull.Value : AccountNumber.Value);
-                cmd.Parameters.AddWithValue("@CreditNumber", string.IsNullOrEmpty(CreditNumber.Value) ? (object)DBNull.Value : CreditNumber.Value);
-                cmd.Parameters.AddWithValue("@CreditValidity", string.IsNullOrEmpty(CreditValidity.Value) ? (object)DBNull.Value : CreditValidity.Value);
+                cmd.Parameters.AddWithValue("@CreditNumber", string.IsNullOrEmpty(CreditNumber.Value) ? (object)DBNull.Value : "XXXX-XXXX-XXXX-" + CreditNumber.Value.Substring(12));
+                cmd.Parameters.AddWithValue("@CreditValidity", string.IsNullOrEmpty(SelectMonth.Value) || string.IsNullOrEmpty(SelectYear.Value) ? (object)DBNull.Value : SelectMonth.Value +"/"+ SelectYear.Value);
                 cmd.Parameters.AddWithValue("@CardholdersID", string.IsNullOrEmpty(CardholdersID.Value) ? (object)DBNull.Value : CardholdersID.Value);
 
                 int serviceRequestID = DbProvider.ExecuteIntScalar(cmd);

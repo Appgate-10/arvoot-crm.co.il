@@ -652,7 +652,7 @@
                     <div style="width: 5%; text-align: center;"></div>
 
                 </div>
-                <div runat="server" id="divRepeat" style="height: 463px; overflow-x: auto; margin-bottom: 20px">
+                <div runat="server" id="divRepeat" style="max-height: 463px; min-height: 200px; overflow-x: auto; margin-bottom: 20px">
                     <asp:Repeater ID="Repeater2" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
                         <ItemTemplate>
                             <asp:LinkButton ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsOffer_Command" CssClass="ButtonDiv" >
@@ -676,7 +676,54 @@
                 <%-- </div>--%>
             </div>
 
+                               <div class="col MarginDiv SecondaryDiv PaddingDiv">
+                <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
+                   <div class="row" style="align-items: center;">
+                        <div class="div-arrows-img">
+                            <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
+                        </div>
+                        <div>
+                            <label class="LableBlue">בקשות שירות</label>
+                        </div>
+                    </div>
+                    
+                </div>
 
+       <div class="ListDivParamsHead DivParamsHeadMargin">
+
+                    <div style="width: 17%; text-align: right; padding-right: 4%">תאריך</div>
+                    <div style="width: 15%; text-align: right;">חשבון</div>
+                    <div style="width: 15%; text-align: right;">סכום כולל לגבייה</div>
+                    <div style="width: 15%; text-align: right;">יתרת גבייה</div>
+                    <div style="width: 33%; text-align: right;">מטרת הגבייה</div>
+                    <div style="width: 5%; text-align: center;"></div>
+
+                </div>
+                <div runat="server" id="divRepeat3" style="max-height: 463px; min-height: 200px; overflow-x: auto; margin-bottom: 20px">
+                    <asp:Repeater ID="Repeater3" runat="server" OnItemDataBound="Repeater3_ItemDataBound">
+                        <ItemTemplate>
+                            <asp:LinkButton ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnServiceRequest_Command" CssClass="ButtonDiv" >
+
+                                <div class='ListDivParams' style="position: relative;padding-left: 18px;">
+                                    <div style="width: 5%; text-align: center">
+                                    <asp:Image  ID="BtnServiceRequest" Style="vertical-align: middle;" ImageUrl="~/images/icons/Arrow_Left_1.png" runat="server" />
+                                    </div>
+                                      <div style="width: 33%; text-align: right"><%#Eval("PurposeName") %></div>
+                                <div style="width: 15%; text-align: right;">
+                                    <%#(double.Parse(Eval("Sum").ToString()) - (!string.IsNullOrWhiteSpace(Eval("paid").ToString()) ?double.Parse(Eval("paid").ToString()) : 0) + (Eval("IsApprovedCreditOrDenial").ToString() == "1" && !string.IsNullOrWhiteSpace(Eval("SumCreditOrDenial").ToString()) ? double.Parse(Eval("SumCreditOrDenial").ToString()) : 0)).ToString() %></div>
+                                <div style="width: 15%; text-align: right;"><%#Eval("Sum") %></div>
+                                <div style="width: 15%; text-align: right"><%#Eval("Invoice") %></div>
+                                <div style="width: 17%; text-align: right; padding-right: 4%"><%#Eval("CreateDate") %></div>
+                            </div>
+                            </asp:LinkButton>
+
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </div>
+
+
+
+            </div>
          
             <div id="StatusPopUp" class="popUpOut MainDivDocuments" style="display: none;" runat="server">
                 <div id="Div3" class="popUpIn" style="width: 57%; height: 940px; margin-top: 160px; margin-bottom: 160px; direction: rtl; text-align: center; border-width: 2px;" runat="server">

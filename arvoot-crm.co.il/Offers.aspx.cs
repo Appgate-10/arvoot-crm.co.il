@@ -164,15 +164,23 @@ namespace ControlPanel
 
             //}
 
-            string sql = @" SELECT DISTINCT l.ID, l.Phone1, l.Tz, l.LastName, l.FirstName, 
-                            a.FullName AS FullNameAgent,l.DateBirth,
-                            CONVERT(varchar, l.CreateDate, 104) as CreateDate
-                            FROM Lead l
-                            inner JOIN Offer o ON l.ID = o.LeadID " + sql2 +
-                            @"LEFT JOIN Agent a ON l.AgentID = a.ID
-                            WHERE l.IsContact = 1";
+            //string sql = @" SELECT DISTINCT l.ID, l.Phone1, l.Tz, l.LastName, l.FirstName, 
+            //                a.FullName AS FullNameAgent,l.DateBirth,
+            //                CONVERT(varchar, l.CreateDate, 104) as CreateDate
+            //                FROM Lead l
+            //                inner JOIN Offer o ON l.ID = o.LeadID " + sql2 +
+            //                @"LEFT JOIN Agent a ON l.AgentID = a.ID
+            //                WHERE l.IsContact = 1";
 
-         
+            string sql = @"SELECT Offer.ID, Offer.CreateDate, OfferType.Name as OfferType, Agent.FullName as FullNameAgent ,StatusOffer.Status as StatusOffer
+                           from Offer
+                           left join OfferType on OfferType.ID = Offer.OfferTypeID
+                           left join StatusOffer on StatusOffer.ID = Offer.StatusOfferID 
+                           left join Lead on Lead.ID = Offer.LeadID
+                           left join Agent on Lead.AgentID=Agent.ID ";
+
+
+
             cmd.CommandText =sql + sqlWhere;
 
             string sqlCnt = @"select count(*) from Lead l inner JOIN Offer o ON l.ID = o.LeadID where l.IsContact=1 ";
@@ -276,11 +284,16 @@ namespace ControlPanel
 
         }
 
-        protected void BtnDetailsContact_Command(object sender, CommandEventArgs e)
-        {
-            Response.Redirect("Contact.aspx?ContactID=" + e.CommandArgument.ToString());
-        }
+        //protected void BtnDetailsContact_Command(object sender, CommandEventArgs e)
+        //{
+        //    Response.Redirect("Contact.aspx?ContactID=" + e.CommandArgument.ToString());
+        //}
 
+        protected void BtnDetailsOffer_Command(object sender, CommandEventArgs e)
+        {
+            System.Web.HttpContext.Current.Response.Redirect("OfferEdit.aspx?OfferID=" + e.CommandArgument.ToString());
+
+        }
 
 
     }

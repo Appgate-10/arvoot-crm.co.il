@@ -144,7 +144,6 @@ namespace ControlPanel
                 else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 7)
                 {
                     image.ImageUrl = "~/images/icons/Status_6.png";
-
                 }
                 else image.ImageUrl = "";
 
@@ -261,7 +260,7 @@ namespace ControlPanel
             catch(Exception) { }
 
             //להציג את הלידים מהישן לחדש
-            string sqlOrder = " Order by Lead.CreateDate desc  OFFSET  " + CurrentRow.ToString() + "  ROWS FETCH NEXT " + PageSize.ToString() + " ROWS ONLY ";
+            string sqlOrder = " Order by Lead.CreateDate desc OFFSET " + CurrentRow.ToString() + "  ROWS FETCH NEXT " + PageSize.ToString() + " ROWS ONLY ";
 
             //-- ניהול Paging
             string sqlCnt = "Select Count(ID) FROM Lead where Lead.IsContact=0";

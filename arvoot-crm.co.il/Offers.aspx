@@ -22,8 +22,7 @@
        
     </div>--%>
     <div class="ListDivParamsHead ListDivParamsHeadS">
-        <div style="width: 5%; text-align: right;"></div>
-<%--        <div style="width: 10%; text-align: right;"></div>--%>
+<%--        <div style="width: 5%; text-align: right;"></div>
         <div style="width: 10%; text-align: right;">ת.הקמה</div>
         <div style="width: 10%; text-align: right;">שם פרטי</div>
         <div style="width: 10%; text-align: right;">שם משפחה</div>
@@ -32,6 +31,15 @@
         <div style="width: 10%; text-align: right;">תאריך לידה</div>
         <div style="width: 30%; text-align: right;">בעלים</div>
         <div style="width: 5%; text-align: center;"></div>
+--%>
+
+                <div style="width: 17%; text-align: right; padding-right: 4%">תאריך</div>
+                    <div style="width: 15%; text-align: right;">הצעה</div>
+                    <div style="width: 30%; text-align: right;">בעלים</div>
+                    <div style="width: 33%; text-align: right;">סטטוס</div>
+                    <div style="width: 5%; text-align: center;"></div>
+
+
 
     </div>
 
@@ -42,11 +50,21 @@
             <div runat="server" id="div2">
                 <asp:Repeater ID="Repeater1" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
                     <ItemTemplate>
-                        <asp:LinkButton ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsContact_Command" CssClass="ButtonDiv" >
+                        <asp:LinkButton ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsOffer_Command" CssClass="ButtonDiv" >
 
                             <div class='ListDivParams'>
 
                                 <div style="width: 5%; text-align: center">
+                                    <asp:Image ID="BtnDetailsOffer" style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
+                                    </div>
+                                    <div style="width: 33%; text-align: right"><%#Eval("StatusOffer") %></div>
+                                    <div style="width: 30%; text-align: right;"><%#Eval("FullNameAgent") %></div>
+                                    <div style="width: 15%; text-align: right"><%#Eval("OfferType") %></div>
+                                    <div style="width: 17%; text-align: right; padding-right: 4%"><%#Eval("CreateDate") %></div>
+
+
+
+                           <%--     <div style="width: 5%; text-align: center">
                                     <asp:Image ID="BtnDetailsContact" Style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
                                 </div>
                                 <div style="width: 30%; text-align: right"><%#Eval("FullNameAgent") %></div>
@@ -56,11 +74,9 @@
                                 <div style="width: 10%; text-align: right;"><%#Eval("LastName") %></div>
                                 <div style="width: 10%; text-align: right"><%#Eval("FirstName") %></div>
                                 <div style="width: 10%; text-align: right"><%#Eval("createDate") %></div>
-                               <%-- <div style="width: 10%; text-align: right">
-                                </div>--%>
                                 <div style="width: 5%; text-align: center">
                                      <asp:CheckBox ID="chk" runat="server" />
-                                </div>
+                                </div>--%>
                             </div>
                         </asp:LinkButton>
                     </ItemTemplate>

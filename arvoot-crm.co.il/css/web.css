@@ -1436,9 +1436,19 @@ H2 {
     padding-top: 25px;
 }
 
+.NewOfferLable::placeholder {
+    color: #273283; 
+}
+.NewOfferLable:focus {
+    outline: none;
+    border: none;
+    background: none;
+}
 .NewOfferLable {
     font-size: 20pt;
     color: #273283;
+    border:none;
+    background:none;
 }
 
 .NewOfferDiv {

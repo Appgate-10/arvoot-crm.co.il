@@ -36,55 +36,35 @@
                 <asp:Label ID="FormError_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
             </div>
             <div class="NewOfferDiv">
-                <label class="NewOfferLable">הלוואה ממנורה מבטחים </label>
+                <input placeholder="הצעה חדשה" id="NameOffer" style="font-size: 20pt;" runat="server" class="NewOfferLable"/> 
             </div>
 
             <div class="row MarginDiv">
-                <div class="col DivDetails" style="margin-inline-end: 3%;">
+                <div class="col DivDetails" style="width: 100%;">
                     <div class="row">
-                        <div style="width: 20%; text-align: center; padding-top: 44px;">
+                        <div style="width: 12%; text-align: center; padding-top: 44px;">
                             <img src="images/icons/Agent_Avatar_Icon.png" runat="server" />
                         </div>
-                        <div class="col" style="width: 25%;">
+                        <div class="col" style="width: 12%;">
                             <label class="LableDetails">סוכנות</label>
                             <label class="PaddingAgentCus ColorLable">Lisanee</label>
                         </div>
-                        <div class="col" style="width: 25%;">
+                        <div class="col" style="width: 12%;">
                             <label class="LableDetails">בעלים</label>
                             <label class="PaddingAgentCus ColorLable">Lisanee</label>
                         </div>
-                        <div class="col" style="width: 30%;">
+                        <div class="col" style="width: 14%;">
                             <label class="LableDetails">טלפון</label>
                             <label class="PaddingAgentCus ColorLable">Lisanee</label>
                         </div>
-
+                          <div style="width:50%"></div>
                     </div>
-                    <div class="DivGray " style="height: 60px; line-height: 60px; padding-right: 20%;">
+                    <div class="DivGray " style="height: 60px; line-height: 60px; padding-right: 10%;">
                         <label class="LableDetails">נוצר על ידי:</label>
                         <label class=" ColorLable">Lisanee</label>
                     </div>
                 </div>
-                <div class="col DivDetails">
-                    <div class="row">
-                        <div style="width: 20%; text-align: center; padding-top: 44px;">
-                            <img src="images/icons/Customer_Avatar.png" runat="server" />
-                        </div>
-                        <div class="col" style="width: 25%;">
-                            <label class="LableDetails">סוכנות</label>
-                            <label class="PaddingAgentCus ColorLable">Lisanee</label>
-                        </div>
-                        <div class="col" style="width: 25%;">
-                            <label class="LableDetails">בעלים</label>
-                            <label class="PaddingAgentCus ColorLable">Lisanee</label>
-                        </div>
-                        <div class="col" style="width: 30%;">
-                            <label class="LableDetails">טלפון</label>
-                            <label class="PaddingAgentCus ColorLable">Lisanee</label>
-                        </div>
-
-                    </div>
-                    <div class="DivGray" style="height: 60px;"></div>
-                </div>
+            
             </div>
 
             <div class="col MarginDiv SecondaryDiv ">

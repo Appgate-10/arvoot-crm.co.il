@@ -126,7 +126,7 @@
                     </div>
                     <div style="width: 17%; margin-left: 10%;" class="row">
                         <label class="InputLable">הצעה:</label>
-                        <input id="Text2" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
+                        <input id="OfferName" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                     </div>
                     <div style="width: 18%">
                     </div>

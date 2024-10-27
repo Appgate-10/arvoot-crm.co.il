@@ -70,7 +70,7 @@ namespace ControlPanel
         }
         public void loadData()
         {
-            string sql = @"select Lead.FirstName + ' ' + Lead.LastName as FullName from Lead 
+            string sql = @"select Lead.FirstName + ' ' + Lead.LastName as FullName, o.NameOffer  from Lead 
                             left join Offer o on o.LeadID =Lead.ID  where o.ID = @ID ";
 
             SqlCommand cmd = new SqlCommand(sql);
@@ -80,7 +80,7 @@ namespace ControlPanel
             if (dt.Rows.Count > 0)
             {
                 FullName.Text = dt.Rows[0]["FullName"].ToString();
-
+                OfferName.Value = dt.Rows[0]["NameOffer"].ToString();
             }
 
             List<serviceRequestPayment> payments = new List<serviceRequestPayment>();

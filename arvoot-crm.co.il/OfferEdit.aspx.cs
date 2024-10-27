@@ -235,7 +235,7 @@ namespace ControlPanel
             string sqlOffer = @"select LeadID, CONVERT(varchar,Offer.CreateDate, 104) as CreateDate, 
                                 DATEDIFF(DAY,Offer.CreateDate,getdate()) as sla, SourceLoanOrInsuranceID, OfferTypeID,TurnOfferID,
                                 ReasonLackSuccess,CONVERT(varchar,Offer.ReturnDateToCustomer, 104) ReturnDateToCustomer,
-                                Note,DateSentToInsuranceCompany, StatusOfferID from Offer where ID = @OfferID";
+                                Note,DateSentToInsuranceCompany, StatusOfferID,NameOffer from Offer where ID = @OfferID";
             SqlCommand cmdOffer = new SqlCommand(sqlOffer);
             cmdOffer.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
             DataTable dtOffer = DbProvider.GetDataTable(cmdOffer);
@@ -252,7 +252,7 @@ namespace ControlPanel
                 Note.Value = dtOffer.Rows[0]["Note"].ToString();
                 DateSentToInsuranceCompany.Value = Convert.ToDateTime(dtOffer.Rows[0]["DateSentToInsuranceCompany"]).ToString("yyyy-MM-dd"); 
                 SelectStatusOffer.Value = dtOffer.Rows[0]["StatusOfferID"].ToString();
-
+                NameOffer.Value = dtOffer.Rows[0]["NameOffer"].ToString();
                 string sqlOfferDocument = @"select * from OfferDocuments where OfferID = @OfferID";
                 SqlCommand cmdOfferDocument = new SqlCommand(sqlOfferDocument);
                 cmdOfferDocument.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
@@ -538,7 +538,7 @@ where s.OfferID = @OfferID";
             if (ErrorCount == 0)
             {
                 SqlCommand cmdInsert = new SqlCommand(@"update Offer set SourceLoanOrInsuranceID=@SourceLoanOrInsuranceID,OfferTypeID=@OfferTypeID,ReasonLackSuccess=@ReasonLackSuccess,
-                                                        ReturnDateToCustomer=@ReturnDateToCustomer,DateSentToInsuranceCompany=@DateSentToInsuranceCompany,Note=@Note,StatusOfferID=@StatusOfferID,TurnOfferID=@TurnOfferID 
+                                                        ReturnDateToCustomer=@ReturnDateToCustomer,DateSentToInsuranceCompany=@DateSentToInsuranceCompany,Note=@Note,StatusOfferID=@StatusOfferID,TurnOfferID=@TurnOfferID,NameOffer=@NameOffer 
                                                         where ID = @OfferID");
 
                 cmdInsert.Parameters.AddWithValue("@SourceLoanOrInsuranceID", SelectSourceLoanOrInsurance.Value);
@@ -549,6 +549,7 @@ where s.OfferID = @OfferID";
                 cmdInsert.Parameters.AddWithValue("@Note", string.IsNullOrEmpty(Note.Value) ? (object)DBNull.Value : Note.Value);
                 cmdInsert.Parameters.AddWithValue("@StatusOfferID", SelectStatusOffer.Value);
                 cmdInsert.Parameters.AddWithValue("@TurnOfferID", SelectTurnOffer.Value);
+                cmdInsert.Parameters.AddWithValue("@NameOffer", NameOffer.Value);
                 cmdInsert.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
 
                 if (DbProvider.ExecuteCommand(cmdInsert) > 0)

@@ -265,8 +265,8 @@ namespace ControlPanel
             }
             if (ErrorCount == 0)
             {
-                SqlCommand cmdInsert = new SqlCommand(@"insert into Offer (LeadID,SourceLoanOrInsuranceID,OfferTypeID,ReasonLackSuccess,ReturnDateToCustomer,DateSentToInsuranceCompany,Note,StatusOfferID,TurnOfferID) output INSERTED.ID  
-                                                 values(@LeadID,@SourceLoanOrInsuranceID,@OfferTypeID,@ReasonLackSuccess,@ReturnDateToCustomer,@DateSentToInsuranceCompany,@Note,@StatusOfferID,@TurnOfferID)");
+                SqlCommand cmdInsert = new SqlCommand(@"insert into Offer (LeadID,SourceLoanOrInsuranceID,OfferTypeID,ReasonLackSuccess,ReturnDateToCustomer,DateSentToInsuranceCompany,Note,StatusOfferID,TurnOfferID,NameOffer) output INSERTED.ID  
+                                                 values(@LeadID,@SourceLoanOrInsuranceID,@OfferTypeID,@ReasonLackSuccess,@ReturnDateToCustomer,@DateSentToInsuranceCompany,@Note,@StatusOfferID,@TurnOfferID,@NameOffer)");
 
                 cmdInsert.Parameters.AddWithValue("@LeadID", Request.QueryString["ContactID"]);
                 cmdInsert.Parameters.AddWithValue("@SourceLoanOrInsuranceID", SelectSourceLoanOrInsurance.Value);
@@ -275,6 +275,7 @@ namespace ControlPanel
                 cmdInsert.Parameters.AddWithValue("@ReturnDateToCustomer", DateTime.Parse(ReturnDateToCustomer.Value));
                 cmdInsert.Parameters.AddWithValue("@DateSentToInsuranceCompany", DateTime.Parse(DateSentToInsuranceCompany.Value));
                 cmdInsert.Parameters.AddWithValue("@Note", string.IsNullOrEmpty(Note.Value) ? (object)DBNull.Value : Note.Value);
+                cmdInsert.Parameters.AddWithValue("@NameOffer", string.IsNullOrEmpty(NameOffer.Value) ? (object)DBNull.Value : NameOffer.Value);
                 cmdInsert.Parameters.AddWithValue("@StatusOfferID", SelectStatusOffer.Value);
                 cmdInsert.Parameters.AddWithValue("@TurnOfferID", SelectTurnOffer.Value);
 

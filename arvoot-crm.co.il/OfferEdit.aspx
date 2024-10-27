@@ -33,7 +33,8 @@
                 <asp:Label ID="FormError_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
             </div>
             <div class="NewOfferDiv">
-                <label class="NewOfferLable">הלוואה ממנורה מבטחים </label>
+                 <input placeholder="עריכת הצעה" id="NameOffer" style="font-size: 20pt;" runat="server" class="NewOfferLable"/> 
+
             </div>
 
             <div class="row MarginDiv">

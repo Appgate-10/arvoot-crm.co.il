@@ -17,7 +17,7 @@ namespace ControlPanel
         ControlPanelInit Pageinit = new ControlPanelInit();
         private string strSrc = "Search";
         public string StrSrc { get { return strSrc; } }
-        public string ListPageUrl = "OfferEdit.aspx";
+        public string ListPageUrl = "ServiceRequestEdit.aspx";
 
 
         protected void Page_Load(object sender, EventArgs e)
@@ -65,7 +65,7 @@ namespace ControlPanel
         public void loadData()
         {
 
-            string sql = @"select * from ServiceRequest where ID = @ID  ";
+            string sql = @"select s.*, o.NameOffer from ServiceRequest s  left join Offer o on o.ID = s.OfferID where s.ID = @ID  ";
 
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Parameters.AddWithValue("@ID", Request.QueryString["ServiceRequestID"]);
@@ -78,6 +78,7 @@ namespace ControlPanel
                 //Balance.value = ds.Rows[0]["Balance"].ToString();
                 SelectPurpose.Value = ds.Rows[0]["PurposeID"].ToString();
                 Note.Value = ds.Rows[0]["Note"].ToString();
+                OfferName.Value = ds.Rows[0]["NameOffer"].ToString();
 
                 //Sum1.Value = ds.Rows[0]["SumPayment1"].ToString();
                 //if (!string.IsNullOrEmpty(ds.Rows[0]["DatePayment1"].ToString()))
@@ -98,7 +99,7 @@ namespace ControlPanel
                 //Num2.Value = ds.Rows[0]["NumPayment2"].ToString();
                 //ReferencePayment2.Value = ds.Rows[0]["ReferencePayment2"].ToString();
                 //IsApprove2.Checked = ds.Rows[0]["IsApprovedPayment2"].ToString().Equals("1");  
-                
+
                 //Sum3.Value = ds.Rows[0]["SumPayment3"].ToString();
                 //if (!string.IsNullOrEmpty(ds.Rows[0]["DatePayment3"].ToString()))
                 //{

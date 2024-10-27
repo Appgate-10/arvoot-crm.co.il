@@ -28,8 +28,6 @@
             }
 */
 
-
-
         input[type=checkbox] + label::before {
             display: inline-block;
             content: url('images/Chack_Box_1_Off.png');

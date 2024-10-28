@@ -55,13 +55,13 @@ namespace ControlPanel
                 SelectOfferType.DataValueField = "ID";
                 SelectOfferType.DataBind(); 
                 
-                SqlCommand cmdTurnOffer = new SqlCommand("SELECT * FROM TurnOffer");
-                DataSet dsTurnOffer = DbProvider.GetDataSet(cmdTurnOffer);
-                SelectTurnOffer.DataSource = dsTurnOffer;
-                SelectTurnOffer.DataTextField = "Name";
-                SelectTurnOffer.DataValueField = "ID";
-                SelectTurnOffer.DataBind();
-                SelectTurnOffer.Items.Insert(0, new ListItem("בחר", ""));
+                //SqlCommand cmdTurnOffer = new SqlCommand("SELECT * FROM TurnOffer");
+                //DataSet dsTurnOffer = DbProvider.GetDataSet(cmdTurnOffer);
+                //SelectTurnOffer.DataSource = dsTurnOffer;
+                //SelectTurnOffer.DataTextField = "Name";
+                //SelectTurnOffer.DataValueField = "ID";
+                //SelectTurnOffer.DataBind();
+                //SelectTurnOffer.Items.Insert(0, new ListItem("בחר", ""));
 
                 SqlCommand cmdTaskStatuses = new SqlCommand("SELECT * FROM TaskStatuses");
                 DataSet dsTaskStatuses = DbProvider.GetDataSet(cmdTaskStatuses);
@@ -217,22 +217,22 @@ namespace ControlPanel
         {
            
 
-            string sql = @"select  Lead.Tz,Lead.FirstName+' '+Lead.LastName as FullName,Agent.FullName as FullNameAgent from Lead
+            string sql = @"select Lead.Tz,Lead.FirstName+' '+Lead.LastName as FullName,Agent.FullName as FullNameAgent from Lead
                            inner join Agent on Lead.AgentID=Agent.ID ";
-
             SqlCommand cmd = new SqlCommand(sql);
-
 
             DataTable dt = DbProvider.GetDataTable(cmd);
             if (dt.Rows.Count > 0)
             {
                 FullName.InnerText = dt.Rows[0]["FullName"].ToString();
-                FullNameAgent.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
+                //FullNameAgent.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
+                lblOwner.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
+                AgentName.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
                 Tz.InnerText = dt.Rows[0]["Tz"].ToString();
                 EffectiveDate.InnerText = DateTime.Now.ToString("dd.MM.yyyy");
             }
 
-            string sqlOffer = @"select LeadID, CONVERT(varchar,Offer.CreateDate, 104) as CreateDate, 
+            string sqlOffer = @"select LeadID, CONVERT(varchar,Offer.CreateDate, 104) as CreateDate, IsInOperatingQueue, OperationManagerID,
                                 DATEDIFF(DAY,Offer.CreateDate,getdate()) as sla, SourceLoanOrInsuranceID, OfferTypeID,TurnOfferID,
                                 ReasonLackSuccess,CONVERT(varchar,Offer.ReturnDateToCustomer, 104) ReturnDateToCustomer,
                                 Note,DateSentToInsuranceCompany, StatusOfferID,NameOffer from Offer where ID = @OfferID";
@@ -241,18 +241,66 @@ namespace ControlPanel
             DataTable dtOffer = DbProvider.GetDataTable(cmdOffer);
             if (dtOffer.Rows.Count > 0)
             {
-                ContactID.Value = dtOffer.Rows[0]["LeadID"].ToString(); 
-                EffectiveDate.InnerText = dtOffer.Rows[0]["CreateDate"].ToString();
-                sla.InnerText = dtOffer.Rows[0]["sla"].ToString();
-                    SelectSourceLoanOrInsurance.Value = dtOffer.Rows[0]["SourceLoanOrInsuranceID"].ToString();
-                SelectOfferType.Value = dtOffer.Rows[0]["OfferTypeID"].ToString();
-                SelectTurnOffer.Value = dtOffer.Rows[0]["TurnOfferID"].ToString();
-                ReasonLackSuccess.Value = dtOffer.Rows[0]["ReasonLackSuccess"].ToString();
-                ReturnDateToCustomer.Value = Convert.ToDateTime(dtOffer.Rows[0]["ReturnDateToCustomer"]).ToString("yyyy-MM-dd");
-                Note.Value = dtOffer.Rows[0]["Note"].ToString();
-                DateSentToInsuranceCompany.Value = Convert.ToDateTime(dtOffer.Rows[0]["DateSentToInsuranceCompany"]).ToString("yyyy-MM-dd"); 
-                SelectStatusOffer.Value = dtOffer.Rows[0]["StatusOfferID"].ToString();
-                NameOffer.Value = dtOffer.Rows[0]["NameOffer"].ToString();
+                DataRow rowOffer = dtOffer.Rows[0];
+                ContactID.Value = rowOffer["LeadID"].ToString(); 
+                EffectiveDate.InnerText = rowOffer["CreateDate"].ToString();
+                sla.InnerText = rowOffer["sla"].ToString();
+                    SelectSourceLoanOrInsurance.Value = rowOffer["SourceLoanOrInsuranceID"].ToString();
+                SelectOfferType.Value = rowOffer["OfferTypeID"].ToString();
+                //SelectTurnOffer.Value = rowOffer["TurnOfferID"].ToString();
+                ReasonLackSuccess.Value = rowOffer["ReasonLackSuccess"].ToString();
+                ReturnDateToCustomer.Value = Convert.ToDateTime(rowOffer["ReturnDateToCustomer"]).ToString("yyyy-MM-dd");
+                Note.Value = rowOffer["Note"].ToString();
+                DateSentToInsuranceCompany.Value = Convert.ToDateTime(rowOffer["DateSentToInsuranceCompany"]).ToString("yyyy-MM-dd"); 
+                SelectStatusOffer.Value = rowOffer["StatusOfferID"].ToString();
+                NameOffer.Value = rowOffer["NameOffer"].ToString();
+
+                bool isInOperatingManager = false;
+                if (!string.IsNullOrWhiteSpace(rowOffer["OperationManagerID"].ToString()))
+                {
+                    string sqlOwner = @"select Agent.FullName as FullNameAgent from Agent WHERE ID = @OperationManagerID ";
+                    SqlCommand cmdOwner = new SqlCommand(sql);
+                    cmdOwner.Parameters.AddWithValue("@OperationManagerID", rowOffer["OperationManagerID"]);
+                    DataTable dtOwner = DbProvider.GetDataTable(cmdOwner);
+                    if (dtOwner.Rows.Count > 0)
+                    {
+                        lblOwner.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
+                    }
+
+                    movedToOperating.Visible = false;
+                    isInOperatingManager = true;
+                }
+                if (rowOffer["IsInOperatingQueue"].ToString() == "1")
+                {
+                    movedToOperating.Visible = true;
+                    isInOperatingManager = true;
+                }
+
+                if (isInOperatingManager == true)
+                {
+                    btnMoveToOperatingQueqe.Visible = false;
+
+                    //אם הגיעו מהסוכן - בעל ההצעה יש לחסום אפשרות לעריכה
+                    //DeleteLid.Enabled = false;
+                    //btn_save.Enabled = false;
+                    //SelectStatusOffer.Disabled = true;
+                    //SelectOfferType.Disabled = true;
+                    //ImageButton2.Enabled = false;
+                    //ReasonLackSuccess.Disabled = true;
+                    //Note.Disabled = true;
+                    //ReturnDateToCustomer.Disabled = true;
+                    //DateSentToInsuranceCompany.Disabled = true;
+                    //SelectSourceLoanOrInsurance.Disabled = true;
+                    //UploadDocument.Enabled = false;
+                    //ImageButton3.Enabled = false;
+                    //ImageButton4.Enabled = false;
+                    //ImageButton1.Enabled = false;
+                }
+                else
+                {
+                    btnMoveToOperatingQueqe.Visible = true;
+                    movedToOperating.Visible = false;
+                }
                 string sqlOfferDocument = @"select * from OfferDocuments where OfferID = @OfferID";
                 SqlCommand cmdOfferDocument = new SqlCommand(sqlOfferDocument);
                 cmdOfferDocument.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
@@ -528,19 +576,19 @@ where s.OfferID = @OfferID";
             //    FormError_lable.Text = "יש להזין סטטוס הצעה";
             //    return false;
             //}
-            if (SelectTurnOffer.SelectedIndex == 0)
-            {
-                ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין תור";
-                return false;
-            }
+            //if (SelectTurnOffer.SelectedIndex == 0)
+            //{
+            //    ErrorCount++;
+            //    FormError_lable.Visible = true;
+            //    FormError_lable.Text = "יש להזין תור";
+            //    return false;
+            //}
             if (ErrorCount == 0)
             {
                 SqlCommand cmdInsert = new SqlCommand(@"update Offer set SourceLoanOrInsuranceID=@SourceLoanOrInsuranceID,OfferTypeID=@OfferTypeID,ReasonLackSuccess=@ReasonLackSuccess,
-                                                        ReturnDateToCustomer=@ReturnDateToCustomer,DateSentToInsuranceCompany=@DateSentToInsuranceCompany,Note=@Note,StatusOfferID=@StatusOfferID,TurnOfferID=@TurnOfferID,NameOffer=@NameOffer 
+                                                        ReturnDateToCustomer=@ReturnDateToCustomer,DateSentToInsuranceCompany=@DateSentToInsuranceCompany,Note=@Note,StatusOfferID=@StatusOfferID,NameOffer=@NameOffer 
                                                         where ID = @OfferID");
-
+                //,TurnOfferID=@TurnOfferID
                 cmdInsert.Parameters.AddWithValue("@SourceLoanOrInsuranceID", SelectSourceLoanOrInsurance.Value);
                 cmdInsert.Parameters.AddWithValue("@OfferTypeID", SelectOfferType.Value);
                 cmdInsert.Parameters.AddWithValue("@ReasonLackSuccess", ReasonLackSuccess.Value);
@@ -548,7 +596,7 @@ where s.OfferID = @OfferID";
                 cmdInsert.Parameters.AddWithValue("@DateSentToInsuranceCompany", DateTime.Parse(DateSentToInsuranceCompany.Value));
                 cmdInsert.Parameters.AddWithValue("@Note", string.IsNullOrEmpty(Note.Value) ? (object)DBNull.Value : Note.Value);
                 cmdInsert.Parameters.AddWithValue("@StatusOfferID", SelectStatusOffer.Value);
-                cmdInsert.Parameters.AddWithValue("@TurnOfferID", SelectTurnOffer.Value);
+                //cmdInsert.Parameters.AddWithValue("@TurnOfferID", SelectTurnOffer.Value);
                 cmdInsert.Parameters.AddWithValue("@NameOffer", NameOffer.Value);
                 cmdInsert.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
 
@@ -627,6 +675,20 @@ where s.OfferID = @OfferID";
             public string FileName { get; set; }
             public int FileSize { get; set; }
             public HttpPostedFile PostedFile { get; set; }
+        }
+
+        protected void btnMoveToOperatingQueqe_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmdMove = new SqlCommand("Update Offer SET IsInOperatingQueue = 1 WHERE ID = @offerID");
+            cmdMove.Parameters.AddWithValue("@offerID", Request.QueryString["OfferID"]);
+            if (DbProvider.ExecuteCommand(cmdMove) <= 0)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+            }
+            else
+            {
+                Response.Redirect("Contact.aspx?ContactID=" + ContactID.Value);
+            }
         }
     }
 }

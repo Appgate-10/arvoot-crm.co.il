@@ -121,7 +121,7 @@
                                         </div>--%>
                                     </div>
                                     <div>
-                                        <a  href="Offers.aspx" id="BtnBarItem_Proposals2"  class="bar-item buttonWithOneImages buttonWithImages">פוליסות</a>
+                                        <a  href="Policies.aspx" id="BtnBarItem_Proposals2"  class="bar-item buttonWithOneImages buttonWithImages">פוליסות</a>
 
 <%--                                        <asp:Button ID="Button1" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="פוליסות" />--%>
                                     </div>

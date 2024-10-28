@@ -105,6 +105,7 @@
     <Content Include="images\icons\Status_6.png" />
     <Content Include="HomePage.aspx" />
     <Content Include="images\icons\Work_Status_List_BG.png" />
+    <Content Include="Policies.aspx" />
     <Content Include="ServiceRequests.aspx" />
     <Content Include="Offers.aspx" />
     <Content Include="css\theme.css" />
@@ -333,6 +334,13 @@
     </Compile>
     <Compile Include="HomePage.aspx.designer.cs">
       <DependentUpon>HomePage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Policies.aspx.cs">
+      <DependentUpon>Policies.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Policies.aspx.designer.cs">
+      <DependentUpon>Policies.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceRequests.aspx.cs">
       <DependentUpon>ServiceRequests.aspx</DependentUpon>

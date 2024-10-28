@@ -23,6 +23,7 @@ namespace ControlPanel
             this.Master.FindControl("AfterSignIn1").Visible = false;
             this.Master.FindControl("AfterSignIn2").Visible = false;
             this.Master.FindControl("AfterSignIn3").Visible = false;
+            this.Master.FindControl("Div1").Visible = false;
         }
 
         protected void SignInBU_Click(object sender, EventArgs e)

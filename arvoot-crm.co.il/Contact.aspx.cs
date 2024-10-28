@@ -196,7 +196,20 @@ namespace ControlPanel
             Repeater2.DataSource = ds;
             Repeater2.DataBind();
 
-          
+            string sqlServiceRequest = @"select s.ID, Invoice,Sum,CONVERT(varchar, s.CreateDate, 104)  CreateDate, p.purpose as PurposeName,
+(select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1) as paid, SumCreditOrDenial, IsApprovedCreditOrDenial
+from ServiceRequest s 
+left join ServiceRequestPurpose p on s.PurposeID = p.ID 
+inner join Offer on Offer.ID = s.OfferID
+inner join Lead on Lead.ID = Offer.LeadID
+where Lead.ID = @LeadID";
+            SqlCommand cmdServiceRequest = new SqlCommand(sqlServiceRequest);
+            cmdServiceRequest.Parameters.AddWithValue("@LeadID", Request.QueryString["ContactID"]);
+            DataTable dtServiceRequest = DbProvider.GetDataTable(cmdServiceRequest);
+            Repeater3.DataSource = dtServiceRequest;
+            Repeater3.DataBind();
+
+
 
 
             //string sql = @"   select Text,TaskStatuses.Status, convert(VARCHAR(5), CreationDate, 108) As Time ,
@@ -1065,7 +1078,16 @@ namespace ControlPanel
         {
             System.Web.HttpContext.Current.Response.Redirect("OfferAdd.aspx?ContactID=" + Request.QueryString["ContactID"]);
 
-        }  
+        }
 
+        protected void Repeater3_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+
+        }
+
+        protected void BtnServiceRequest_Command(object sender, CommandEventArgs e)
+        {
+            System.Web.HttpContext.Current.Response.Redirect("ServiceRequestEdit.aspx?ServiceRequestID=" + e.CommandArgument.ToString());
+        }
     }
 }

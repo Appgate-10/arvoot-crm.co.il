@@ -21,9 +21,8 @@
         </div>
        
     </div>--%>
-    <div class="ListDivParamsHead ListDivParamsHeadS">
+<%--    <div class="ListDivParamsHead ListDivParamsHeadS">
         <div style="width: 5%; text-align: right;"></div>
-<%--        <div style="width: 10%; text-align: right;"></div>--%>
         <div style="width: 10%; text-align: right;">ת.הקמה</div>
         <div style="width: 10%; text-align: right;">שם פרטי</div>
         <div style="width: 10%; text-align: right;">שם משפחה</div>
@@ -33,7 +32,18 @@
         <div style="width: 30%; text-align: right;">בעלים</div>
         <div style="width: 5%; text-align: center;"></div>
 
-    </div>
+    </div>--%>
+
+    <div class="ListDivParamsHead DivParamsHeadMargin">
+
+                    <div style="width: 17%; text-align: right; padding-right: 4%">תאריך</div>
+                    <div style="width: 15%; text-align: right;">חשבון</div>
+                    <div style="width: 15%; text-align: right;">סכום כולל לגבייה</div>
+                    <div style="width: 15%; text-align: right;">יתרת גבייה</div>
+                    <div style="width: 33%; text-align: right;">מטרת הגבייה</div>
+                    <div style="width: 5%; text-align: center;"></div>
+
+                </div>
 
 
     <%--    <asp:ScriptManager ID="ScriptManager1" runat="server" />--%>
@@ -42,9 +52,9 @@
             <div runat="server" id="div2">
                 <asp:Repeater ID="Repeater1" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
                     <ItemTemplate>
-                        <asp:LinkButton ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsContact_Command" CssClass="ButtonDiv" >
+                        <asp:LinkButton ID="BtnDetailsServiceReq" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsServiceReq_Command" CssClass="ButtonDiv" >
 
-                                <div class='ListDivParams'>
+                               <%-- <div class='ListDivParams'>
 
                                     <div style="width: 5%; text-align: center">
                                         <asp:Image ID="BtnDetailsContact" Style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png" />
@@ -56,12 +66,21 @@
                                     <div style="width: 10%; text-align: right;"><%#Eval("LastName") %></div>
                                     <div style="width: 10%; text-align: right"><%#Eval("FirstName") %></div>
                                     <div style="width: 10%; text-align: right"><%#Eval("createDate") %></div>
-                                   <%-- <div style="width: 10%; text-align: right">
-                                    </div>--%>
                                     <div style="width: 5%; text-align: center">
                                          <asp:CheckBox ID="chk" runat="server" />
                                     </div>
-                                </div>
+                                </div>--%>
+                            <div class='ListDivParams' style="position: relative;padding-left: 18px;">
+                                    <div style="width: 5%; text-align: center">
+                                    <asp:Image  ID="BtnServiceRequest" Style="vertical-align: middle;" ImageUrl="~/images/icons/Arrow_Left_1.png" runat="server" />
+                                    </div>
+                                      <div style="width: 33%; text-align: right"><%#Eval("PurposeName") %></div>
+                                <div style="width: 15%; text-align: right;">
+                                    <%#(double.Parse(Eval("Sum").ToString()) - (!string.IsNullOrWhiteSpace(Eval("paid").ToString()) ?double.Parse(Eval("paid").ToString()) : 0) + (Eval("IsApprovedCreditOrDenial").ToString() == "1" && !string.IsNullOrWhiteSpace(Eval("SumCreditOrDenial").ToString()) ? double.Parse(Eval("SumCreditOrDenial").ToString()) : 0)).ToString() %></div>
+                                <div style="width: 15%; text-align: right;"><%#Eval("Sum") %></div>
+                                <div style="width: 15%; text-align: right"><%#Eval("Invoice") %></div>
+                                <div style="width: 17%; text-align: right; padding-right: 4%"><%#Eval("CreateDate") %></div>
+                            </div>
                         </asp:LinkButton>
                     </ItemTemplate>
                 </asp:Repeater>

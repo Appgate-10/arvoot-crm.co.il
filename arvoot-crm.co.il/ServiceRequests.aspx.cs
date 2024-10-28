@@ -139,21 +139,21 @@ namespace ControlPanel
             {
                 PageNumber = int.Parse(Request.QueryString["Page"]);
             }
-            int PageSize = int.Parse(ConfigurationManager.AppSettings["PageSize"]);
+            int PageSize = 4;//int.Parse(ConfigurationManager.AppSettings["PageSize"]);
             int CurrentRow = (PageNumber == 1) ? 0 : (PageSize * (PageNumber - 1));
             long ItemCount = 0;
             SqlCommand cmd = new SqlCommand();
             SqlCommand cmdCount = new SqlCommand();
 
             string sqlWhere = "", sql2 = "";
-            if (Request.QueryString["Q"] != null)
-            {
-                if (Request.QueryString["Q"].ToString().Length > 0)
-                {
-                    sqlWhere = " and( Lead.FirstName like @SrcParam OR Lead.LastName like @SrcParam Or Lead.tz like @SrcParam Or Lead.Phone1 like @SrcParam )";
-                }
-                strSrc = Request.QueryString["Q"].ToString();
-            }
+            //if (Request.QueryString["Q"] != null)
+            //{
+            //    if (Request.QueryString["Q"].ToString().Length > 0)
+            //    {
+            //        sqlWhere = " and( Lead.FirstName like @SrcParam OR Lead.LastName like @SrcParam Or Lead.tz like @SrcParam Or Lead.Phone1 like @SrcParam )";
+            //    }
+            //    strSrc = Request.QueryString["Q"].ToString();
+            //}
             //if (Request.QueryString["IsMyPerformance"] != null)
             //{
             //    sqlWhere = " and l.AgentID =@AgentID";
@@ -162,31 +162,72 @@ namespace ControlPanel
             //    sql2 = " inner join Tasks t on l.ID = t.LeadID ";
 
             //}
-            string sql = @"SELECT DISTINCT l.ID, l.Phone1, l.Tz, l.LastName, l.FirstName, 
-                          a.FullName AS FullNameAgent,l.DateBirth,
-                          CONVERT(varchar, l.CreateDate, 104) as CreateDate
-                          FROM Lead l
-                          inner JOIN Offer o ON l.ID = o.LeadID
-						  inner join ServiceRequest s on o.ID = s.OfferID "+ sql2 +
-                          @"LEFT JOIN Agent a ON l.AgentID = a.ID
-                          WHERE l.IsContact = 1";
-            cmd.CommandText = sql + sqlWhere;
+        //    string sql = @"SELECT DISTINCT l.ID, l.Phone1, l.Tz, l.LastName, l.FirstName, 
+        //                  a.FullName AS FullNameAgent,l.DateBirth,
+        //                  CONVERT(varchar, l.CreateDate, 104) as CreateDate
+        //                  FROM Lead l
+        //                  inner JOIN Offer o ON l.ID = o.LeadID
+						  //inner join ServiceRequest s on o.ID = s.OfferID "+ sql2 +
+        //                  @"LEFT JOIN Agent a ON l.AgentID = a.ID
+        //                  WHERE l.IsContact = 1";
+        //    cmd.CommandText = sql + sqlWhere;
 
-            string sqlCnt = @"select count(*) from Lead l inner JOIN Offer o ON l.ID = o.LeadID   inner join ServiceRequest s on o.ID = s.OfferID where l.IsContact=1 ";
+        //    string sqlCnt = @"select count(*) from Lead l inner JOIN Offer o ON l.ID = o.LeadID   inner join ServiceRequest s on o.ID = s.OfferID where l.IsContact=1 ";
+        //    cmdCount.CommandText = sqlCnt + sqlWhere;
+
+        //    try
+        //    {
+        //        cmdCount.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString() + "%");
+        //    }
+        //    catch (Exception) { }
+
+        //    ItemCount = DbProvider.GetDataTable(cmdCount).Rows.Count;
+
+        //    if (ItemCount > PageSize)
+        //    {
+        //        string str = "";
+        //        if (PageNumber > 1) { str = str + "<a href=\"Contacts.aspx?Page=" + (PageNumber - 1).ToString() + "\"\" title=\"Back\">&laquo;</a>"; }
+
+        //        int iRunFrom = ((PageNumber - 4) < 1) ? 1 : (PageNumber - 4);
+        //        int iRunUntil = (int)Math.Ceiling((double)ItemCount / (double)PageSize);
+        //        Session["Page"] = PageNumber;
+        //        int iRun;
+        //        for (iRun = iRunFrom; iRun <= iRunUntil && iRun < (iRunFrom + 10); iRun++)
+        //        {
+        //            str = str + "<a href=\"Contacts.aspx?Page=" + iRun.ToString() + "\">" + iRun.ToString() + "</a>";
+        //        }
+        //        str = str.Replace(">" + PageNumber.ToString() + "</a>", " class=\"active\">" + PageNumber.ToString() + "</a>");
+
+        //        if (PageNumber < (iRun - 1)) { str = str + "<a href=\"Contacts.aspx?Page=" + (PageNumber + 1).ToString() + "\"\" title=\"Next\">&raquo;</a>"; }
+
+        //        PageingDiv.InnerHtml = str;
+        //    };
+
+        //    try
+        //    {
+        //        cmd.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString() + "%");
+        //    }
+        //    catch (Exception) { }
+
+        //    DataSet ds = DbProvider.GetDataSet(cmd);
+
+            string sqlServiceRequest = @"select s.ID, Invoice,Sum,CONVERT(varchar, s.CreateDate, 104)  CreateDate, p.purpose as PurposeName,
+(select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1) as paid, SumCreditOrDenial, IsApprovedCreditOrDenial
+from ServiceRequest s 
+left join ServiceRequestPurpose p on s.PurposeID = p.ID 
+inner join Offer on Offer.ID = s.OfferID
+inner join Lead on Lead.ID = Offer.LeadID";
+            SqlCommand cmdServiceRequest = new SqlCommand(sqlServiceRequest);
+            DataTable dtServiceRequest = DbProvider.GetDataTable(cmdServiceRequest);
+
+            string sqlCnt = @"select count(*) from ServiceRequest s inner join Offer on Offer.ID = s.OfferID inner join Lead on Lead.ID = Offer.LeadID ";
             cmdCount.CommandText = sqlCnt + sqlWhere;
-
-            try
-            {
-                cmdCount.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString() + "%");
-            }
-            catch (Exception) { }
-
             ItemCount = DbProvider.GetDataTable(cmdCount).Rows.Count;
 
             if (ItemCount > PageSize)
             {
                 string str = "";
-                if (PageNumber > 1) { str = str + "<a href=\"Contacts.aspx?Page=" + (PageNumber - 1).ToString() + "\"\" title=\"Back\">&laquo;</a>"; }
+                if (PageNumber > 1) { str = str + "<a href=\"ServiceRequests.aspx?Page=" + (PageNumber - 1).ToString() + "\"\" title=\"Back\">&laquo;</a>"; }
 
                 int iRunFrom = ((PageNumber - 4) < 1) ? 1 : (PageNumber - 4);
                 int iRunUntil = (int)Math.Ceiling((double)ItemCount / (double)PageSize);
@@ -194,24 +235,16 @@ namespace ControlPanel
                 int iRun;
                 for (iRun = iRunFrom; iRun <= iRunUntil && iRun < (iRunFrom + 10); iRun++)
                 {
-                    str = str + "<a href=\"Contacts.aspx?Page=" + iRun.ToString() + "\">" + iRun.ToString() + "</a>";
+                    str = str + "<a href=\"ServiceRequests.aspx?Page=" + iRun.ToString() + "\">" + iRun.ToString() + "</a>";
                 }
                 str = str.Replace(">" + PageNumber.ToString() + "</a>", " class=\"active\">" + PageNumber.ToString() + "</a>");
 
-                if (PageNumber < (iRun - 1)) { str = str + "<a href=\"Contacts.aspx?Page=" + (PageNumber + 1).ToString() + "\"\" title=\"Next\">&raquo;</a>"; }
+                if (PageNumber < (iRun - 1)) { str = str + "<a href=\"ServiceRequests.aspx?Page=" + (PageNumber + 1).ToString() + "\"\" title=\"Next\">&raquo;</a>"; }
 
                 PageingDiv.InnerHtml = str;
             };
 
-            try
-            {
-                cmd.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString() + "%");
-            }
-            catch (Exception) { }
-
-            DataSet ds = DbProvider.GetDataSet(cmd);
-
-            Repeater1.DataSource = ds;
+            Repeater1.DataSource = dtServiceRequest;
             Repeater1.DataBind();
 
         }
@@ -278,7 +311,9 @@ namespace ControlPanel
             Response.Redirect("Contact.aspx?ContactID=" + e.CommandArgument.ToString());
         }
 
-
-
+        protected void BtnDetailsServiceReq_Command(object sender, CommandEventArgs e)
+        {
+           Response.Redirect("ServiceRequestEdit.aspx?ServiceRequestID=" + e.CommandArgument.ToString());
+        }
     }
 }

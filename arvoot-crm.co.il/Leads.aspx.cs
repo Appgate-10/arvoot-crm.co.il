@@ -599,6 +599,8 @@ namespace ControlPanel
                 return;
             };
             string IdsLeads ="";
+            List<string> agentsNames = new List<string>();
+            List<string> LeadsNames = new List<string>();
 
 
 
@@ -608,6 +610,8 @@ namespace ControlPanel
                 {
                     IdsLeads += ((HiddenField)Repeater1.Items[i].FindControl("LeadID")).Value;
                     IdsLeads += ",";
+                    agentsNames.Add(((HtmlGenericControl)Repeater1.Items[i].FindControl("AgentName")).InnerText);
+                    LeadsNames.Add(((HtmlGenericControl)Repeater1.Items[i].FindControl("LeadFirstName")).InnerText + " " + ((HtmlGenericControl)Repeater1.Items[i].FindControl("LeadLastName")).InnerText);
                 }
 
             }
@@ -636,6 +640,19 @@ namespace ControlPanel
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('An error occurred');", true);
 
             }
+
+            else
+            {
+                for (int i = 0; i < LeadsNames.Count; i++)
+                {
+                    SqlCommand cmdHistory = new SqlCommand("INSERT INTO ActivityHistory (AgentID, Details, CreateDate, Show) VALUES (@agentID, @details, GETDATE(), 1)");
+                    cmdHistory.Parameters.AddWithValue("@agentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
+                    cmdHistory.Parameters.AddWithValue("@details", ("ליד " + LeadsNames[i] + "הועבר מהסוכן " + agentsNames[i]));
+                    DbProvider.ExecuteCommand(cmdHistory);
+                }
+            }
+            
+
             MoveLeadPopUp.Visible = false;
             loadUsers(1,true);
 
@@ -769,14 +786,13 @@ namespace ControlPanel
             };
             string IdsLeads = "";
 
-
-
             for (int i = 0; i < Repeater1.Items.Count; i++)
             {
                 if (((CheckBox)Repeater1.Items[i].FindControl("chk")).Checked)
                 {
                     IdsLeads += ((HiddenField)Repeater1.Items[i].FindControl("LeadID")).Value;
                     IdsLeads += ",";
+                    
                 }
 
             }

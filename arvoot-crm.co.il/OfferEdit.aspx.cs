@@ -217,7 +217,7 @@ namespace ControlPanel
         {
            
 
-            string sql = @"select Lead.Tz,Lead.FirstName+' '+Lead.LastName as FullName,Agent.FullName as FullNameAgent from Lead
+            string sql = @"select Lead.Tz,Lead.FirstName+' '+Lead.LastName as FullName,Agent.FullName as FullNameAgent, Lead.AgentID from Lead
                            inner join Agent on Lead.AgentID=Agent.ID ";
             SqlCommand cmd = new SqlCommand(sql);
 
@@ -280,21 +280,30 @@ namespace ControlPanel
                 {
                     btnMoveToOperatingQueqe.Visible = false;
 
-                    //אם הגיעו מהסוכן - בעל ההצעה יש לחסום אפשרות לעריכה
-                    //DeleteLid.Enabled = false;
-                    //btn_save.Enabled = false;
-                    //SelectStatusOffer.Disabled = true;
-                    //SelectOfferType.Disabled = true;
-                    //ImageButton2.Enabled = false;
-                    //ReasonLackSuccess.Disabled = true;
-                    //Note.Disabled = true;
-                    //ReturnDateToCustomer.Disabled = true;
-                    //DateSentToInsuranceCompany.Disabled = true;
-                    //SelectSourceLoanOrInsurance.Disabled = true;
-                    //UploadDocument.Enabled = false;
-                    //ImageButton3.Enabled = false;
-                    //ImageButton4.Enabled = false;
-                    //ImageButton1.Enabled = false;
+                    if (dt.Rows.Count > 0 && HttpContext.Current.Session != null)
+                    {
+                        if (dt.Rows[0]["AgentID"].ToString() == HttpContext.Current.Session["AgentID"].ToString())
+                        {
+                            //אם הגיעו מהסוכן - בעל ההצעה יש לחסום אפשרות לעריכה
+                            DeleteLid.Enabled = false;
+                            btn_save.Enabled = false;
+                            SelectStatusOffer.Disabled = true;
+                            SelectOfferType.Disabled = true;
+                            ImageButton2.Enabled = false;
+                            ReasonLackSuccess.Disabled = true;
+                            Note.Disabled = true;
+                            ReturnDateToCustomer.Disabled = true;
+                            DateSentToInsuranceCompany.Disabled = true;
+                            SelectSourceLoanOrInsurance.Disabled = true;
+                            UploadDocument.Enabled = false;
+                            ImageButton3.Enabled = false;
+                            ImageButton4.Enabled = false;
+                            ImageButton1.Enabled = false;
+                        }
+                    }
+
+                        
+                    
                 }
                 else
                 {

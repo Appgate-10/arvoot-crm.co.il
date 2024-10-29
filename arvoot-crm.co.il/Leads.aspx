@@ -67,10 +67,11 @@
                                 <div style="width: 5%; text-align: center">
                                     <asp:Image ID="BtnDetailsLead"   style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
                                 </div>
+
                                 <asp:HiddenField ID="LeadID" Value='<%#Eval("ID") %>' runat="server"/>
                                 <div style="width: 10%; text-align: right"><%#Eval("Note") %></div>
                                 <div style="width: 8%; text-align: right;"><%#Eval("TrackingTime") %></div>
-                                <div style="width: 9%; text-align: right;"><%#Eval("AgentName") %></div>
+                                <div id="AgentName" runat="server" style="width: 9%; text-align: right;"><%#Eval("AgentName") %></div>
                                 <div style="width: 15%; text-align: right;"><%--<%#Eval("SecondStatus") %>--%>
                                       <asp:TextBox  ID="SubStatus"   Text='<%#Eval("SecondStatus ") %>'  style="vertical-align: middle;width: 90%;height: 40%;font-weight: bold;color: #35508C;background-repeat: no-repeat;
                                                     background-size: 100% 100%;text-align: center;border: none; background-image: url(../images/icons/Secondary_Status_6.png);" runat="server"   />
@@ -82,8 +83,8 @@
                                 </div>
                                 <div style="width: 8%; text-align: right"><%#Eval("Phone1") %></div>
                                 <div style="width: 7%; text-align: right"><%#Eval("Tz") %></div>
-                                <div style="width: 7%; text-align: right"><%#Eval("LastName") %></div>
-                                <div style="width: 7%; text-align: right"><%#Eval("FirstName") %></div>
+                                <div id="LeadFirstName" runat="server" style="width: 7%; text-align: right"><%#Eval("LastName") %></div>
+                                <div id="LeadLastName" runat="server" style="width: 7%; text-align: right"><%#Eval("FirstName") %></div>
                                 <div style="width: 7%; text-align: right"><%#Eval("CreateDate") %></div>
                                 <div style="width: 5%; text-align: center">
                                     <asp:CheckBox ID="chk" runat="server" ClientIDMode="Static" />

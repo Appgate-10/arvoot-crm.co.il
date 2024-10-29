@@ -10,12 +10,14 @@ using System.Data;
 using System.Configuration;
 using System.Web.UI.HtmlControls;
 using System.Data.SqlClient;
+using System.IO;
+
 namespace ControlPanel
 {
     public partial class _homePage : System.Web.UI.Page
     {
         ControlPanelInit Pageinit = new ControlPanelInit();
-
+        string FileName1;
         public string ListPageUrl = "LeadAdd.aspx";
         private List<DateTime> _datesWithTasks;
 
@@ -23,9 +25,11 @@ namespace ControlPanel
         protected void Page_Load(object sender, EventArgs e)
         {
             Page.Form.Attributes.Add("enctype", "multipart/form-data");
-            
+            ImageFile_1_display.Attributes.Add("onclick", "document.getElementById('" + ImageFile_1_FileUpload.ClientID + "').click();");
+
             if (!Page.IsPostBack)
             {
+
                 if (HttpContext.Current.Session["AgentID"] == null)
                 {
                    HttpContext.Current.Response.Redirect("SignIn.aspx");
@@ -58,7 +62,12 @@ namespace ControlPanel
                     TasksCalendar.SelectedDate = DateTime.Today;
                     LoadTaskDates();
                 }
-                
+
+                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 1)
+                {
+                    CreateEmployee.Visible = true;
+                }
+                ManagementPermission_Click(this, EventArgs.Empty);
 
             }
             else
@@ -72,6 +81,285 @@ namespace ControlPanel
             //Gila
             loadGraf();
 
+        }
+        public bool funcSave(object sender, EventArgs e)
+        {
+            int ErrorCount = 0;
+
+            ImageFile_1_lable_2.Visible = false;
+            FormErrorAgent_lable.Visible = false;
+            ImageFile_1_lable.Visible = false;
+
+            if (string.IsNullOrWhiteSpace(Name.Value))
+            {
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "יש להזין שם מלא";
+                ErrorCount++;
+                return false;
+            }
+            if (Name.Value != "")
+            {
+                var fullNames = Name.Value.Split(' ');
+                if (fullNames.Length >= 2)
+                {
+                    foreach (var str in fullNames)
+                    {
+                        if (str.Length < 2)
+                        {
+                            ErrorCount++;
+                            FormErrorAgent_lable.Visible = true;
+                            FormErrorAgent_lable.Text = "יש להזין שם מלא תקין";
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    ErrorCount++;
+                    FormErrorAgent_lable.Visible = true;
+                    FormErrorAgent_lable.Text = "יש להזין שם מלא תקין";
+                    return false;
+                }
+            }
+            if (EmailA.Value == "")
+            {
+                ErrorCount++;
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "יש להזין אימייל ";
+                return false;
+            }
+            if (!EmailA.Value.Contains("@"))
+            {
+                ErrorCount++;
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "יש להזין אימייל תקין";
+                return false;
+            }
+            if (Helpers.AgentEmailExist(EmailA.Value, -1) == "true")
+            {
+                ErrorCount++;
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "אימייל זה כבר קיים במערכת";
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(Address.Value))
+            {
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "יש להזין כתובת";
+                ErrorCount++;
+                return false;
+            }
+            if (Phone.Value == "" || Phone.Value.Length < 9)
+            {
+                ErrorCount++;
+                FormErrorAgent_lable.Text = "יש להזין מספר טלפון  ";
+                FormErrorAgent_lable.Visible = true;
+                return false;
+            }
+
+
+            if (string.IsNullOrWhiteSpace(Tz.Value))
+            {
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "יש להזין ת.ז ";
+                ErrorCount++;
+                return false;
+            }
+            if (Tz.Value.Length != 9)
+            {
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "  יש להזין ת.ז תקינה ";
+                ErrorCount++;
+                return false;
+            }
+            if (Helpers.AgentTzExist(Tz.Value, -1) == "true")
+            {
+                ErrorCount++;
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "ת.ז קיימת במערכת";
+                return false;
+
+            }
+            if (PasswordAgent.Value == "")
+            {
+                ErrorCount++;
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "יש להזין סיסמא ";
+                return false;
+            }
+            if (PasswordAgent.Value.Length < 6)
+            {
+                ErrorCount++;
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "יש להזין סיסמא תקינה ";
+                return false;
+            }
+
+            /* if (string.IsNullOrWhiteSpace(PercentCommission.Value) || int.Parse(PercentCommission.Value) < 0 || int.Parse(PercentCommission.Value) >= 100)
+             {
+                 FormError_lable.Visible = true;
+                 FormError_lable.Text = " יש להזין סכום עמלה תקין";
+                 ErrorCount++;
+                 return false;
+             }*/
+            if (ErrorCount == 0)
+            {
+                string sql = @"  Insert INTO Agent (FullName,Tz,Email,Phone,ImageFile,Password,Level,Show)
+                                     values(@Name,@Tz,@Email,@Phone,@ImageFile,@Password,@Level,1)";
+                SqlCommand cmd = new SqlCommand(sql);
+
+
+                cmd.Parameters.AddWithValue("@Name", Name.Value);
+
+                cmd.Parameters.AddWithValue("@Tz", Tz.Value);
+
+                cmd.Parameters.AddWithValue("@Email", EmailA.Value);
+
+                cmd.Parameters.AddWithValue("@Phone", Phone.Value);
+
+
+                /*                cmd.Parameters.AddWithValue("@PercentCommission", PercentCommission.Value);
+                */
+                cmd.Parameters.AddWithValue("@Password", PasswordAgent.Value);
+
+                //try
+                //{
+                //    Pageinit.CheckManagerPermissions(this, this.Master);
+                //    cmd.Parameters.AddWithValue("@ParentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
+                //}
+                //catch (Exception ex)
+                //{
+                //    System.Web.HttpContext.Current.Response.Redirect("SignIn.aspx");
+                //}
+
+                try
+                {
+                    FileUpload fileU = (FileUpload)Session["imgFileUpload1"];
+                    string ext = System.IO.Path.GetExtension(fileU.FileName).ToLower();
+                    FileName1 = Md5.GetMd5Hash(Md5.CreateMd5Hash(), "1" + Helpers.CreateFileName(fileU.FileName)) + ext;
+                    cmd.Parameters.AddWithValue("@ImageFile", FileName1);
+                }
+                catch (Exception) { cmd.Parameters.AddWithValue("@ImageFile", ""); }
+
+                cmd.Parameters.AddWithValue("@Level", HttpContext.Current.Session["Add_Level"]);
+
+                if (DbProvider.ExecuteCommand(cmd) > 0)
+                {
+                    if (Session["imgFileUpload1"] != null && ((FileUpload)Session["imgFileUpload1"]).HasFile)
+                    {
+                        //todo -לשמור בתקיה בשרת
+                        string FilePath = String.Format("{0}/Agent/", ConfigurationManager.AppSettings["MapPath1"]);
+                        try { ((FileUpload)Session["imgFileUpload1"]).PostedFile.SaveAs(Path.Combine(FilePath, FileName1)); }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+
+                    }
+
+                    return true;
+                }
+                else
+                {
+                    FormErrorAgent_lable.Text = "* התרחשה שגיאה";
+                    FormErrorAgent_lable.Visible = true;
+                }
+
+            }
+
+
+            return false;
+        }
+
+        protected void SaveNewAgent_Click(object sender, EventArgs e)
+        {
+            //  AddAgentPopUp.Visible = false;
+            bool success = funcSave(sender, e);
+            if (!success)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+            }
+            else
+            {
+                Response.Redirect(ListPageUrl);
+            }
+        }
+
+        protected void AgentPermission_Click(object sender, EventArgs e)
+        {
+            ManagementPermission.Attributes.Add("class", "Permissions");
+            AgentPermission.Attributes.Add("class", "PermissionsChoose");
+            SupervisorPermission.Attributes.Add("class", "Permissions");
+            HttpContext.Current.Session["Add_Level"] = 2;
+
+        }
+
+        protected void SupervisorPermission_Click(object sender, EventArgs e)
+        {
+            ManagementPermission.Attributes.Add("class", "Permissions");
+            AgentPermission.Attributes.Add("class", "Permissions");
+            SupervisorPermission.Attributes.Add("class", "PermissionsChoose");
+            HttpContext.Current.Session["M_Level"] = 3;
+        }
+        protected void ImageFile_1_btnUpload_Click(object sender, EventArgs e)
+        {
+            int maxFileSize = 262144;
+            ImageFile_1_lable.Visible = false;
+            ImageFile_1_lable_2.Visible = false;
+            if (ImageFile_1_FileUpload.HasFile && ImageFile_1_FileUpload.PostedFile.ContentLength < maxFileSize)
+            {
+                try
+                {
+                    string ext = System.IO.Path.GetExtension(ImageFile_1_FileUpload.FileName).ToLower();
+                    if (ext == ".jpg" || ext == ".jpeg" || ext == ".gif" || ext == ".png")
+                    {
+                        System.IO.Stream fs = ImageFile_1_FileUpload.PostedFile.InputStream;
+                        System.IO.BinaryReader br = new System.IO.BinaryReader(fs);
+                        Byte[] bytes = br.ReadBytes((Int32)fs.Length);
+                        string base64String = Convert.ToBase64String(bytes, 0, bytes.Length);
+                        ImageFile_1_display.Src = "data:image/png;base64," + base64String;
+                        Session["imgFileUpload1"] = ImageFile_1_FileUpload;
+                    }
+                    else
+                    {
+                        ImageFile_1_lable_2.Text = "* הסיומת לא תקינה";
+                        ImageFile_1_lable_2.Visible = true;
+                    }
+                }
+                catch
+                {
+                    ImageFile_1_lable_2.Text = "* בבקשה נסה שוב";
+                    ImageFile_1_lable_2.Visible = true;
+                }
+            }
+            else
+            {
+                ImageFile_1_lable_2.Text = "* התמונה גדולה מ250קב,בבקשה הכנס תמונה חדשה";
+
+                ImageFile_1_lable_2.Visible = true;
+            }
+        }
+        protected void ManagementPermission_Click(object sender, EventArgs e)
+        {
+            ManagementPermission.Attributes.Add("class", "PermissionsChoose");
+            AgentPermission.Attributes.Add("class", "Permissions");
+            SupervisorPermission.Attributes.Add("class", "Permissions");
+            HttpContext.Current.Session["Add_Level"] = 1;
+        }
+        protected void ClosePopUpAddAgent_Click(object sender, ImageClickEventArgs e)
+        {
+            AddAgentPopUp.Visible = false;
+        }
+        protected void AddNewAgent_Click(object sender, EventArgs e)
+        {
+            AddAgentPopUp.Visible = true;
+        }
+
+        protected void CreateEmployee_Click(object sender, EventArgs e)
+        {
+            AddAgentPopUp.Visible = true;
+        //    UpdatePanel1.Update();
         }
         private void loadGraf()
         {

@@ -232,7 +232,7 @@ namespace ControlPanel
                 EffectiveDate.InnerText = DateTime.Now.ToString("dd.MM.yyyy");
             }
 
-            string sqlOffer = @"select LeadID, CONVERT(varchar,Offer.CreateDate, 104) as CreateDate, IsInOperatingQueue, OperationManagerID,
+            string sqlOffer = @"select LeadID, CONVERT(varchar,Offer.CreateDate, 104) as CreateDate, IsInOperatingQueue, OperatorID,
                                 DATEDIFF(DAY,Offer.CreateDate,getdate()) as sla, SourceLoanOrInsuranceID, OfferTypeID,TurnOfferID,
                                 ReasonLackSuccess,CONVERT(varchar,Offer.ReturnDateToCustomer, 104) ReturnDateToCustomer,
                                 Note,DateSentToInsuranceCompany, StatusOfferID,NameOffer from Offer where ID = @OfferID";
@@ -256,11 +256,11 @@ namespace ControlPanel
                 NameOffer.Value = rowOffer["NameOffer"].ToString();
 
                 bool isInOperatingManager = false;
-                if (!string.IsNullOrWhiteSpace(rowOffer["OperationManagerID"].ToString()))
+                if (!string.IsNullOrWhiteSpace(rowOffer["OperatorID"].ToString()))
                 {
-                    string sqlOwner = @"select Agent.FullName as FullNameAgent from Agent WHERE ID = @OperationManagerID ";
+                    string sqlOwner = @"select Agent.FullName as FullNameAgent from Agent WHERE ID = @OperatorID ";
                     SqlCommand cmdOwner = new SqlCommand(sql);
-                    cmdOwner.Parameters.AddWithValue("@OperationManagerID", rowOffer["OperationManagerID"]);
+                    cmdOwner.Parameters.AddWithValue("@OperatorID", rowOffer["OperatorID"]);
                     DataTable dtOwner = DbProvider.GetDataTable(cmdOwner);
                     if (dtOwner.Rows.Count > 0)
                     {

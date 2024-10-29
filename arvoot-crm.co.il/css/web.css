@@ -2316,6 +2316,19 @@ H2 {
     font-family: 'Open Sans Hebrew', sans-serif; 
 }
 
+.BtnMove {
+    background-color: white;
+    color: #973595;
+    padding: 0px 2%;
+    border: 1px solid #973595;
+    border-radius: 40px;
+    font-size: medium;
+    font-weight: bold;
+    margin-inline-end: 8px;
+    cursor: pointer;
+    font-family: 'Open Sans Hebrew', sans-serif;
+}
+
 .btnBlue {
     background-color: #0098FF;
     color: white;

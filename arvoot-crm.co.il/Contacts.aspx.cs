@@ -27,8 +27,12 @@ namespace ControlPanel
             {
                 Pageinit.CheckManagerPermissions();
 
+                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 1)
+                {
+                    MoveTo.Visible = true;
+                }
 
-                loadUsers(1);
+                    loadUsers(1, false);
                 //loadData();
             }
         }
@@ -131,7 +135,7 @@ namespace ControlPanel
         //    Repeater1.DataSource = ds;
         //    Repeater1.DataBind();
         //}
-        public void loadUsers(int page)
+        public void loadUsers(int page, bool shouldUpdate)
         {
 
             int PageNumber = page;
@@ -224,6 +228,11 @@ namespace ControlPanel
             Repeater1.DataSource = ds;
             Repeater1.DataBind();
 
+            if (shouldUpdate == true)
+            {
+                AddForm.Update();
+            }
+
         }
 
         protected void SuspensionBU_Click(object sender, CommandEventArgs e)
@@ -288,7 +297,81 @@ namespace ControlPanel
             Response.Redirect("Contact.aspx?ContactID=" + e.CommandArgument.ToString());
         }
 
+        protected void MoveTo_Click(object sender, EventArgs e)
+        {
+            FormError_lable.Visible = false;
+            MoveContactPopUp.Visible = true;
 
+            SqlCommand cmdAgents = new SqlCommand("SELECT  FullName as AgentName,ID FROM Agent where Level =3");
+            DataSet dsAgents = DbProvider.GetDataSet(cmdAgents);
+            AgentList.DataSource = dsAgents;
+            AgentList.DataTextField = "AgentName";
+            AgentList.DataValueField = "ID";
+            AgentList.DataBind();
+            AgentList.Items.Insert(0, new ListItem("חפש סוכן", ""));
 
+            UpdatePanel2.Update();
+
+        }
+
+        protected void CloseMovePopUp_Click(object sender, ImageClickEventArgs e)
+        {
+            MoveContactPopUp.Visible = false;
+        }
+
+        protected void ForwardContactsToAgent_Click(object sender, ImageClickEventArgs e)
+        {
+            if (AgentList.SelectedIndex == 0)
+            {
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש לבחור סוכן";
+                return;
+            };
+            string IdsLeads = "";
+            List<string> agentsNames = new List<string>();
+            List<string> ContactsNames = new List<string>();
+
+            for (int i = 0; i < Repeater1.Items.Count; i++)
+            {
+                if (((CheckBox)Repeater1.Items[i].FindControl("chk")).Checked)
+                {
+                    IdsLeads += ((HiddenField)Repeater1.Items[i].FindControl("LeadID")).Value;
+                    IdsLeads += ",";
+                    agentsNames.Add(((HtmlGenericControl)Repeater1.Items[i].FindControl("AgentName")).InnerText);
+                    ContactsNames.Add(((HtmlGenericControl)Repeater1.Items[i].FindControl("ContactFirstName")).InnerText + " " + ((HtmlGenericControl)Repeater1.Items[i].FindControl("ContactLastName")).InnerText);
+
+                }
+            }
+
+            if (string.IsNullOrEmpty(IdsLeads))
+            {
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש לסמן איש קשר";
+                return;
+            }
+
+            SqlCommand cmd = new SqlCommand("update Lead set AgentID = @AgentID where ID in(" + IdsLeads.Remove(IdsLeads.Length - 1, 1) + ")");
+            cmd.Parameters.AddWithValue("@AgentID", AgentList.SelectedValue);
+            if (DbProvider.ExecuteCommand(cmd) <= 0)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('An error occurred');", true);
+
+            }
+            else
+            {
+                for (int i = 0; i < ContactsNames.Count; i++)
+                {
+                    SqlCommand cmdHistory = new SqlCommand("INSERT INTO ActivityHistory (AgentID, Details, CreateDate, Show) VALUES (@agentID, @details, GETDATE(), 1)");
+                    cmdHistory.Parameters.AddWithValue("@agentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
+                    cmdHistory.Parameters.AddWithValue("@details", ("איש קשר " + ContactsNames[i] + " הועבר מהסוכן " + agentsNames[i]));
+                    DbProvider.ExecuteCommand(cmdHistory);
+                }
+            }
+
+            
+            MoveContactPopUp.Visible = false;
+            loadUsers(1, true);
+
+        }
     }
 }

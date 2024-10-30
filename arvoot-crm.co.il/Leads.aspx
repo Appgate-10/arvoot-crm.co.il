@@ -86,7 +86,7 @@
                                 <div id="LeadFirstName" runat="server" style="width: 7%; text-align: right"><%#Eval("FirstName") %></div>
                                 <div style="width: 7%; text-align: right"><%#Eval("CreateDate") %></div>
                                 <div style="width: 5%; text-align: center">
-                                    <asp:CheckBox ID="chk" runat="server" ClientIDMode="Static" />
+                                    <asp:CheckBox ID="chk" runat="server" Visible="false" ClientIDMode="Static" />
                                 </div>
                                 <asp:Button ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsLead_Command" CssClass="repeaterButton" Style="width:95%;"/>
                             </div>

@@ -219,7 +219,7 @@
                                 <label class="InputLable">תאריך תשלום:</label>
                                 <input id="DatePayment1" name="DatePayment1" type="date" runat="server" style="width: 100%;" class="InputAdd" value='<%# Eval("DatePayment").ToString() %>' />
                             </div>
-                            <div style="width: 28%; direction: rtl; float: right;">
+                            <div id="divIsApproved" runat="server" visible="false" style="width: 28%; direction: rtl; float: right;" >
                                 <asp:CheckBox runat="server" ID="IsApprove1" Checked='<%# Eval("IsApprovedPayment").ToString() == "1" ? true : false %>' AutoPostBack="true" OnCheckedChanged="IsApprove1_CheckedChanged" />
                                 <asp:Label ID="lblIsApprove1" AssociatedControlID="IsApprove1" runat="server" CssClass="lblAns" Text=" נבדק ואושר לביצוע"></asp:Label>
                             </div>

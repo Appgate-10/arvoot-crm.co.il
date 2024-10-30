@@ -31,7 +31,7 @@ namespace ControlPanel
             if (!Page.IsPostBack)
             {
                 Pageinit.CheckManagerPermissions();
-                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 1)
+                if (HttpContext.Current.Session["AgentLevel"] != null &&( int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 1 || int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 3))
                 {
                     MoveTo.Visible = true;
                     SetStatus.Visible = true;

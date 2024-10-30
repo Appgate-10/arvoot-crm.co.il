@@ -375,7 +375,7 @@ namespace ControlPanel
                 {
                     SqlCommand cmdHistory = new SqlCommand("INSERT INTO ActivityHistory (AgentID, Details, CreateDate, Show) VALUES (@agentID, @details, GETDATE(), 1)");
                     cmdHistory.Parameters.AddWithValue("@agentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
-                    cmdHistory.Parameters.AddWithValue("@details", ("ליד " + LeadsNames[i] + "הועבר מהסוכן " + agentsNames[i]));
+                    cmdHistory.Parameters.AddWithValue("@details", ("ליד " + LeadsNames[i] + "הועבר מהסוכן  " + agentsNames[i]));
                     DbProvider.ExecuteCommand(cmdHistory);
                 }
             }

@@ -96,7 +96,7 @@ namespace ControlPanel
         {
             SqlCommand cmdAgent = new SqlCommand(@"  select ID, FullName, Tz,Email, Phone, 
                                                       CONVERT(varchar,CreateDate, 104) as CreateDate,ImageFile
-                                                     from Agent where ID = @AgentID");
+                                                     from ArvootManagers where ID = @AgentID");
             try
             {
                 Pageinit.CheckManagerPermissions();

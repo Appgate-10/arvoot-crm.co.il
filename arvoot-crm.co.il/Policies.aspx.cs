@@ -145,7 +145,7 @@ namespace ControlPanel
             SqlCommand cmd = new SqlCommand();
             SqlCommand cmdCount = new SqlCommand();
 
-           string sqlWhere = "", sql2 = "";
+           string sqlWhere = "", sql2 = "", sqlJoin = "";
             if (Request.QueryString["Q"] != null)
             {
                 if (Request.QueryString["Q"].ToString().Length > 0)
@@ -155,38 +155,68 @@ namespace ControlPanel
                 strSrc = Request.QueryString["Q"].ToString();
             }
 
-            //if (Request.QueryString["IsMyPerformance"] != null)
-            //{
-            //    sqlWhere = " and l.AgentID =@AgentID";
-            //    cmd.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
-            //    cmdCount.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
-            //    sql2 = " inner join Tasks t on l.ID = t.LeadID ";
+            if (HttpContext.Current.Session["AgentLevel"] != null)
+            {
+                switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
+                {
 
-            //}
+                    case 1:
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 ";
+                        break;
+                    case 2:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlWhere = " and C.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 3:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID  ";
+                        sqlWhere = " and B.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
 
-            //string sql = @" SELECT DISTINCT l.ID, l.Phone1, l.Tz, l.LastName, l.FirstName, 
-            //                a.FullName AS FullNameAgent,l.DateBirth,
-            //                CONVERT(varchar, l.CreateDate, 104) as CreateDate
-            //                FROM Lead l
-            //                inner JOIN Offer o ON l.ID = o.LeadID " + sql2 +
-            //                @"LEFT JOIN Agent a ON l.AgentID = a.ID
-            //                WHERE l.IsContact = 1";
+                        break;
+                    case 6:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 ";
+                        sqlWhere = " and A.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 4:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ParentID = A.ParentID  ";
+                        sqlWhere = " and B.ID = @ID and IsInOperatingQueue = 1";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
 
+                        break;
+                    case 5:
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID ";
+                        sqlWhere = " and OperatorID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+
+                        break;
+                    default:
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6";
+                        break;
+
+                }
+            }
 
             //Heni 28.10.24 -  where  OfferType.ID  in(1,2,3,12) -הסטטוסים מסוג ביטוח מוצגים בפוליסות 
 
-            string sql = @"SELECT Offer.ID, Offer.CreateDate, OfferType.Name as OfferType, Agent.FullName as FullNameAgent ,StatusOffer.Status as StatusOffer
+            string sql = @"SELECT Offer.ID, Offer.CreateDate, OfferType.Name as OfferType, A.FullName as FullNameAgent ,StatusOffer.Status as StatusOffer
                            from Offer
                            left join OfferType on OfferType.ID = Offer.OfferTypeID
                            left join StatusOffer on StatusOffer.ID = Offer.StatusOfferID 
-                           left join Lead on Lead.ID = Offer.LeadID
-                           left join Agent on Lead.AgentID=Agent.ID  where  OfferType.ID in(1,2,3,12)";
+                           left join Lead on Lead.ID = Offer.LeadID" 
+                            + sqlJoin + " where  OfferType.ID in(1,2,3,12)";
 
 
 
             cmd.CommandText =sql + sqlWhere;
 
-            string sqlCnt = @"select count(*) from Offer where  OfferTypeID in(1,2,3,12)";
+            string sqlCnt = @"select count(*) from Offer left join Lead on Lead.ID = Offer.LeadID " + sqlJoin + " where  OfferTypeID in(1,2,3,12)";
             cmdCount.CommandText = sqlCnt + sqlWhere;
 
             try

@@ -217,8 +217,8 @@ namespace ControlPanel
         {
            
 
-            string sql = @"select Lead.Tz,Lead.FirstName+' '+Lead.LastName as FullName,Agent.FullName as FullNameAgent, Lead.AgentID from Lead
-                           inner join Agent on Lead.AgentID=Agent.ID ";
+            string sql = @"select Lead.Tz,Lead.FirstName+' '+Lead.LastName as FullName,A.FullName as FullNameAgent, Lead.AgentID from Lead
+                           inner join ArvootManagers A on Lead.AgentID=A.ID ";
             SqlCommand cmd = new SqlCommand(sql);
 
             DataTable dt = DbProvider.GetDataTable(cmd);
@@ -258,8 +258,8 @@ namespace ControlPanel
                 bool isInOperatingManager = false;
                 if (!string.IsNullOrWhiteSpace(rowOffer["OperatorID"].ToString()))
                 {
-                    string sqlOwner = @"select Agent.FullName as FullNameAgent from Agent WHERE ID = @OperatorID ";
-                    SqlCommand cmdOwner = new SqlCommand(sql);
+                    string sqlOwner = @"select ArvootManagers.FullName as FullNameAgent from ArvootManagers WHERE ID = @OperatorID and Type = 5 ";
+                    SqlCommand cmdOwner = new SqlCommand(sqlOwner);
                     cmdOwner.Parameters.AddWithValue("@OperatorID", rowOffer["OperatorID"]);
                     DataTable dtOwner = DbProvider.GetDataTable(cmdOwner);
                     if (dtOwner.Rows.Count > 0)

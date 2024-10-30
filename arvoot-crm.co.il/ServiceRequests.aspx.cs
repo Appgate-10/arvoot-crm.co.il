@@ -145,83 +145,60 @@ namespace ControlPanel
             SqlCommand cmd = new SqlCommand();
             SqlCommand cmdCount = new SqlCommand();
 
-            string sqlWhere = "", sql2 = "";
-            //if (Request.QueryString["Q"] != null)
-            //{
-            //    if (Request.QueryString["Q"].ToString().Length > 0)
-            //    {
-            //        sqlWhere = " and( Lead.FirstName like @SrcParam OR Lead.LastName like @SrcParam Or Lead.tz like @SrcParam Or Lead.Phone1 like @SrcParam )";
-            //    }
-            //    strSrc = Request.QueryString["Q"].ToString();
-            //}
-            //if (Request.QueryString["IsMyPerformance"] != null)
-            //{
-            //    sqlWhere = " and l.AgentID =@AgentID";
-            //    cmd.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
-            //    cmdCount.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
-            //    sql2 = " inner join Tasks t on l.ID = t.LeadID ";
+            string sqlWhere = "where 1=1 ", sql2 = "", sqlJoin = "";
+            if (HttpContext.Current.Session["AgentLevel"] != null)
+            {
+                switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
+                {
 
-            //}
-        //    string sql = @"SELECT DISTINCT l.ID, l.Phone1, l.Tz, l.LastName, l.FirstName, 
-        //                  a.FullName AS FullNameAgent,l.DateBirth,
-        //                  CONVERT(varchar, l.CreateDate, 104) as CreateDate
-        //                  FROM Lead l
-        //                  inner JOIN Offer o ON l.ID = o.LeadID
-						  //inner join ServiceRequest s on o.ID = s.OfferID "+ sql2 +
-        //                  @"LEFT JOIN Agent a ON l.AgentID = a.ID
-        //                  WHERE l.IsContact = 1";
-        //    cmd.CommandText = sql + sqlWhere;
+                  
+                    case 2:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlWhere = " and C.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 3:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID  ";
+                        sqlWhere = " and B.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
 
-        //    string sqlCnt = @"select count(*) from Lead l inner JOIN Offer o ON l.ID = o.LeadID   inner join ServiceRequest s on o.ID = s.OfferID where l.IsContact=1 ";
-        //    cmdCount.CommandText = sqlCnt + sqlWhere;
+                        break;
+                    case 6:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 ";
+                        sqlWhere = " and A.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 4:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ParentID = A.ParentID  ";
+                        sqlWhere = " and B.ID = @ID and IsInOperatingQueue = 1";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
 
-        //    try
-        //    {
-        //        cmdCount.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString() + "%");
-        //    }
-        //    catch (Exception) { }
+                        break;
+                    case 5:
+                        sqlWhere = " and OperatorID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                       break;
+                   
 
-        //    ItemCount = DbProvider.GetDataTable(cmdCount).Rows.Count;
-
-        //    if (ItemCount > PageSize)
-        //    {
-        //        string str = "";
-        //        if (PageNumber > 1) { str = str + "<a href=\"Contacts.aspx?Page=" + (PageNumber - 1).ToString() + "\"\" title=\"Back\">&laquo;</a>"; }
-
-        //        int iRunFrom = ((PageNumber - 4) < 1) ? 1 : (PageNumber - 4);
-        //        int iRunUntil = (int)Math.Ceiling((double)ItemCount / (double)PageSize);
-        //        Session["Page"] = PageNumber;
-        //        int iRun;
-        //        for (iRun = iRunFrom; iRun <= iRunUntil && iRun < (iRunFrom + 10); iRun++)
-        //        {
-        //            str = str + "<a href=\"Contacts.aspx?Page=" + iRun.ToString() + "\">" + iRun.ToString() + "</a>";
-        //        }
-        //        str = str.Replace(">" + PageNumber.ToString() + "</a>", " class=\"active\">" + PageNumber.ToString() + "</a>");
-
-        //        if (PageNumber < (iRun - 1)) { str = str + "<a href=\"Contacts.aspx?Page=" + (PageNumber + 1).ToString() + "\"\" title=\"Next\">&raquo;</a>"; }
-
-        //        PageingDiv.InnerHtml = str;
-        //    };
-
-        //    try
-        //    {
-        //        cmd.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString() + "%");
-        //    }
-        //    catch (Exception) { }
-
-        //    DataSet ds = DbProvider.GetDataSet(cmd);
+                }
+            }
 
             string sqlServiceRequest = @"select s.ID, Invoice,Sum,CONVERT(varchar, s.CreateDate, 104)  CreateDate, p.purpose as PurposeName,
 (select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1) as paid, SumCreditOrDenial, IsApprovedCreditOrDenial
 from ServiceRequest s 
 left join ServiceRequestPurpose p on s.PurposeID = p.ID 
 inner join Offer on Offer.ID = s.OfferID
-inner join Lead on Lead.ID = Offer.LeadID";
-            SqlCommand cmdServiceRequest = new SqlCommand(sqlServiceRequest);
-            DataTable dtServiceRequest = DbProvider.GetDataTable(cmdServiceRequest);
+inner join Lead on Lead.ID = Offer.LeadID" + sqlJoin + sqlWhere;
+            cmd.CommandText = sqlServiceRequest;
+            DataTable dtServiceRequest = DbProvider.GetDataTable(cmd);
 
-            string sqlCnt = @"select count(*) from ServiceRequest s inner join Offer on Offer.ID = s.OfferID inner join Lead on Lead.ID = Offer.LeadID ";
-            cmdCount.CommandText = sqlCnt + sqlWhere;
+            string sqlCnt = @"select count(*) from ServiceRequest s inner join Offer on Offer.ID = s.OfferID inner join Lead on Lead.ID = Offer.LeadID " + sqlJoin + sqlWhere;
+            cmdCount.CommandText = sqlCnt ;
             ItemCount = DbProvider.GetDataTable(cmdCount).Rows.Count;
 
             if (ItemCount > PageSize)

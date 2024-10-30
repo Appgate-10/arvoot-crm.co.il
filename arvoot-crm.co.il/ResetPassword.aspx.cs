@@ -39,7 +39,7 @@ namespace ControlPanel
             {
                 //return "missing parameter";
             }
-            SqlCommand cmd = new SqlCommand("Select Top 1 ID from Agent where Email = @Email And PasswordTempCode = @userTempCode And ID = @UserID ");
+            SqlCommand cmd = new SqlCommand("Select Top 1 ID from ArvootManagers where Email = @Email And PasswordTempCode = @userTempCode And ID = @UserID ");
             cmd.Parameters.AddWithValue("@Email", userEmail);
             cmd.Parameters.AddWithValue("@userTempCode", userTempCode);
             cmd.Parameters.AddWithValue("@UserID", UserID);
@@ -63,7 +63,7 @@ namespace ControlPanel
             {
                 //return "missing parameter";
             }
-            SqlCommand cmd = new SqlCommand("Select Top 1 ID from Agent where PasswordTempCode = @TempCode And ID = @UserID ");
+            SqlCommand cmd = new SqlCommand("Select Top 1 ID from ArvootManagers where PasswordTempCode = @TempCode And ID = @UserID ");
             cmd.Parameters.AddWithValue("@TempCode", userTempCode);
             cmd.Parameters.AddWithValue("@UserID", UserID);
             var res = DbProvider.GetOneParamValueString(cmd);
@@ -74,7 +74,7 @@ namespace ControlPanel
             else
             {
 
-                SqlCommand cmdUpdate = new SqlCommand("Update Agent set Password = @userPassword, PasswordTempCode = @userPasswordTempCode where ID = @UserID");
+                SqlCommand cmdUpdate = new SqlCommand("Update ArvootManagers set Password = @userPassword, PasswordTempCode = @userPasswordTempCode where ID = @UserID");
                 cmdUpdate.Parameters.AddWithValue("@UserID", res);
                 cmdUpdate.Parameters.AddWithValue("@userPasswordTempCode", Helpers.RandomStrings(30));
                 //string userPasswordHash = Md5.GetMd5Hash(Md5.CreateMd5Hash(), ConfigurationManager.AppSettings["SecretKey"] + userPassword);

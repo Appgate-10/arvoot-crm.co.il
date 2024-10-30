@@ -186,8 +186,8 @@ namespace ControlPanel
         {
             //int PageNumber = 1;
 
-            string sql = @"select  Lead.Tz,Lead.FirstName+' '+Lead.LastName as FullName,Agent.FullName as FullNameAgent from Lead
-                           inner join Agent on Lead.AgentID=Agent.ID ";
+            string sql = @"select  Lead.Tz,Lead.FirstName+' '+Lead.LastName as FullName,A.FullName as FullNameAgent from Lead
+                           inner join ArvootManagers A on Lead.AgentID=A.ID ";
 
             SqlCommand cmd = new SqlCommand(sql);
 

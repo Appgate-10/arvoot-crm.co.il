@@ -102,10 +102,10 @@ namespace ControlPanel
                            ,HaveAsset,Lead.AssetValue,Lead.AssetType,Lead.AssetAddress,HaveMortgageOnAsset
                            ,MortgageAmount,MonthlyRepaymentAmount,LendingBank,PurposeTest,RequestedLoanAmount
                            ,PurposeLoan,MortgageBalance
-						   ,Agent.FullName as FullNameAgent,Agent.Phone PhoneAgent,Agent.Email as EmailAgent
+						   ,A.FullName as FullNameAgent,A.Phone PhoneAgent,A.Email as EmailAgent
                            ,CONVERT(varchar,Lead.CreateDate, 104) CreateDate
                            from Lead
-						   left join Agent on Lead.AgentID=Agent.ID
+						   left join ArvootManagers A on Lead.AgentID=A.ID and A.Type = 6
                            inner join FirstStatusLead on Lead.FirstStatusLeadID=FirstStatusLead.ID
                            left join SecondStatusLead on Lead.SecondStatusLeadID=SecondStatusLead.ID
                            where Lead.ID=@LeadID";

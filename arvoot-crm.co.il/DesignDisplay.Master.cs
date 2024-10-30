@@ -48,11 +48,11 @@ namespace ControlPanel
         protected void TaskListOpen_Click(object sender, EventArgs e)
         {
             AllTasksList.Visible = true;
-            SqlCommand cmdSelectTasks = new SqlCommand(@"select t.ID, Text,ts.Status,CONVERT(varchar,PerformDate, 104) as PerformDate, Agent.FullName from Tasks t 
+            SqlCommand cmdSelectTasks = new SqlCommand(@"select t.ID, Text,ts.Status,CONVERT(varchar,PerformDate, 104) as PerformDate, A.FullName from Tasks t 
                                                          left join TaskStatuses ts on t.Status = ts.ID 
                                                          left join Offer on Offer.ID = t.OfferID
                                                          left join Lead on Lead.ID = Offer.LeadID
-                                                         left join Agent on Agent.ID = Lead.AgentID");
+                                                         left join ArvootManagers A on A.ID = Lead.AgentID");
             DataSet ds = DbProvider.GetDataSet(cmdSelectTasks);
             Repeater1.DataSource = ds;
             Repeater1.DataBind();
@@ -154,7 +154,7 @@ namespace ControlPanel
         }
         public void loadData()
         {
-            string sql = "select ImageFile from Agent where ID = @ID";
+            string sql = "select ImageFile from ArvootManagers where ID = @ID";
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
             string imageFileUrl = DbProvider.GetOneParamValueString(cmd);

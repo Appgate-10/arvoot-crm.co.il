@@ -124,14 +124,14 @@ namespace ControlPanel
             else
             {
                 string userEmail = UserEmailPopUp.Value;
-                SqlCommand cmd = new SqlCommand("Select Top 1 * from Agent where Email = @Email ");
+                SqlCommand cmd = new SqlCommand("Select Top 1 * from ArvootManagers where Email = @Email ");
                 cmd.Parameters.AddWithValue("@Email", userEmail);
                 DataTable dataTable = DbProvider.GetDataTable(cmd);
 
                 if (dataTable.Rows.Count > 0)
                 {
                     string PasswordTempCode = Helpers.RandomStrings(30);
-                    cmd = new SqlCommand("Update Agent set PasswordTempCode = @PasswordTempCode where ID = @AgentID");
+                    cmd = new SqlCommand("Update ArvootManagers set PasswordTempCode = @PasswordTempCode where ID = @AgentID");
                     cmd.Parameters.AddWithValue("@AgentID", dataTable.Rows[0]["ID"]);
                     cmd.Parameters.AddWithValue("@PasswordTempCode", PasswordTempCode);
 

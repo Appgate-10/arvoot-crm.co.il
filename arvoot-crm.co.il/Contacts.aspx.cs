@@ -342,7 +342,7 @@ namespace ControlPanel
             FormError_lable.Visible = false;
             MoveContactPopUp.Visible = true;
 
-            SqlCommand cmdAgents = new SqlCommand("SELECT  FullName as AgentName,ID FROM Agent where Level =3");
+            SqlCommand cmdAgents = new SqlCommand("SELECT  FullName as AgentName,ID FROM ArvootManagers where Type =6");
             DataSet dsAgents = DbProvider.GetDataSet(cmdAgents);
             AgentList.DataSource = dsAgents;
             AgentList.DataTextField = "AgentName";

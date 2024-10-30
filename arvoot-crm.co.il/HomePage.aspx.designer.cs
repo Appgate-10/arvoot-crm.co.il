@@ -276,13 +276,13 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputText EmailA;
 
         /// <summary>
-        /// Address control.
+        /// PasswordAgent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText Address;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText PasswordAgent;
 
         /// <summary>
         /// Phone control.
@@ -312,13 +312,31 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputText Tz;
 
         /// <summary>
-        /// PasswordAgent control.
+        /// divNameOrAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText PasswordAgent;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divNameOrAddress;
+
+        /// <summary>
+        /// NameOrAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl NameOrAddress;
+
+        /// <summary>
+        /// Address control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText Address;
 
         /// <summary>
         /// Label3 control.

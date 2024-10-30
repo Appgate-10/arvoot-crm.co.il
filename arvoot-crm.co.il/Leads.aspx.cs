@@ -341,7 +341,6 @@ namespace ControlPanel
                     agentsNames.Add(((HtmlGenericControl)Repeater1.Items[i].FindControl("AgentName")).InnerText);
                     LeadsNames.Add(((HtmlGenericControl)Repeater1.Items[i].FindControl("LeadFirstName")).InnerText + " " + ((HtmlGenericControl)Repeater1.Items[i].FindControl("LeadLastName")).InnerText);
                 }
-
             }
             
             //for (int i =0; i< Repeater2.Items.Count; i++)

@@ -251,7 +251,7 @@
 <%--                            <span class="SpanPermissions">(יכול לצפות במידע על המבוטחים שלו בלבד)</span>--%>
                         </div>
                         <div class="col" style="width: 30%;" id="AgentSupervisorDiv" runat="server">
-                            <asp:Button ID="SupervisorPermission" type="button" runat="server"  OnClick="SupervisorPermission_Click"   class="Permissions" Text="מפקחת" />
+                            <asp:Button ID="SupervisorPermission" type="button" runat="server"  OnClick="SupervisorPermission_Click"   class="Permissions" Text="מתפעלת" />
 <%--                            <span class="SpanPermissions">(יכול לצפות במידע על המבוטחים שלו בלבד)</span>--%>
                         </div>
                     </div>
@@ -282,11 +282,11 @@
                                         <span class="form-span-wrapper">אימייל</span>
                                         <input type="text" runat="server" name="EmailA" id="EmailA" placeholder="אימייל" />
                                     </div>
-                                    <div class="col form-input-wrapper">
-                                        <span class="form-span-wrapper">שם סניף</span>
-                                        <input type="text" runat="server" name="Address" id="Address" placeholder="כתובת" />
+                                    
+                            <div class="col form-input-wrapper">
+                                        <span class="form-span-wrapper">סיסמא</span>
+                                        <input runat="server" type="text" name="PasswordAgent" id="PasswordAgent" placeholder="סיסמא" />
                                     </div>
-
                                 </div>
                         <div class="col form-group-wrapper" style="margin-right: 15px; height: 100%;">
                                     <div class="col form-input-wrapper">
@@ -300,9 +300,11 @@
                                         <span class="form-span-wrapper">ת.ז</span>
                                         <input type="text" runat="server" name="Tz" id="Tz" placeholder="ת.ז" />
                                     </div>
-                                    <div class="col form-input-wrapper">
-                                        <span class="form-span-wrapper">סיסמא</span>
-                                        <input runat="server" type="text" name="PasswordAgent" id="PasswordAgent" placeholder="סיסמא" />
+                                    
+
+                            <div id="divNameOrAddress" runat="server" class="col form-input-wrapper">
+                                        <span id="NameOrAddress" runat="server" class="form-span-wrapper">שם סניף</span>
+                                        <input type="text" runat="server" name="Address" id="Address" placeholder="כתובת" />
                                     </div>
 
 

@@ -82,8 +82,8 @@
                                 </div>
                                 <div style="width: 8%; text-align: right"><%#Eval("Phone1") %></div>
                                 <div style="width: 7%; text-align: right"><%#Eval("Tz") %></div>
-                                <div id="LeadFirstName" runat="server" style="width: 7%; text-align: right"><%#Eval("LastName") %></div>
-                                <div id="LeadLastName" runat="server" style="width: 7%; text-align: right"><%#Eval("FirstName") %></div>
+                                <div id="LeadLastName" runat="server" style="width: 7%; text-align: right"><%#Eval("LastName") %></div>
+                                <div id="LeadFirstName" runat="server" style="width: 7%; text-align: right"><%#Eval("FirstName") %></div>
                                 <div style="width: 7%; text-align: right"><%#Eval("CreateDate") %></div>
                                 <div style="width: 5%; text-align: center">
                                     <asp:CheckBox ID="chk" runat="server" ClientIDMode="Static" />

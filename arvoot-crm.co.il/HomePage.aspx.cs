@@ -32,7 +32,7 @@ namespace ControlPanel
 
                 if (HttpContext.Current.Session["AgentID"] == null)
                 {
-                   HttpContext.Current.Response.Redirect("SignIn.aspx");
+                    HttpContext.Current.Response.Redirect("SignIn.aspx");
                 }
                 else
                 {
@@ -63,9 +63,55 @@ namespace ControlPanel
                     LoadTaskDates();
                 }
 
-                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 1)
+                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) < 4)
                 {
                     CreateEmployee.Visible = true;
+                }
+
+                switch (HttpContext.Current.Session["AgentLevel"].ToString())
+                {
+                    case "1":
+                        {
+                            ManagementPermission.Text = "מנהל חברה";
+                            AgentPermission.Visible = false;
+                            SupervisorPermission.Visible = false;
+                            divNameOrAddress.Visible = true;
+                            NameOrAddress.InnerText = "שם החברה";
+                            Address.Attributes["placeholder"] = "שם החברה";
+                            break;
+                        }
+                    case "2":
+                        {
+                            ManagementPermission.Text = "מנהל סניף";
+                            AgentPermission.Visible = false;
+                            SupervisorPermission.Visible = false;
+                            divNameOrAddress.Visible = true;
+                            NameOrAddress.InnerText = "שם הסניף";
+                            Address.Attributes["placeholder"] = "כתובת";
+                            break;
+                        }
+                    case "3":
+                        {
+                            ManagementPermission.Text = "מנהלת תפעול";
+                            AgentPermission.Visible = true;
+                            SupervisorPermission.Visible = true;
+                            divNameOrAddress.Visible = false;
+                            break;
+                        }
+                    //case "4":
+                    //case "5":
+                    //case "6":
+                    //    {
+                    //        ManagementPermission.Text = "מנהל חברה";
+                    //        AgentPermission.Visible = false;
+                    //        SupervisorPermission.Visible = false;
+                    //        break;
+                    //    }
+                    default:
+                        {
+                            ManagementPermission.Text = "מנהל";
+                            break;
+                        }
                 }
                 ManagementPermission_Click(this, EventArgs.Empty);
 
@@ -77,7 +123,7 @@ namespace ControlPanel
                     LoadTaskDates();
                 }
             }
-            
+
             //Gila
             loadGraf();
 
@@ -195,32 +241,38 @@ namespace ControlPanel
                 return false;
             }
 
-            /* if (string.IsNullOrWhiteSpace(PercentCommission.Value) || int.Parse(PercentCommission.Value) < 0 || int.Parse(PercentCommission.Value) >= 100)
-             {
-                 FormError_lable.Visible = true;
-                 FormError_lable.Text = " יש להזין סכום עמלה תקין";
-                 ErrorCount++;
-                 return false;
-             }*/
             if (ErrorCount == 0)
             {
-                string sql = @"  Insert INTO Agent (FullName,Tz,Email,Phone,ImageFile,Password,Level,Show)
-                                     values(@Name,@Tz,@Email,@Phone,@ImageFile,@Password,@Level,1)";
+
+                //string sql = @"Insert INTO Agent (FullName,Tz,Email,Phone,ImageFile,Password,Level,Show)
+                //                     values(@Name,@Tz,@Email,@Phone,@ImageFile,@Password,@Level,1)";
+
+                string sql = @"INSERT INTO ArvootManagers(Email, Password, FullName, Type, CreateDate, Tz, Phone, ImageFile, ParentID)
+                                    VALUES(@Email, @Password, @FullName, @Type, GETDATE(), @Tz, @Phone, @ImageFile, @ParentID)";
+
                 SqlCommand cmd = new SqlCommand(sql);
 
-
                 cmd.Parameters.AddWithValue("@Name", Name.Value);
-
                 cmd.Parameters.AddWithValue("@Tz", Tz.Value);
-
                 cmd.Parameters.AddWithValue("@Email", EmailA.Value);
-
                 cmd.Parameters.AddWithValue("@Phone", Phone.Value);
-
-
-                /*                cmd.Parameters.AddWithValue("@PercentCommission", PercentCommission.Value);
-                */
                 cmd.Parameters.AddWithValue("@Password", PasswordAgent.Value);
+
+                switch (HttpContext.Current.Session["AgentLevel"].ToString())
+                {
+                    case "1":
+                        {
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+                       
+                }
+
+
+                
 
                 //try
                 //{
@@ -300,7 +352,7 @@ namespace ControlPanel
             ManagementPermission.Attributes.Add("class", "Permissions");
             AgentPermission.Attributes.Add("class", "Permissions");
             SupervisorPermission.Attributes.Add("class", "PermissionsChoose");
-            HttpContext.Current.Session["M_Level"] = 3;
+            HttpContext.Current.Session["Add_Level"] = 3;
         }
         protected void ImageFile_1_btnUpload_Click(object sender, EventArgs e)
         {
@@ -359,7 +411,7 @@ namespace ControlPanel
         protected void CreateEmployee_Click(object sender, EventArgs e)
         {
             AddAgentPopUp.Visible = true;
-        //    UpdatePanel1.Update();
+            //    UpdatePanel1.Update();
         }
         private void loadGraf()
         {
@@ -437,7 +489,7 @@ LEFT JOIN ApprovedPayments ap ON sr.ID = ap.ServiceRequestID";
                 PercentageText4.Text = paidServices.ToString() + "₪";
                 PercentageText5.Text = serviceBalance.ToString() + "₪";
             }
-           
+
 
             double circumference = 2 * Math.PI * 54; // 2πr
             double offset = circumference - (percentage / 100.0 * circumference);
@@ -480,7 +532,8 @@ LEFT JOIN ApprovedPayments ap ON sr.ID = ap.ServiceRequestID";
             if (btn.Text.Equals("נתון כללי"))
             {
                 btn.Text = "נתון חודשי";
-            } else
+            }
+            else
             {
                 btn.Text = "נתון כללי";
 
@@ -555,12 +608,12 @@ LEFT JOIN ApprovedPayments ap ON sr.ID = ap.ServiceRequestID";
             //if (e.Day.Date == specificDate)
             if (_datesWithTasks != null && _datesWithTasks.Contains(e.Day.Date))
             {
-                    // Create a small dot and add it to the cell
-                    Literal dot = new Literal();
-                    dot.Text = "<div class='indicator'></div>";
-                    e.Cell.Controls.Add(dot);
-                    e.Cell.BorderColor = System.Drawing.ColorTranslator.FromHtml("#669EFF");
-                
+                // Create a small dot and add it to the cell
+                Literal dot = new Literal();
+                dot.Text = "<div class='indicator'></div>";
+                e.Cell.Controls.Add(dot);
+                e.Cell.BorderColor = System.Drawing.ColorTranslator.FromHtml("#669EFF");
+
             }
             if (e.Day.Date == TasksCalendar.SelectedDate.Date)
             {

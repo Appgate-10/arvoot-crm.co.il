@@ -197,12 +197,12 @@ namespace ControlPanel
             Repeater2.DataBind();
 
             string sqlServiceRequest = @"select s.ID, Invoice,Sum,CONVERT(varchar, s.CreateDate, 104)  CreateDate, p.purpose as PurposeName,
-(select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1) as paid, SumCreditOrDenial, IsApprovedCreditOrDenial
-from ServiceRequest s 
-left join ServiceRequestPurpose p on s.PurposeID = p.ID 
-inner join Offer on Offer.ID = s.OfferID
-inner join Lead on Lead.ID = Offer.LeadID
-where Lead.ID = @LeadID";
+                                        (select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1) as paid, SumCreditOrDenial, IsApprovedCreditOrDenial
+                                        from ServiceRequest s 
+                                        left join ServiceRequestPurpose p on s.PurposeID = p.ID 
+                                        inner join Offer on Offer.ID = s.OfferID
+                                        inner join Lead on Lead.ID = Offer.LeadID
+                                        where Lead.ID = @LeadID";
             SqlCommand cmdServiceRequest = new SqlCommand(sqlServiceRequest);
             cmdServiceRequest.Parameters.AddWithValue("@LeadID", Request.QueryString["ContactID"]);
             DataTable dtServiceRequest = DbProvider.GetDataTable(cmdServiceRequest);

@@ -31,12 +31,15 @@ namespace ControlPanel
             if (!Page.IsPostBack)
             {
                 Pageinit.CheckManagerPermissions();
-                if (HttpContext.Current.Session["AgentLevel"] != null &&( int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 1 || int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 3))
+                if (HttpContext.Current.Session["AgentLevel"] != null &&( int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 1 || int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 3 || int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 2))
                 {
                     MoveTo.Visible = true;
                     SetStatus.Visible = true;
                 }
-
+                if (HttpContext.Current.Session["AgentLevel"] != null && (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 4 || int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 5))
+                {
+                    NewLidBtn.Visible = false;
+                }
                 loadUsers(1,false);
             }
         }
@@ -156,16 +159,41 @@ namespace ControlPanel
             int CurrentRow = (PageNumber == 1) ? 0 : (PageSize * (PageNumber - 1));
             long ItemCount = 0;
             string sqlWhere = "";
+            string sqlJoin = "";
             SqlCommand cmd = new SqlCommand();
-            string sql = @"select   Lead.ID ,CONVERT(varchar, Lead.CreateDate, 104) AS  CreateDate,FirstName,LastName,Lead.Tz,Phone1,FirstStatusLeadID FirstStatus,SecondStatusLead.Status SecondStatus, SecondStatusLeadID
-                                 ,CONCAT(CONVERT(varchar, TrackingTime, 104), ' ', CONVERT(VARCHAR(5), TrackingTime, 108)) AS TrackingTime,Note,Agent.FullName as AgentName
-                                  from Lead
-                                  left join SecondStatusLead on Lead.SecondStatusLeadID=SecondStatusLead.ID
-                                  left join Agent on Agent.ID = Lead.AgentID
-                                  where Lead.IsContact=0
-                                  ";
-            
+        
+           
+            if(HttpContext.Current.Session["AgentLevel"] != null) {
+                switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
+                {
+             
+                    case 2:
+                        sqlJoin =  " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlWhere = "and C.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 3:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID  ";
+                        sqlWhere = "and B.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;   
+                    case 6:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6";
+                        sqlWhere = "and A.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    default:
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID ";
+                        break;
 
+                }
+            }
+            string sql = @"select   Lead.ID ,CONVERT(varchar, Lead.CreateDate, 104) AS  CreateDate,FirstName,LastName,Lead.Tz,Phone1,FirstStatusLeadID FirstStatus,SecondStatusLead.Status SecondStatus, SecondStatusLeadID
+                                 ,CONCAT(CONVERT(varchar, TrackingTime, 104), ' ', CONVERT(VARCHAR(5), TrackingTime, 108)) AS TrackingTime,Note,A.FullName as AgentName
+                                  from Lead " + sqlJoin +
+                              @"left join SecondStatusLead on Lead.SecondStatusLeadID=SecondStatusLead.ID
+                                  where Lead.IsContact=0 
+                                  ";
             if (Request.QueryString["Q"] != null)
             {
                 Session["search"] = Request.QueryString["Q"];
@@ -195,7 +223,7 @@ namespace ControlPanel
 
                     AgentsList.SelectedValue = Session["selectedAgent"].ToString();
 
-                    sqlWhere += " and agent.id = @agentID";
+                    sqlWhere += " and a.id = @agentID";
                     cmd.Parameters.AddWithValue("@agentID", Session["selectedAgent"].ToString());
                 }
             }
@@ -220,33 +248,7 @@ namespace ControlPanel
             //-- ניהול Paging
             string sqlCnt = "Select Count(ID) FROM Lead where Lead.IsContact=0";
            
-            SqlCommand cmdCount = new SqlCommand(sqlCnt+sqlWhere);
-            try { cmdCount.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString() + "%"); }
-            catch (Exception) { }
-            ItemCount = DbProvider.GetOneParamValueLong(cmdCount);
-            if (ItemCount > PageSize)
-            {
-                string str = "", str1 = "";
-                if (PageNumber > 1) { str = str + "<a href=\"Leads.aspx?Page=" + (PageNumber - 1).ToString() + str1 + "\"\" title=\"Back\">&laquo;</a>"; }
-
-                int iRunFrom = ((PageNumber - 4) < 1) ? 1 : (PageNumber - 4);
-                int iRunUntil = (int)Math.Ceiling((double)ItemCount / (double)PageSize);
-                Session["Page"] = PageNumber;
-                int iRun;
-                for (iRun = iRunFrom; iRun <= iRunUntil && iRun < (iRunFrom + 10); iRun++)
-                {
-                    str = str + "<a href=\"Leads.aspx?Page=" + iRun.ToString() + str1 + "\">" + iRun.ToString() + "</a>";
-                }
-                str = str.Replace(">" + PageNumber.ToString() + "</a>", " class=\"active\">" + PageNumber.ToString() + "</a>");
-
-                if (PageNumber < (iRun - 1)) { str = str + "<a href=\"Leads.aspx?Page=" + (PageNumber + 1).ToString() + str1 + "\"\" title=\"Next\">&raquo;</a>"; }
-
-                PageingDiv.InnerHtml = str;
-            }
-            else
-            {
-                PageingDiv.InnerHtml = "";
-            }
+           
 
             cmd.CommandText = sql +sqlWhere+ sqlOrder;
 
@@ -256,9 +258,43 @@ namespace ControlPanel
             }
             catch (Exception) { }
             DataSet ds = DbProvider.GetDataSet(cmd);
+            if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) != 4 && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) != 5)
+            {
+                SqlCommand cmdCount = new SqlCommand(sqlCnt + sqlWhere);
+                try { cmdCount.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString() + "%"); }
+                catch (Exception) { }
+                ItemCount = DbProvider.GetOneParamValueLong(cmdCount);
+                if (ItemCount > PageSize)
+                {
+                    string str = "", str1 = "";
+                    if (PageNumber > 1) { str = str + "<a href=\"Leads.aspx?Page=" + (PageNumber - 1).ToString() + str1 + "\"\" title=\"Back\">&laquo;</a>"; }
 
-            Repeater1.DataSource = ds;
-            Repeater1.DataBind();
+                    int iRunFrom = ((PageNumber - 4) < 1) ? 1 : (PageNumber - 4);
+                    int iRunUntil = (int)Math.Ceiling((double)ItemCount / (double)PageSize);
+                    Session["Page"] = PageNumber;
+                    int iRun;
+                    for (iRun = iRunFrom; iRun <= iRunUntil && iRun < (iRunFrom + 10); iRun++)
+                    {
+                        str = str + "<a href=\"Leads.aspx?Page=" + iRun.ToString() + str1 + "\">" + iRun.ToString() + "</a>";
+                    }
+                    str = str.Replace(">" + PageNumber.ToString() + "</a>", " class=\"active\">" + PageNumber.ToString() + "</a>");
+
+                    if (PageNumber < (iRun - 1)) { str = str + "<a href=\"Leads.aspx?Page=" + (PageNumber + 1).ToString() + str1 + "\"\" title=\"Next\">&raquo;</a>"; }
+
+                    PageingDiv.InnerHtml = str;
+                }
+                else
+                {
+                    PageingDiv.InnerHtml = "";
+                }
+                Repeater1.DataSource = ds;
+                Repeater1.DataBind();
+            } 
+            else
+            {
+                Repeater1.DataSource = null;
+                Repeater1.DataBind();
+            }
             SqlCommand cmdStatus = new SqlCommand("SELECT * FROM FirstStatusLead");
             DataSet dsStatus = DbProvider.GetDataSet(cmdStatus);
             MainStatusList.DataSource = dsStatus;

@@ -547,7 +547,16 @@ SumPayment3=@SumPayment3,DatePayment3=@DatePayment3, NumPayment3=@NumPayment3, R
             {
                 HtmlGenericControl paymentTitle = (HtmlGenericControl)e.Item.FindControl("paymentTitle");
                 HtmlGenericControl sumTitle = (HtmlGenericControl)e.Item.FindControl("sumTitle");
+                HtmlGenericControl divIsApproved = (HtmlGenericControl)e.Item.FindControl("divIsApproved");
 
+                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) < 4)
+                {
+                    divIsApproved.Visible = true;
+                }
+                else
+                {
+                    divIsApproved.Visible = false;
+                }
                 paymentTitle.InnerText = "פירוט תשלום " + Helpers.NumberToHebrewOrdinal(e.Item.ItemIndex + 1);
                 sumTitle.InnerText = "סכום לתשלום " + Helpers.NumberToHebrewOrdinal(e.Item.ItemIndex + 1) + ":";
 

@@ -31,7 +31,7 @@ namespace ControlPanel
             if (!Page.IsPostBack)
             {
                 Pageinit.CheckManagerPermissions();
-                if (HttpContext.Current.Session["AgentLevel"] != null &&( int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 1 || int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 3))
+                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) < 4)
                 {
                     MoveTo.Visible = true;
                     SetStatus.Visible = true;
@@ -51,6 +51,17 @@ namespace ControlPanel
             {
                 //CheckBox cb = (CheckBox)e.Item.FindControl("chk");
                 //cb.ID = "CheckBox_" + DataBinder.Eval(e.Item.DataItem, "ID").ToString();
+
+                CheckBox chk = (CheckBox)e.Item.FindControl("chk");
+
+                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) < 4)
+                {
+                    chk.Visible = true;
+                }
+                else
+                {
+                    chk.Visible = false;
+                }
 
                 Image image = (Image)e.Item.FindControl("MainStatus");
                 if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 2)

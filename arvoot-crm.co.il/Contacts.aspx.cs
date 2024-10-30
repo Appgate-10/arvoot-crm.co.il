@@ -157,8 +157,9 @@ namespace ControlPanel
             int PageSize = int.Parse(ConfigurationManager.AppSettings["PageSize"]);
             int CurrentRow = (PageNumber == 1) ? 0 : (PageSize * (PageNumber - 1));
             long ItemCount = 0;
-
+            string sqlJoin = "";
             string sqlWhere = "";
+            SqlCommand cmd = new SqlCommand();
             if (Request.QueryString["Q"] != null)
             {
                 if (Request.QueryString["Q"].ToString().Length > 0)
@@ -187,18 +188,57 @@ namespace ControlPanel
                                                
                 }
             }
+
+            if (HttpContext.Current.Session["AgentLevel"] != null)
+            {
+                switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
+                {
+                    case 1:
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID ";
+                        break;
+                    case 2:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlWhere = " and C.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 3:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID  ";
+                        sqlWhere = " and B.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 6:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 ";
+                        sqlWhere = " and A.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break; 
+                    case 4:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ParentID = A.ParentID  ";
+                        sqlWhere = " and B.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;    
+                    case 5:
+                        sqlJoin = " inner join Offer on Offer.LeadID = Lead.ID and OperatorID = @ID left join ArvootManagers A on A.ID = Lead.AgentID ";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    default:
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID ";
+                        break;
+
+                }
+            }
             string sql = @" select Lead.ID,Lead.Phone1,Lead.Tz,
                         CONVERT(varchar, Lead.CreateDate, 104) as CreateDate---תאריך המרה לאיש קשר
                             ,Lead.LastName,Lead.FirstName,
-							Agent.FullName as FullNameAgent,
+							A.FullName as FullNameAgent,
                             CONVERT(varchar, DateBirth, 104) as DateBirth 
-                            from Lead
-							left join Agent on Lead.AgentID=Agent.ID
-                            where Lead.IsContact=1 ";
-            SqlCommand cmd = new SqlCommand(sql + sqlWhere);
+                            from Lead "+ sqlJoin  +
+                            @"where Lead.IsContact=1 ";
 
-            string sqlCnt = @"select count(*) from Lead  where Lead.IsContact=1";
+            cmd.CommandText =  sql + sqlWhere;
+
+            string sqlCnt = @"select count(*) from Lead "+ sqlJoin +" where Lead.IsContact=1";
             SqlCommand cmdCount = new SqlCommand(sqlCnt + sqlWhere);
+            cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
 
             try
             {

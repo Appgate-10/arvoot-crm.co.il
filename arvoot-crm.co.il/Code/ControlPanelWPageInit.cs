@@ -62,7 +62,7 @@ namespace ControlPanel.HelpersFunctions
                         catch (Exception ex) { System.Web.HttpContext.Current.Response.Redirect("SignIn.aspx"); }
 
                         //-- עבר בהצלחה את הבדיקה - עדכון נתוני המשתמש
-                        SqlCommand cmd = new SqlCommand("Select Top 1 * From Agent where ID = @ID ");
+                        SqlCommand cmd = new SqlCommand("Select Top 1 * From ArvootManagers where ID = @ID ");
                         cmd.Parameters.AddWithValue("@ID", AgentID);
                         DataTable dataTable = DbProvider.GetDataTable(cmd);
                         if (dataTable.Rows.Count > 0)
@@ -71,7 +71,7 @@ namespace ControlPanel.HelpersFunctions
                             HttpContext.Current.Session["SignIn"] = true;
                             HttpContext.Current.Session["AgentID"] = long.Parse(dataTable.Rows[0]["ID"].ToString());
                             HttpContext.Current.Session["AgentName"] = dataTable.Rows[0]["FullName"].ToString();
-                            HttpContext.Current.Session["AgentLevel"] = int.Parse(dataTable.Rows[0]["Level"].ToString());
+                            HttpContext.Current.Session["AgentLevel"] = int.Parse(dataTable.Rows[0]["Type"].ToString());
 
 
                             System.Web.HttpContext.Current.Response.Cookies["AgentCookie"]["AgentID"] = long.Parse(dataTable.Rows[0]["ID"].ToString()).ToString();
@@ -86,7 +86,7 @@ namespace ControlPanel.HelpersFunctions
             }
             else
             {
-                SqlCommand cmd = new SqlCommand("Select Top 1 * From Agent where ID = @ID ");
+                SqlCommand cmd = new SqlCommand("Select Top 1 * From ArvootManagers where ID = @ID ");
                 cmd.Parameters.AddWithValue("@ID", long.Parse(System.Web.HttpContext.Current.Request.Cookies["AgentCookie"]["AgentID"].ToString()));
                 DataTable dataTable = DbProvider.GetDataTable(cmd);
                 if (dataTable.Rows.Count > 0)

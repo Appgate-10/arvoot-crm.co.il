@@ -100,11 +100,16 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+
+    <asp:UpdatePanel ID="UpdatePanel_Button" runat="server">
+        <ContentTemplate>
+             <asp:Button  ID="CreateEmployee" Class="NewLid"  Visible="false" Text="צור עובד/סוכן" Style="width: 133px; height: 41px; left: 15%;" runat="server" OnClick="CreateEmployee_Click" />
+        </ContentTemplate>
+    </asp:UpdatePanel>
     <asp:UpdatePanel ID="AddForm" UpdateMode="Conditional" runat="server">
         <ContentTemplate>
 
-                <asp:Button  ID="CreateEmployee" Class="NewLid"  Visible="false" Text="צור עובד/סוכן" Style="width: 133px; height: 41px; left: 15%;" runat="server" OnClick="CreateEmployee_Click" />
-
+               
             <div class="rowHome">
                 <div class="colHome" style="width: 60%;">
                     <%--                 <asp:Label ID="Label5" Text="נתון כללי" class="text-blue" style="font-size:11pt"  runat="server" />--%>
@@ -226,7 +231,71 @@
                 </div>
             </div>
 
-                <div id="AddAgentPopUp" class="popUpOut" visible="false" runat="server">
+               
+            </ContentTemplate>
+    </asp:UpdatePanel>
+    <%-- Gila --%>
+        <asp:UpdatePanel ID="AddForm2" UpdateMode="Conditional" runat="server">
+        <ContentTemplate>
+            <div class="rowHome with-last-child">
+                <div class="colHome" style="width: 50%; height: 400px;">
+                    <%-- Gila --%>
+                    <div class="rowHome tasks-div">
+                        <asp:Label ID="Label7" Text="משימות פתוחות" class="text-blue" Style="font-size: 11pt; padding-right: 10px" runat="server" />
+                        <asp:Button ID="BtnFutureTasks" CssClass="btnBlue" runat="server" Text="משימות עתידיות" OnClick="BtnFutureTasks_Click"/>
+                    </div>
+                    <div style="padding-bottom: 12%; margin: 10px 10px 10px 30px;">
+                        <asp:Repeater ID="Repeater3" runat="server" OnItemDataBound="Repeater3_ItemDataBound">
+                            <ItemTemplate>
+                                <div style="display: flex; border-radius: 12px; margin-left: 10px; padding-right: 16px; padding-bottom: 8px;">
+                                    <img src="images/icons/Open_Mession_Blue_Point_1.png" runat="server" style="width: 39px; height: 40px;" />
+
+                                    <div style="text-align: left; display: flex; width: 100%; background-color: whitesmoke; padding-left: 10px; text-align: right; margin-top: 6px; font-size: 12px">
+
+                                        <div id="Label7" class="text-gray" style="width: 10%"><%#Eval("dateTask") %> </div>
+                                        <div id="Label8" class="text-gray" style="width: 3%">| </div>
+                                        <div id="Label9" class="text-gray" style="width: 10%"><%#Eval("timeTask") %> </div>
+                                        <div id="Label6" class="text-gray" style="width: 52%"><%#Eval("Text") %> </div>
+                                        <div style="width: 5%" class="text-gray">
+                                            <img src="images/icons/Open_Mession_Waiting_Flug.png" runat="server" style="width: 18px; height: auto;" /></div>
+                                        <div id="Status" class="text-gray" style="width: 15%"><%#Eval("Status") %></div>
+                                        <div class="text-gray" style="width: 5%">
+                                            <img src="images/icons/Open_Mession_Delete_Button.png" runat="server" style="width: 18px; height: auto;" /></div>
+                                        <div class="text-gray" style="width: 5%">
+                                            <img src="images/icons/Open_Mession_Edit_Button.png" runat="server" style="width: 18px; height: auto;" /></div>
+
+
+                                    </div>
+                                </div>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                    </div>
+
+                </div>
+                <div class="colHome" style="width: 50%; height: 400px;">
+                    <%-- Gila --%>
+                    <asp:Calendar ID="TasksCalendar" CssClass="tasks-calendar" runat="server" SelectedDate="<%# DateTime.Today %>"
+                        OnDayRender="TasksCalendar_DayRender"
+                        OnSelectionChanged="TasksCalendar_SelectionChanged"
+                        OnVisibleMonthChanged="TasksCalendar_VisibleMonthChanged" DayNameFormat="Shortest"
+                        Width="86%" Height="94%" Style="margin-right: auto; margin-left: auto; margin-top: 2%; border: none; border-collapse: separate; border-spacing: 6px;">
+                        <TitleStyle BackColor="Transparent" Height="40" ForeColor="#0098ff" Font-Bold="true" HorizontalAlign="Center" CssClass="tasks-calendar-title" />
+                        <DayHeaderStyle Height="20px" />
+                        <DayStyle CssClass="calendar-day" BorderColor="#DEDFE0" BorderStyle="Solid" BorderWidth="1px" />
+                        <SelectedDayStyle BackColor="Transparent" BorderColor="#669EFF" ForeColor="Black" Font-Bold="true"></SelectedDayStyle>
+                    </asp:Calendar>
+
+
+
+
+                </div>
+            </div>
+
+        </ContentTemplate>
+    </asp:UpdatePanel>
+    <asp:UpdatePanel ID="UpdatePanelPopUps" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+             <div id="AddAgentPopUp" class="popUpOut" visible="false" runat="server">
                
             <div id="Div1" class="popUpIn" style="position: relative; min-width: 600px;  width: 60%;  height: 94%; direction: rtl;margin-top:20px" runat="server">
                                   <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ClosePopUpAddAgent" OnClick="ClosePopUpAddAgent_Click" />
@@ -302,7 +371,7 @@
                                     </div>
                                     
 
-                            <div id="divNameOrAddress" runat="server" class="col form-input-wrapper">
+                            <div class="col form-input-wrapper">
                                         <span id="NameOrAddress" runat="server" class="form-span-wrapper">שם סניף</span>
                                         <input type="text" runat="server" name="Address" id="Address" placeholder="כתובת" />
                                     </div>
@@ -321,7 +390,7 @@
                    <div class="col">
                         <asp:Label ID="Label3" runat="server" Text="" CssClass="ErrorLable2" Visible="false"></asp:Label>
 
-                        <asp:Button ID="AddNewAgent" Name="AddNewAgent" runat="server" OnClick="SaveNewAgent_Click" Text="צרף עובד חברה/סוכן חדש" class="AddAgentButton" />
+                        <asp:Button ID="AddNewAgent" Name="AddNewAgent" runat="server" OnClick="SaveNewAgent_Click" Text="צרף עובד חברה/סוכן חדש" class="AddAgentButton" OnClientClick="reload(LoadingDiv)" />
                           <asp:Label ID="FormErrorAgent_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
                    </div>
 
@@ -332,65 +401,6 @@
 
 
      </div>
-            </ContentTemplate>
-    </asp:UpdatePanel>
-    <%-- Gila --%>
-        <asp:UpdatePanel ID="AddForm2" UpdateMode="Conditional" runat="server">
-        <ContentTemplate>
-            <div class="rowHome with-last-child">
-                <div class="colHome" style="width: 50%; height: 400px;">
-                    <%-- Gila --%>
-                    <div class="rowHome tasks-div">
-                        <asp:Label ID="Label7" Text="משימות פתוחות" class="text-blue" Style="font-size: 11pt; padding-right: 10px" runat="server" />
-                        <asp:Button ID="BtnFutureTasks" CssClass="btnBlue" runat="server" Text="משימות עתידיות" OnClick="BtnFutureTasks_Click"/>
-                    </div>
-                    <div style="padding-bottom: 12%; margin: 10px 10px 10px 30px;">
-                        <asp:Repeater ID="Repeater3" runat="server" OnItemDataBound="Repeater3_ItemDataBound">
-                            <ItemTemplate>
-                                <div style="display: flex; border-radius: 12px; margin-left: 10px; padding-right: 16px; padding-bottom: 8px;">
-                                    <img src="images/icons/Open_Mession_Blue_Point_1.png" runat="server" style="width: 39px; height: 40px;" />
-
-                                    <div style="text-align: left; display: flex; width: 100%; background-color: whitesmoke; padding-left: 10px; text-align: right; margin-top: 6px; font-size: 12px">
-
-                                        <div id="Label7" class="text-gray" style="width: 10%"><%#Eval("dateTask") %> </div>
-                                        <div id="Label8" class="text-gray" style="width: 3%">| </div>
-                                        <div id="Label9" class="text-gray" style="width: 10%"><%#Eval("timeTask") %> </div>
-                                        <div id="Label6" class="text-gray" style="width: 52%"><%#Eval("Text") %> </div>
-                                        <div style="width: 5%" class="text-gray">
-                                            <img src="images/icons/Open_Mession_Waiting_Flug.png" runat="server" style="width: 18px; height: auto;" /></div>
-                                        <div id="Status" class="text-gray" style="width: 15%"><%#Eval("Status") %></div>
-                                        <div class="text-gray" style="width: 5%">
-                                            <img src="images/icons/Open_Mession_Delete_Button.png" runat="server" style="width: 18px; height: auto;" /></div>
-                                        <div class="text-gray" style="width: 5%">
-                                            <img src="images/icons/Open_Mession_Edit_Button.png" runat="server" style="width: 18px; height: auto;" /></div>
-
-
-                                    </div>
-                                </div>
-                            </ItemTemplate>
-                        </asp:Repeater>
-                    </div>
-
-                </div>
-                <div class="colHome" style="width: 50%; height: 400px;">
-                    <%-- Gila --%>
-                    <asp:Calendar ID="TasksCalendar" CssClass="tasks-calendar" runat="server" SelectedDate="<%# DateTime.Today %>"
-                        OnDayRender="TasksCalendar_DayRender"
-                        OnSelectionChanged="TasksCalendar_SelectionChanged"
-                        OnVisibleMonthChanged="TasksCalendar_VisibleMonthChanged" DayNameFormat="Shortest"
-                        Width="86%" Height="94%" Style="margin-right: auto; margin-left: auto; margin-top: 2%; border: none; border-collapse: separate; border-spacing: 6px;">
-                        <TitleStyle BackColor="Transparent" Height="40" ForeColor="#0098ff" Font-Bold="true" HorizontalAlign="Center" CssClass="tasks-calendar-title" />
-                        <DayHeaderStyle Height="20px" />
-                        <DayStyle CssClass="calendar-day" BorderColor="#DEDFE0" BorderStyle="Solid" BorderWidth="1px" />
-                        <SelectedDayStyle BackColor="Transparent" BorderColor="#669EFF" ForeColor="Black" Font-Bold="true"></SelectedDayStyle>
-                    </asp:Calendar>
-
-
-
-
-                </div>
-            </div>
-
         </ContentTemplate>
     </asp:UpdatePanel>
        <input type="text" runat="server" name="ImageFile_1" id="ImageFile_1" style="display: none" />

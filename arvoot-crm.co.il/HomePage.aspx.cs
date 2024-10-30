@@ -75,7 +75,8 @@ namespace ControlPanel
                             ManagementPermission.Text = "מנהל חברה";
                             AgentPermission.Visible = false;
                             SupervisorPermission.Visible = false;
-                            divNameOrAddress.Visible = true;
+                            Address.Visible = true;
+                            NameOrAddress.Visible = true;
                             NameOrAddress.InnerText = "שם החברה";
                             Address.Attributes["placeholder"] = "שם החברה";
                             break;
@@ -85,7 +86,8 @@ namespace ControlPanel
                             ManagementPermission.Text = "מנהל סניף";
                             AgentPermission.Visible = false;
                             SupervisorPermission.Visible = false;
-                            divNameOrAddress.Visible = true;
+                            Address.Visible = true;
+                            NameOrAddress.Visible = true;
                             NameOrAddress.InnerText = "שם הסניף";
                             Address.Attributes["placeholder"] = "כתובת";
                             break;
@@ -95,7 +97,8 @@ namespace ControlPanel
                             ManagementPermission.Text = "מנהלת תפעול";
                             AgentPermission.Visible = true;
                             SupervisorPermission.Visible = true;
-                            divNameOrAddress.Visible = false;
+                            Address.Visible = false;
+                            NameOrAddress.Visible = false;
                             break;
                         }
                     //case "4":
@@ -188,10 +191,10 @@ namespace ControlPanel
                 FormErrorAgent_lable.Text = "אימייל זה כבר קיים במערכת";
                 return false;
             }
-            if (string.IsNullOrWhiteSpace(Address.Value))
+            if (Address.Visible == true && string.IsNullOrWhiteSpace(Address.Value))
             {
                 FormErrorAgent_lable.Visible = true;
-                FormErrorAgent_lable.Text = "יש להזין כתובת";
+                FormErrorAgent_lable.Text = "יש להזין " + NameOrAddress.InnerText;
                 ErrorCount++;
                 return false;
             }
@@ -202,7 +205,13 @@ namespace ControlPanel
                 FormErrorAgent_lable.Visible = true;
                 return false;
             }
-
+            if (Helpers.AgentPhoneExist(Phone.Value, -1) == "true")
+            {
+                ErrorCount++;
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "מספר טלפון זה כבר קיים במערכת";
+                return false;
+            }
 
             if (string.IsNullOrWhiteSpace(Tz.Value))
             {
@@ -247,42 +256,16 @@ namespace ControlPanel
                 //string sql = @"Insert INTO Agent (FullName,Tz,Email,Phone,ImageFile,Password,Level,Show)
                 //                     values(@Name,@Tz,@Email,@Phone,@ImageFile,@Password,@Level,1)";
 
-                string sql = @"INSERT INTO ArvootManagers(Email, Password, FullName, Type, CreateDate, Tz, Phone, ImageFile, ParentID)
-                                    VALUES(@Email, @Password, @FullName, @Type, GETDATE(), @Tz, @Phone, @ImageFile, @ParentID)";
+                string sql = @"INSERT INTO ArvootManagers(Email, Password, FullName, Type, CreateDate, Tz, Phone, ImageFile, ParentID, CompanyName, BranchName)
+                                    VALUES(@Email, @Password, @FullName, @Type, GETDATE(), @Tz, @Phone, @ImageFile, @ParentID, @CompanyName, @BranchName)";
 
                 SqlCommand cmd = new SqlCommand(sql);
 
-                cmd.Parameters.AddWithValue("@Name", Name.Value);
-                cmd.Parameters.AddWithValue("@Tz", Tz.Value);
                 cmd.Parameters.AddWithValue("@Email", EmailA.Value);
+                cmd.Parameters.AddWithValue("@Password", Md5.GetMd5Hash(Md5.CreateMd5Hash(), "Pass755" + PasswordAgent.Value));
+                cmd.Parameters.AddWithValue("@FullName", Name.Value);
+                cmd.Parameters.AddWithValue("@Tz", Tz.Value);
                 cmd.Parameters.AddWithValue("@Phone", Phone.Value);
-                cmd.Parameters.AddWithValue("@Password", PasswordAgent.Value);
-
-                switch (HttpContext.Current.Session["AgentLevel"].ToString())
-                {
-                    case "1":
-                        {
-                            break;
-                        }
-                    default:
-                        {
-                            break;
-                        }
-                       
-                }
-
-
-                
-
-                //try
-                //{
-                //    Pageinit.CheckManagerPermissions(this, this.Master);
-                //    cmd.Parameters.AddWithValue("@ParentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
-                //}
-                //catch (Exception ex)
-                //{
-                //    System.Web.HttpContext.Current.Response.Redirect("SignIn.aspx");
-                //}
 
                 try
                 {
@@ -293,7 +276,62 @@ namespace ControlPanel
                 }
                 catch (Exception) { cmd.Parameters.AddWithValue("@ImageFile", ""); }
 
-                cmd.Parameters.AddWithValue("@Level", HttpContext.Current.Session["Add_Level"]);
+
+                switch (HttpContext.Current.Session["AgentLevel"].ToString())
+                {
+                    case "1":
+                        {
+                            cmd.Parameters.AddWithValue("@ParentID", DBNull.Value);
+                            cmd.Parameters.AddWithValue("@Type", 2);
+                            cmd.Parameters.AddWithValue("@CompanyName", Address.Value);
+                            cmd.Parameters.AddWithValue("@BranchName", DBNull.Value);
+
+                            break;
+                        }
+                    case "2":
+                        {
+                            cmd.Parameters.AddWithValue("@ParentID", HttpContext.Current.Session["AgentID"]);
+                            cmd.Parameters.AddWithValue("@Type", 3);
+                            cmd.Parameters.AddWithValue("@CompanyName", DBNull.Value);
+                            cmd.Parameters.AddWithValue("@BranchName", Address.Value);
+                            break;
+                        }
+                    case "3":
+                        {
+                            cmd.Parameters.AddWithValue("@ParentID", HttpContext.Current.Session["AgentID"]);
+                            cmd.Parameters.AddWithValue("@CompanyName", DBNull.Value);
+                            cmd.Parameters.AddWithValue("@BranchName", DBNull.Value);
+
+                            switch (HttpContext.Current.Session["Add_Level"].ToString())
+                            {
+                                case "1":
+                                    {
+                                        cmd.Parameters.AddWithValue("@Type", 4);
+                                        break;
+                                    }
+                                case "2":
+                                    {
+                                        cmd.Parameters.AddWithValue("@Type", 6);
+                                        break;
+                                    }
+                                case "3":
+                                    {
+                                        cmd.Parameters.AddWithValue("@Type", 5);
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        break;
+                                    }
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+                       
+                }
 
                 if (DbProvider.ExecuteCommand(cmd) > 0)
                 {
@@ -340,8 +378,8 @@ namespace ControlPanel
 
         protected void AgentPermission_Click(object sender, EventArgs e)
         {
-            ManagementPermission.Attributes.Add("class", "Permissions");
             AgentPermission.Attributes.Add("class", "PermissionsChoose");
+            ManagementPermission.Attributes.Add("class", "Permissions");
             SupervisorPermission.Attributes.Add("class", "Permissions");
             HttpContext.Current.Session["Add_Level"] = 2;
 
@@ -349,11 +387,20 @@ namespace ControlPanel
 
         protected void SupervisorPermission_Click(object sender, EventArgs e)
         {
+            SupervisorPermission.Attributes.Add("class", "PermissionsChoose");
             ManagementPermission.Attributes.Add("class", "Permissions");
             AgentPermission.Attributes.Add("class", "Permissions");
-            SupervisorPermission.Attributes.Add("class", "PermissionsChoose");
             HttpContext.Current.Session["Add_Level"] = 3;
         }
+
+        protected void ManagementPermission_Click(object sender, EventArgs e)
+        {
+            ManagementPermission.Attributes.Add("class", "PermissionsChoose");
+            AgentPermission.Attributes.Add("class", "Permissions");
+            SupervisorPermission.Attributes.Add("class", "Permissions");
+            HttpContext.Current.Session["Add_Level"] = 1;
+        }
+
         protected void ImageFile_1_btnUpload_Click(object sender, EventArgs e)
         {
             int maxFileSize = 262144;
@@ -392,13 +439,7 @@ namespace ControlPanel
                 ImageFile_1_lable_2.Visible = true;
             }
         }
-        protected void ManagementPermission_Click(object sender, EventArgs e)
-        {
-            ManagementPermission.Attributes.Add("class", "PermissionsChoose");
-            AgentPermission.Attributes.Add("class", "Permissions");
-            SupervisorPermission.Attributes.Add("class", "Permissions");
-            HttpContext.Current.Session["Add_Level"] = 1;
-        }
+        
         protected void ClosePopUpAddAgent_Click(object sender, ImageClickEventArgs e)
         {
             AddAgentPopUp.Visible = false;
@@ -411,7 +452,7 @@ namespace ControlPanel
         protected void CreateEmployee_Click(object sender, EventArgs e)
         {
             AddAgentPopUp.Visible = true;
-            //    UpdatePanel1.Update();
+            UpdatePanelPopUps.Update();
         }
         private void loadGraf()
         {

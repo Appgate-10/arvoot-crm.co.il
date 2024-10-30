@@ -2392,7 +2392,7 @@ H2 {
 .PermissionsChoose {
     height: 42px;
     background: white;
-    content: url(/images/icon/History_Lawsuit_Popup_Vi_Icon.png);
+    /*content: url(/images/icon/History_Lawsuit_Popup_Vi_Icon.png);*/
     display: inline-block;
     border-radius: 36px;
     font-size: 0.9vw;

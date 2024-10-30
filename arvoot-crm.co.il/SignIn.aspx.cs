@@ -52,8 +52,8 @@ namespace ControlPanel
             if (ErrorCount == 0)
             {
 
-                SqlCommand cmd = new SqlCommand("Select TOP 1 * From Agent where Email = @Email And Password = @Password and show=1");
-                cmd.Parameters.AddWithValue("@Password", Password.Value);
+                SqlCommand cmd = new SqlCommand("Select TOP 1 * From ArvootManagers where Email = @Email And Password = @Password");
+                cmd.Parameters.AddWithValue("@Password",  Md5.GetMd5Hash(Md5.CreateMd5Hash(), "Pass755" + Password.Value));
                 cmd.Parameters.AddWithValue("@Email", Email.Value);
                 DataTable dataTable = DbProvider.GetDataTable(cmd);
                 if (dataTable.Rows.Count > 0)
@@ -62,7 +62,7 @@ namespace ControlPanel
                     HttpContext.Current.Session["SignIn"] = true;
                     HttpContext.Current.Session["AgentID"] = long.Parse(dataTable.Rows[0]["ID"].ToString());
                     HttpContext.Current.Session["AgentName"] = dataTable.Rows[0]["FullName"].ToString();
-                    HttpContext.Current.Session["AgentLevel"] = dataTable.Rows[0]["Level"].ToString();
+                    HttpContext.Current.Session["AgentLevel"] = dataTable.Rows[0]["Type"].ToString();
 
                     System.Web.HttpContext.Current.Response.Cookies["AgentCookie"]["AgentID"] = long.Parse(dataTable.Rows[0]["ID"].ToString()).ToString();
                     string AgentIDToken = Md5.GetMd5Hash(Md5.CreateMd5Hash(), ConfigurationManager.AppSettings["SecretKey"] + long.Parse(dataTable.Rows[0]["ID"].ToString()).ToString());

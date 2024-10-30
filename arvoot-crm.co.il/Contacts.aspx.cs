@@ -366,6 +366,8 @@ namespace ControlPanel
                     cmdHistory.Parameters.AddWithValue("@details", ("איש קשר " + ContactsNames[i] + " הועבר מהסוכן " + agentsNames[i]));
                     DbProvider.ExecuteCommand(cmdHistory);
                 }
+
+                Helpers.loadActivityHistoryOnAdd(Page);
             }
 
             

@@ -624,8 +624,23 @@ namespace ControlPanel.HelpersFunctions
             }
 
             return number.ToString();
-        }
+        }  
 
+
+        public static void loadActivityHistoryOnAdd(Page page)
+        {
+            DateTime seldate = ((System.Web.UI.WebControls.Calendar)(page.Master.FindControl("activitiesCal"))).SelectedDate;
+            if (seldate == DateTime.MinValue)
+            {
+                ((DesignDisplay)page.Master).loadActivityHistory(DateTime.Today);
+            }
+            else
+            {
+                ((DesignDisplay)page.Master).loadActivityHistory(seldate);
+            }
+
+            ((UpdatePanel)page.Master.FindControl("AddForm2")).Update();
+        }
 
     }
 }

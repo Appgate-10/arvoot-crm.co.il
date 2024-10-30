@@ -448,6 +448,7 @@ namespace ControlPanel
                     cmdHistory.Parameters.AddWithValue("@agentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
                     cmdHistory.Parameters.AddWithValue("@details", ("הוספת ליד חדש " + FirstName.Value + " " + LastName.Value));
                     DbProvider.ExecuteCommand(cmdHistory);
+                    Helpers.loadActivityHistoryOnAdd(Page);
                     if (!string.IsNullOrEmpty(TrackingTime.Value))
                     {
                         string sqlTasks = @" INSERT INTO [Tasks]( Text

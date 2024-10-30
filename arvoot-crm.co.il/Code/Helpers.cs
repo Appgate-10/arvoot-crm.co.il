@@ -192,7 +192,7 @@ namespace ControlPanel.HelpersFunctions
             //{
             //    return "missing parameter";
             //}
-            string sql = "Select Top 1 Email from Agent where Email = @Email  ";
+            string sql = "Select Top 1 Email from ArvootManagers where Email = @Email  ";
 
             if (IDAgent != -1)
             {
@@ -212,6 +212,31 @@ namespace ControlPanel.HelpersFunctions
             }
 
         }
+
+        public static string AgentPhoneExist(string Phone, long IDAgent)
+        {
+
+            string sql = "Select Top 1 Phone from ArvootManagers where Phone = @Phone  ";
+
+            if (IDAgent != -1)
+            {
+                sql += " and ID<>" + IDAgent;
+            }
+            SqlCommand cmd = new SqlCommand(sql);
+            cmd.Parameters.AddWithValue("@Phone", Phone);
+
+            var res = DbProvider.GetOneParamValueString(cmd);
+            if (res == null)
+            {
+                return "false";
+            }
+            else
+            {
+                return "true";
+            }
+
+        }
+
         public static string AgentTzExist(string Tz, long IDAgent)
         {
 
@@ -220,7 +245,7 @@ namespace ControlPanel.HelpersFunctions
             {
                 return "missing parameter";
             }
-            string sql = "Select Top 1 Tz from Agent where Tz = @Tz ";
+            string sql = "Select Top 1 Tz from ArvootManagers where Tz = @Tz ";
 
             if (IDAgent != -1)
             {
@@ -248,7 +273,7 @@ namespace ControlPanel.HelpersFunctions
             {
                 return "missing parameter";
             }
-            string sql = "Select Top 1 Tz from Agent where Tz = @Tz ";
+            string sql = "Select Top 1 Tz from ArvootManagers where Tz = @Tz ";
 
 
             SqlCommand cmd = new SqlCommand(sql);
@@ -599,8 +624,23 @@ namespace ControlPanel.HelpersFunctions
             }
 
             return number.ToString();
-        }
+        }  
 
+
+        public static void loadActivityHistoryOnAdd(Page page)
+        {
+            DateTime seldate = ((System.Web.UI.WebControls.Calendar)(page.Master.FindControl("activitiesCal"))).SelectedDate;
+            if (seldate == DateTime.MinValue)
+            {
+                ((DesignDisplay)page.Master).loadActivityHistory(DateTime.Today);
+            }
+            else
+            {
+                ((DesignDisplay)page.Master).loadActivityHistory(seldate);
+            }
+
+            ((UpdatePanel)page.Master.FindControl("AddForm2")).Update();
+        }
 
     }
 }

@@ -362,6 +362,7 @@ namespace ControlPanel
                 FormError_lable.Text = "יש לבחור סוכן";
                 return;
             };
+
             string IdsLeads ="";
             List<string> agentsNames = new List<string>();
             List<string> LeadsNames = new List<string>();
@@ -377,7 +378,6 @@ namespace ControlPanel
                     agentsNames.Add(((HtmlGenericControl)Repeater1.Items[i].FindControl("AgentName")).InnerText);
                     LeadsNames.Add(((HtmlGenericControl)Repeater1.Items[i].FindControl("LeadFirstName")).InnerText + " " + ((HtmlGenericControl)Repeater1.Items[i].FindControl("LeadLastName")).InnerText);
                 }
-
             }
             
             //for (int i =0; i< Repeater2.Items.Count; i++)
@@ -411,9 +411,10 @@ namespace ControlPanel
                 {
                     SqlCommand cmdHistory = new SqlCommand("INSERT INTO ActivityHistory (AgentID, Details, CreateDate, Show) VALUES (@agentID, @details, GETDATE(), 1)");
                     cmdHistory.Parameters.AddWithValue("@agentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
-                    cmdHistory.Parameters.AddWithValue("@details", ("ליד " + LeadsNames[i] + "הועבר מהסוכן  " + agentsNames[i]));
+                    cmdHistory.Parameters.AddWithValue("@details", ("ליד " + LeadsNames[i] + " הועבר מהסוכן " + agentsNames[i]));
                     DbProvider.ExecuteCommand(cmdHistory);
                 }
+                Helpers.loadActivityHistoryOnAdd(Page);
             }
             
 
@@ -545,6 +546,7 @@ namespace ControlPanel
                 return;
             };
             string IdsLeads = "";
+            List<string> LeadsNames = new List<string>();
 
             for (int i = 0; i < Repeater1.Items.Count; i++)
             {
@@ -552,7 +554,7 @@ namespace ControlPanel
                 {
                     IdsLeads += ((HiddenField)Repeater1.Items[i].FindControl("LeadID")).Value;
                     IdsLeads += ",";
-                    
+                    LeadsNames.Add(((HtmlGenericControl)Repeater1.Items[i].FindControl("LeadFirstName")).InnerText + " " + ((HtmlGenericControl)Repeater1.Items[i].FindControl("LeadLastName")).InnerText);
                 }
 
             }
@@ -572,6 +574,18 @@ namespace ControlPanel
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('An error occurred');", true);
 
+            }
+            else
+            {
+                for (int i = 0; i < LeadsNames.Count; i++)
+                {
+                    SqlCommand cmdHistory = new SqlCommand("INSERT INTO ActivityHistory (AgentID, Details, CreateDate, Show) VALUES (@agentID, @details, GETDATE(), 1)");
+                    cmdHistory.Parameters.AddWithValue("@agentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
+                    cmdHistory.Parameters.AddWithValue("@details", ("שינוי סטטוס ליד " + LeadsNames[i] + " - " + StatusEditList.Items[StatusEditList.SelectedIndex].Text));
+
+                    DbProvider.ExecuteCommand(cmdHistory);
+                }
+                Helpers.loadActivityHistoryOnAdd(Page);
             }
             SetStatusPopUp.Visible = false;
             loadUsers(1,true);

@@ -100,11 +100,16 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+
+    <asp:UpdatePanel ID="UpdatePanel_Button" runat="server">
+        <ContentTemplate>
+             <asp:Button  ID="CreateEmployee" Class="NewLid"  Visible="false" Text="צור עובד/סוכן" Style="width: 133px; height: 41px; left: 15%;" runat="server" OnClick="CreateEmployee_Click" />
+        </ContentTemplate>
+    </asp:UpdatePanel>
     <asp:UpdatePanel ID="AddForm" UpdateMode="Conditional" runat="server">
         <ContentTemplate>
 
-                <asp:Button  ID="CreateEmployee" Class="NewLid"  Visible="false" Text="צור עובד/סוכן" Style="width: 133px; height: 41px; left: 15%;" runat="server" OnClick="CreateEmployee_Click" />
-
+               
             <div class="rowHome">
                 <div class="colHome" style="width: 60%;">
                     <%--                 <asp:Label ID="Label5" Text="נתון כללי" class="text-blue" style="font-size:11pt"  runat="server" />--%>
@@ -226,110 +231,7 @@
                 </div>
             </div>
 
-                <div id="AddAgentPopUp" class="popUpOut" visible="false" runat="server">
                
-            <div id="Div1" class="popUpIn" style="position: relative; min-width: 600px;  width: 60%;  height: 94%; direction: rtl;margin-top:20px" runat="server">
-                                  <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ClosePopUpAddAgent" OnClick="ClosePopUpAddAgent_Click" />
-
-
-              <div class="content-wrapper-add-agent">
-                   <div class="RowGrayPopUpPay"></div>
-                   <div class="form-header-agent">צור עובד / סוכן</div>
-                   <div style="margin-bottom: 2%; text-align: right;">
-                        <span style="color: #932B90; margin-bottom: 1%;">עובד מסוג:
-                        </span>
-                   </div>
-                   
-                   <div class="row" style="justify-content: center; width: 100%; margin-bottom: 4%;">
-                        <div class="col ColAgentPermissions" id="FullPermissionDiv" runat="server" style="width: 30%;">
-                            <asp:Button ID="ManagementPermission"  OnClick="ManagementPermission_Click"  type="button" runat="server" class="Permissions" Text="מנהל" />
-<%--                            <span class="SpanPermissions">(עריכת תוכן,הוספת הסרת מבוטחים,עריכת ומחיקה של מידע)</span>--%>
-                        </div>
-         
-                        <div class="col ColAgentPermissions" style="width: 30%;">
-                            <asp:Button ID="AgentPermission" type="button" runat="server"  OnClick="AgentPermission_Click"   class="Permissions" Text="סוכן" />
-<%--                            <span class="SpanPermissions">(יכול לצפות במידע על המבוטחים שלו בלבד)</span>--%>
-                        </div>
-                        <div class="col" style="width: 30%;" id="AgentSupervisorDiv" runat="server">
-                            <asp:Button ID="SupervisorPermission" type="button" runat="server"  OnClick="SupervisorPermission_Click"   class="Permissions" Text="מפקחת" />
-<%--                            <span class="SpanPermissions">(יכול לצפות במידע על המבוטחים שלו בלבד)</span>--%>
-                        </div>
-                    </div>
-                   <div class="RowGrayPopUpPay" style="margin-bottom: 4%;"></div>
-
-                   <div class="row" style="margin: 0 15px; height: 7%;">
-                        <div class="col colImgAgentSettings">
-
-                            <img src="images/icons/User_Image_Avatar.png" runat="server" id="ImageFile_1_display" name="ImageFile_1_display" style="width: 71%; cursor: pointer;" class="ImageFile" />
-                            <asp:Label ID="ImageFile_1_lable" runat="server" Text="* העלה לוגו של העסק" CssClass="ErrorLable" Style="width: 100%;" Visible="false"></asp:Label>
-                            <asp:Label ID="ImageFile_1_lable_2" runat="server" Text="* בבקשה נסה שוב" CssClass="ErrorLable" Visible="false" Style="margin-top: unset; width: 100%;"></asp:Label>
-
-                        </div>
-
-                   </div>                         
-                   <div class="row" style="align-items: center; justify-content: center; margin-top: 6%; height: 31%; margin-bottom: 2%;">
-                    
-                        <div class="col form-group-wrapper" style="margin-left: 15px; height: 100%;">
-                                    <div class="col form-input-wrapper">
-                                        <span class="form-span-wrapper">שם מלא</span>
-                                        <input type="text" runat="server" name="Name" style="margin-bottom: 0px;" id="Name" placeholder="שם מלא" />
-                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator2" CssClass="ErrorLable" Style="width: 100%" runat="server" ErrorMessage="יש להזין שם מלא תקין"
-                                            ControlToValidate="Name"
-                                            ValidationExpression="[A-Zא-תa-z' ]*">
-                                        </asp:RegularExpressionValidator>
-                                    </div>
-                                    <div class="col form-input-wrapper">
-                                        <span class="form-span-wrapper">אימייל</span>
-                                        <input type="text" runat="server" name="EmailA" id="EmailA" placeholder="אימייל" />
-                                    </div>
-                                    <div class="col form-input-wrapper">
-                                        <span class="form-span-wrapper">שם סניף</span>
-                                        <input type="text" runat="server" name="Address" id="Address" placeholder="כתובת" />
-                                    </div>
-
-                                </div>
-                        <div class="col form-group-wrapper" style="margin-right: 15px; height: 100%;">
-                                    <div class="col form-input-wrapper">
-                                        <span class="form-span-wrapper">טלפון</span>
-                                        <input type="text" runat="server" name="Phone" style="margin-bottom: 0px;" id="Phone" placeholder="טלפון" />
-                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" CssClass="ErrorLable" Style="width: 100%" runat="server" ErrorMessage="יש להזין טלפון תקין"
-                                            ControlToValidate="Phone"
-                                            ValidationExpression="^([0-9\(\)\/\+ \-\.]*)$"></asp:RegularExpressionValidator>
-                                    </div>
-                                    <div class="col form-input-wrapper">
-                                        <span class="form-span-wrapper">ת.ז</span>
-                                        <input type="text" runat="server" name="Tz" id="Tz" placeholder="ת.ז" />
-                                    </div>
-                                    <div class="col form-input-wrapper">
-                                        <span class="form-span-wrapper">סיסמא</span>
-                                        <input runat="server" type="text" name="PasswordAgent" id="PasswordAgent" placeholder="סיסמא" />
-                                    </div>
-
-
-                                </div>
-
-                   </div>
-         <%--          <div class="col form-group-wrapper" style="width: 100%; height: 10.5%;">
-                        <div class="col form-input-wrapper">
-                            <span class="form-span-wrapper">בחר עמלה באחוזים עבור מבוטחים חדשים של סוכן זה</span>
-                            <input type="number" runat="server" name="PercentCommission" id="PercentCommission" placeholder="הזן סכום עמלה..." />
-                        </div>
-                   </div>--%>
-                   <div class="RowGrayPopUpPay" style="margin-bottom: 6%;"></div>
-                   <div class="col">
-                        <asp:Label ID="Label3" runat="server" Text="" CssClass="ErrorLable2" Visible="false"></asp:Label>
-
-                        <asp:Button ID="AddNewAgent" Name="AddNewAgent" runat="server" OnClick="SaveNewAgent_Click" Text="צרף עובד חברה/סוכן חדש" class="AddAgentButton" />
-                          <asp:Label ID="FormErrorAgent_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
-                   </div>
-
-
-                </div>
-
-         </div>
-
-
-     </div>
             </ContentTemplate>
     </asp:UpdatePanel>
     <%-- Gila --%>
@@ -389,6 +291,116 @@
                 </div>
             </div>
 
+        </ContentTemplate>
+    </asp:UpdatePanel>
+    <asp:UpdatePanel ID="UpdatePanelPopUps" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+             <div id="AddAgentPopUp" class="popUpOut" visible="false" runat="server">
+               
+            <div id="Div1" class="popUpIn" style="position: relative; min-width: 600px;  width: 60%;  height: 94%; direction: rtl;margin-top:20px" runat="server">
+                                  <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ClosePopUpAddAgent" OnClick="ClosePopUpAddAgent_Click" />
+
+
+              <div class="content-wrapper-add-agent">
+                   <div class="RowGrayPopUpPay"></div>
+                   <div class="form-header-agent">צור עובד / סוכן</div>
+                   <div style="margin-bottom: 2%; text-align: right;">
+                        <span style="color: #932B90; margin-bottom: 1%;">עובד מסוג:
+                        </span>
+                   </div>
+                   
+                   <div class="row" style="justify-content: center; width: 100%; margin-bottom: 4%;">
+                        <div class="col ColAgentPermissions" id="FullPermissionDiv" runat="server" style="width: 30%;">
+                            <asp:Button ID="ManagementPermission"  OnClick="ManagementPermission_Click"  type="button" runat="server" class="Permissions" Text="מנהל" />
+<%--                            <span class="SpanPermissions">(עריכת תוכן,הוספת הסרת מבוטחים,עריכת ומחיקה של מידע)</span>--%>
+                        </div>
+         
+                        <div class="col ColAgentPermissions" style="width: 30%;">
+                            <asp:Button ID="AgentPermission" type="button" runat="server"  OnClick="AgentPermission_Click"   class="Permissions" Text="סוכן" />
+<%--                            <span class="SpanPermissions">(יכול לצפות במידע על המבוטחים שלו בלבד)</span>--%>
+                        </div>
+                        <div class="col" style="width: 30%;" id="AgentSupervisorDiv" runat="server">
+                            <asp:Button ID="SupervisorPermission" type="button" runat="server"  OnClick="SupervisorPermission_Click"   class="Permissions" Text="מתפעלת" />
+<%--                            <span class="SpanPermissions">(יכול לצפות במידע על המבוטחים שלו בלבד)</span>--%>
+                        </div>
+                    </div>
+                   <div class="RowGrayPopUpPay" style="margin-bottom: 4%;"></div>
+
+                   <div class="row" style="margin: 0 15px; height: 7%;">
+                        <div class="col colImgAgentSettings">
+
+                            <img src="images/icons/User_Image_Avatar.png" runat="server" id="ImageFile_1_display" name="ImageFile_1_display" style="width: 71%; cursor: pointer;" class="ImageFile" />
+                            <asp:Label ID="ImageFile_1_lable" runat="server" Text="* העלה לוגו של העסק" CssClass="ErrorLable" Style="width: 100%;" Visible="false"></asp:Label>
+                            <asp:Label ID="ImageFile_1_lable_2" runat="server" Text="* בבקשה נסה שוב" CssClass="ErrorLable" Visible="false" Style="margin-top: unset; width: 100%;"></asp:Label>
+
+                        </div>
+
+                   </div>                         
+                   <div class="row" style="align-items: center; justify-content: center; margin-top: 6%; height: 31%; margin-bottom: 2%;">
+                    
+                        <div class="col form-group-wrapper" style="margin-left: 15px; height: 100%;">
+                                    <div class="col form-input-wrapper">
+                                        <span class="form-span-wrapper">שם מלא</span>
+                                        <input type="text" runat="server" name="Name" style="margin-bottom: 0px;" id="Name" placeholder="שם מלא" />
+                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator2" CssClass="ErrorLable" Style="width: 100%" runat="server" ErrorMessage="יש להזין שם מלא תקין"
+                                            ControlToValidate="Name"
+                                            ValidationExpression="[A-Zא-תa-z' ]*">
+                                        </asp:RegularExpressionValidator>
+                                    </div>
+                                    <div class="col form-input-wrapper">
+                                        <span class="form-span-wrapper">אימייל</span>
+                                        <input type="text" runat="server" name="EmailA" id="EmailA" placeholder="אימייל" />
+                                    </div>
+                                    
+                            <div class="col form-input-wrapper">
+                                        <span class="form-span-wrapper">סיסמא</span>
+                                        <input runat="server" type="text" name="PasswordAgent" id="PasswordAgent" placeholder="סיסמא" />
+                                    </div>
+                                </div>
+                        <div class="col form-group-wrapper" style="margin-right: 15px; height: 100%;">
+                                    <div class="col form-input-wrapper">
+                                        <span class="form-span-wrapper">טלפון</span>
+                                        <input type="text" runat="server" name="Phone" style="margin-bottom: 0px;" id="Phone" placeholder="טלפון" />
+                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" CssClass="ErrorLable" Style="width: 100%" runat="server" ErrorMessage="יש להזין טלפון תקין"
+                                            ControlToValidate="Phone"
+                                            ValidationExpression="^([0-9\(\)\/\+ \-\.]*)$"></asp:RegularExpressionValidator>
+                                    </div>
+                                    <div class="col form-input-wrapper">
+                                        <span class="form-span-wrapper">ת.ז</span>
+                                        <input type="text" runat="server" name="Tz" id="Tz" placeholder="ת.ז" />
+                                    </div>
+                                    
+
+                            <div class="col form-input-wrapper">
+                                        <span id="NameOrAddress" runat="server" class="form-span-wrapper">שם סניף</span>
+                                        <input type="text" runat="server" name="Address" id="Address" placeholder="כתובת" />
+                                    </div>
+
+
+                                </div>
+
+                   </div>
+         <%--          <div class="col form-group-wrapper" style="width: 100%; height: 10.5%;">
+                        <div class="col form-input-wrapper">
+                            <span class="form-span-wrapper">בחר עמלה באחוזים עבור מבוטחים חדשים של סוכן זה</span>
+                            <input type="number" runat="server" name="PercentCommission" id="PercentCommission" placeholder="הזן סכום עמלה..." />
+                        </div>
+                   </div>--%>
+                   <div class="RowGrayPopUpPay" style="margin-bottom: 6%;"></div>
+                   <div class="col">
+                        <asp:Label ID="Label3" runat="server" Text="" CssClass="ErrorLable2" Visible="false"></asp:Label>
+
+                        <asp:Button ID="AddNewAgent" Name="AddNewAgent" runat="server" OnClick="SaveNewAgent_Click" Text="צרף עובד חברה/סוכן חדש" class="AddAgentButton" OnClientClick="reload(LoadingDiv)" />
+                          <asp:Label ID="FormErrorAgent_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
+                   </div>
+
+
+                </div>
+
+         </div>
+
+
+     </div>
         </ContentTemplate>
     </asp:UpdatePanel>
        <input type="text" runat="server" name="ImageFile_1" id="ImageFile_1" style="display: none" />

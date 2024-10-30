@@ -105,6 +105,10 @@
     <Content Include="images\icons\Status_6.png" />
     <Content Include="HomePage.aspx" />
     <Content Include="images\icons\Work_Status_List_BG.png" />
+    <Content Include="images\Mail_Logo_1.png" />
+    <Content Include="images\Mail_Logo_2.png" />
+    <Content Include="images\16X16.png" />
+    <Content Include="images\32X32.png" />
     <Content Include="Policies.aspx" />
     <Content Include="ServiceRequests.aspx" />
     <Content Include="Offers.aspx" />
@@ -188,9 +192,6 @@
     <Content Include="ServiceRequestAdd.aspx" />
     <Content Include="css\opensanshebrew\opensanshebrew.css" />
     <Content Include="css\web.css" />
-    <Content Include="images\16X16.png" />
-    <Content Include="images\32X32.png" />
-    <Content Include="images\Adar_Panel_Logo.png" />
     <Content Include="images\icons\Active_Icon.png" />
     <Content Include="images\Avatar.png" />
     <Content Include="images\icons\Back_User_Button.png" />

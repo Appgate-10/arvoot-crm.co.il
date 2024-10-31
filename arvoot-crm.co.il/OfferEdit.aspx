@@ -27,6 +27,7 @@
             <div class="DivLidTop">
       
                 <asp:Button runat="server" ID="btnMoveToOperatingQueqe" Text="העבר לתור תפעול" OnClick="btnMoveToOperatingQueqe_Click" CssClass="BtnMove" OnClientClick="reload(LoadingDiv);" />
+                <asp:Button runat="server" ID="btnMoveToOperator" Text="העבר למתפעלת" OnClick="btnMoveToOperator_Click" CssClass="BtnMove" OnClientClick="reload(LoadingDiv);" />
                 <asp:ImageButton ID="DeleteLid" runat="server" OnClientClick="return confirm('האם אתה בטוח שברצונך למחוק את ההצעה');" ImageUrl="~/images/icons/Delete_Lid_Button.png" OnClick="DeleteOffer_Click" />
                 <asp:Button runat="server" ID="btn_save" Text="שמור" OnClick="btn_save_Click" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
             </div>
@@ -385,6 +386,31 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
+
+    <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+            <div id="MoveToOperatorPopUp" class="popUpOut MainDivDocuments " visible="false" runat="server">
+                <div id="Div3" class="popUpIn" style="width: 32%; height: 600px; margin-top: 160px; margin-bottom: 160px; direction: rtl; text-align: center; border-width: 2px;" runat="server">
+                    <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="CloseMovePopUp" OnClick="CloseMovePopUp_Click" />
+                    <div class="col MainDivPopup " style="width: 43%; margin-bottom: 30px;">
+                        <label class="HeaderPopup" style="font-size:18pt">שיוך הצעה למתעפלת</label>
+                    </div>
+                    <div class="col" style="padding: 0px 5%; align-items: center;">
+                        <div class="row DivAgentVAll">
+                            <asp:DropDownList runat="server" ID="OperatorsList" class="DropDownList FontWeightBold" ToolTip="מתפעלות"></asp:DropDownList>
+                        </div>
+                        <asp:Button ID="MoveToOperator" Name="AddNewTask" OnClick="MoveToOperator_Save" runat="server"  Text="שמור" class="SaveOperetorButton" />
+
+                         <asp:Label ID="Label1" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
+
+                        <%-- </div>--%>
+                    </div>
+
+                </div>
+            </div>
+
+         </ContentTemplate>
+     </asp:UpdatePanel>
      <input type="text" runat="server" name="ImageFile" id="ImageFile" style="display: none" />
       <asp:FileUpload ID="ImageFile_FileUpload" runat="server" onchange="ImageFile_UploadFile(this)" AllowMultiple="true" Style="display: none" />
       <asp:Button ID="ImageFile_btnUpload" Text="2" runat="server" OnClick="ImageFile_btnUpload_Click" Style="display: none" />

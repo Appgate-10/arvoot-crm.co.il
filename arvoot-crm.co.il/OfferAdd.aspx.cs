@@ -197,6 +197,7 @@ namespace ControlPanel
             {
                 FullName.InnerText = dt.Rows[0]["FullName"].ToString();
                 FullNameAgent.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
+                lblOwner.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
                 Tz.InnerText = dt.Rows[0]["Tz"].ToString();
                 EffectiveDate.InnerText = DateTime.Now.ToString("dd.MM.yyyy");
             }
@@ -303,6 +304,26 @@ namespace ControlPanel
                     cmdHistory.Parameters.AddWithValue("@agentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
                     cmdHistory.Parameters.AddWithValue("@details", ("הוספת הצעה חדשה עבור " + FullName.InnerText));
                     DbProvider.ExecuteCommand(cmdHistory);
+
+                    if (SelectStatusOffer.Value == "9")
+                    {
+                        string sqlBranchManager = @"SELECT a.ParentID from Offer
+                                                    INNER JOIN [Lead] l On l.ID = Offer.LeadID
+                                                    INNER JOIN ArvootManagers a on a.ID = l.AgentID WHERE Offer.ID = @OfferID";
+                        SqlCommand cmdBranchManager = new SqlCommand(sqlBranchManager);
+                        cmdBranchManager.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
+                        string parentID = DbProvider.GetOneParamValueString(cmdBranchManager);
+
+                        if (parentID != null)
+                        {
+                            string sqlAlert = "INSERT INTO Alerts (AgentID, Text, CreationDate, DisplayDate) Values (@AgentID, @Text, GETDATE(), GETDATE())";
+                            SqlCommand cmdAlert = new SqlCommand(sqlAlert);
+                            cmdAlert.Parameters.AddWithValue("@AgentID", parentID);
+                            cmdAlert.Parameters.AddWithValue("@Text", "סיום טיפול בהצעה: " + NameOffer.Value + " על ידי: " + lblOwner.InnerText);
+                            DbProvider.ExecuteCommand(cmdAlert);
+                        }
+
+                    }
 
                     return true;
                 }

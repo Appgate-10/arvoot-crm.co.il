@@ -253,6 +253,7 @@ namespace ControlPanel
                 Note.Value = rowOffer["Note"].ToString();
                 DateSentToInsuranceCompany.Value = Convert.ToDateTime(rowOffer["DateSentToInsuranceCompany"]).ToString("yyyy-MM-dd"); 
                 SelectStatusOffer.Value = rowOffer["StatusOfferID"].ToString();
+                CurrentStatusOfferID.Value = rowOffer["StatusOfferID"].ToString();
                 NameOffer.Value = rowOffer["NameOffer"].ToString();
 
                 bool isInOperatingManager = false;
@@ -611,6 +612,27 @@ where s.OfferID = @OfferID";
 
                 if (DbProvider.ExecuteCommand(cmdInsert) > 0)
                 {
+
+
+                    if (SelectStatusOffer.Value == "9" && SelectStatusOffer.Value != CurrentStatusOfferID.Value)
+                    {
+                        string sqlBranchManager = @"SELECT a.ParentID from Offer
+                                                    INNER JOIN [Lead] l On l.ID = Offer.LeadID
+                                                    INNER JOIN ArvootManagers a on a.ID = l.AgentID WHERE Offer.ID = @OfferID";
+                        SqlCommand cmdBranchManager = new SqlCommand(sqlBranchManager);
+                        cmdBranchManager.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
+                        string parentID = DbProvider.GetOneParamValueString(cmdBranchManager);
+
+                        if (parentID != null)
+                        {
+                            string sqlAlert = "INSERT INTO Alerts (AgentID, Text, CreationDate, DisplayDate) Values (@AgentID, @Text, GETDATE(), GETDATE())";
+                            SqlCommand cmdAlert = new SqlCommand(sqlAlert);
+                            cmdAlert.Parameters.AddWithValue("@AgentID", parentID);
+                            cmdAlert.Parameters.AddWithValue("@Text", "סיום טיפול בהצעה: " + NameOffer.Value + " על ידי: " + lblOwner.InnerText);
+                            DbProvider.ExecuteCommand(cmdAlert);
+                        }
+                        
+                    }
                     List<FileDetail> myFile = (List<FileDetail>)Session["UploadedFiles"];
                     if (myFile != null)
                     {

@@ -36,11 +36,11 @@ namespace ControlPanel
                 }
                 else
                 {
-                    string str = "select * from Lead where IsContact = 1";
-                    SqlCommand cmd2 = new SqlCommand(str);
-                    DataTable dt2 = DbProvider.GetDataTable(cmd2);
-                    Repeater2.DataSource = dt2;
-                    Repeater2.DataBind();
+                    //string str = "select * from Lead where IsContact = 1";
+                    //SqlCommand cmd2 = new SqlCommand(str);
+                    //DataTable dt2 = DbProvider.GetDataTable(cmd2);
+                    //Repeater2.DataSource = dt2;
+                    //Repeater2.DataBind();
 
                     //Gila
                     string strTasks = @"select Tasks.ID, FORMAT(Tasks.PerformDate, 'dd.MM.yy') as dateTask , 
@@ -57,6 +57,14 @@ namespace ControlPanel
                     DataTable dtTasks = DbProvider.GetDataTable(cmdTasks);
                     Repeater3.DataSource = dtTasks;
                     Repeater3.DataBind();
+
+                    string sqlAlerts = @"SELECT TOP (10) Text, CONVERT(varchar, CreationDate, 104) AS CreationDate FROM Alerts WHERE AgentID = @AgentID ORDER BY ID desc";
+                    SqlCommand cmdAlerts = new SqlCommand(sqlAlerts);
+                    cmdAlerts.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+                    DataTable dtAlerts = DbProvider.GetDataTable(cmdAlerts);
+                    Repeater2.DataSource = dtAlerts;
+                    Repeater2.DataBind();
+
 
                     //Gila
                     TasksCalendar.SelectedDate = DateTime.Today;
@@ -590,41 +598,43 @@ LEFT JOIN ApprovedPayments ap ON sr.ID = ap.ServiceRequestID";
 
         private void LoadTaskDates()
         {
-            _datesWithTasks = new List<DateTime>();
-            // Get the visible date range of the calendar
-            //DateTime startDate = GetFirstVisibleDate(TasksCalendar);
-            //DateTime endDate = GetLastVisibleDate(TasksCalendar);
-
-            // Get the first day of the month
-            DateTime firstDayOfMonth = TasksCalendar.VisibleDate;
-            if (firstDayOfMonth == DateTime.MinValue)
+            if (HttpContext.Current.Session["AgentID"] != null)
             {
-                firstDayOfMonth = DateTime.Today;
-            }
+                _datesWithTasks = new List<DateTime>();
+                // Get the visible date range of the calendar
+                //DateTime startDate = GetFirstVisibleDate(TasksCalendar);
+                //DateTime endDate = GetLastVisibleDate(TasksCalendar);
 
-            DateTime startDate = GetFirstDisplayedDate(firstDayOfMonth);
-            DateTime endDate = startDate.AddDays(41);
+                // Get the first day of the month
+                DateTime firstDayOfMonth = TasksCalendar.VisibleDate;
+                if (firstDayOfMonth == DateTime.MinValue)
+                {
+                    firstDayOfMonth = DateTime.Today;
+                }
 
-            //Gila
-            //2do - צריך לבדוק לפי הדרגה - אם מנהל, לא צריך את הסינון לפי סוכן
-            string sqlDates = @"SELECT DISTINCT CAST(PerformDate AS DATE) AS TaskDate FROM Tasks
-                                inner join Offer on Offer.ID = Tasks.OfferID 
-                                INNER JOIN Lead on Lead.ID = Offer.LeadID 
-                                left join Lead lead2 on Tasks.LeadID = lead2.ID
+                DateTime startDate = GetFirstDisplayedDate(firstDayOfMonth);
+                DateTime endDate = startDate.AddDays(41);
+
+                string sqlDates = @"SELECT DISTINCT CAST(PerformDate AS DATE) AS TaskDate FROM Tasks
+                                Left join Offer on Offer.ID = Tasks.OfferID 
+                                Left JOIN Lead on Lead.ID = Offer.LeadID 
+                                Left join Lead lead2 on Tasks.LeadID = lead2.ID
                                 WHERE PerformDate BETWEEN @startDate AND @endDate AND isnull(Lead.AgentID,lead2.AgentID) = @AgentID";
-            SqlCommand cmdDates = new SqlCommand(sqlDates);
-            cmdDates.Parameters.AddWithValue("@startDate", startDate);
-            cmdDates.Parameters.AddWithValue("@endDate", endDate);
-            cmdDates.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+                SqlCommand cmdDates = new SqlCommand(sqlDates);
+                cmdDates.Parameters.AddWithValue("@startDate", startDate);
+                cmdDates.Parameters.AddWithValue("@endDate", endDate);
+                cmdDates.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
 
-            DataTable dtDates = DbProvider.GetDataTable(cmdDates);
-            foreach (DataRow row in dtDates.Rows)
-            {
-                _datesWithTasks.Add(DateTime.Parse(row["TaskDate"].ToString()));
+                DataTable dtDates = DbProvider.GetDataTable(cmdDates);
+                foreach (DataRow row in dtDates.Rows)
+                {
+                    _datesWithTasks.Add(DateTime.Parse(row["TaskDate"].ToString()));
+                }
+
+                // Query the database for dates with tasks
+                // _datesWithTasks = GetDatesWithTasks(startDate, endDate);
             }
 
-            // Query the database for dates with tasks
-            // _datesWithTasks = GetDatesWithTasks(startDate, endDate);
         }
 
         public static DateTime GetFirstDateOfMonth(DateTime date)

@@ -168,8 +168,11 @@ namespace ControlPanel
         
         public void loadCountAlert()
         {
-            string sql = "select COUNT(*) from Tasks ";
+            //string sql = "select COUNT(*) from Tasks ";
+            string sql = "select COUNT(*) from Alerts Where AgentID = @AgentID ";
+
             SqlCommand cmd = new SqlCommand(sql);
+            cmd.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
             long countAlert = DbProvider.GetOneParamValueLong(cmd);
             if (countAlert > 0)
             {

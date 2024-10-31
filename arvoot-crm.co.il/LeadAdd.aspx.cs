@@ -469,7 +469,14 @@ namespace ControlPanel
                         cmdTasks.Parameters.AddWithValue("@PerformDate", DateTime.Parse(TrackingTime.Value));
 
                         DbProvider.ExecuteCommand(cmdTasks);
-                        
+
+                        string sqlAlert = "INSERT INTO Alerts (AgentID, Text, CreationDate, DisplayDate) Values (@AgentID, @Text, GETDATE(), @DisplayDate)";
+                        SqlCommand cmdAlert = new SqlCommand(sqlAlert);
+                        cmdAlert.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+                        cmdAlert.Parameters.AddWithValue("@Text", "מעקב ליד " + FirstName.Value + " " + LastName.Value + " " + Phone1.Value);
+                        cmdAlert.Parameters.AddWithValue("@DisplayDate", DateTime.Parse(TrackingTime.Value));
+                        DbProvider.ExecuteCommand(cmdAlert);
+
                     }
                     return true;
                 }

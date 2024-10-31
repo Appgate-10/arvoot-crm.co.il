@@ -145,7 +145,7 @@ namespace ControlPanel
             SqlCommand cmd = new SqlCommand();
             SqlCommand cmdCount = new SqlCommand();
 
-            string sqlWhere = "where 1=1 ", sql2 = "", sqlJoin = "";
+            string sqlWhere = " where 1=1 ", sql2 = "", sqlJoin = "";
             if (HttpContext.Current.Session["AgentLevel"] != null)
             {
                 switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))

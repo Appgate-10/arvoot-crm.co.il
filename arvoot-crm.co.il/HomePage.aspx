@@ -219,10 +219,10 @@
                         <asp:Repeater ID="Repeater2" runat="server">
                             <ItemTemplate>
                                 <div style="background-color: whitesmoke; border-radius: 12px; margin: 10px 0px 10px 10px; padding-right: 16px; padding-bottom: 8px;">
-                                    <div class="LblDate FontWeightBold" style="margin-top: 10px; padding-top: 6px;">3.8.24</div>
-
+                                    <div class="LblDate FontWeightBold" style="margin-top: 10px; padding-top: 6px;"><%#Eval("CreationDate") %></div>
+                                    <%# Eval("Text") %>
                                     <div style="text-align: left; padding-left: 10px; text-align: right; margin-top: 6px; font-size: 12px">
-                                        לורם אבח חכלגדח מצ לדגיכ לךדגי עחגדלי חעלי עחלד ךכיגחל 
+                                       
                                     </div>
                                 </div>
                             </ItemTemplate>

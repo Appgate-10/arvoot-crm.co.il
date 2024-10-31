@@ -102,10 +102,10 @@ namespace ControlPanel
                            ,HaveAsset,Lead.AssetValue,Lead.AssetType,Lead.AssetAddress,HaveMortgageOnAsset
                            ,MortgageAmount,MonthlyRepaymentAmount,LendingBank,PurposeTest,RequestedLoanAmount
                            ,PurposeLoan,MortgageBalance
-						   ,Agent.FullName as FullNameAgent,Agent.Phone PhoneAgent,Agent.Email as EmailAgent
+						   ,A.FullName as FullNameAgent,A.Phone PhoneAgent,A.Email as EmailAgent, A.ID as AgentID
                            ,CONVERT(varchar,Lead.CreateDate, 104) CreateDate
                            from Lead
-						   left join Agent on Lead.AgentID=Agent.ID
+						   left join ArvootManagers A on Lead.AgentID=A.ID and A.Type = 6
                            inner join FirstStatusLead on Lead.FirstStatusLeadID=FirstStatusLead.ID
                            left join SecondStatusLead on Lead.SecondStatusLeadID=SecondStatusLead.ID
                            where Lead.ID=@LeadID";
@@ -124,6 +124,8 @@ namespace ControlPanel
                     Age.InnerText = age.ToString();
                     DateBirth.Value = (dateOfBirth).ToString("yyyy-MM-dd");
                 }
+
+                HiddenAgentID.Value = dtLead.Rows[0]["AgentID"].ToString();
 
                 FirstName.Value = dtLead.Rows[0]["FirstName"].ToString();
                 LastName.Value = dtLead.Rows[0]["LastName"].ToString();
@@ -557,7 +559,7 @@ namespace ControlPanel
             int ErrorCount = 0;
             ExportNewContact_lable.Visible = false;
 
-            //שדות חובה כשעודים המרה לאיש קשר שם מלא מין תאריך לידה ת.זץ פרטים אישיים עיר האם קיים נכס בבעלות הלקוח כתובת הנכס 
+            //שדות חובה כשעושים המרה לאיש קשר שם מלא מין תאריך לידה ת.ז. פרטים אישיים עיר האם קיים נכס בבעלות הלקוח כתובת הנכס 
             //- האם קיים נכס בבעלות הלקוח חייב להיות מסומן עם ויtodo
             if (FirstName.Value == "")
             {
@@ -803,7 +805,7 @@ namespace ControlPanel
                 try
                 {
                     Pageinit.CheckManagerPermissions();
-                    cmd.Parameters.AddWithValue("@AgentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
+                    cmd.Parameters.AddWithValue("@AgentID", long.Parse(HiddenAgentID.Value/*HttpContext.Current.Session["AgentID"].ToString()*/));
                 }
                 catch (Exception ex)
                 {
@@ -1111,7 +1113,7 @@ namespace ControlPanel
                 {
                     Pageinit.CheckManagerPermissions();
                     //heni - 13.10.24 - אין מענה פעם שלישית להעביר ליד למנהל
-                    cmd.Parameters.AddWithValue("@AgentID", int.Parse(SelectFirstStatus.Value) == 5? (object)DBNull.Value : long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
+                    cmd.Parameters.AddWithValue("@AgentID", int.Parse(SelectFirstStatus.Value) == 5? (object)DBNull.Value : long.Parse(HiddenAgentID.Value/*HttpContext.Current.Session["AgentID"].ToString()*/));
                 }
                 catch (Exception ex)
                 {
@@ -1181,6 +1183,13 @@ namespace ControlPanel
                             cmdTasks.Parameters.AddWithValue("@PerformDate", DateTime.Parse(TrackingTime.Value));
 
                             DbProvider.ExecuteCommand(cmdTasks);
+
+                            string sqlAlert = "INSERT INTO Alerts (AgentID, Text, CreationDate, DisplayDate) Values (@AgentID, @Text, GETDATE(), @DisplayDate)";
+                            SqlCommand cmdAlert = new SqlCommand(sqlAlert);
+                            cmdAlert.Parameters.AddWithValue("@AgentID", HiddenAgentID.Value);
+                            cmdAlert.Parameters.AddWithValue("@Text", "מעקב ליד " + FirstName.Value + " " + LastName.Value + " " + Phone1.Value);
+                            cmdAlert.Parameters.AddWithValue("@DisplayDate", DateTime.Parse(TrackingTime.Value));
+                            DbProvider.ExecuteCommand(cmdAlert);
 
                         }
                         return true;

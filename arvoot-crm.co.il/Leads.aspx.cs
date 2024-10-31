@@ -194,7 +194,7 @@ namespace ControlPanel
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     default:
-                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID ";
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6";
                         break;
 
                 }
@@ -322,7 +322,7 @@ namespace ControlPanel
             SubStatusList.DataBind();
             SubStatusList.Items.Insert(0, new ListItem("סטטוס משני", ""));
 
-            SqlCommand cmdAgents = new SqlCommand("SELECT  FullName as AgentName,ID FROM Agent");
+            SqlCommand cmdAgents = new SqlCommand("SELECT  FullName as AgentName,ID FROM ArvootManagers where Type = 6");
             DataSet dsAgents = DbProvider.GetDataSet(cmdAgents);
             AgentsList.DataSource = dsAgents;
             AgentsList.DataTextField = "AgentName";
@@ -489,7 +489,7 @@ namespace ControlPanel
             FormError_lable.Visible = false;
             MoveLeadPopUp.Visible = true;
            
-            SqlCommand cmdAgents = new SqlCommand("SELECT  FullName as AgentName,ID FROM Agent where Level =3");
+            SqlCommand cmdAgents = new SqlCommand("SELECT  FullName as AgentName,ID FROM ArvootManagers where Type=6");
             DataSet dsAgents = DbProvider.GetDataSet(cmdAgents);
             AgentList.DataSource = dsAgents;
             AgentList.DataTextField = "AgentName";

@@ -93,6 +93,7 @@
 
             <div class="row MarginDiv">
                 <div class="col DivDetails" style="width:100%">
+                    <asp:HiddenField ID="HiddenAgentID" runat="server"/>
                     <div class="row">
                         <div style="width: 10%; text-align: center; padding-top: 44px;">
                             <img src="images/icons/Agent_Avatar_Icon.png" id="ImageFileAgent" runat="server" />

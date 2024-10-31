@@ -71,6 +71,8 @@ namespace ControlPanel
                 SelectStatusTask.DataBind();
                 //loadUsers(1);
                 loadData();
+                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) !=4)
+                    btnMoveToOperator.Visible = false;
             }
         }
         protected void CloseTaskPopUp_Click(object sender, EventArgs e)
@@ -210,6 +212,23 @@ namespace ControlPanel
                 Response.Redirect("DownloadFile.ashx?fileName=" + parameters[0]);
             else ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('עליך לשמור את הקובץ לפני הורדה');", true);
 
+
+
+        }
+
+        protected void CloseMovePopUp_Click(object sender, ImageClickEventArgs e)
+        {
+            MoveToOperatorPopUp.Visible = false;
+        }  
+        protected void MoveToOperator_Save(object sender, EventArgs e)
+        {
+            MoveToOperatorPopUp.Visible = false;
+            string sql = "update Offer set OperatorID = @OperatorID, IsInOperatingQueue = 0 where ID = @ID";
+            SqlCommand sqlCommand = new SqlCommand(sql);
+            sqlCommand.Parameters.AddWithValue("@OperatorID", OperatorsList.SelectedValue);
+            sqlCommand.Parameters.AddWithValue("@ID", Request.QueryString["OfferID"]);
+            DbProvider.ExecuteCommand(sqlCommand);
+            Response.Redirect("Offers.aspx");
 
 
         }
@@ -698,6 +717,22 @@ where s.OfferID = @OfferID";
             {
                 Response.Redirect("Contact.aspx?ContactID=" + ContactID.Value);
             }
-        }
+        }    
+        
+        protected void btnMoveToOperator_Click(object sender, EventArgs e) {
+            ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+            SqlCommand cmdOperators = new SqlCommand("SELECT  FullName as OperatorName,ID FROM ArvootManagers where Type =5");
+            DataSet dsOperators = DbProvider.GetDataSet(cmdOperators);
+            OperatorsList.DataSource = dsOperators;
+            OperatorsList.DataTextField = "OperatorName";
+            OperatorsList.DataValueField = "ID";
+            OperatorsList.DataBind();
+            OperatorsList.Items.Insert(0, new ListItem("חפש מתפעלת", ""));
+            MoveToOperatorPopUp.Visible = true;
+            UpdatePanel2.Update();
+
+        }       
+        
+
     }
 }

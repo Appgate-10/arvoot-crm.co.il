@@ -436,7 +436,8 @@
                     <div class="row AlignItemsCenter" style="width: 23%;">
                         <img src="images/Chack_Box_1_On.png" class="ImgV" style="margin-left: 10px;" runat="server" />
                         <label class="InputLable">העבר לתור תפעול</label>
-                    </div>
+                    </div>    
+              
 
                 </div>
 

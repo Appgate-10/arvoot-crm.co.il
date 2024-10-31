@@ -2458,7 +2458,7 @@ H2 {
 }
 .AddAgentButton {
     height: 45px;
-    background: #932B90;
+    background: #993796;
     color: white;
     border-radius: 6px;
     font-size: 14pt;
@@ -2466,7 +2466,19 @@ H2 {
     border: none;
     width: 100%;
     cursor: pointer;
-    font-family: 'Open Sans Hebrew', sans-serif; 
+    font-family: 'Open Sans Hebrew', sans-serif;
+}
+.SaveOperetorButton {
+    height: 45px;
+    background: #0F378F;
+    color: white;
+    border-radius: 6px;
+    font-size: 14pt;
+    padding: 8px;
+    border: none;
+    width: 30%;
+    cursor: pointer;
+    font-family: 'Open Sans Hebrew', sans-serif;
 }
 
 

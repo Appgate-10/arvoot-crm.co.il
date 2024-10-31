@@ -214,6 +214,13 @@ namespace ControlPanel
 
             int ErrorCount = 0;
             FormError_lable.Visible = false;
+            if (string.IsNullOrEmpty(NameOffer.Value))
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין שם ההצעה";
+                return false;
+            }
             if (SelectSourceLoanOrInsurance.SelectedIndex == 0)
             {
                 ErrorCount++;

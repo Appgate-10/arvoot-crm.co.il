@@ -228,6 +228,13 @@ namespace ControlPanel
             sqlCommand.Parameters.AddWithValue("@OperatorID", OperatorsList.SelectedValue);
             sqlCommand.Parameters.AddWithValue("@ID", Request.QueryString["OfferID"]);
             DbProvider.ExecuteCommand(sqlCommand);
+
+            string sqlAlert = "INSERT INTO Alerts (AgentID, Text, CreationDate, DisplayDate) Values (@AgentID, @Text, GETDATE(), GETDATE())";
+            SqlCommand cmdAlert = new SqlCommand(sqlAlert);
+            cmdAlert.Parameters.AddWithValue("@AgentID", OperatorsList.SelectedValue);
+            cmdAlert.Parameters.AddWithValue("@Text", "ההצעה " + NameOffer.Value + " הועברה אליך לתפעול");
+            DbProvider.ExecuteCommand(cmdAlert);
+
             Response.Redirect("Offers.aspx");
 
 
@@ -562,6 +569,13 @@ where s.OfferID = @OfferID";
 
             int ErrorCount = 0;
             FormError_lable.Visible = false;
+            if (string.IsNullOrEmpty(NameOffer.Value))
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין שם ההצעה";
+                return false;
+            }
             if (SelectSourceLoanOrInsurance.SelectedIndex == 0)
             {
                 ErrorCount++;

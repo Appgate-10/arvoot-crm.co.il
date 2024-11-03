@@ -154,7 +154,7 @@ namespace ControlPanel
         }
         protected void UploadFile_Command(object sender, CommandEventArgs e)
         {
-
+            loadData();
         }
         public void loadData()
         {
@@ -165,6 +165,8 @@ namespace ControlPanel
             if(!string.IsNullOrEmpty(imageFileUrl))
                 ProfileAgent.ImageUrl = ConfigurationManager.AppSettings["FilesUrl"] + "Agent/" + imageFileUrl;
             AgentName.Text = HttpContext.Current.Session["AgentName"].ToString();
+            currentTime.InnerText = DateTime.Now.ToShortTimeString();
+
             loadCountAlert();
             loadActivityHistory(DateTime.Today);
 
@@ -286,8 +288,8 @@ namespace ControlPanel
 
         protected void TimerAlerts_Tick(object sender, EventArgs e)
         {
-            if (NewAlertPopUp.Visible == false)
-            {
+            //if (NewAlertPopUp.Visible == false)
+            //{
                 SqlCommand cmdAlerts = new SqlCommand("SELECT * From Alerts WHERE AgentID = @AgentID AND Show = 1 AND DisplayDate <= getdate() AND IsRead = 0");
                 cmdAlerts.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
                 DataSet ds = DbProvider.GetDataSet(cmdAlerts);
@@ -296,11 +298,12 @@ namespace ControlPanel
                     NewAlertPopUp.Visible = true;
                     RepeaterNewAlerts.DataSource = ds;
                     RepeaterNewAlerts.DataBind();
-                    SqlCommand cmdUpdate = new SqlCommand("UPDATE Alerts SET IsRead = 1 WHERE AgentID = @AgentID AND Show = 1 AND DisplayDate <= getdate() AND IsRead = 0");
+                SqlCommand cmdUpdate = new SqlCommand("UPDATE Alerts SET IsRead = 1 WHERE AgentID = @AgentID AND Show = 1 AND DisplayDate <= getdate() AND IsRead = 0");
                     cmdUpdate.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
                     DbProvider.ExecuteCommand(cmdUpdate);
+
                 }
-            }
+            //}
             
             
         }

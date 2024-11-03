@@ -56,7 +56,7 @@
                             </div>
                             <asp:ImageButton ID="ImageButton3" runat="server" OnCommand="UploadFile_Command" ImageUrl="~/images/icons/Refrash_List_Button.png" Style="margin-inline-end: 12px;" />
                             <label style="margin-inline-end: 5px;">עודכן ב: </label>
-                            <label>16:07</label>
+                            <label id="currentTime" runat="server"></label>
                         </div>
                         <img onclick="navigateToOtherPage()" src="images/icons/Topbar_Logo_1.png " />
                     </div>

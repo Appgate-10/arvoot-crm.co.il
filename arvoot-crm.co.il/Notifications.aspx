@@ -71,15 +71,15 @@
                         </div>
                         <div class="col" style="width: 25%;">
                             <label class="LableDetails">סוכנות</label>
-                            <label class="PaddingAgentCus ColorLable">Lisanee</label>
+                            <label class="PaddingAgentCus ColorLable"></label>
                         </div>
                         <div class="col" style="width: 25%;">
                             <label class="LableDetails">בעלים</label>
-                            <label class="PaddingAgentCus ColorLable">Lisanee</label>
+                            <label class="PaddingAgentCus ColorLable"></label>
                         </div>
                         <div class="col" style="width: 30%;">
                             <label class="LableDetails">טלפון</label>
-                            <label class="PaddingAgentCus ColorLable">Lisanee</label>
+                            <label class="PaddingAgentCus ColorLable"></label>
                         </div>
 
                     </div>
@@ -92,15 +92,15 @@
                         </div>
                         <div class="col" style="width: 25%;">
                             <label class="LableDetails">סוכנות</label>
-                            <label class="PaddingAgentCus ColorLable">Lisanee</label>
+                            <label class="PaddingAgentCus ColorLable"></label>
                         </div>
                         <div class="col" style="width: 25%;">
                             <label class="LableDetails">בעלים</label>
-                            <label class="PaddingAgentCus ColorLable">Lisanee</label>
+                            <label class="PaddingAgentCus ColorLable"></label>
                         </div>
                         <div class="col" style="width: 30%;">
                             <label class="LableDetails">טלפון</label>
-                            <label class="PaddingAgentCus ColorLable">Lisanee</label>
+                            <label class="PaddingAgentCus ColorLable"></label>
                         </div>
 
                     </div>

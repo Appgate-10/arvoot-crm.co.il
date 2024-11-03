@@ -55,13 +55,13 @@ namespace ControlPanel
                 SelectOfferType.DataValueField = "ID";
                 SelectOfferType.DataBind(); 
                 
-                SqlCommand cmdTurnOffer = new SqlCommand("SELECT * FROM TurnOffer");
-                DataSet dsTurnOffer = DbProvider.GetDataSet(cmdTurnOffer);
-                SelectTurnOffer.DataSource = dsTurnOffer;
-                SelectTurnOffer.DataTextField = "Name";
-                SelectTurnOffer.DataValueField = "ID";
-                SelectTurnOffer.DataBind();
-                SelectTurnOffer.Items.Insert(0, new ListItem("בחר", ""));
+                //SqlCommand cmdTurnOffer = new SqlCommand("SELECT * FROM TurnOffer");
+                //DataSet dsTurnOffer = DbProvider.GetDataSet(cmdTurnOffer);
+                //SelectTurnOffer.DataSource = dsTurnOffer;
+                //SelectTurnOffer.DataTextField = "Name";
+                //SelectTurnOffer.DataValueField = "ID";
+                //SelectTurnOffer.DataBind();
+                //SelectTurnOffer.Items.Insert(0, new ListItem("בחר", ""));
                 //loadUsers(1);
                 loadData();
             }
@@ -196,7 +196,7 @@ namespace ControlPanel
             if (dt.Rows.Count > 0)
             {
                 FullName.InnerText = dt.Rows[0]["FullName"].ToString();
-                FullNameAgent.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
+             //FullNameAgent.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
                 lblOwner.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
                 Tz.InnerText = dt.Rows[0]["Tz"].ToString();
                 EffectiveDate.InnerText = DateTime.Now.ToString("dd.MM.yyyy");
@@ -264,18 +264,19 @@ namespace ControlPanel
             //    FormError_lable.Text = "יש להזין סטטוס הצעה";
             //    return false;
             //}
-            if (SelectTurnOffer.SelectedIndex == 0)
-            {
-                ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין תור";
-                return false;
-            }
+            //if (SelectTurnOffer.SelectedIndex == 0)
+            //{
+            //    ErrorCount++;
+            //    FormError_lable.Visible = true;
+            //    FormError_lable.Text = "יש להזין תור";
+            //    return false;
+            //}
             if (ErrorCount == 0)
             {
-                SqlCommand cmdInsert = new SqlCommand(@"insert into Offer (LeadID,SourceLoanOrInsuranceID,OfferTypeID,ReasonLackSuccess,ReturnDateToCustomer,DateSentToInsuranceCompany,Note,StatusOfferID,TurnOfferID,NameOffer) output INSERTED.ID  
-                                                 values(@LeadID,@SourceLoanOrInsuranceID,@OfferTypeID,@ReasonLackSuccess,@ReturnDateToCustomer,@DateSentToInsuranceCompany,@Note,@StatusOfferID,@TurnOfferID,@NameOffer)");
+                SqlCommand cmdInsert = new SqlCommand(@"insert into Offer (LeadID,SourceLoanOrInsuranceID,OfferTypeID,ReasonLackSuccess,ReturnDateToCustomer,DateSentToInsuranceCompany,Note,StatusOfferID,NameOffer) output INSERTED.ID  
+                                                 values(@LeadID,@SourceLoanOrInsuranceID,@OfferTypeID,@ReasonLackSuccess,@ReturnDateToCustomer,@DateSentToInsuranceCompany,@Note,@StatusOfferID,@NameOffer)");
 
+                //,TurnOfferID=@TurnOfferID
                 cmdInsert.Parameters.AddWithValue("@LeadID", Request.QueryString["ContactID"]);
                 cmdInsert.Parameters.AddWithValue("@SourceLoanOrInsuranceID", SelectSourceLoanOrInsurance.Value);
                 cmdInsert.Parameters.AddWithValue("@OfferTypeID", SelectOfferType.Value);
@@ -285,7 +286,7 @@ namespace ControlPanel
                 cmdInsert.Parameters.AddWithValue("@Note", string.IsNullOrEmpty(Note.Value) ? (object)DBNull.Value : Note.Value);
                 cmdInsert.Parameters.AddWithValue("@NameOffer", string.IsNullOrEmpty(NameOffer.Value) ? (object)DBNull.Value : NameOffer.Value);
                 cmdInsert.Parameters.AddWithValue("@StatusOfferID", SelectStatusOffer.Value);
-                cmdInsert.Parameters.AddWithValue("@TurnOfferID", SelectTurnOffer.Value);
+                //cmdInsert.Parameters.AddWithValue("@TurnOfferID", SelectTurnOffer.Value);
 
                 long offerID = DbProvider.GetOneParamValueLong(cmdInsert);
                 List<FileDetail> myFile = (List<FileDetail>)Session["UploadedFiles"];

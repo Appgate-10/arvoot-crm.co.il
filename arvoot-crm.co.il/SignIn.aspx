@@ -38,19 +38,18 @@
                         <asp:Label ID="E_Password_lable" runat="server" Text="יש להזין סיסמא" CssClass="ErrorLable" Style="margin-top: 0px;" Visible="false"></asp:Label>
                         <div style="width: 84%; text-align: left; margin-top: 2%;">
                             <asp:Button ID="BusinessChat" EnableViewState="false" runat="server" Text="שחזר סיסמא" CssClass="PasswordButton" Style="cursor: pointer;" OnClick="ForgetPassword_Click" />
-
                         </div>
                         <div style="width: 84%; text-align: left;">
                             <asp:ImageButton Style="margin-top: 19%;" ID="SignInBU" Name="SignInBU" runat="server" ImageUrl="~/images/icons/Signin_Detele_Next_Button.png" OnClick="SignInBU_Click" />
                             <%--<asp:Button ID="SignInBU" Name="SignInBU" runat="server" Text="התחברות" OnClick="SignInBU_Click" class="FormInputBu" Style="width: 66.3%; margin-top: 6%;" />--%>
                         </div>
                         <div id="ForgetPasswordpopUp" class="popUpOut" style="direction: ltr; text-align: center;" visible="false" runat="server">
-                            <div class="popUpInWithImg" style="position: relative; min-width: 600px; background-position: center; margin-top: 161px; vertical-align: middle; width: 35%; height: 72%; direction: rtl;" runat="server">
-                                <img src="images/icon/Signin_Popup_BG.png" style="width: calc(100% + 40px); position: absolute; top: -20px; left: -20px; z-index: -1; height: 100%" />
+                            <div class="popUpIn" style="position: relative; min-width: 600px; background-position: center; margin-top: 161px; vertical-align: middle; width: 35%; height: 72%; direction: rtl;" runat="server">
+                                <%--<img src="images/icon/Signin_Popup_BG.png" style="width: calc(100% + 40px); position: absolute; top: -20px; left: -20px; z-index: -1; height: 100%" />--%>
 
 
 
-                                <asp:ImageButton runat="server" ImageUrl="images/Close_Page.png" CssClass="imgX" ID="ClosePopUp" OnClick="ClosePopUp_Click" />
+                                <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="imgX" ID="ClosePopUp" OnClick="ClosePopUp_Click" />
 
 
                                 <div class="content-wrapper">

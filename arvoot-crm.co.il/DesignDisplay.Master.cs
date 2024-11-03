@@ -173,7 +173,7 @@ namespace ControlPanel
         public void loadCountAlert()
         {
             //string sql = "select COUNT(*) from Tasks ";
-            string sql = "select COUNT(*) from Alerts Where AgentID = @AgentID ";
+            string sql = "select COUNT(*) from Alerts Where AgentID = @AgentID and Show = 1 ";
 
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
@@ -268,7 +268,7 @@ namespace ControlPanel
 
         protected void DeleteAlert_Command(object sender, CommandEventArgs e)
         {
-            string strDel = "delete Top (1) from Alerts where ID = @ID ";
+            string strDel = "Update Top (1) Alerts Set Show = 0 where ID = @ID ";
             SqlCommand cmdDel = new SqlCommand(strDel);
             cmdDel.Parameters.AddWithValue("@ID", e.CommandArgument);
             if (DbProvider.ExecuteCommand(cmdDel) <= 0)
@@ -277,6 +277,32 @@ namespace ControlPanel
 
             }
             TaskListOpen_Click(sender, null);
+        }
+
+        protected void CloseAlertPopUp_Click(object sender, ImageClickEventArgs e)
+        {
+            NewAlertPopUp.Visible = false;
+        }
+
+        protected void TimerAlerts_Tick(object sender, EventArgs e)
+        {
+            if (NewAlertPopUp.Visible == false)
+            {
+                SqlCommand cmdAlerts = new SqlCommand("SELECT * From Alerts WHERE AgentID = @AgentID AND Show = 1 AND DisplayDate <= getdate() AND IsRead = 0");
+                cmdAlerts.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+                DataSet ds = DbProvider.GetDataSet(cmdAlerts);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    NewAlertPopUp.Visible = true;
+                    RepeaterNewAlerts.DataSource = ds;
+                    RepeaterNewAlerts.DataBind();
+                    SqlCommand cmdUpdate = new SqlCommand("UPDATE Alerts SET IsRead = 1 WHERE AgentID = @AgentID AND Show = 1 AND DisplayDate <= getdate() AND IsRead = 0");
+                    cmdUpdate.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+                    DbProvider.ExecuteCommand(cmdUpdate);
+                }
+            }
+            
+            
         }
     }
 }

@@ -145,15 +145,48 @@ namespace ControlPanel
             SqlCommand cmd = new SqlCommand();
             SqlCommand cmdCount = new SqlCommand();
 
-
+            string sqlJoin = "", sqlWhere = "";
             string sql = @"select Am.CompanyName,S.Text SourceName,An.AgentNumber from AgentNumbers An inner join ArvootManagers Am on An.CompanyManagerId = Am.ID
                             inner join SourceLoanOrInsurance S on An.SourceID = S.ID";
-            cmd.CommandText = sql;
+
+            if (HttpContext.Current.Session["AgentLevel"] != null)
+            {
+                switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
+                {
+                    /*inner join ArvootManagers A on A.ID = An.CompanyManagerId
+							inner join ArvootManagers B on B.ParentID = A.ID
+							inner join ArvootManagers C on C.ParentID = B.ID
+							where C.ID = 6*/
+                    case 1:
+                        break;
+                    case 2:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = An.CompanyManagerId ";
+                        sqlWhere = "Where A.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 3:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = An.CompanyManagerId inner join ArvootManagers B on B.ParentID = A.ID ";
+                        sqlWhere = "Where B.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    default:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = An.CompanyManagerId inner join ArvootManagers B on B.ParentID = A.ID inner join ArvootManagers C on C.ParentID = B.ID ";
+                        sqlWhere = "Where C.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+
+                }
+            }
+
+            cmd.CommandText = sql + sqlJoin + sqlWhere;
             DataTable dtServiceRequest = DbProvider.GetDataTable(cmd);
 
             string sqlCnt = @"select count(*) from AgentNumbers An inner join ArvootManagers Am on An.CompanyManagerId = Am.ID
                             inner join SourceLoanOrInsurance S on An.SourceID = S.ID" ;
-            cmdCount.CommandText = sqlCnt ;
+            cmdCount.CommandText = sqlCnt + sqlJoin + sqlWhere;
             ItemCount = DbProvider.GetDataTable(cmdCount).Rows.Count;
 
             if (ItemCount > PageSize)

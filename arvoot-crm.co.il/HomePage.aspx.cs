@@ -87,6 +87,18 @@ namespace ControlPanel
                             NameOrAddress.Visible = true;
                             NameOrAddress.InnerText = "שם החברה";
                             Address.Attributes["placeholder"] = "שם החברה";
+                            numbersAgentTitle.Visible = true;
+                            numbersAgent.Visible = true;
+                            Div1.Style.Add("height", "100%");
+                            Div1.Style.Add("overflow-x", "scroll");
+                            SqlCommand sql = new SqlCommand("select * from SourceLoanOrInsurance where ID<4");
+                            DataTable dt = DbProvider.GetDataTable(sql);
+                            company1.InnerText = dt.Rows[0]["Text"].ToString();
+                            CompanyID1.Value = dt.Rows[0]["ID"].ToString(); 
+                            company2.InnerText = dt.Rows[1]["Text"].ToString();
+                            CompanyID2.Value = dt.Rows[1]["ID"].ToString(); 
+                            company3.InnerText = dt.Rows[2]["Text"].ToString();
+                            CompanyID3.Value = dt.Rows[2]["ID"].ToString();
                             break;
                         }
                     case "2":
@@ -264,7 +276,7 @@ namespace ControlPanel
                 //string sql = @"Insert INTO Agent (FullName,Tz,Email,Phone,ImageFile,Password,Level,Show)
                 //                     values(@Name,@Tz,@Email,@Phone,@ImageFile,@Password,@Level,1)";
 
-                string sql = @"INSERT INTO ArvootManagers(Email, Password, FullName, Type, CreateDate, Tz, Phone, ImageFile, ParentID, CompanyName, BranchName)
+                string sql = @"INSERT INTO ArvootManagers(Email, Password, FullName, Type, CreateDate, Tz, Phone, ImageFile, ParentID, CompanyName, BranchName)  output INSERTED.ID
                                     VALUES(@Email, @Password, @FullName, @Type, GETDATE(), @Tz, @Phone, @ImageFile, @ParentID, @CompanyName, @BranchName)";
 
                 SqlCommand cmd = new SqlCommand(sql);
@@ -340,8 +352,8 @@ namespace ControlPanel
                         }
                        
                 }
-
-                if (DbProvider.ExecuteCommand(cmd) > 0)
+                long CompanyMaanagerID = DbProvider.GetOneParamValueLong(cmd);
+                if (CompanyMaanagerID > 0)
                 {
                     if (Session["imgFileUpload1"] != null && ((FileUpload)Session["imgFileUpload1"]).HasFile)
                     {
@@ -354,6 +366,40 @@ namespace ControlPanel
                         }
 
 
+                    }
+                    if (HttpContext.Current.Session["AgentLevel"].ToString().Equals("1"))
+                    {
+                        string sqlAgentNumbers = "insert into AgentNumbers (SourceId, AgentNumber, CompanyManagerId) values(@SourceId, @AgentNumber, @CompanyManagerId)";
+
+                        if (!string.IsNullOrEmpty(AgentNumber1.Value))
+                        {
+                            SqlCommand cmdAgentNumbers = new SqlCommand(sqlAgentNumbers);
+                            cmdAgentNumbers.Parameters.AddWithValue("@CompanyManagerId", CompanyMaanagerID);
+                            cmdAgentNumbers.Parameters.AddWithValue("@SourceId", CompanyID1.Value);
+                            cmdAgentNumbers.Parameters.AddWithValue("@AgentNumber", AgentNumber1.Value);
+                            DbProvider.ExecuteCommand(cmdAgentNumbers);
+
+                        }
+                        if (!string.IsNullOrEmpty(AgentNumber2.Value))
+                        {
+                            SqlCommand cmdAgentNumbers = new SqlCommand(sqlAgentNumbers);
+                            cmdAgentNumbers.Parameters.AddWithValue("@CompanyManagerId", CompanyMaanagerID);
+                            cmdAgentNumbers.Parameters.AddWithValue("@SourceId", CompanyID2.Value);
+                            cmdAgentNumbers.Parameters.AddWithValue("@AgentNumber", AgentNumber2.Value);
+                            DbProvider.ExecuteCommand(cmdAgentNumbers);
+
+
+                        }
+                        if (!string.IsNullOrEmpty(AgentNumber3.Value))
+                        {
+                            SqlCommand cmdAgentNumbers = new SqlCommand(sqlAgentNumbers);
+                            cmdAgentNumbers.Parameters.AddWithValue("@CompanyManagerId", CompanyMaanagerID);
+                            cmdAgentNumbers.Parameters.AddWithValue("@SourceId", CompanyID3.Value);
+                            cmdAgentNumbers.Parameters.AddWithValue("@AgentNumber", AgentNumber3.Value);
+                            DbProvider.ExecuteCommand(cmdAgentNumbers);
+
+
+                        }
                     }
 
                     return true;

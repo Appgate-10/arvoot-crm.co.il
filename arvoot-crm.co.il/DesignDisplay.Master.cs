@@ -45,15 +45,19 @@ namespace ControlPanel
         //{
 
         //}
+
+        //changed to alerts
         protected void TaskListOpen_Click(object sender, EventArgs e)
         {
             AllTasksList.Visible = true;
-            SqlCommand cmdSelectTasks = new SqlCommand(@"select t.ID, Text,ts.Status,CONVERT(varchar,PerformDate, 104) as PerformDate, A.FullName from Tasks t 
-                                                         left join TaskStatuses ts on t.Status = ts.ID 
-                                                         left join Offer on Offer.ID = t.OfferID
-                                                         left join Lead on Lead.ID = Offer.LeadID
-                                                         left join ArvootManagers A on A.ID = Lead.AgentID");
-            DataSet ds = DbProvider.GetDataSet(cmdSelectTasks);
+            //SqlCommand cmdSelectTasks = new SqlCommand(@"select t.ID, Text,ts.Status,CONVERT(varchar,PerformDate, 104) as PerformDate, A.FullName from Tasks t 
+            //                                             left join TaskStatuses ts on t.Status = ts.ID 
+            //                                             left join Offer on Offer.ID = t.OfferID
+            //                                             left join Lead on Lead.ID = Offer.LeadID
+            //                                             left join ArvootManagers A on A.ID = Lead.AgentID");
+            SqlCommand cmdAlerts = new SqlCommand("SELECT * From Alerts WHERE AgentID = @AgentID AND Show = 1");
+            cmdAlerts.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+            DataSet ds = DbProvider.GetDataSet(cmdAlerts);
             Repeater1.DataSource = ds;
             Repeater1.DataBind();
         }  
@@ -260,6 +264,19 @@ namespace ControlPanel
                     loadActivityHistory(seldate);
                 }
             }
+        }
+
+        protected void DeleteAlert_Command(object sender, CommandEventArgs e)
+        {
+            string strDel = "delete Top (1) from Alerts where ID = @ID ";
+            SqlCommand cmdDel = new SqlCommand(strDel);
+            cmdDel.Parameters.AddWithValue("@ID", e.CommandArgument);
+            if (DbProvider.ExecuteCommand(cmdDel) <= 0)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+
+            }
+            TaskListOpen_Click(sender, null);
         }
     }
 }

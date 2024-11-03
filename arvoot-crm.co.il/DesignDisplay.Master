@@ -222,17 +222,17 @@
                 <div class="popUpIn" style="width: 35%; height: 700px; margin-top: 100px; margin-bottom: 100px; direction: rtl; text-align: center; border-width: 2px;" runat="server">  
                     <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ImageButton4" OnClick="CloseTasksListPopUp_Click" />
                     <div class="DivDownPopUp" style="width:85%;" >
-                        <label style="font-size:15pt" class="LableBlue">רשימת משימות פתוחות</label>
+                        <label style="font-size:15pt" class="LableBlue">רשימת התראות</label>
                         <div class="MainDivDocuments DivRepeaterPopUp">
                          <asp:Repeater ID="Repeater1" runat="server" >
                              <ItemTemplate>
                                  <div class="row DivRpwRepeaterPopUp">
-                                     <div style="width: 40%; text-align: right;" class="ColorLable"><%#Eval("Text") %></div>
-                                     <div style="width: 25%; text-align: right;" class="ColorLable"><%#Eval("PerformDate") %></div>
-                                     <div style="width: 15%; text-align: right;" class="ColorLable"><%#Eval("Status") %></div>
-                                     <div style="width: 15%; text-align: right;" class="ColorLable"><%#Eval("FullName") %></div>
+                                     <div style="width: 45%; text-align: right;" class="ColorLable"><%#Eval("Text") %></div>
+                                     <div style="width: 50%; text-align: right;" class="ColorLable"><%#Eval("DisplayDate") %></div>
+                                     <%--<div style="width: 15%; text-align: right;" class="ColorLable"><%#Eval("Status") %></div>
+                                     <div style="width: 15%; text-align: right;" class="ColorLable"><%#Eval("FullName") %></div>--%>
                                         <div style="width: 5%; text-align: right;" class="ColorLable">
-                                              <asp:ImageButton ID="DeleteTask" runat="server" OnClientClick="return confirm('האם אתה בטוח שברצונך למחוק את המשימה?');" CommandArgument='<%#Eval("ID") %>' OnCommand="DeleteTask_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icons/Open_Mession_Delete_Button.png" />
+                                              <asp:ImageButton ID="DeleteAlert" runat="server" OnClientClick="return confirm('האם אתה בטוח שברצונך למחוק את ההתראה?');" CommandArgument='<%#Eval("ID") %>' OnCommand="DeleteAlert_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icons/Open_Mession_Delete_Button.png" />
 
                                         </div>
                                     

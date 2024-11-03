@@ -51,7 +51,7 @@
                         </div>
                         <div class="col" style="width: 12%;">
                             <label class="LableDetails">בעלים</label>
-                            <label class="PaddingAgentCus ColorLable">Lisanee</label>
+                            <label id="lblOwner" runat="server" class="PaddingAgentCus ColorLable"></label>
                         </div>
                         <div class="col" style="width: 14%;">
                             <label class="LableDetails">טלפון</label>

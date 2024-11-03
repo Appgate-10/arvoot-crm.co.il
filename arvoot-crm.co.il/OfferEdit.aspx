@@ -38,7 +38,7 @@
                  <input placeholder="עריכת הצעה" id="NameOffer" style="font-size: 20pt;" runat="server" class="NewOfferLable"/> 
 
             </div>
-
+            <asp:HiddenField ID="CurrentStatusOfferID" runat="server"/>
             <div class="row MarginDiv">
                 <div class="col DivDetails" style="margin-inline-end: 3%;">
                     <div class="row">

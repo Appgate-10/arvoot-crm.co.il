@@ -78,6 +78,15 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputText NameOffer;
 
         /// <summary>
+        /// CurrentStatusOfferID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField CurrentStatusOfferID;
+
+        /// <summary>
         /// lblOwner control.
         /// </summary>
         /// <remarks>

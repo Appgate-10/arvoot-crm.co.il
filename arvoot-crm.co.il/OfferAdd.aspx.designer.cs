@@ -78,22 +78,13 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl FullName;
 
         /// <summary>
-        /// FullNameAgent control.
+        /// SelectOfferType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl FullNameAgent;
-
-        /// <summary>
-        /// SelectTurnOffer control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectTurnOffer;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectOfferType;
 
         /// <summary>
         /// Tz control.
@@ -103,15 +94,6 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Tz;
-
-        /// <summary>
-        /// SelectOfferType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectOfferType;
 
         /// <summary>
         /// EffectiveDate control.

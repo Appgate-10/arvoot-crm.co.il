@@ -78,15 +78,15 @@
                         </div>
                         <div class="col" style="width: 12%;">
                             <label class="LableDetails">סוכנות</label>
-                            <label class="PaddingAgentCus">Lisanee</label>
+                            <label class="PaddingAgentCus"></label>
                         </div>
                         <div class="col" style="width: 12%;">
                             <label class="LableDetails">בעלים</label>
-                            <label class="PaddingAgentCus">Lisanee</label>
+                            <label class="PaddingAgentCus"></label>
                         </div>
                         <div class="col" style="width: 14%;">
                             <label class="LableDetails">טלפון</label>
-                            <label class="PaddingAgentCus">Lisanee</label>
+                            <label class="PaddingAgentCus"></label>
                         </div>
                         <div style="width:50%"></div>
                     </div>

@@ -259,7 +259,8 @@ namespace ControlPanel
             }
 
             string sqlOffer = @"select LeadID, CONVERT(varchar,Offer.CreateDate, 104) as CreateDate, IsInOperatingQueue, OperatorID,
-                                DATEDIFF(DAY,Offer.CreateDate,getdate()) as sla, SourceLoanOrInsuranceID, OfferTypeID,TurnOfferID,
+                                 DATEDIFF(DAY,iif(Offer.OperatingQueueDate is null, Offer.CreateDate , Offer.OperatingQueueDate )  ,
+                                iif(CompletedDate is null, getdate(),CompletedDate)) as sla, SourceLoanOrInsuranceID, OfferTypeID,TurnOfferID,
                                 ReasonLackSuccess,CONVERT(varchar,Offer.ReturnDateToCustomer, 104) ReturnDateToCustomer,
                                 Note,DateSentToInsuranceCompany, StatusOfferID,NameOffer from Offer where ID = @OfferID";
             SqlCommand cmdOffer = new SqlCommand(sqlOffer);
@@ -628,8 +629,10 @@ where s.OfferID = @OfferID";
             //}
             if (ErrorCount == 0)
             {
+                
                 SqlCommand cmdInsert = new SqlCommand(@"update Offer set SourceLoanOrInsuranceID=@SourceLoanOrInsuranceID,OfferTypeID=@OfferTypeID,ReasonLackSuccess=@ReasonLackSuccess,
-                                                        ReturnDateToCustomer=@ReturnDateToCustomer,DateSentToInsuranceCompany=@DateSentToInsuranceCompany,Note=@Note,StatusOfferID=@StatusOfferID,NameOffer=@NameOffer 
+                                                        ReturnDateToCustomer=@ReturnDateToCustomer,DateSentToInsuranceCompany=@DateSentToInsuranceCompany,Note=@Note,StatusOfferID=@StatusOfferID
+                                                        ,NameOffer=@NameOffer, CompletedDate=@CompletedDate 
                                                         where ID = @OfferID");
                 //,TurnOfferID=@TurnOfferID
                 cmdInsert.Parameters.AddWithValue("@SourceLoanOrInsuranceID", SelectSourceLoanOrInsurance.Value);
@@ -641,6 +644,7 @@ where s.OfferID = @OfferID";
                 cmdInsert.Parameters.AddWithValue("@StatusOfferID", SelectStatusOffer.Value);
                 //cmdInsert.Parameters.AddWithValue("@TurnOfferID", SelectTurnOffer.Value);
                 cmdInsert.Parameters.AddWithValue("@NameOffer", NameOffer.Value);
+                cmdInsert.Parameters.AddWithValue("@CompletedDate", (SelectStatusOffer.Value == "9" && SelectStatusOffer.Value != CurrentStatusOfferID.Value)?DateTime.Now.ToString(): (object)DBNull.Value);
                 cmdInsert.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
 
                 if (DbProvider.ExecuteCommand(cmdInsert) > 0)
@@ -743,7 +747,7 @@ where s.OfferID = @OfferID";
 
         protected void btnMoveToOperatingQueqe_Click(object sender, EventArgs e)
         {
-            SqlCommand cmdMove = new SqlCommand("Update Offer SET IsInOperatingQueue = 1 WHERE ID = @offerID");
+            SqlCommand cmdMove = new SqlCommand("Update Offer SET IsInOperatingQueue = 1, OperatingQueueDate = getdate() WHERE ID = @offerID");
             cmdMove.Parameters.AddWithValue("@offerID", Request.QueryString["OfferID"]);
             if (DbProvider.ExecuteCommand(cmdMove) <= 0)
             {

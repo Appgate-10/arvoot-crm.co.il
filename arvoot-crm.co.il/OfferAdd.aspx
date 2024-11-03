@@ -47,7 +47,7 @@
                         </div>
                         <div class="col" style="width: 12%;">
                             <label class="LableDetails">סוכנות</label>
-                            <label class="PaddingAgentCus ColorLable">Lisanee</label>
+                            <label class="PaddingAgentCus ColorLable"></label>
                         </div>
                         <div class="col" style="width: 12%;">
                             <label class="LableDetails">בעלים</label>
@@ -55,13 +55,13 @@
                         </div>
                         <div class="col" style="width: 14%;">
                             <label class="LableDetails">טלפון</label>
-                            <label class="PaddingAgentCus ColorLable">Lisanee</label>
+                            <label class="PaddingAgentCus ColorLable"></label>
                         </div>
                           <div style="width:50%"></div>
                     </div>
                     <div class="DivGray " style="height: 60px; line-height: 60px; padding-right: 10%;">
                         <label class="LableDetails">נוצר על ידי:</label>
-                        <label class=" ColorLable">Lisanee</label>
+                        <label class=" ColorLable"></label>
                     </div>
                 </div>
             
@@ -88,15 +88,19 @@
                         <lable class="InputLable">מבוטח ראשי:</lable>
                         <lable class="ColorLable" id="FullName" runat="server"></lable>
                     </div>
-                    <div style="width: 20%; margin-left: 2%;" class="row">
+              <%--      <div style="width: 20%; margin-left: 2%;" class="row">
                         <label class="InputLable">בעלים:</label>
                         <lable class="ColorLable" id="FullNameAgent" runat="server"></lable>
                     </div>
                     <div style="width: 23%;" class="row">
                         <%--  <asp:CheckBox runat="server" ID="IsPromoted" />
-                        <asp:Label ID="lblIsPromoted" AssociatedControlID="IsPromoted" runat="server" CssClass="lblAns ColorLable" Text=" העבר לתור תפעול"></asp:Label>--%>
+                        <asp:Label ID="lblIsPromoted" AssociatedControlID="IsPromoted" runat="server" CssClass="lblAns ColorLable" Text=" העבר לתור תפעול"></asp:Label>
                         <label class="InputLable">תור:</label>
                         <select id="SelectTurnOffer" runat="server" class="selectGlobal"></select>
+                    </div>--%>
+                     <div style="width: 20%; margin-left: 2%;" class="row">
+                        <label class="InputLable">סוג הצעה:</label>
+                        <select runat="server" id="SelectOfferType" class="selectGlobal"></select>
                     </div>
                 </div>
                 <div class="row GrayLine" style="width: 100%;">
@@ -105,10 +109,7 @@
                         <lable class="ColorLable" id="Tz" runat="server"></lable>
 
                     </div>
-                    <div style="width: 20%; margin-left: 2%;" class="row">
-                        <label class="InputLable">סוג הצעה:</label>
-                        <select runat="server" id="SelectOfferType" class="selectGlobal"></select>
-                    </div>
+                   
                 </div>
                 <div class="row MarginRow PaddingRow" style="width: 100%;">
                     <div style="width: 31%; margin-left: 24%" class="row">

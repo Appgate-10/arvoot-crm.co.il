@@ -12,11 +12,13 @@ using System.Xml;
 using System.IO;
 using System.Web.UI.HtmlControls;
 using System.Configuration;
+using ControlPanel.HelpersFunctions;
 
 namespace ControlPanel
 {
     public partial class DesignDisplay : System.Web.UI.MasterPage
     {
+        string FileName1;
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -209,15 +211,95 @@ namespace ControlPanel
         {
 
 
-            HttpContext.Current.Session["SignIn"] = false;
-            HttpContext.Current.Session["AgentID"] = "";
-            HttpContext.Current.Session["AgentName"] = "";
-            HttpContext.Current.Session["AgentLevel"] = "";
-            System.Web.HttpContext.Current.Response.Cookies["AgentCookie"]["AgentID"] = "";
-            System.Web.HttpContext.Current.Response.Cookies["AgentCookie"]["AgentIDToken"] = "";
-            System.Web.HttpContext.Current.Response.Cookies["AgentCookie"].Expires = (DateTime.Now.AddMinutes(1));
+            //HttpContext.Current.Session["SignIn"] = false;
+            //HttpContext.Current.Session["AgentID"] = "";
+            //HttpContext.Current.Session["AgentName"] = "";
+            //HttpContext.Current.Session["AgentLevel"] = "";
+            //System.Web.HttpContext.Current.Response.Cookies["AgentCookie"]["AgentID"] = "";
+            //System.Web.HttpContext.Current.Response.Cookies["AgentCookie"]["AgentIDToken"] = "";
+            //System.Web.HttpContext.Current.Response.Cookies["AgentCookie"].Expires = (DateTime.Now.AddMinutes(1));
 
-            System.Web.HttpContext.Current.Response.Redirect("SignIn.aspx");
+            //System.Web.HttpContext.Current.Response.Redirect("SignIn.aspx");
+
+            SqlCommand cmdAgent = new SqlCommand("Select * From ArvootManagers Where ID = @AgentID");
+            cmdAgent.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+            DataTable dtAgent = DbProvider.GetDataTable(cmdAgent);
+            if (dtAgent.Rows.Count > 0)
+            {
+                SetAgentPopUp.Visible = true;
+                Name.Value = dtAgent.Rows[0]["FullName"].ToString();
+                EmailA.Value = dtAgent.Rows[0]["Email"].ToString();
+                Tz.Value = dtAgent.Rows[0]["Tz"].ToString();
+                Phone.Value = dtAgent.Rows[0]["Phone"].ToString();
+                PasswordAgent.Value = "";//dtAgent.Rows[0]["Password"].ToString();
+
+
+                switch (HttpContext.Current.Session["AgentLevel"].ToString())
+                {
+                    case "2":
+                        {
+                            Address.Visible = true;
+                            NameOrAddress.Visible = true;
+                            NameOrAddress.InnerText = "שם החברה";
+                            Address.Attributes["placeholder"] = "שם החברה";
+                            Address.Value = dtAgent.Rows[0]["CompanyName"].ToString();
+                            numbersAgentTitle.Visible = true;
+                            numbersAgent.Visible = true;
+                            Div1.Style.Add("height", "100%");
+                            Div1.Style.Add("overflow-x", "scroll");
+                            SqlCommand sql = new SqlCommand("select * from SourceLoanOrInsurance where ID<4");
+                            DataTable dt = DbProvider.GetDataTable(sql);
+                            company1.InnerText = dt.Rows[0]["Text"].ToString();
+                            CompanyID1.Value = dt.Rows[0]["ID"].ToString();
+                            company2.InnerText = dt.Rows[1]["Text"].ToString();
+                            CompanyID2.Value = dt.Rows[1]["ID"].ToString();
+                            company3.InnerText = dt.Rows[2]["Text"].ToString();
+                            CompanyID3.Value = dt.Rows[2]["ID"].ToString();
+
+                            SqlCommand cmdAgentNumbers = new SqlCommand("SELECT * FROM AgentNumbers Where CompanyManagerId = @AgentID Order By SourceId");
+                            cmdAgentNumbers.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+                            DataTable dtAgentsNumbers = DbProvider.GetDataTable(cmdAgentNumbers);
+                            if (dtAgentsNumbers.Rows.Count > 0)
+                            {
+                                try
+                                {
+                                    AgentNumber1.Value = dtAgentsNumbers.Rows[0]["AgentNumber"].ToString();
+                                    AgentNumber2.Value = dtAgentsNumbers.Rows[1]["AgentNumber"].ToString();
+                                    AgentNumber3.Value = dtAgentsNumbers.Rows[2]["AgentNumber"].ToString();
+                                }
+                                catch (Exception ex)
+                                {
+                                }
+                            }
+                            break;
+                        }
+                    case "3":
+                        {
+                            Address.Visible = true;
+                            NameOrAddress.Visible = true;
+                            NameOrAddress.InnerText = "שם הסניף";
+                            Address.Attributes["placeholder"] = "כתובת";
+                            Address.Value = dtAgent.Rows[0]["BranchName"].ToString();
+                            break;
+                        }
+                    case "4":
+                    case "5":
+                    case "6":
+                        {
+                            Address.Visible = false;
+                            NameOrAddress.Visible = false;
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+                }
+            }
+
+
+            
+
         }
 
 
@@ -306,6 +388,320 @@ namespace ControlPanel
             //}
             
             
+        }
+
+        protected void ClosePopUpAddAgent_Click(object sender, ImageClickEventArgs e)
+        {
+            SetAgentPopUp.Visible = false;
+        }
+
+        protected void SaveAgent_Click(object sender, EventArgs e)
+        {
+            bool success = funcSave(sender, e);
+            if (!success)
+            {
+                ScriptManager.RegisterStartupScript(UpdatePanelAlerts, UpdatePanelAlerts.GetType(), "showalert", "HideLoadingDiv();", true);
+            }
+            else
+            {
+                //Response.Redirect(ListPageUrl);
+                SetAgentPopUp.Visible = false;
+                ScriptManager.RegisterStartupScript(UpdatePanelAlerts, UpdatePanelAlerts.GetType(), "showalert", "HideLoadingDiv();", true);
+                loadData();
+            }
+        }
+
+        public bool funcSave(object sender, EventArgs e)
+        {
+            int ErrorCount = 0;
+
+            ImageFile_1_lable_2.Visible = false;
+            FormErrorAgent_lable.Visible = false;
+            ImageFile_1_lable.Visible = false;
+
+            if (string.IsNullOrWhiteSpace(Name.Value))
+            {
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "יש להזין שם מלא";
+                ErrorCount++;
+                return false;
+            }
+            if (Name.Value != "")
+            {
+                var fullNames = Name.Value.Split(' ');
+                if (fullNames.Length >= 2)
+                {
+                    foreach (var str in fullNames)
+                    {
+                        if (str.Length < 2)
+                        {
+                            ErrorCount++;
+                            FormErrorAgent_lable.Visible = true;
+                            FormErrorAgent_lable.Text = "יש להזין שם מלא תקין";
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    ErrorCount++;
+                    FormErrorAgent_lable.Visible = true;
+                    FormErrorAgent_lable.Text = "יש להזין שם מלא תקין";
+                    return false;
+                }
+            }
+            if (EmailA.Value == "")
+            {
+                ErrorCount++;
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "יש להזין אימייל ";
+                return false;
+            }
+            if (!EmailA.Value.Contains("@"))
+            {
+                ErrorCount++;
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "יש להזין אימייל תקין";
+                return false;
+            }
+            if (Helpers.AgentEmailExist(EmailA.Value, long.Parse(HttpContext.Current.Session["AgentID"].ToString())) == "true")
+            {
+                ErrorCount++;
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "אימייל זה כבר קיים במערכת";
+                return false;
+            }
+            if (Address.Visible == true && string.IsNullOrWhiteSpace(Address.Value))
+            {
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "יש להזין " + NameOrAddress.InnerText;
+                ErrorCount++;
+                return false;
+            }
+            if (Phone.Value == "" || Phone.Value.Length < 9)
+            {
+                ErrorCount++;
+                FormErrorAgent_lable.Text = "יש להזין מספר טלפון  ";
+                FormErrorAgent_lable.Visible = true;
+                return false;
+            }
+            if (Helpers.AgentPhoneExist(Phone.Value, long.Parse(HttpContext.Current.Session["AgentID"].ToString())) == "true")
+            {
+                ErrorCount++;
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "מספר טלפון זה כבר קיים במערכת";
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(Tz.Value))
+            {
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "יש להזין ת.ז ";
+                ErrorCount++;
+                return false;
+            }
+            if (Tz.Value.Length != 9)
+            {
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "  יש להזין ת.ז תקינה ";
+                ErrorCount++;
+                return false;
+            }
+            if (Helpers.AgentTzExist(Tz.Value, long.Parse(HttpContext.Current.Session["AgentID"].ToString())) == "true")
+            {
+                ErrorCount++;
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "ת.ז קיימת במערכת";
+                return false;
+
+            }
+            //if (PasswordAgent.Value == "")
+            //{
+            //    ErrorCount++;
+            //    FormErrorAgent_lable.Visible = true;
+            //    FormErrorAgent_lable.Text = "יש להזין סיסמא ";
+            //    return false;
+            //}
+            if (PasswordAgent.Value != "" && PasswordAgent.Value.Length < 6)
+            {
+                ErrorCount++;
+                FormErrorAgent_lable.Visible = true;
+                FormErrorAgent_lable.Text = "יש להזין סיסמא תקינה ";
+                return false;
+            }
+
+            if (ErrorCount == 0)
+            {
+
+                string sql = @"UPDATE ArvootManagers SET Email = @Email, FullName = @FullName, Tz = @Tz, 
+                            Phone = @Phone, ImageFile = @ImageFile, CompanyName = @CompanyName, BranchName = @BranchName ";
+                if (PasswordAgent.Value != "")
+                {
+                    sql += ", Password = @Password ";
+                }
+                sql += " WHERE ID = @AgentID ";
+
+                SqlCommand cmd = new SqlCommand(sql);
+
+                cmd.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+                cmd.Parameters.AddWithValue("@Email", EmailA.Value);
+                cmd.Parameters.AddWithValue("@Password", Md5.GetMd5Hash(Md5.CreateMd5Hash(), "Pass755" + PasswordAgent.Value));
+                cmd.Parameters.AddWithValue("@FullName", Name.Value);
+                cmd.Parameters.AddWithValue("@Tz", Tz.Value);
+                cmd.Parameters.AddWithValue("@Phone", Phone.Value);
+
+                try
+                {
+                    FileUpload fileU = (FileUpload)Session["imgFileUpload1"];
+                    string ext = System.IO.Path.GetExtension(fileU.FileName).ToLower();
+                    FileName1 = Md5.GetMd5Hash(Md5.CreateMd5Hash(), "1" + Helpers.CreateFileName(fileU.FileName)) + ext;
+                    cmd.Parameters.AddWithValue("@ImageFile", FileName1);
+                }
+                catch (Exception) { cmd.Parameters.AddWithValue("@ImageFile", ""); }
+
+
+                switch (HttpContext.Current.Session["AgentLevel"].ToString())
+                {
+                    case "2":
+                        {
+                            cmd.Parameters.AddWithValue("@CompanyName", Address.Value);
+                            cmd.Parameters.AddWithValue("@BranchName", DBNull.Value);
+
+                            break;
+                        }
+                    case "3":
+                        {
+                            cmd.Parameters.AddWithValue("@CompanyName", DBNull.Value);
+                            cmd.Parameters.AddWithValue("@BranchName", Address.Value);
+                            break;
+                        }
+                    case "4":
+                    case "5":
+                    case "6":
+                        {
+                            cmd.Parameters.AddWithValue("@CompanyName", DBNull.Value);
+                            cmd.Parameters.AddWithValue("@BranchName", DBNull.Value);
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+
+                }
+                if (DbProvider.ExecuteCommand(cmd) > 0)
+                {
+                    if (Session["imgFileUpload1"] != null && ((FileUpload)Session["imgFileUpload1"]).HasFile)
+                    {
+                        //todo -לשמור בתקיה בשרת
+                        string FilePath = String.Format("{0}/Agent/", ConfigurationManager.AppSettings["MapPath1"]);
+                        try { ((FileUpload)Session["imgFileUpload1"]).PostedFile.SaveAs(Path.Combine(FilePath, FileName1)); }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+
+                    }
+                    if (HttpContext.Current.Session["AgentLevel"].ToString().Equals("2"))
+                    {
+                        string sqlAgentNumbers = "Update AgentNumbers Set AgentNumber = @AgentNumber Where CompanyManagerId = @CompanyManagerId And SourceId = @SourceId";
+
+                        if (!string.IsNullOrEmpty(AgentNumber1.Value))
+                        {
+                            SqlCommand cmdAgentNumbers = new SqlCommand(sqlAgentNumbers);
+                            cmdAgentNumbers.Parameters.AddWithValue("@CompanyManagerId", HttpContext.Current.Session["AgentID"]);
+                            cmdAgentNumbers.Parameters.AddWithValue("@SourceId", CompanyID1.Value);
+                            cmdAgentNumbers.Parameters.AddWithValue("@AgentNumber", AgentNumber1.Value);
+                            DbProvider.ExecuteCommand(cmdAgentNumbers);
+
+                        }
+                        if (!string.IsNullOrEmpty(AgentNumber2.Value))
+                        {
+                            SqlCommand cmdAgentNumbers = new SqlCommand(sqlAgentNumbers);
+                            cmdAgentNumbers.Parameters.AddWithValue("@CompanyManagerId", HttpContext.Current.Session["AgentID"]);
+                            cmdAgentNumbers.Parameters.AddWithValue("@SourceId", CompanyID2.Value);
+                            cmdAgentNumbers.Parameters.AddWithValue("@AgentNumber", AgentNumber2.Value);
+                            DbProvider.ExecuteCommand(cmdAgentNumbers);
+
+
+                        }
+                        if (!string.IsNullOrEmpty(AgentNumber3.Value))
+                        {
+                            SqlCommand cmdAgentNumbers = new SqlCommand(sqlAgentNumbers);
+                            cmdAgentNumbers.Parameters.AddWithValue("@CompanyManagerId", HttpContext.Current.Session["AgentID"]);
+                            cmdAgentNumbers.Parameters.AddWithValue("@SourceId", CompanyID3.Value);
+                            cmdAgentNumbers.Parameters.AddWithValue("@AgentNumber", AgentNumber3.Value);
+                            DbProvider.ExecuteCommand(cmdAgentNumbers);
+
+
+                        }
+                    }
+
+                    return true;
+                }
+                else
+                {
+                    FormErrorAgent_lable.Text = "* התרחשה שגיאה";
+                    FormErrorAgent_lable.Visible = true;
+                }
+
+            }
+
+
+            return false;
+        }
+
+        protected void LogOutBtn_Click(object sender, EventArgs e)
+        {
+            HttpContext.Current.Session["SignIn"] = false;
+            HttpContext.Current.Session["AgentID"] = "";
+            HttpContext.Current.Session["AgentName"] = "";
+            HttpContext.Current.Session["AgentLevel"] = "";
+            System.Web.HttpContext.Current.Response.Cookies["AgentCookie"]["AgentID"] = "";
+            System.Web.HttpContext.Current.Response.Cookies["AgentCookie"]["AgentIDToken"] = "";
+            System.Web.HttpContext.Current.Response.Cookies["AgentCookie"].Expires = (DateTime.Now.AddMinutes(1));
+
+            System.Web.HttpContext.Current.Response.Redirect("SignIn.aspx");
+        }
+
+        protected void ImageFile_1_btnUpload_Click(object sender, EventArgs e)
+        {
+            int maxFileSize = 262144;
+            ImageFile_1_lable.Visible = false;
+            ImageFile_1_lable_2.Visible = false;
+            if (ImageFile_1_FileUpload.HasFile && ImageFile_1_FileUpload.PostedFile.ContentLength < maxFileSize)
+            {
+                try
+                {
+                    string ext = System.IO.Path.GetExtension(ImageFile_1_FileUpload.FileName).ToLower();
+                    if (ext == ".jpg" || ext == ".jpeg" || ext == ".gif" || ext == ".png")
+                    {
+                        System.IO.Stream fs = ImageFile_1_FileUpload.PostedFile.InputStream;
+                        System.IO.BinaryReader br = new System.IO.BinaryReader(fs);
+                        Byte[] bytes = br.ReadBytes((Int32)fs.Length);
+                        string base64String = Convert.ToBase64String(bytes, 0, bytes.Length);
+                        ImageFile_1_display.Src = "data:image/png;base64," + base64String;
+                        Session["imgFileUpload1"] = ImageFile_1_FileUpload;
+                    }
+                    else
+                    {
+                        ImageFile_1_lable_2.Text = "* הסיומת לא תקינה";
+                        ImageFile_1_lable_2.Visible = true;
+                    }
+                }
+                catch
+                {
+                    ImageFile_1_lable_2.Text = "* בבקשה נסה שוב";
+                    ImageFile_1_lable_2.Visible = true;
+                }
+            }
+            else
+            {
+                ImageFile_1_lable_2.Text = "* התמונה גדולה מ250קב,בבקשה הכנס תמונה חדשה";
+
+                ImageFile_1_lable_2.Visible = true;
+            }
         }
     }
 }

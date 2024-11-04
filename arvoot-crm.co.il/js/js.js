@@ -28,6 +28,7 @@
 
 
 function HideLoadingDiv() {
+    console.log('HideLoadingDiv called');
     reloadOff(LoadingDiv);
 }
 
@@ -101,7 +102,7 @@ function reload2(c, c2){
 function reloadOn(c){
 		c.style.display="";
 }
-function reloadOff(c){
+function reloadOff(c) {
 		c.style.display="none";
 }
 

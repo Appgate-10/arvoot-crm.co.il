@@ -45,18 +45,16 @@
                             <%--<asp:Button ID="SignInBU" Name="SignInBU" runat="server" Text="התחברות" OnClick="SignInBU_Click" class="FormInputBu" Style="width: 66.3%; margin-top: 6%;" />--%>
                         </div>
                         <div id="ForgetPasswordpopUp" class="popUpOut" style="direction: ltr; text-align: center;" visible="false" runat="server">
-                            <div class="popUpInWithImg" style="position: relative; min-width: 600px; background-position: center; margin-top: 161px; vertical-align: middle; width: 35%; height: 72%; direction: rtl;" runat="server">
-                                <img src="images/icon/Signin_Popup_BG.png" style="width: calc(100% + 40px); position: absolute; top: -20px; left: -20px; z-index: -1; height: 100%" />
+                            <div class="popUpIn" style="position: relative; min-width: 600px; background-position: center; margin-top: 161px; vertical-align: middle; width: 30%; height: 46%; direction: rtl;" runat="server">
 
 
 
-                                <asp:ImageButton runat="server" ImageUrl="images/Close_Page.png" CssClass="imgX" ID="ClosePopUp" OnClick="ClosePopUp_Click" />
-
+                                <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" style="margin-top: 15px; float: left; margin-left: 15px;" CssClass="imgX" ID="ClosePopUp" OnClick="ClosePopUp_Click" />
 
                                 <div class="content-wrapper">
 
                                     <div class="form-header form-header-password">הכנס אימייל על מנת לקבל סיסמא</div>
-                                    <input type="text" id="UserEmailPopUp" runat="server" class="InputPopupPay InputPopupPassword" value="User Email" onblur="javascript:if(this.value==''){this.value='אימייל'};" onfocus="javascript:if(this.value=='User Email'){this.value='';}" />
+                                    <input type="text" id="UserEmailPopUp" runat="server" style="height:50px; width:50%;margin-bottom:7%" class="SignInBoxInput" placeholder="אימייל" />
 
                                     <asp:Label ID="UserEmail_lable" runat="server" Text="" CssClass="ErrorLable" Style="display: block; text-align: center" Visible="true"></asp:Label>
                                     <asp:Button ID="BtnOkForgetPassword" OnClick="BtnOkForgetPassword_Click" runat="server" Text="אישור" class="BtnPopUpPay" />

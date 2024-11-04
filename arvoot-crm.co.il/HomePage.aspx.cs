@@ -510,25 +510,83 @@ namespace ControlPanel
         }
         private void loadGraf()
         {
-            string select = @"SELECT CAST(
-                                    (SELECT COUNT(*) FROM Lead WHERE IsContact = 1 AND StatusContact = 2) * 100.0
-                                    /
-                                    (SELECT COUNT(*) FROM Lead WHERE IsContact = 1)
-                                    AS INT
-                                ) AS Percentage1,
-                                CAST(
-                                    (SELECT COUNT(*) FROM Lead WHERE IsContact = 1 AND StatusContact = 3) *100.0
-                                    /
-                                    (SELECT COUNT(*) FROM Lead WHERE IsContact = 1)
-                                    AS INT
-                                ) AS Percentage2,
-                                
-                                CAST(
-                                    (SELECT COUNT(*) FROM Lead WHERE IsContact = 1 AND StatusContact = 5) *100.0
-                                    /
-                                    (SELECT COUNT(*) FROM Lead WHERE IsContact = 1)
-                                    AS INT
-                                ) AS Percentage4";
+            string select = @"select
+								sum(case when StatusOfferID = 2 THEN 1 ELSE 0 END) * 100 / count(*) as Percentage1,
+								sum(case when StatusOfferID = 3 THEN 1 ELSE 0 END) * 100 / count(*) as Percentage2,
+								sum(case when StatusOfferID = 9 THEN 1 ELSE 0 END) * 100 / count(*) as Percentage4
+								FROM Offer
+								left join Lead on Lead.ID = Offer.LeadID ";
+
+
+            SqlCommand cmd = new SqlCommand();
+            SqlCommand cmdPayments = new SqlCommand();
+            string sqlWhere = "", sqlJoin = "";
+            if (HttpContext.Current.Session["AgentLevel"] != null)
+            {
+                switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
+                {
+
+                    case 1:
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 ";
+                        break;
+                    case 2:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlWhere = " Where C.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdPayments.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 3:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID  ";
+                        sqlWhere = " Where B.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdPayments.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 6:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 ";
+                        sqlWhere = " Where A.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdPayments.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 4:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ParentID = A.ParentID  ";
+                        sqlWhere = " Where B.ID = @ID and IsInOperatingQueue = 1";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdPayments.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 5:
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID ";
+                        sqlWhere = " Where OperatorID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdPayments.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+
+                        break;
+                    default:
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6";
+                        break;
+
+                }
+            }
+
+            //change details from offers, not leads
+            //string select = @"SELECT CAST(
+            //                        (SELECT COUNT(*) FROM Lead WHERE IsContact = 1 AND StatusContact = 2) * 100.0
+            //                        /
+            //                        (SELECT COUNT(*) FROM Lead WHERE IsContact = 1)
+            //                        AS INT
+            //                    ) AS Percentage1,
+            //                    CAST(
+            //                        (SELECT COUNT(*) FROM Lead WHERE IsContact = 1 AND StatusContact = 3) *100.0
+            //                        /
+            //                        (SELECT COUNT(*) FROM Lead WHERE IsContact = 1)
+            //                        AS INT
+            //                    ) AS Percentage2,
+
+            //                    CAST(
+            //                        (SELECT COUNT(*) FROM Lead WHERE IsContact = 1 AND StatusContact = 5) *100.0
+            //                        /
+            //                        (SELECT COUNT(*) FROM Lead WHERE IsContact = 1)
+            //                        AS INT
+            //                    ) AS Percentage4";
 
             /* סטטוס "בוטל" כרגע לא להציג
              * CAST(
@@ -548,7 +606,9 @@ namespace ControlPanel
 								+ Sum(CASE WHEN IsApprovedCreditOrDenial = 1 THEN SumCreditOrDenial ELSE 0 END) 
 								from ServiceRequest  ) as balance1*/
 
-            SqlCommand cmd = new SqlCommand(select);
+
+            //SqlCommand cmd = new SqlCommand(select);
+            cmd.CommandText = select + sqlJoin + sqlWhere;
             DataTable dt = DbProvider.GetDataTable(cmd);
 
             string sqlPayments = @"WITH ApprovedPayments AS (
@@ -561,18 +621,21 @@ SELECT SUM(sr.[Sum])
     + SUM(CASE WHEN sr.IsApprovedCreditOrDenial = 1 THEN sr.SumCreditOrDenial ELSE 0 END) AS balanceToPay,
 	COALESCE(SUM(ap.TotalPayment), 0) - SUM(CASE WHEN sr.IsApprovedCreditOrDenial = 1 THEN sr.SumCreditOrDenial ELSE 0 END) as paid
 FROM  ServiceRequest sr
-LEFT JOIN ApprovedPayments ap ON sr.ID = ap.ServiceRequestID";
-            SqlCommand cmdPayments = new SqlCommand(sqlPayments);
+LEFT JOIN ApprovedPayments ap ON sr.ID = ap.ServiceRequestID
+inner join Offer On sr.OfferID = Offer.ID
+left join Lead on Lead.ID = Offer.LeadID ";
+            cmdPayments.CommandText = sqlPayments + sqlJoin + sqlWhere;
             DataTable dtPayments = DbProvider.GetDataTable(cmdPayments);
 
 
             Pageinit.CheckManagerPermissions();
-            int percentage = int.Parse(dt.Rows[0]["Percentage1"].ToString());
-            int percentage1 = int.Parse(dt.Rows[0]["Percentage2"].ToString());
+
+            int percentage = !string.IsNullOrWhiteSpace(dt.Rows[0]["Percentage1"].ToString()) ? int.Parse(dt.Rows[0]["Percentage1"].ToString()) : 0;
+            int percentage1 = !string.IsNullOrWhiteSpace(dt.Rows[0]["Percentage2"].ToString()) ? int.Parse(dt.Rows[0]["Percentage2"].ToString()) : 0;
             //int percentage2 = int.Parse(dt.Rows[0]["Percentage3"].ToString());
-            int percentage3 = int.Parse(dt.Rows[0]["Percentage4"].ToString());
-            double paidServices = double.Parse(dtPayments.Rows[0]["paid"].ToString());
-            Double serviceBalance = double.Parse(dtPayments.Rows[0]["balanceToPay"].ToString());
+            int percentage3 = !string.IsNullOrWhiteSpace(dt.Rows[0]["Percentage4"].ToString()) ? int.Parse(dt.Rows[0]["Percentage4"].ToString()) : 0;
+            double paidServices = !string.IsNullOrWhiteSpace(dtPayments.Rows[0]["paid"].ToString()) ? double.Parse(dtPayments.Rows[0]["paid"].ToString()) : 0;
+            double serviceBalance = !string.IsNullOrWhiteSpace(dtPayments.Rows[0]["balanceToPay"].ToString()) ? double.Parse(dtPayments.Rows[0]["balanceToPay"].ToString()) : 0;
 
             PercentageText.Text = percentage + "%";
             PercentageText1.Text = percentage1 + "%";
@@ -581,8 +644,8 @@ LEFT JOIN ApprovedPayments ap ON sr.ID = ap.ServiceRequestID";
 
             if (dtPayments.Rows.Count > 0)
             {
-                PercentageText4.Text = paidServices.ToString() + "₪";
-                PercentageText5.Text = serviceBalance.ToString() + "₪";
+                PercentageText4.Text = paidServices.ToString("N0") + "₪";
+                PercentageText5.Text = serviceBalance.ToString("N0") + "₪";
             }
 
 
@@ -593,6 +656,11 @@ LEFT JOIN ApprovedPayments ap ON sr.ID = ap.ServiceRequestID";
             double offset3 = circumference - (percentage3 / 100.0 * circumference);
             double offset4 = circumference - (paidServices / (paidServices + serviceBalance) * circumference);
             double offset5 = circumference - (serviceBalance / (paidServices + serviceBalance) * circumference);
+            if (paidServices + serviceBalance == 0)
+            {
+                offset4 = circumference;
+                offset5 = circumference;
+            }
 
             ClientScript.RegisterStartupScript(this.GetType(), "SetProgress",
                 $"document.getElementById('progressPath1').style.strokeDasharray = '{circumference} {circumference}';" +

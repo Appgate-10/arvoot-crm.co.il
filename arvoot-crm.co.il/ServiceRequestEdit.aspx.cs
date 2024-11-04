@@ -64,135 +64,138 @@ namespace ControlPanel
       
         public void loadData()
         {
-
-            string sql = @"select s.*, o.NameOffer from ServiceRequest s  left join Offer o on o.ID = s.OfferID where s.ID = @ID  ";
-
-            SqlCommand cmd = new SqlCommand(sql);
-            cmd.Parameters.AddWithValue("@ID", Request.QueryString["ServiceRequestID"]);
-            DataTable ds = DbProvider.GetDataTable(cmd);
-            if(ds.Rows.Count > 0)
+            if (Request.QueryString["ServiceRequestID"] != null)
             {
-                OfferID.Value = ds.Rows[0]["OfferID"].ToString();
-                Invoice.Value = ds.Rows[0]["Invoice"].ToString();
-                AllSum.Value = ds.Rows[0]["Sum"].ToString();
-                //Balance.value = ds.Rows[0]["Balance"].ToString();
-                SelectPurpose.Value = ds.Rows[0]["PurposeID"].ToString();
-                Note.Value = ds.Rows[0]["Note"].ToString();
-                OfferName.Value = ds.Rows[0]["NameOffer"].ToString();
+                string sql = @"select s.*, o.NameOffer from ServiceRequest s  left join Offer o on o.ID = s.OfferID where s.ID = @ID  ";
 
-                //Sum1.Value = ds.Rows[0]["SumPayment1"].ToString();
-                //if (!string.IsNullOrEmpty(ds.Rows[0]["DatePayment1"].ToString()))
-                //{
-                //    DateTime Date1 = Convert.ToDateTime(ds.Rows[0]["DatePayment1"]);
-                //    DatePayment1.Value = (Date1).ToString("yyyy-MM-dd");
-                //}
-                //Num1.Value = ds.Rows[0]["NumPayment1"].ToString();
-                //ReferencePayment1.Value = ds.Rows[0]["ReferencePayment1"].ToString();
-                //IsApprove1.Checked = ds.Rows[0]["IsApprovedPayment1"].ToString().Equals("1");
-
-                //Sum2.Value = ds.Rows[0]["SumPayment2"].ToString();
-                //if (!string.IsNullOrEmpty(ds.Rows[0]["DatePayment2"].ToString()))
-                //{
-                //    DateTime Date2 = Convert.ToDateTime(ds.Rows[0]["DatePayment2"]);
-                //    DatePayment2.Value = (Date2).ToString("yyyy-MM-dd");
-                //}
-                //Num2.Value = ds.Rows[0]["NumPayment2"].ToString();
-                //ReferencePayment2.Value = ds.Rows[0]["ReferencePayment2"].ToString();
-                //IsApprove2.Checked = ds.Rows[0]["IsApprovedPayment2"].ToString().Equals("1");  
-
-                //Sum3.Value = ds.Rows[0]["SumPayment3"].ToString();
-                //if (!string.IsNullOrEmpty(ds.Rows[0]["DatePayment3"].ToString()))
-                //{
-                //    DateTime Date3 = Convert.ToDateTime(ds.Rows[0]["DatePayment3"]);
-                //    DatePayment3.Value = (Date3).ToString("yyyy-MM-dd");
-                //}
-                //Num3.Value = ds.Rows[0]["NumPayment3"].ToString();
-                //ReferencePayment3.Value = ds.Rows[0]["ReferencePayment3"].ToString();
-                //IsApprove3.Checked = ds.Rows[0]["IsApprovedPayment3"].ToString().Equals("1");
-
-                Sum4.Value = ds.Rows[0]["SumCreditOrDenial"].ToString();
-                if (!string.IsNullOrEmpty(ds.Rows[0]["DateCreditOrDenial"].ToString()))
+                SqlCommand cmd = new SqlCommand(sql);
+                cmd.Parameters.AddWithValue("@ID", Request.QueryString["ServiceRequestID"]);
+                DataTable ds = DbProvider.GetDataTable(cmd);
+                if (ds.Rows.Count > 0)
                 {
-                    DateTime Date4 = Convert.ToDateTime(ds.Rows[0]["DateCreditOrDenial"]);
-                    DateCreditOrDenial.Value = (Date4).ToString("yyyy-MM-dd");
-                }
-                Num4.Value = ds.Rows[0]["NumCreditOrDenial"].ToString();
-                ReferenceCreditOrDenial.Value = ds.Rows[0]["ReferenceCreditOrDenial"].ToString(); 
-                NoteCreditOrDenial.Value = ds.Rows[0]["NoteCreditOrDenial"].ToString();
-                IsApprove4.Checked = ds.Rows[0]["IsApprovedCreditOrDenial"].ToString().Equals("1");
-                SelectMethodsPayment.Value= ds.Rows[0]["PaymentMethodID"].ToString();
-                BankName.Value = ds.Rows[0]["BankName"].ToString(); 
-                Branch.Value = ds.Rows[0]["Branch"].ToString(); 
-                AccountNumber.Value = ds.Rows[0]["AccountNumber"].ToString();    
-                CreditNumber.Value = ds.Rows[0]["CreditNumber"].ToString();
-                string[] validity = ds.Rows[0]["CreditValidity"].ToString().Split('/');
-                //CreditValidity.Value = ds.Rows[0]["CreditValidity"].ToString(); 
-                if (validity.Length ==2 && !string.IsNullOrEmpty(validity[0]) && !string.IsNullOrEmpty(validity[1]))
-                {
-                    SelectMonth.Value = validity[0];
-                    SelectYear.Value = validity[1];
-                }
-                CardholdersID.Value = ds.Rows[0]["CardholdersID"].ToString();
+                    OfferID.Value = ds.Rows[0]["OfferID"].ToString();
+                    Invoice.Value = ds.Rows[0]["Invoice"].ToString();
+                    AllSum.Value = ds.Rows[0]["Sum"].ToString();
+                    //Balance.value = ds.Rows[0]["Balance"].ToString();
+                    SelectPurpose.Value = ds.Rows[0]["PurposeID"].ToString();
+                    Note.Value = ds.Rows[0]["Note"].ToString();
+                    OfferName.Value = ds.Rows[0]["NameOffer"].ToString();
 
-                SqlCommand cmdPayments = new SqlCommand("SELECT * FROM ServiceRequestPayment WHERE ServiceRequestID = @serviceReqID");
-                cmdPayments.Parameters.AddWithValue("@serviceReqID", Request.QueryString["ServiceRequestID"]);
-                DataTable dtPayments = DbProvider.GetDataTable(cmdPayments);
+                    //Sum1.Value = ds.Rows[0]["SumPayment1"].ToString();
+                    //if (!string.IsNullOrEmpty(ds.Rows[0]["DatePayment1"].ToString()))
+                    //{
+                    //    DateTime Date1 = Convert.ToDateTime(ds.Rows[0]["DatePayment1"]);
+                    //    DatePayment1.Value = (Date1).ToString("yyyy-MM-dd");
+                    //}
+                    //Num1.Value = ds.Rows[0]["NumPayment1"].ToString();
+                    //ReferencePayment1.Value = ds.Rows[0]["ReferencePayment1"].ToString();
+                    //IsApprove1.Checked = ds.Rows[0]["IsApprovedPayment1"].ToString().Equals("1");
 
-                double SumPaid = 0;
-            List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
+                    //Sum2.Value = ds.Rows[0]["SumPayment2"].ToString();
+                    //if (!string.IsNullOrEmpty(ds.Rows[0]["DatePayment2"].ToString()))
+                    //{
+                    //    DateTime Date2 = Convert.ToDateTime(ds.Rows[0]["DatePayment2"]);
+                    //    DatePayment2.Value = (Date2).ToString("yyyy-MM-dd");
+                    //}
+                    //Num2.Value = ds.Rows[0]["NumPayment2"].ToString();
+                    //ReferencePayment2.Value = ds.Rows[0]["ReferencePayment2"].ToString();
+                    //IsApprove2.Checked = ds.Rows[0]["IsApprovedPayment2"].ToString().Equals("1");  
 
-                foreach (DataRow row in dtPayments.Rows)
-                {
-                    DateTime DateP = Convert.ToDateTime(row["DatePayment"]);
-                    serviceRequestPayment payment = new serviceRequestPayment
+                    //Sum3.Value = ds.Rows[0]["SumPayment3"].ToString();
+                    //if (!string.IsNullOrEmpty(ds.Rows[0]["DatePayment3"].ToString()))
+                    //{
+                    //    DateTime Date3 = Convert.ToDateTime(ds.Rows[0]["DatePayment3"]);
+                    //    DatePayment3.Value = (Date3).ToString("yyyy-MM-dd");
+                    //}
+                    //Num3.Value = ds.Rows[0]["NumPayment3"].ToString();
+                    //ReferencePayment3.Value = ds.Rows[0]["ReferencePayment3"].ToString();
+                    //IsApprove3.Checked = ds.Rows[0]["IsApprovedPayment3"].ToString().Equals("1");
+
+                    Sum4.Value = ds.Rows[0]["SumCreditOrDenial"].ToString();
+                    if (!string.IsNullOrEmpty(ds.Rows[0]["DateCreditOrDenial"].ToString()))
                     {
-                        ID = int.Parse(row["ID"].ToString()),
-                        ServiceRequestID = int.Parse(row["ServiceRequestID"].ToString()),
-                        DatePayment = DateP.ToString("yyyy-MM-dd"),
-                        NumPayment = int.Parse(row["NumPayment"].ToString()),
-                        SumPayment = double.Parse(row["SumPayment"].ToString()),
-                        ReferencePayment = row["ReferencePayment"].ToString(),
-                        IsApprovedPayment = row["IsApprovedPayment"].ToString() == "0" ? false : true
-                    };
-                    if (payment.IsApprovedPayment == true)
-                    {
-                        SumPaid += payment.SumPayment;
+                        DateTime Date4 = Convert.ToDateTime(ds.Rows[0]["DateCreditOrDenial"]);
+                        DateCreditOrDenial.Value = (Date4).ToString("yyyy-MM-dd");
                     }
-                    payments.Add(payment);
-                }
-
-                AllSum.Value = ds.Rows[0]["Sum"].ToString();
-
-                double AllSumVal;
-                if (!string.IsNullOrWhiteSpace(AllSum.Value) && double.TryParse(AllSum.Value, out AllSumVal) == true)
-                {
-                    double balanceToPay = AllSumVal - SumPaid;
-                    double sum4Val;
-                    if (IsApprove4.Checked == true && double.TryParse(Sum4.Value, out sum4Val) == true)
+                    Num4.Value = ds.Rows[0]["NumCreditOrDenial"].ToString();
+                    ReferenceCreditOrDenial.Value = ds.Rows[0]["ReferenceCreditOrDenial"].ToString();
+                    NoteCreditOrDenial.Value = ds.Rows[0]["NoteCreditOrDenial"].ToString();
+                    IsApprove4.Checked = ds.Rows[0]["IsApprovedCreditOrDenial"].ToString().Equals("1");
+                    SelectMethodsPayment.Value = ds.Rows[0]["PaymentMethodID"].ToString();
+                    BankName.Value = ds.Rows[0]["BankName"].ToString();
+                    Branch.Value = ds.Rows[0]["Branch"].ToString();
+                    AccountNumber.Value = ds.Rows[0]["AccountNumber"].ToString();
+                    CreditNumber.Value = ds.Rows[0]["CreditNumber"].ToString();
+                    string[] validity = ds.Rows[0]["CreditValidity"].ToString().Split('/');
+                    //CreditValidity.Value = ds.Rows[0]["CreditValidity"].ToString(); 
+                    if (validity.Length == 2 && !string.IsNullOrEmpty(validity[0]) && !string.IsNullOrEmpty(validity[1]))
                     {
-                        balanceToPay += sum4Val;
+                        SelectMonth.Value = validity[0];
+                        SelectYear.Value = validity[1];
                     }
-                    Balance.InnerText = balanceToPay.ToString();
-                }
+                    CardholdersID.Value = ds.Rows[0]["CardholdersID"].ToString();
 
-                if (payments.Count == 0)
-                {
-                    serviceRequestPayment payment2 = new serviceRequestPayment
+                    SqlCommand cmdPayments = new SqlCommand("SELECT * FROM ServiceRequestPayment WHERE ServiceRequestID = @serviceReqID");
+                    cmdPayments.Parameters.AddWithValue("@serviceReqID", Request.QueryString["ServiceRequestID"]);
+                    DataTable dtPayments = DbProvider.GetDataTable(cmdPayments);
+
+                    double SumPaid = 0;
+                    List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
+
+                    foreach (DataRow row in dtPayments.Rows)
                     {
-                        ID = 0,
-                        ServiceRequestID = int.Parse(Request.QueryString["ServiceRequestID"].ToString()),
-                        DatePayment = "",
-                        NumPayment = 0,
-                        SumPayment = 0,
-                        ReferencePayment = "",
-                        IsApprovedPayment = false
-                    };
-                    payments.Add(payment2);
+                        DateTime DateP = Convert.ToDateTime(row["DatePayment"]);
+                        serviceRequestPayment payment = new serviceRequestPayment
+                        {
+                            ID = int.Parse(row["ID"].ToString()),
+                            ServiceRequestID = int.Parse(row["ServiceRequestID"].ToString()),
+                            DatePayment = DateP.ToString("yyyy-MM-dd"),
+                            NumPayment = int.Parse(row["NumPayment"].ToString()),
+                            SumPayment = double.Parse(row["SumPayment"].ToString()),
+                            ReferencePayment = row["ReferencePayment"].ToString(),
+                            IsApprovedPayment = row["IsApprovedPayment"].ToString() == "0" ? false : true
+                        };
+                        if (payment.IsApprovedPayment == true)
+                        {
+                            SumPaid += payment.SumPayment;
+                        }
+                        payments.Add(payment);
+                    }
+
+                    AllSum.Value = ds.Rows[0]["Sum"].ToString();
+
+                    double AllSumVal;
+                    if (!string.IsNullOrWhiteSpace(AllSum.Value) && double.TryParse(AllSum.Value, out AllSumVal) == true)
+                    {
+                        double balanceToPay = AllSumVal - SumPaid;
+                        double sum4Val;
+                        if (IsApprove4.Checked == true && double.TryParse(Sum4.Value, out sum4Val) == true)
+                        {
+                            balanceToPay += sum4Val;
+                        }
+                        Balance.InnerText = balanceToPay.ToString();
+                    }
+
+                    if (payments.Count == 0)
+                    {
+                        serviceRequestPayment payment2 = new serviceRequestPayment
+                        {
+                            ID = 0,
+                            ServiceRequestID = int.Parse(Request.QueryString["ServiceRequestID"].ToString()),
+                            DatePayment = "",
+                            NumPayment = 0,
+                            SumPayment = 0,
+                            ReferencePayment = "",
+                            IsApprovedPayment = false
+                        };
+                        payments.Add(payment2);
+                    }
+                    Session["payments"] = payments;
+                    RepeaterPayments.DataSource = payments;
+                    RepeaterPayments.DataBind();
                 }
-                Session["payments"] = payments;
-                RepeaterPayments.DataSource = payments;
-                RepeaterPayments.DataBind();
             }
+            
         }
         protected void RadioButttonMethodsPayment_SelectedIndexChanged(object sender, EventArgs e)
         {

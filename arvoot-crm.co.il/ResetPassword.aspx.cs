@@ -82,7 +82,7 @@ namespace ControlPanel
                 //cmdUpdate.Parameters.AddWithValue("@userPassword", userPasswordHash);
 
 
-                cmdUpdate.Parameters.AddWithValue("@userPassword", userPassword);
+                cmdUpdate.Parameters.AddWithValue("@userPassword", Md5.GetMd5Hash(Md5.CreateMd5Hash(), "Pass755" + userPassword) );
                 if (DbProvider.ExecuteCommand(cmdUpdate) > 0)
                 {
                     return true;

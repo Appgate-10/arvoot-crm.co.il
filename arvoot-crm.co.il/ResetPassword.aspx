@@ -31,9 +31,11 @@
     <div class="MainContentDiv" style="display: block;text-align: -webkit-center;">
 
          <div style="width: 100%; height: 1%; background-color: #027aff; position: relative; text-align: center; "></div>
-        <div style="width: 100%; height: 6%; background-color: #027aff; position: relative; text-align: center; ">
-            <img  src="images/icon/Topbar_Icon.png" style="height:100%;" />
-        </div>
+            <div class="row" style="height: 80px; background-color: white; margin-bottom: 60px; justify-content: space-between; padding: 10% 0px; justify-content: space-between; padding: 0px 20%; align-items: center;">
+                <img src="images/icons/Topbar_Logo_1.png " />
+              
+              
+            </div>
         <div style="width: 100%; height: 1%; background-color: #027aff; position: relative; text-align: center; "></div>
         <div id="MainDiv">
             <div style="width:90%;position:relative;text-align:right;">

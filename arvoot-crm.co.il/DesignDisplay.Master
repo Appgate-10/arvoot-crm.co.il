@@ -254,7 +254,7 @@
                  <div id="SetAgentPopUp" class="popUpOut" visible="false" runat="server">
                
             <div id="Div2" class="popUpIn" style="position: relative; min-width: 600px;  width: 60%;  height: 94%; direction: rtl;margin-top:20px" runat="server">
-                                  <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ClosePopUpAddAgent" OnClick="ClosePopUpAddAgent_Click" />
+                                  <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ClosePopUpSetAgent" OnClick="ClosePopUpSetAgent_Click" />
 
                                   <asp:Button ID="LogOutBtn" runat="server" Text="התנתקות" Class="NewLid" Style="width: 133px; height: 41px; right: 45px; position: absolute;" OnClientClick="return confirm('האם אתה בטוח שברצונך להתנתק?');" OnClick="LogOutBtn_Click" />
 

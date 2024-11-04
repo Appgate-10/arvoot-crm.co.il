@@ -139,7 +139,7 @@ namespace ControlPanel
                     {
                         // שליחת אימייל עם הקוד החדש
                         string Str = "<div align=\"center\"style=\"width:100%;text-align:center;\" dir=\"rtl\"><div align=\"right\" style=\"width:500px;\"><font size=\"3\" color=\"000000\" face=\"arial\"><img src=\"" + ConfigurationManager.AppSettings["EmailHeaderLogo"] + "\"><br /><br />";
-                        Str = Str + "<br><br>הי " + dataTable.Rows[0]["FirstName"] + "!<br><br><br>";
+                        Str = Str + "<br><br>הי " + dataTable.Rows[0]["FullName"] + "!<br><br><br>";
                         Str = Str + "ביקשת לשנות את סיסמת " + ConfigurationManager.AppSettings["AppName"] + " שלך. אנא לחץ/י למטה כדי להשלים בקשה זו.<br><br><br><br>";
                         Str = Str + "אם לא ביקשת לאפס את הסיסמה, אנא התעלם/י ממייל זה ללא חשש.<br><br><br><u>לחץ/י על הקישור למטה כדי לאפס את הסיסמה שלך:</u><br><br><br>";
 
@@ -149,7 +149,7 @@ namespace ControlPanel
                         Str = Str + "</div></div><br><br>";
 
                         MailMessage message = new MailMessage();
-                        message.From = new MailAddress("contact@platinum-crm.co.il", ConfigurationManager.AppSettings["AppName"]);
+                        message.From = new MailAddress("contact@arvoot-crm.co.il", ConfigurationManager.AppSettings["AppName"]);
                         message.To.Add(new MailAddress(userEmail));
                         message.Subject = "Reset Password - " + ConfigurationManager.AppSettings["AppName"];
                         message.Body = Str;

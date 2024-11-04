@@ -285,13 +285,13 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div2;
 
         /// <summary>
-        /// ClosePopUpAddAgent control.
+        /// ClosePopUpSetAgent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ClosePopUpAddAgent;
+        protected global::System.Web.UI.WebControls.ImageButton ClosePopUpSetAgent;
 
         /// <summary>
         /// LogOutBtn control.

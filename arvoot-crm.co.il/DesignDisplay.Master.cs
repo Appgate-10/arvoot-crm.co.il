@@ -390,7 +390,7 @@ namespace ControlPanel
             
         }
 
-        protected void ClosePopUpAddAgent_Click(object sender, ImageClickEventArgs e)
+        protected void ClosePopUpSetAgent_Click(object sender, ImageClickEventArgs e)
         {
             SetAgentPopUp.Visible = false;
         }

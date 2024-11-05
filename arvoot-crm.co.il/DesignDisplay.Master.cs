@@ -21,6 +21,7 @@ namespace ControlPanel
         string FileName1;
         protected void Page_Load(object sender, EventArgs e)
         {
+            ImageFile_1_display.Attributes.Add("onclick", "document.getElementById('" + ImageFile_1_FileUpload.ClientID + "').click();");
 
             if (!Page.IsPostBack)
             {
@@ -232,7 +233,15 @@ namespace ControlPanel
                 Tz.Value = dtAgent.Rows[0]["Tz"].ToString();
                 Phone.Value = dtAgent.Rows[0]["Phone"].ToString();
                 PasswordAgent.Value = "";//dtAgent.Rows[0]["Password"].ToString();
-
+                if (!string.IsNullOrWhiteSpace(dtAgent.Rows[0]["ImageFile"].ToString()))
+                {
+                    ImageFile_1_display.Src = ConfigurationManager.AppSettings["FilesUrl"] + "Agent/" + dtAgent.Rows[0]["ImageFile"].ToString();
+                }
+                else
+                {
+                    ImageFile_1_display.Src = "images/icons/User_Image_Avatar.png";
+                }
+                
 
                 switch (HttpContext.Current.Session["AgentLevel"].ToString())
                 {
@@ -596,7 +605,7 @@ namespace ControlPanel
                     if (Session["imgFileUpload1"] != null && ((FileUpload)Session["imgFileUpload1"]).HasFile)
                     {
                         //todo -לשמור בתקיה בשרת
-                        string FilePath = String.Format("{0}/Agent/", ConfigurationManager.AppSettings["MapPath1"]);
+                        string FilePath = String.Format("{0}/Agent/", ConfigurationManager.AppSettings["MapPath"]);
                         try { ((FileUpload)Session["imgFileUpload1"]).PostedFile.SaveAs(Path.Combine(FilePath, FileName1)); }
                         catch (Exception ex)
                         {
@@ -700,7 +709,7 @@ namespace ControlPanel
             }
             else
             {
-                ImageFile_1_lable_2.Text = "* התמונה גדולה מ250קב,בבקשה הכנס תמונה חדשה";
+                ImageFile_1_lable_2.Text = "* התמונה גדולה מ250 קב,בבקשה הכנס תמונה חדשה";
 
                 ImageFile_1_lable_2.Visible = true;
             }

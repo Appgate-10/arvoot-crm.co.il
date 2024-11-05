@@ -44,7 +44,7 @@ namespace cp.cappsino.co
                         break;
                 }
             }
-            string path = Path.Combine(ConfigurationManager.AppSettings["MapPath1"], "OfferDocuments", fileName);
+            string path = Path.Combine(ConfigurationManager.AppSettings["MapPath"], "OfferDocuments", fileName);
             //fileName = "4b38c7244721e01caee0aa73c4ba2a1d.pdf";
             if (!File.Exists(path))
             {

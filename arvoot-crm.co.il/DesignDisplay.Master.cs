@@ -480,7 +480,7 @@ namespace ControlPanel
                 FormErrorAgent_lable.Text = "אימייל זה כבר קיים במערכת";
                 return false;
             }
-            if (Address.Visible == true && string.IsNullOrWhiteSpace(Address.Value))
+            if (Address.Visible == true && string.IsNullOrWhiteSpace(Address.Value) && !HttpContext.Current.Session["AgentLevel"].ToString().Equals("1"))
             {
                 FormErrorAgent_lable.Visible = true;
                 FormErrorAgent_lable.Text = "יש להזין " + NameOrAddress.InnerText;
@@ -594,6 +594,8 @@ namespace ControlPanel
                         }
                     default:
                         {
+                            cmd.Parameters.AddWithValue("@CompanyName", DBNull.Value);
+                            cmd.Parameters.AddWithValue("@BranchName", DBNull.Value);
                             break;
                         }
 

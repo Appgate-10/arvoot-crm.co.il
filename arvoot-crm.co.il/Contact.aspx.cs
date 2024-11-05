@@ -10,6 +10,8 @@ using System.Data;
 using System.Configuration;
 using System.Web.UI.HtmlControls;
 using System.Data.SqlClient;
+using System.Globalization;
+
 namespace ControlPanel
 {
     public partial class _contact : System.Web.UI.Page
@@ -116,7 +118,7 @@ namespace ControlPanel
 
                 if (!string.IsNullOrEmpty(dtLead.Rows[0]["DateBirth"].ToString()))
                 {
-                    DateTime dateOfBirth = Convert.ToDateTime(dtLead.Rows[0]["DateBirth"]);
+                    DateTime dateOfBirth = DateTime.ParseExact(dtLead.Rows[0]["DateBirth"].ToString(),"dd.MM.yyyy", CultureInfo.InvariantCulture);
                     DateTime currentDate = DateTime.Now;
                     int age = currentDate.Year - dateOfBirth.Year;
                     Age.InnerText = age.ToString();
@@ -134,7 +136,7 @@ namespace ControlPanel
                 Address.Value = dtLead.Rows[0]["Address"].ToString();
                 SelectFamilyStatus.Value = dtLead.Rows[0]["FamilyStatusID"].ToString();
                 Tz.Value = dtLead.Rows[0]["Tz"].ToString();
-                IssuanceDateTz.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["IssuanceDateTz"].ToString()) ? "" : Convert.ToDateTime(dtLead.Rows[0]["IssuanceDateTz"]).ToString("yyyy-MM-dd");
+                IssuanceDateTz.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["IssuanceDateTz"].ToString()) ? "" : DateTime.ParseExact(dtLead.Rows[0]["IssuanceDateTz"].ToString(), "dd.MM.yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd");
                 //IsValidIssuanceDateTz.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidIssuanceDateTz"].ToString()));
                 BdiValidity.SelectedIndex =int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString());
                 InvalidBdiReason.Value = dtLead.Rows[0]["InvalidBdiReason"].ToString();

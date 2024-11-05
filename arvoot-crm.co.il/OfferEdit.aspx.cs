@@ -13,6 +13,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Net.Mail;
 using System.Text;
+using System.Globalization;
 
 namespace ControlPanel
 {
@@ -278,7 +279,7 @@ namespace ControlPanel
                 SelectOfferType.Value = rowOffer["OfferTypeID"].ToString();
                 //SelectTurnOffer.Value = rowOffer["TurnOfferID"].ToString();
                 ReasonLackSuccess.Value = rowOffer["ReasonLackSuccess"].ToString();
-                ReturnDateToCustomer.Value = Convert.ToDateTime(rowOffer["ReturnDateToCustomer"]).ToString("yyyy-MM-dd");
+                ReturnDateToCustomer.Value = DateTime.ParseExact(rowOffer["ReturnDateToCustomer"].ToString(), "dd.MM.yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd");
                 Note.Value = rowOffer["Note"].ToString();
                 DateSentToInsuranceCompany.Value = Convert.ToDateTime(rowOffer["DateSentToInsuranceCompany"]).ToString("yyyy-MM-dd"); 
                 SelectStatusOffer.Value = rowOffer["StatusOfferID"].ToString();

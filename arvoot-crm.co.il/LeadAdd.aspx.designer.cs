@@ -33,13 +33,13 @@ namespace ControlPanel
         protected global::System.Web.UI.WebControls.Button btn_save;
 
         /// <summary>
-        /// FormError_lable control.
+        /// FormError_label control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label FormError_lable;
+        protected global::System.Web.UI.WebControls.Label FormError_label;
 
         /// <summary>
         /// ImageFileAgent control.
@@ -508,6 +508,24 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl MortgageBalance;
+
+        /// <summary>
+        /// BtnSave2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnSave2;
+
+        /// <summary>
+        /// FormErrorBottom_label control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label FormErrorBottom_label;
 
         /// <summary>
         /// StatusPopUp control.

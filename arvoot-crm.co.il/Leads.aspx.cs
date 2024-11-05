@@ -172,26 +172,30 @@ namespace ControlPanel
             string sqlWhere = "";
             string sqlJoin = "";
             SqlCommand cmd = new SqlCommand();
-        
-           
-            if(HttpContext.Current.Session["AgentLevel"] != null) {
+            SqlCommand cmdCount = new SqlCommand();
+
+
+            if (HttpContext.Current.Session["AgentLevel"] != null) {
                 switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
                 {
              
                     case 2:
                         sqlJoin =  " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on C.ID = B.ParentID ";
-                        sqlWhere = "and C.ID = @ID";
+                        sqlWhere = " and C.ID = @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     case 3:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID  ";
-                        sqlWhere = "and B.ID = @ID";
+                        sqlWhere = " and B.ID = @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;   
                     case 6:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6";
-                        sqlWhere = "and A.ID = @ID";
+                        sqlWhere = " and A.ID = @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     default:
                         sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6";
@@ -257,7 +261,7 @@ namespace ControlPanel
             string sqlOrder = " Order by Lead.CreateDate desc OFFSET " + CurrentRow.ToString() + "  ROWS FETCH NEXT " + PageSize.ToString() + " ROWS ONLY ";
 
             //-- ניהול Paging
-            string sqlCnt = "Select Count(ID) FROM Lead where Lead.IsContact=0";
+            string sqlCnt = "Select Count(Lead.ID) FROM Lead " + sqlJoin + " where Lead.IsContact=0";
            
            
 
@@ -271,7 +275,8 @@ namespace ControlPanel
             DataSet ds = DbProvider.GetDataSet(cmd);
             if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) != 4 && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) != 5)
             {
-                SqlCommand cmdCount = new SqlCommand(sqlCnt + sqlWhere);
+                cmdCount.CommandText = sqlCnt + sqlWhere;
+             //   SqlCommand cmdCount = new SqlCommand(sqlCnt + sqlWhere);
                 try { cmdCount.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString() + "%"); }
                 catch (Exception) { }
                 ItemCount = DbProvider.GetOneParamValueLong(cmdCount);

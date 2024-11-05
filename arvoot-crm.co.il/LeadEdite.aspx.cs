@@ -10,6 +10,8 @@ using System.Data;
 using System.Configuration;
 using System.Web.UI.HtmlControls;
 using System.Data.SqlClient;
+using System.Globalization;
+
 namespace ControlPanel
 {
     public partial class _LeadEdite : System.Web.UI.Page
@@ -81,7 +83,7 @@ namespace ControlPanel
                 SelectGender.DataBind();
                 SelectGender.Items.Insert(0, new ListItem("בחר", ""));
 
-
+                 
 
                 HttpContext.Current.Session["FirstStatusLeadID"] = null;
 
@@ -118,7 +120,7 @@ namespace ControlPanel
             {
                 if (!string.IsNullOrEmpty(dtLead.Rows[0]["DateBirth"].ToString()))
                 {
-                    DateTime dateOfBirth = Convert.ToDateTime(dtLead.Rows[0]["DateBirth"]);
+                    DateTime dateOfBirth = DateTime.ParseExact(dtLead.Rows[0]["DateBirth"].ToString(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
                     DateTime currentDate = DateTime.Now;
                     int age = currentDate.Year - dateOfBirth.Year;
                     Age.InnerText = age.ToString();
@@ -138,7 +140,7 @@ namespace ControlPanel
                 Address.Value = dtLead.Rows[0]["Address"].ToString();
                 SelectFamilyStatus.Value = dtLead.Rows[0]["FamilyStatusID"].ToString();
                 Tz.Value = dtLead.Rows[0]["Tz"].ToString();
-                IssuanceDateTz.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["IssuanceDateTz"].ToString()) ? "" : Convert.ToDateTime(dtLead.Rows[0]["IssuanceDateTz"]).ToString("yyyy-MM-dd");
+                IssuanceDateTz.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["IssuanceDateTz"].ToString()) ? "" : DateTime.ParseExact(dtLead.Rows[0]["IssuanceDateTz"].ToString(), "dd.MM.yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd");
                /* IsValidIssuanceDateTz.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidIssuanceDateTz"].ToString()));
                 IsValidBdi.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString()));*/
                 BdiValidity.SelectedIndex = int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString());
@@ -150,7 +152,7 @@ namespace ControlPanel
                 SelectSecondStatus.Value = dtLead.Rows[0]["SecondStatusLeadID"].ToString();
                 SelectSourceLead.Value = dtLead.Rows[0]["SourceLeadID"].ToString();
                 InterestedIn.Value = dtLead.Rows[0]["InterestedIn"].ToString();
-                TrackingTime.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["TrackingTime"].ToString()) ? "" : Convert.ToDateTime(dtLead.Rows[0]["TrackingTime"]).ToString("yyyy-MM-ddTHH:mm:ss");
+                TrackingTime.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["TrackingTime"].ToString()) ? "" : DateTime.Parse(dtLead.Rows[0]["TrackingTime"].ToString()).ToString("yyyy-MM-ddTHH:mm:ss");
                 Note.Value = dtLead.Rows[0]["Note"].ToString();
                 BusinessName.Value = dtLead.Rows[0]["BusinessName"].ToString();
                 BusinessSeniority.Value = dtLead.Rows[0]["BusinessSeniority"].ToString();
@@ -183,7 +185,7 @@ namespace ControlPanel
                 PurposeLoan.Value = dtLead.Rows[0]["PurposeLoan"].ToString();
                 MortgageBalance.Value = dtLead.Rows[0]["MortgageBalance"].ToString();
 
-                DateChangeFirstStatus.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["DateChangeFirstStatus"].ToString()) ? "" : Convert.ToDateTime(dtLead.Rows[0]["DateChangeFirstStatus"]).ToString("yyyy-MM-dd");
+                DateChangeFirstStatus.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["DateChangeFirstStatus"].ToString()) ? "" : DateTime.Parse(dtLead.Rows[0]["DateChangeFirstStatus"].ToString()).ToString("yyyy-MM-dd");
 
                 HttpContext.Current.Session["FirstStatusLeadID"] = dtLead.Rows[0]["FirstStatusLeadID"].ToString();
 
@@ -585,7 +587,7 @@ namespace ControlPanel
                 ExportNewContact_lable.Visible = true;
                 ExportNewContact_lable.Text = "יש להזין תאריך לידה";
             }
-            else if (DateTime.Parse(DateBirth.Value) > DateTime.Now)
+            else if (DateTime.ParseExact(DateBirth.Value, "dd.MM.yyyy", CultureInfo.InvariantCulture) > DateTime.Now)
             {
                 ErrorCount++;
                 ExportNewContact_lable.Visible = true;
@@ -783,7 +785,7 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@Address", string.IsNullOrEmpty(Address.Value) ? (object)DBNull.Value : Address.Value);
                 cmd.Parameters.AddWithValue("@FamilyStatusID", string.IsNullOrEmpty(SelectFamilyStatus.Value) ? (object)DBNull.Value : SelectFamilyStatus.Value);
                 cmd.Parameters.AddWithValue("@Tz", string.IsNullOrEmpty(Tz.Value) ? (object)DBNull.Value : Tz.Value);
-                cmd.Parameters.AddWithValue("@IssuanceDateTz", string.IsNullOrEmpty(IssuanceDateTz.Value) ? (object)DBNull.Value : DateTime.Parse(IssuanceDateTz.Value));
+                cmd.Parameters.AddWithValue("@IssuanceDateTz", string.IsNullOrEmpty(IssuanceDateTz.Value) ? (object)DBNull.Value : DateTime.ParseExact(IssuanceDateTz.Value, "dd/MM/yyyy", CultureInfo.InvariantCulture) );
                 //cmd.Parameters.AddWithValue("@IsValidIssuanceDateTz", IsValidIssuanceDateTz.Checked == true ? 1 : 0);
                 cmd.Parameters.AddWithValue("@IsValidBdi", /*IsValidBdi.Checked == true*/ BdiValidity.SelectedIndex);
                 cmd.Parameters.AddWithValue("@InvalidBdiReason", string.IsNullOrEmpty(InvalidBdiReason.Value) ? (object)DBNull.Value : InvalidBdiReason.Value);
@@ -796,7 +798,7 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@SecondStatusLeadID", string.IsNullOrEmpty(SelectSecondStatus.Value) ? (object)DBNull.Value : int.Parse(SelectSecondStatus.Value));
                 cmd.Parameters.AddWithValue("@SourceLeadID", string.IsNullOrEmpty(SelectSourceLead.Value) ? (object)DBNull.Value : int.Parse(SelectSourceLead.Value));
                 cmd.Parameters.AddWithValue("@InterestedIn", string.IsNullOrEmpty(InterestedIn.Value) ? (object)DBNull.Value : InterestedIn.Value);
-                cmd.Parameters.AddWithValue("@TrackingTime", string.IsNullOrEmpty(TrackingTime.Value) ? (object)DBNull.Value : DateTime.Parse(TrackingTime.Value));
+                cmd.Parameters.AddWithValue("@TrackingTime", string.IsNullOrEmpty(TrackingTime.Value) ? (object)DBNull.Value : DateTime.ParseExact(TrackingTime.Value, "dd/MM/yyyy", CultureInfo.InvariantCulture)  );
 
                 cmd.Parameters.AddWithValue("@Note", string.IsNullOrEmpty(Note.Value) ? (object)DBNull.Value : Note.Value);
 

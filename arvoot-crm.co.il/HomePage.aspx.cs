@@ -358,7 +358,7 @@ namespace ControlPanel
                     if (Session["imgFileUpload1"] != null && ((FileUpload)Session["imgFileUpload1"]).HasFile)
                     {
                         //todo -לשמור בתקיה בשרת
-                        string FilePath = String.Format("{0}/Agent/", ConfigurationManager.AppSettings["MapPath1"]);
+                        string FilePath = String.Format("{0}/Agent/", ConfigurationManager.AppSettings["MapPath"]);
                         try { ((FileUpload)Session["imgFileUpload1"]).PostedFile.SaveAs(Path.Combine(FilePath, FileName1)); }
                         catch (Exception ex)
                         {
@@ -488,7 +488,7 @@ namespace ControlPanel
             }
             else
             {
-                ImageFile_1_lable_2.Text = "* התמונה גדולה מ250קב,בבקשה הכנס תמונה חדשה";
+                ImageFile_1_lable_2.Text = "* התמונה גדולה מ250 קב,בבקשה הכנס תמונה חדשה";
 
                 ImageFile_1_lable_2.Visible = true;
             }
@@ -501,12 +501,23 @@ namespace ControlPanel
         protected void AddNewAgent_Click(object sender, EventArgs e)
         {
             AddAgentPopUp.Visible = true;
+            
         }
 
         protected void CreateEmployee_Click(object sender, EventArgs e)
         {
             AddAgentPopUp.Visible = true;
             UpdatePanelPopUps.Update();
+            ImageFile_1_display.Src = "images/icons/User_Image_Avatar.png";
+            Name.Value = "";
+            Phone.Value = "";
+            EmailA.Value = "";
+            Tz.Value = "";
+            PasswordAgent.Value = "";
+            Address.Value = "";
+            AgentNumber1.Value = "";
+            AgentNumber2.Value = "";
+            AgentNumber3.Value = "";
         }
         private void loadGraf()
         {

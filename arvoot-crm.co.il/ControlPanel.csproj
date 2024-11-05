@@ -82,10 +82,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ContactNo.aspx" />
     <Content Include="Business.aspx" />
     <Content Include="ChatList.aspx" />
-    <Content Include="HouseHolds.aspx" />
     <Content Include="images\Calendar_Big_BG.png" />
     <Content Include="images\icons\Calendar_Big_BG.png" />
     <Content Include="images\icons\Last_Message_Icon.png" />
@@ -121,7 +119,6 @@
     <Content Include="OfferAdd.aspx" />
     <Content Include="ResetPassword.aspx" />
     <Content Include="Contacts.aspx" />
-    <Content Include="Lead2.aspx" />
     <Content Include="images\Chack_Box_1_Off.png" />
     <Content Include="images\Chack_Box_1_On.png" />
     <Content Include="images\icons\1212121.png" />
@@ -303,13 +300,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContactNo.aspx.cs">
-      <DependentUpon>ContactNo.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ContactNo.aspx.designer.cs">
-      <DependentUpon>ContactNo.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Business.aspx.cs">
       <DependentUpon>Business.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -330,13 +320,6 @@
     </Compile>
     <Compile Include="DesignDisplayFailed.Master.designer.cs">
       <DependentUpon>DesignDisplayFailed.Master</DependentUpon>
-    </Compile>
-    <Compile Include="HouseHolds.aspx.cs">
-      <DependentUpon>HouseHolds.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="HouseHolds.aspx.designer.cs">
-      <DependentUpon>HouseHolds.aspx</DependentUpon>
     </Compile>
     <Compile Include="HomePage.aspx.cs">
       <DependentUpon>HomePage.aspx</DependentUpon>
@@ -422,13 +405,6 @@
     <Compile Include="Code\Md5.cs" />
     <Compile Include="Code\Helpers.cs" />
     <Compile Include="Code\DbProvider.cs" />
-    <Compile Include="Lead2.aspx.cs">
-      <DependentUpon>Lead2.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Lead2.aspx.designer.cs">
-      <DependentUpon>Lead2.aspx</DependentUpon>
-    </Compile>
     <Compile Include="LeadAdd.aspx.cs">
       <DependentUpon>LeadAdd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

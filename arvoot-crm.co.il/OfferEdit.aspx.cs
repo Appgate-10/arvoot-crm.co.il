@@ -155,6 +155,8 @@ namespace ControlPanel
             }
             else
             {
+                //Gila האם צריך להוסיף שורה זו?
+                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
                 TaskDiv.Visible = false;
             }
         }
@@ -458,7 +460,7 @@ where s.OfferID = @OfferID";
 
                 if (chkAttach.Checked)
                 {
-                    string filePath = String.Format("{0}/OfferDocuments/{1}", ConfigurationManager.AppSettings["MapPath1"], lblFilePath.Text) ;
+                    string filePath = String.Format("{0}/OfferDocuments/{1}", ConfigurationManager.AppSettings["MapPath"], lblFilePath.Text) ;
                     
                     if (File.Exists(filePath))
                     {
@@ -533,7 +535,7 @@ where s.OfferID = @OfferID";
 
                 if (chkAttach.Checked)
                 {
-                    string filePath = String.Format("{0}/OfferDocuments/{1}", ConfigurationManager.AppSettings["MapPath1"], lblFilePath.Text);
+                    string filePath = String.Format("{0}/OfferDocuments/{1}", ConfigurationManager.AppSettings["MapPath"], lblFilePath.Text);
 
                     msg1.AppendLine(filePath);
 
@@ -677,7 +679,7 @@ where s.OfferID = @OfferID";
                         {
                             try
                             {
-                                string FilePath1 = String.Format("{0}/OfferDocuments/", ConfigurationManager.AppSettings["MapPath1"]);
+                                string FilePath1 = String.Format("{0}/OfferDocuments/", ConfigurationManager.AppSettings["MapPath"]);
                                 string FileName1 = myFile[i].FileName;
 
                                 myFile[i].PostedFile.SaveAs(Path.Combine(FilePath1, FileName1));
@@ -724,8 +726,11 @@ where s.OfferID = @OfferID";
             }
             else
             {
-                Response.Redirect("Contact.aspx?ContactID=" + ContactID.Value);
-               // System.Web.HttpContext.Current.Response.Redirect(ListPageUrl);
+                //Response.Redirect("Contact.aspx?ContactID=" + ContactID.Value);
+                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+                loadData();
+                // System.Web.HttpContext.Current.Response.Redirect(ListPageUrl);
+
             }
            
         }

@@ -17,7 +17,7 @@ namespace ControlPanel
         ControlPanelInit Pageinit = new ControlPanelInit();
         private string strSrc = "חפש קובץ";
         public string StrSrc { get { return strSrc; } }
-        public string ListPageUrl = "LeadAdd.aspx";
+        public string ListPageUrl = "Leads.aspx";
 
         //בליד התעודה זהות לא ייחודית
 

@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace cp.cappsino.co
+namespace ControlPanel
 {
     public partial class DesignDisplayFailed : System.Web.UI.MasterPage
     {

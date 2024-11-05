@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace cp.cappsino.co
+namespace ControlPanel
 {
 
 

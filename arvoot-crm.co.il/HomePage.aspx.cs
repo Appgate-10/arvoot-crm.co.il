@@ -426,7 +426,9 @@ namespace ControlPanel
             }
             else
             {
-                Response.Redirect(ListPageUrl);
+                //Response.Redirect(ListPageUrl);
+                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+                
             }
         }
 

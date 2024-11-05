@@ -508,7 +508,9 @@ SumPayment3=@SumPayment3,DatePayment3=@DatePayment3, NumPayment3=@NumPayment3, R
             else
             {
                 Session["payments"] = null;
-                System.Web.HttpContext.Current.Response.Redirect(ListPageUrl + "?OfferID=" + OfferID.Value);
+                //System.Web.HttpContext.Current.Response.Redirect(ListPageUrl + "?OfferID=" + OfferID.Value);
+                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+                loadData();
             }
         }
         protected void DeleteService_Click(object sender, ImageClickEventArgs e)

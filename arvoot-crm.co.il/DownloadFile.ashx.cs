@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.SessionState;
 using System.Web.UI;
 
-namespace cp.cappsino.co
+namespace ControlPanel
 {
     /// <summary>
     /// Summary description for DownloadFile

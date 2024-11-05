@@ -933,7 +933,10 @@ namespace ControlPanel
             }
             else
             {
-                System.Web.HttpContext.Current.Response.Redirect("Leads.aspx");
+                //System.Web.HttpContext.Current.Response.Redirect("Leads.aspx");
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+                loadData();
             }
         }
         public bool funcSave(object sender, EventArgs e)

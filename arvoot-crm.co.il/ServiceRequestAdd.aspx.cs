@@ -241,7 +241,7 @@ namespace ControlPanel
             }
         }
 
-        public bool funcSave(object sender, EventArgs e)
+        public long funcSave(object sender, EventArgs e)
         {
             //return false;
             List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
@@ -277,21 +277,21 @@ namespace ControlPanel
                 ErrorCount++;
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין חשבון";
-                return false;
+                return 0;
             }
             if (AllSum.Value == "")
             {
                 ErrorCount++;
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין סכום כולל לגבייה";
-                return false;
+                return 0;
             }
            if(SelectPurpose.SelectedIndex == 0)
             {
                 ErrorCount++;
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין מטרת הגבייה";
-                return false;
+                return 0;
             }
 
             if (payments.Count == 0)
@@ -299,28 +299,28 @@ namespace ControlPanel
                 ErrorCount++;
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין פרטי תשלום ראשון";
-                return false;
+                return 0;
             }
             if (payments[0].SumPayment == 0)
             {
                 ErrorCount++;
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין סכום לתשלום ראשון";
-                return false;
+                return 0;
             }
             if (payments[0].DatePayment == "")
             {
                 ErrorCount++;
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין תאריך תשלום ראשון";
-                return false;
+                return 0;
             }
             if (payments[0].NumPayment == 0)
             {
                 ErrorCount++;
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין מספר תשלומים לתשלום ראשון";
-                return false;
+                return 0;
             }
 
             if (payments.Count > 1)
@@ -333,19 +333,19 @@ namespace ControlPanel
                         {
                             FormError_lable.Visible = true;
                             FormError_lable.Text = "יש להזין סכום לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1);
-                            return false;
+                            return 0;
                         }
                         if (payments[i].DatePayment == "")
                         {
                             FormError_lable.Visible = true;
                             FormError_lable.Text = "יש להזין תאריך תשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
-                            return false;
+                            return 0;
                         }
                         if (payments[i].NumPayment == 0)
                         {
                             FormError_lable.Visible = true;
                             FormError_lable.Text = "יש להזין מספר תשלומים לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
-                            return false;
+                            return 0;
                         }
                     }
                 }
@@ -359,21 +359,21 @@ namespace ControlPanel
                     ErrorCount++;
                     FormError_lable.Visible = true;
                     FormError_lable.Text = "יש להזין שם בנק";
-                    return false;
+                    return 0;
                 } 
                 if (Branch.Value == "")
                 {
                     ErrorCount++;
                     FormError_lable.Visible = true;
                     FormError_lable.Text = "יש להזין סניף";
-                    return false;
+                    return 0;
                 }
                 if (AccountNumber.Value == "")
                 {
                     ErrorCount++;
                     FormError_lable.Visible = true;
                     FormError_lable.Text = "יש להזין מספר חשבון";
-                    return false;
+                    return 0;
                 }
             }
             else if(SelectMethodsPayment.SelectedIndex == 2)
@@ -383,7 +383,7 @@ namespace ControlPanel
                     ErrorCount++;
                     FormError_lable.Visible = true;
                     FormError_lable.Text = "יש להזין מספר כרטיס";
-                    return false;
+                    return 0;
                 }
                 //if (CreditValidity.Value == "")
                 //{
@@ -397,7 +397,7 @@ namespace ControlPanel
                     ErrorCount++;
                     FormError_lable.Visible = true;
                     FormError_lable.Text = "יש להזין ת.ז. בעל הכרטיס";
-                    return false;
+                    return 0;
                 }
             }
 
@@ -481,7 +481,7 @@ namespace ControlPanel
                         }
                             
                     }
-                    return true;
+                    return serviceRequestID;
                 }
                 else
                 {
@@ -492,21 +492,21 @@ namespace ControlPanel
 
             }
 
-            return false;
+            return 0;
         }
 
 
         protected void btn_save_Click(object sender, EventArgs e)
         {
-            bool success = funcSave(sender, e);
-            if (!success)
+            long success = funcSave(sender, e);
+            if (success == 0)
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
             }
             else
             {
                 Session["payments"] = null;
-                System.Web.HttpContext.Current.Response.Redirect(ListPageUrl + "?OfferID=" + Request.QueryString["OfferID"]);
+                Response.Redirect("ServiceRequestEdit.aspx?ServiceRequestID=" + success.ToString());
             }
         }
 

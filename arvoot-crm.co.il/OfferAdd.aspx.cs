@@ -209,7 +209,7 @@ namespace ControlPanel
 
         }
 
-        public bool funcSave(object sender, EventArgs e)
+        public long funcSave(object sender, EventArgs e)
         {
 
             int ErrorCount = 0;
@@ -219,14 +219,14 @@ namespace ControlPanel
                 ErrorCount++;
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין שם ההצעה";
-                return false;
+                return 0;
             }
             if (SelectSourceLoanOrInsurance.SelectedIndex == 0)
             {
                 ErrorCount++;
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין מקור ההלוואה/ביטוח";
-                return false;
+                return 0;
             }  
            /* if (SelectOfferType.SelectedIndex == 0)
             {
@@ -241,21 +241,21 @@ namespace ControlPanel
                 ErrorCount++;
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין סיבה לחוסר הצלחה";
-                return false;
+                return 0;
             }
             if (string.IsNullOrEmpty(ReturnDateToCustomer.Value))
             {
                 ErrorCount++;
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין מועד חזרה ללקוח";
-                return false;
+                return 0;
             }
             if (string.IsNullOrEmpty(DateSentToInsuranceCompany.Value))
             {
                 ErrorCount++;
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין תאריך שליחה לחברת הביטוח";
-                return false;
+                return 0;
             }
             //if (SelectStatusOffer.SelectedIndex == 0)
             //{
@@ -333,7 +333,7 @@ namespace ControlPanel
 
                     }
 
-                    return true;
+                    return offerID;
                 }
                 else
                 {
@@ -345,23 +345,21 @@ namespace ControlPanel
 
 
 
-            return false;
+            return 0;
         }
 
         protected void btn_save_Click(object sender, EventArgs e)
         {
 
 
-            bool success = funcSave(sender, e);
-            if (!success)
+            long success = funcSave(sender, e);
+            if (success == 0)
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
             }
             else
             {
-                Response.Redirect("Contact.aspx?ContactID=" + Request.QueryString["ContactID"].ToString());
-                //Response.Redirect("Offers.aspx");
-               // System.Web.HttpContext.Current.Response.Redirect(ListPageUrl);
+                Response.Redirect("OfferEdit.aspx?OfferID=" + success.ToString());
             }
            
         }

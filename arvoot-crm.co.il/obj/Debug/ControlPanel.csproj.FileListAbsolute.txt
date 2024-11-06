@@ -8,3 +8,4 @@ C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\Newtonsoft.Json.xml
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\ControlPanel.csproj.CoreCompileInputs.cache
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\arvoot-crm.co.il.dll
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\arvoot-crm.co.il.pdb
+C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Debug\ControlPanel.csproj.AssemblyReference.cache

@@ -98,12 +98,13 @@ namespace ControlPanel
                 }
                 else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 8)
                 {
-                    image.ImageUrl = "~/images/icons/Status_2.png";
+                    image.ImageUrl = "~/images/icons/Not_Relevant_Button.png";
 
-                } 
+                }
                 else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 9)
                 {
-                    image.ImageUrl = "~/images/icons/Not_Relevant_Button.png";
+                    image.ImageUrl = "~/images/icons/Status_2.png";
+
 
                 }
                 else image.ImageUrl = "";
@@ -317,7 +318,7 @@ namespace ControlPanel
             MainStatusList.DataValueField = "ID";
             MainStatusList.DataBind();
             MainStatusList.Items.Insert(0, new ListItem("סטטוס ראשי", ""));
-            
+
             SqlCommand cmdSubStatus = new SqlCommand("SELECT * FROM SecondStatusLead");
             DataSet dsSubStatus = DbProvider.GetDataSet(cmdSubStatus);
             SubStatusList.DataSource = dsSubStatus;

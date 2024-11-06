@@ -33,7 +33,7 @@
               --%>  <asp:Button runat="server" ID="btn_save" Text="שמור" OnClick="btn_save_Click" Style="padding-top:7px;padding-bottom:7px" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
             </div>
             <div>
-                <asp:Label ID="FormError_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
+                <asp:Label ID="FormError_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
             </div>
             <div class="NewOfferDiv">
                 <input placeholder="הצעה חדשה" id="NameOffer" style="font-size: 20pt;" runat="server" class="NewOfferLable"/> 
@@ -250,7 +250,12 @@
 
 
             </div>
-
+            <div class="DivLidTop">
+                <asp:Button runat="server" ID="BtnSaveBottom" Text="שמור" OnClick="btn_save_Click" Style="padding-top:7px;padding-bottom:7px" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
+            </div>
+            <div>
+                <asp:Label ID="FormErrorBottom_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
+            </div>
 
 
         </ContentTemplate>

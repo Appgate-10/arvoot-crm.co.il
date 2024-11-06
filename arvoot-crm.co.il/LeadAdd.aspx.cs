@@ -35,6 +35,7 @@ namespace ControlPanel
                 SelectFirstStatus.DataTextField = "Status";
                 SelectFirstStatus.DataValueField = "ID";
                 SelectFirstStatus.DataBind();
+                SelectFirstStatus.SelectedIndex = 1;
 
                 SqlCommand cmdSecondStatus = new SqlCommand("SELECT * FROM SecondStatusLead");
                 DataSet dsSecondStatus = DbProvider.GetDataSet(cmdSecondStatus);
@@ -137,6 +138,30 @@ namespace ControlPanel
         protected void ShereLid_Click(object sender, ImageClickEventArgs e)
         {
 
+        }   
+        protected void Yes_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = new SqlCommand("select ID,IsContact from Lead where Tz = @Tz");
+            cmd.Parameters.AddWithValue("Tz" , Tz.Value);
+            DataTable dt = DbProvider.GetDataTable(cmd);
+            if(dt.Rows.Count > 0)
+            {
+                if (int.Parse(dt.Rows[0]["IsContact"].ToString()) == 0)
+                {
+                    System.Web.HttpContext.Current.Response.Redirect("LeadEdit.aspx?LeadID=" + dt.Rows[0]["ID"].ToString());
+                }
+                else
+                {
+                    System.Web.HttpContext.Current.Response.Redirect("Contact.aspx?ContactID=" + dt.Rows[0]["ID"].ToString());
+                }
+            }
+            
+            Div1.Visible = false;
+        } 
+        protected void No_Click(object sender, EventArgs e)
+        {
+            Div1.Visible = false;
+
         }
         protected void DeleteLid_Click(object sender, ImageClickEventArgs e)
         {
@@ -165,7 +190,10 @@ namespace ControlPanel
         protected void CloseAddTime_Click(object sender, ImageClickEventArgs e)
         {
         }
-
+        protected void CloseTzPopUp_Click(object sender, ImageClickEventArgs e)
+        {
+            Div1.Visible = false;
+        }
       
         protected void btn_save_Click(object sender, EventArgs e)
         {
@@ -270,12 +298,9 @@ namespace ControlPanel
             }
             if (Tz.Value != "" && Helpers.insuredTzExist(Tz.Value, -1) == "true")
             {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "ת.ז קיימת במערכת";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "ת.ז קיימת במערכת";
+                Div1.Visible = true;
                 return 0;
+   
             }
             //סטטוס מעקב לחייב למלא תאריך
             if (SelectFirstStatus.SelectedIndex == 8 && TrackingTime.Value == "")
@@ -295,6 +320,15 @@ namespace ControlPanel
                 FormError_label.Text = "יש להזין סטטוס משני";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין סטטוס משני";
+                return 0;
+            }
+            if (BdiValidity.SelectedIndex == 2 && InvalidBdiReason.Value == "")
+            {
+                ErrorCount++;
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין סיבה לאי תקינות";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין סיבה לאי תקינות";
                 return 0;
             }
             if (ErrorCount == 0)

@@ -204,15 +204,6 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputText Email;
 
         /// <summary>
-        /// SelectFirstStatus control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectFirstStatus;
-
-        /// <summary>
         /// Phone2 control.
         /// </summary>
         /// <remarks>
@@ -222,13 +213,13 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputText Phone2;
 
         /// <summary>
-        /// SelectSecondStatus control.
+        /// SelectFirstStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectSecondStatus;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectFirstStatus;
 
         /// <summary>
         /// SelectSourceLead control.
@@ -256,6 +247,15 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl TrackingTime;
+
+        /// <summary>
+        /// SelectSecondStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectSecondStatus;
 
         /// <summary>
         /// Note control.
@@ -618,30 +618,21 @@ namespace ControlPanel
         protected global::System.Web.UI.WebControls.ImageButton ImageButton8;
 
         /// <summary>
-        /// rbList control.
+        /// Yes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rbList;
+        protected global::System.Web.UI.WebControls.Button Yes;
 
         /// <summary>
-        /// ImageButton9 control.
+        /// No control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ImageButton9;
-
-        /// <summary>
-        /// ImageButton10 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ImageButton10;
+        protected global::System.Web.UI.WebControls.Button No;
     }
 }

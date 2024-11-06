@@ -18,7 +18,7 @@ namespace ControlPanel
     {
         ControlPanelInit Pageinit = new ControlPanelInit();
         string FileName1;
-        public string ListPageUrl = "LeadAdd.aspx";
+        public string ListPageUrl = "HomePage.aspx";
         private List<DateTime> _datesWithTasks;
 
 

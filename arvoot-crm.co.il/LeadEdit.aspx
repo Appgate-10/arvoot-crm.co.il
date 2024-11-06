@@ -84,8 +84,8 @@
                 <asp:Button runat="server" ID="btn_save" Text="שמור" OnClick="btn_save_Click" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
             </div>
             <div>
-                <asp:Label ID="FormError_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
-                <asp:Label ID="ExportNewContact_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="true" Style="float: left;  margin-left: 15%;"></asp:Label>
+                <asp:Label ID="FormError_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
+                <%--<asp:Label ID="ExportNewContact_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="true" Style="float: left;"></asp:Label>--%>
             </div>
             <div class="NewOfferDiv">
                 <label class="NewOfferLable">ניהול ליד</label>
@@ -240,7 +240,6 @@
                 <div class="col MarginDiv SecondaryDiv DivDetailsCusWidth" style="position: relative;">
                     <div class="row ServiceRequestDiv" style="margin-bottom: 12px;">
                         <lable class="InputLable">פרטי התקשרות</lable>
-                        <lable class="InputLable" style="width: 30%;">סטטוס</lable>
                     </div>
                     <div class="row  MarginRow" style="width: 100%; align-items: flex-end;">
                         <div style="width: 31%; margin-inline-end: 2%;" class="row">
@@ -252,8 +251,8 @@
                             <input id="Email" name="Email" type="text" runat="server" style="width: 100%;" class="InputAdd" />
 
                         </div>
-                        <div style="width: 30%;" class="row ContactDetailsStatus ">
-                            <select runat="server" id="SelectFirstStatus" class="selectGlobal"></select>
+                        <div style="width: 30%;" class="row">
+                            <lable class="InputLable" style="width: 30%;">סטטוס ראשי</lable>
 
                             <%--                            <asp:Button ID="BtnFirstStatus" runat="server" class="buttonWithTwoImages buttonWithImages LableBlue width100" Text="בחר" OnClick="FirstStatus_Click" />--%>
                         </div>
@@ -271,7 +270,8 @@
 
                         <div style="width: 30%; justify-content: flex-end;" class="row">
                             <%--                            <asp:Button ID="BtnSecondStatus" runat="server" class="buttonWithOneImages buttonWithImages secondStatus LableBlue width100" OnClick="SecondStatus_Click" Text="סטטוס משני" />--%>
-                            <select runat="server" id="SelectSecondStatus" class="selectGlobal"></select>
+                             <select runat="server" id="SelectFirstStatus" class="selectGlobal"></select>
+
                         </div>
                     </div>
                     <div class="row  ">
@@ -283,6 +283,11 @@
                         </div>
                         <div style="width: 21%; margin-inline-end: 4%;" class="row">
                             <lable class="InputLable">זמן מעקב</lable>
+                        </div>
+                        <div style="width: 30%;" class="row">
+                             <lable class="InputLable" style="width: 30%;">סטטוס משני</lable>
+
+                          
                         </div>
                         <%--    <div style="width: 30%; justify-content: flex-end;" class="row">
                             <asp:Button ID="BtnSecondStatus" runat="server" class="buttonWithOneImages buttonWithImages secondStatus LableBlue width100" OnClick="SecondStatus_Click" Text="סטטוס משני" />
@@ -301,8 +306,12 @@
                         <div class="row" style="width: 16%; margin-inline-end: 4%;">
                             <input id="InterestedIn" name="InterestedIn" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
-                        <div style="width: 22%; margin-inline-end: 1%;" class="row">
+                        <div style="width: 22%; margin-inline-end: 4%;" class="row">
                             <input id="TrackingTime" name="TrackingTime" type="datetime-local" runat="server" style="width: 100%;" class="InputAdd" />
+                        </div>
+                          <div style="width: 30%; justify-content: flex-end;" class="row">
+                               <select runat="server" id="SelectSecondStatus" class="selectGlobal"></select>
+
                         </div>
                     </div>
                     <%--              <div class="row MarginRow">
@@ -364,7 +373,7 @@
                     <div class="row MarginRow " style="width: 100%;">
                       
                         <div class="row ColUpLid">
-                            <label class="InputLable">טלפון:</label>
+                            <label class="InputLable">טלפון העסק:</label>
                             <input id="BusinessPhone" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row ColUpLid">
@@ -664,6 +673,13 @@
                     <label class="InputLable">תאריך שינוי סטטוס:</label>
                     <input id="DateChangeFirstStatus" name="DateChangeFirstStatus" type="date" runat="server" style="width: 100%;" class="InputAdd" disabled="disabled" />
                 </div>
+            </div>
+
+            <div class="DivLidTop">
+                <asp:Button runat="server" ID="BtnSaveBottomBtn" Text="שמור" OnClick="btn_save_Click" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
+            </div>
+            <div>
+                <asp:Label ID="FormErrorBottom_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
             </div>
 
             <%--<div class="row">

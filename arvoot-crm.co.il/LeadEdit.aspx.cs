@@ -238,8 +238,8 @@ namespace ControlPanel
         //    if (DbProvider.ExecuteCommand(cmdDel) <= 0)
         //    {
         //        ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-        //        FormError_lable.Text = "* התרחשה שגיאה";
-        //        FormError_lable.Visible = true;
+        //        FormError_label.Text = "* התרחשה שגיאה";
+        //        FormError_label.Visible = true;
         //    }
         //    PopUpTasksList_Click(sender,null);
         //}
@@ -444,8 +444,10 @@ namespace ControlPanel
             cmd.Parameters.AddWithValue("@ID", Request.QueryString["LeadID"]);
             if (DbProvider.ExecuteCommand(cmd) <= 0)
             {
-                ExportNewContact_lable.Text = "* התרחשה שגיאה";
-                ExportNewContact_lable.Visible = true;
+                FormError_label.Text = "* התרחשה שגיאה";
+                FormError_label.Visible = true;
+                FormErrorBottom_label.Text = "* התרחשה שגיאה";
+                FormErrorBottom_label.Visible = true;
             }
             else
             {
@@ -470,50 +472,50 @@ namespace ControlPanel
         //public bool funcSaveNewContact()
         //{
         //    int ErrorCount = 0;
-        //    ExportNewContact_lable.Visible = false;
+        //    FormError_label.Visible = false;
         //    //שדות חובה כשעודים המרה לאיש קשר שם מלא מין תאריך לידה ת.זץ פרטים אישיים עיר האם קיים נכס בבעלות הלקוח כתובת הנכס 
         //   //- האם קיים נכס בבעלות הלקוח חייב להיות מסומן עם ויtodo
         //    if (FirstName.Value == "")
         //    {
         //        ErrorCount++;
-        //        ExportNewContact_lable.Visible = true;
-        //        ExportNewContact_lable.Text = "יש להזין שם פרטי";
+        //        FormError_label.Visible = true;
+        //        FormError_label.Text = "יש להזין שם פרטי";
         //    }
         //    else if (LastName.Value == "")
         //    {
         //        ErrorCount++;
-        //        ExportNewContact_lable.Visible = true;
-        //        ExportNewContact_lable.Text = "יש להזין שם משפחה";
+        //        FormError_label.Visible = true;
+        //        FormError_label.Text = "יש להזין שם משפחה";
         //    }
         //    else if (SelectGender.Value == "")
         //    {
         //        ErrorCount++;
-        //        ExportNewContact_lable.Visible = true;
-        //        ExportNewContact_lable.Text = "יש להזין מין";
+        //        FormError_label.Visible = true;
+        //        FormError_label.Text = "יש להזין מין";
         //    }
         //    else if (DateBirth.Value == "")
         //    {
         //        ErrorCount++;
-        //        ExportNewContact_lable.Visible = true;
-        //        ExportNewContact_lable.Text = "יש להזין תאריך לידה";
+        //        FormError_label.Visible = true;
+        //        FormError_label.Text = "יש להזין תאריך לידה";
         //    }
         //    else if (DateTime.Parse(DateBirth.Value) > DateTime.Now)
         //    {
         //        ErrorCount++;
-        //        ExportNewContact_lable.Visible = true;
-        //        ExportNewContact_lable.Text = "יש להזין תאריך לידה תקין";
+        //        FormError_label.Visible = true;
+        //        FormError_label.Text = "יש להזין תאריך לידה תקין";
         //    }
         //    else if (Tz.Value == "")
         //    {
         //        ErrorCount++;
-        //        ExportNewContact_lable.Visible = true;
-        //        ExportNewContact_lable.Text = "יש להזין ת.ז";
+        //        FormError_label.Visible = true;
+        //        FormError_label.Text = "יש להזין ת.ז";
         //    }
         //    else if (Tz.Value.Length != 9)
         //    {
         //        ErrorCount++;
-        //        ExportNewContact_lable.Visible = true;
-        //        ExportNewContact_lable.Text = "יש להזין ת.ז תקינה";
+        //        FormError_label.Visible = true;
+        //        FormError_label.Text = "יש להזין ת.ז תקינה";
         //    }
 
         //    if (ErrorCount == 0)
@@ -536,8 +538,8 @@ namespace ControlPanel
         //            cmdDelete.Parameters.AddWithValue("@LeadID", Request.QueryString["LeadID"]);
         //            if (DbProvider.ExecuteCommand(cmdDelete) <= 0)
         //            {
-        //                ExportNewContact_lable.Text = "* התרחשה שגיאה";
-        //                ExportNewContact_lable.Visible = true;
+        //                FormError_label.Text = "* התרחשה שגיאה";
+        //                FormError_label.Visible = true;
         //            }
         //            else
         //            {
@@ -546,8 +548,8 @@ namespace ControlPanel
         //        }
         //        else
         //        {
-        //            ExportNewContact_lable.Text = "התרחשה שגיאה";
-        //            ExportNewContact_lable.Visible = true;
+        //            FormError_label.Text = "התרחשה שגיאה";
+        //            FormError_label.Visible = true;
         //        }
         //    }
         //    return false;
@@ -557,163 +559,210 @@ namespace ControlPanel
         public bool funcSaveNewContact()
         {
             int ErrorCount = 0;
-            ExportNewContact_lable.Visible = false;
+            FormError_label.Visible = false;
+            FormErrorBottom_label.Visible = false;
 
             //שדות חובה כשעושים המרה לאיש קשר שם מלא מין תאריך לידה ת.ז. פרטים אישיים עיר האם קיים נכס בבעלות הלקוח כתובת הנכס 
             //- האם קיים נכס בבעלות הלקוח חייב להיות מסומן עם ויtodo
             if (FirstName.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין שם פרטי";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין שם פרטי";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין שם פרטי";
             }
             else if (LastName.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין שם משפחה";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין שם משפחה";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין שם משפחה";
             }
             else if (SelectGender.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין מין";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין מין";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין מין";
             }
             else if (DateBirth.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין תאריך לידה";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין תאריך לידה";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין תאריך לידה";
             }
             //else if (DateTime.ParseExact(DateBirth.Value, "dd.MM.yyyy", CultureInfo.InvariantCulture) > DateTime.Now)
                 else if (DateTime.Parse(DateBirth.Value) > DateTime.Now)
                     {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין תאריך לידה תקין";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין תאריך לידה תקין";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין תאריך לידה תקין";
             }
             else if (Tz.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין ת.ז";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין ת.ז";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין ת.ז";
             }
             else if (Tz.Value.Length != 9)
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין ת.ז תקינה";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין ת.ז תקינה";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין ת.ז תקינה";
             }
-            else if(Helpers.insuredTzExist(Tz.Value, -1) == "true")
+            else if(Helpers.insuredTzExist(Tz.Value, long.Parse(Request.QueryString["LeadID"])) == "true")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "ת.ז קיימת במערכת";
+                FormError_label.Visible = true;
+                FormError_label.Text = "ת.ז קיימת במערכת";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "ת.ז קיימת במערכת";
                 return false;
             }
             else if (Address.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין כתובת";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין כתובת";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין כתובת";
             }
             else if(SelectHaveAsset.SelectedIndex == 0)
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש לבחור האם קיים נכס בבעלות הלקוח";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש לבחור האם קיים נכס בבעלות הלקוח";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש לבחור האם קיים נכס בבעלות הלקוח";
             }
             else if(SelectHaveAsset.SelectedIndex == 1 && AssetAddress.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין כתובת נכס";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין כתובת נכס";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין כתובת נכס";
             }
          /*   else if (SelectFamilyStatus.SelectedIndex == 0)
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש לבחור מצב תעסוקתי";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש לבחור מצב תעסוקתי";
             }*/
             else if (BdiValidity.SelectedIndex == 0)
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "תקין/ לא תקין BDI יש לבחור";
+                FormError_label.Visible = true;
+                FormError_label.Text = "תקין/ לא תקין BDI יש לבחור";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "תקין/ לא תקין BDI יש לבחור";
             }
             else if (BdiValidity.SelectedIndex == 2 && InvalidBdiReason.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין סיבה לאי תקינות";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין סיבה לאי תקינות";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין סיבה לאי תקינות";
             }
             else if (BusinessName.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין שם העסק";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין שם העסק";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין שם העסק";
             }
             else if (BusinessSeniority.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין ותק במקום העבודה הנוכחי";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין ותק במקום העבודה הנוכחי";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין ותק במקום העבודה הנוכחי";
             }
             else if (PrevBusinessSeniority.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין ותק במקום העבודה הקודם";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין ותק במקום העבודה הקודם";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין ותק במקום העבודה הקודם";
             }
             else if (PrevBusinessSeniority.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין ותק במקום העבודה הקודם";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין ותק במקום העבודה הקודם";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין ותק במקום העבודה הקודם";
             }
             else if (BusinessCity.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין עיר בה ממוקם העסק";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין עיר בה ממוקם העסק";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין עיר בה ממוקם העסק";
             }
             //else if (SelectBusinessLineBusiness.SelectedIndex == 0)
             //{
             //    ErrorCount++;
-            //    ExportNewContact_lable.Visible = true;
-            //    ExportNewContact_lable.Text = "יש לבחור מצב תעסוקתי";
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש לבחור מצב תעסוקתי";
             //}            
             else if (BusinessProfession.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש לבחור מקצוע";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש לבחור מקצוע";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש לבחור מקצוע";
             }
             else if (BusinessGrossSalary.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין שכר ברוטו";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין שכר ברוטו";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין שכר ברוטו";
             }
             else if(Phone1.Value == "")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין מספר טלפון";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין מספר טלפון";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין מספר טלפון";
                 return false;
             }
             else if(Phone1.Value.Length < 9 || Phone1.Value.Substring(0, 1) != "0")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין מספר טלפון תקין";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין מספר טלפון תקין";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין מספר טלפון תקין";
                 return false;
             }
             else if (Helpers.insuredPhoneExist(Phone1.Value, long.Parse(Request.QueryString["LeadID"])) == "true")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "מספר הטלפון קיים במערכת";
+                FormError_label.Visible = true;
+                FormError_label.Text = "מספר הטלפון קיים במערכת";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "מספר הטלפון קיים במערכת";
                 return false;
             }
             if (ErrorCount == 0)
@@ -858,8 +907,10 @@ namespace ControlPanel
                 }
                 else
                 {
-                    ExportNewContact_lable.Text = "התרחשה שגיאה";
-                    ExportNewContact_lable.Visible = true;
+                    FormError_label.Text = "התרחשה שגיאה";
+                    FormError_label.Visible = true;
+                    FormErrorBottom_label.Text = "התרחשה שגיאה";
+                    FormErrorBottom_label.Visible = true;
                 }
             }
             return false;
@@ -944,90 +995,123 @@ namespace ControlPanel
         {
             //שם פרטי שם משפחה תאריך לידה תז טלפון אימייל סטטוס ראשי
             int ErrorCount = 0;
-            FormError_lable.Visible = false;
+            FormError_label.Visible = false;
+            FormErrorBottom_label.Visible = false;
             if (FirstName.Value == "")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין שם פרטי";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין שם פרטי";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין שם פרטי";
                 return false;
             }
             if (LastName.Value == "")
             { 
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין שם משפחה";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין שם משפחה";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין שם משפחה";
                 return false;
             }            
             if (Phone1.Value == "")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין מספר טלפון";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין מספר טלפון";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין מספר טלפון";
                 return false;
             }
             if (Phone1.Value.Length < 9 || Phone1.Value.Substring(0, 1) != "0")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין מספר טלפון תקין";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין מספר טלפון תקין";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין מספר טלפון תקין";
                 return false;
             }
             if (Helpers.insuredPhoneExist(Phone1.Value, long.Parse(Request.QueryString["LeadID"])) == "true")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "מספר הטלפון קיים במערכת";
+                FormError_label.Visible = true;
+                FormError_label.Text = "מספר הטלפון קיים במערכת";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "מספר הטלפון קיים במערכת";
                 return false;
             }
             if (Phone2.Value != "" && (Phone2.Value.Length < 9 || Phone2.Value.Substring(0, 1) != "0"))
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין מספר טלפון תקין";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין מספר טלפון תקין";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין מספר טלפון תקין";
                 return false;
             }
             if (Email.Value != "" && !Email.Value.Contains("@"))
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין אימייל תקין";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין אימייל תקין";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין אימייל תקין";
                 return false;
             }
              if (DateBirth.Value != "" && DateTime.Parse(DateBirth.Value) > DateTime.Now)
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין תאריך לידה תקין";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין תאריך לידה תקין";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין תאריך לידה תקין";
             }
             if (Tz.Value != "" && Tz.Value.Length != 9)
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין ת.ז תקינה";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין ת.ז תקינה";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין ת.ז תקינה";
             }
             if (Tz.Value != "" && Helpers.insuredTzExist(Tz.Value, long.Parse(Request.QueryString["LeadID"])) == "true")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "ת.ז קיימת במערכת";
+                FormError_label.Visible = true;
+                FormError_label.Text = "ת.ז קיימת במערכת";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "ת.ז קיימת במערכת";
                 return false;
             }
             //סטטוס מעקב לחייב למלא תאריך
             if(SelectFirstStatus.SelectedIndex == 8 && TrackingTime.Value == "")
             {
                 ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין זמן מעקב";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין זמן מעקב";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין זמן מעקב";
                 return false;
             }
             //סטטוס לא רלוונטי לחייב למלא סטטוס משני
             if (SelectFirstStatus.SelectedIndex == 7 && SelectSecondStatus.SelectedIndex == 0)
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין סטטוס משני";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין סטטוס משני";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין סטטוס משני";
                 return false;
+            }
+            if (BdiValidity.SelectedIndex == 2 && InvalidBdiReason.Value == "")
+            {
+                ErrorCount++;
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין סיבה לאי תקינות";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין סיבה לאי תקינות";
             }
             if (ErrorCount == 0)
             {
@@ -1078,7 +1162,6 @@ namespace ControlPanel
 ,PurposeLoan =@PurposeLoan
 ,MortgageBalance=@MortgageBalance
 ";
-
 
                 if (HttpContext.Current.Session["FirstStatusLeadID"].ToString() != SelectFirstStatus.Value)
                 {
@@ -1204,8 +1287,10 @@ namespace ControlPanel
                 else
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-                    FormError_lable.Text = "* התרחשה שגיאה";
-                    FormError_lable.Visible = true;
+                    FormError_label.Text = "* התרחשה שגיאה";
+                    FormError_label.Visible = true;
+                    FormErrorBottom_label.Text = "* התרחשה שגיאה";
+                    FormErrorBottom_label.Visible = true;
                 }
 
             }
@@ -1268,8 +1353,8 @@ namespace ControlPanel
         //        else
         //        {
         //            ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-        //            FormError_lable.Text = "* התרחשה שגיאה";
-        //            FormError_lable.Visible = true;
+        //            FormError_label.Text = "* התרחשה שגיאה";
+        //            FormError_label.Visible = true;
         //        }
 
         //    }

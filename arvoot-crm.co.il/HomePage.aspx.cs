@@ -91,7 +91,7 @@ namespace ControlPanel
                             numbersAgent.Visible = true;
                             Div1.Style.Add("height", "100%");
                             Div1.Style.Add("overflow-x", "scroll");
-                            SqlCommand sql = new SqlCommand("select * from SourceLoanOrInsurance where ID<4");
+                            SqlCommand sql = new SqlCommand("select * from SourceLoanOrInsurance where ID<7 or ID =11");
                             DataTable dt = DbProvider.GetDataTable(sql);
                             company1.InnerText = dt.Rows[0]["Text"].ToString();
                             CompanyID1.Value = dt.Rows[0]["ID"].ToString(); 
@@ -99,6 +99,15 @@ namespace ControlPanel
                             CompanyID2.Value = dt.Rows[1]["ID"].ToString(); 
                             company3.InnerText = dt.Rows[2]["Text"].ToString();
                             CompanyID3.Value = dt.Rows[2]["ID"].ToString();
+                            company4.InnerText = dt.Rows[3]["Text"].ToString();
+                            CompanyID4.Value = dt.Rows[3]["ID"].ToString();
+                            company5.InnerText = dt.Rows[4]["Text"].ToString();
+                            CompanyID5.Value = dt.Rows[4]["ID"].ToString();
+                            company6.InnerText = dt.Rows[5]["Text"].ToString();
+                            CompanyID6.Value = dt.Rows[5]["ID"].ToString(); 
+                            company7.InnerText = dt.Rows[6]["Text"].ToString();
+                            CompanyID7.Value = dt.Rows[6]["ID"].ToString();
+                     
                             break;
                         }
                     case "2":
@@ -378,7 +387,6 @@ namespace ControlPanel
                             cmdAgentNumbers.Parameters.AddWithValue("@SourceId", CompanyID1.Value);
                             cmdAgentNumbers.Parameters.AddWithValue("@AgentNumber", AgentNumber1.Value);
                             DbProvider.ExecuteCommand(cmdAgentNumbers);
-
                         }
                         if (!string.IsNullOrEmpty(AgentNumber2.Value))
                         {
@@ -387,8 +395,6 @@ namespace ControlPanel
                             cmdAgentNumbers.Parameters.AddWithValue("@SourceId", CompanyID2.Value);
                             cmdAgentNumbers.Parameters.AddWithValue("@AgentNumber", AgentNumber2.Value);
                             DbProvider.ExecuteCommand(cmdAgentNumbers);
-
-
                         }
                         if (!string.IsNullOrEmpty(AgentNumber3.Value))
                         {
@@ -397,11 +403,33 @@ namespace ControlPanel
                             cmdAgentNumbers.Parameters.AddWithValue("@SourceId", CompanyID3.Value);
                             cmdAgentNumbers.Parameters.AddWithValue("@AgentNumber", AgentNumber3.Value);
                             DbProvider.ExecuteCommand(cmdAgentNumbers);
-
-
+                        }
+                        if (!string.IsNullOrEmpty(AgentNumber4.Value))
+                        {
+                            SqlCommand cmdAgentNumbers = new SqlCommand(sqlAgentNumbers);
+                            cmdAgentNumbers.Parameters.AddWithValue("@CompanyManagerId", CompanyMaanagerID);
+                            cmdAgentNumbers.Parameters.AddWithValue("@SourceId", CompanyID4.Value);
+                            cmdAgentNumbers.Parameters.AddWithValue("@AgentNumber", AgentNumber4.Value);
+                            DbProvider.ExecuteCommand(cmdAgentNumbers);
+                        } 
+                        if (!string.IsNullOrEmpty(AgentNumber5.Value))
+                        {
+                            SqlCommand cmdAgentNumbers = new SqlCommand(sqlAgentNumbers);
+                            cmdAgentNumbers.Parameters.AddWithValue("@CompanyManagerId", CompanyMaanagerID);
+                            cmdAgentNumbers.Parameters.AddWithValue("@SourceId", CompanyID5.Value);
+                            cmdAgentNumbers.Parameters.AddWithValue("@AgentNumber", AgentNumber5.Value);
+                            DbProvider.ExecuteCommand(cmdAgentNumbers);
+                        }
+                        if (!string.IsNullOrEmpty(AgentNumber6.Value))
+                        {
+                            SqlCommand cmdAgentNumbers = new SqlCommand(sqlAgentNumbers);
+                            cmdAgentNumbers.Parameters.AddWithValue("@CompanyManagerId", CompanyMaanagerID);
+                            cmdAgentNumbers.Parameters.AddWithValue("@SourceId", CompanyID6.Value);
+                            cmdAgentNumbers.Parameters.AddWithValue("@AgentNumber", AgentNumber6.Value);
+                            DbProvider.ExecuteCommand(cmdAgentNumbers);
                         }
                     }
-
+                    AddAgentPopUp.Visible = false;
                     return true;
                 }
                 else
@@ -409,10 +437,7 @@ namespace ControlPanel
                     FormErrorAgent_lable.Text = "* התרחשה שגיאה";
                     FormErrorAgent_lable.Visible = true;
                 }
-
             }
-
-
             return false;
         }
 

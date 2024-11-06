@@ -181,7 +181,6 @@
                 <div class="col MarginDiv SecondaryDiv DivDetailsCusWidth" style="position: relative;">
                     <div class="row ServiceRequestDiv" style="margin-bottom: 12px;">
                         <lable class="InputLable">פרטי התקשרות</lable>
-                        <lable class="InputLable" style="width: 30%;">סטטוס</lable>
                     </div>
                     <div class="row  MarginRow" style="width: 100%; align-items: flex-end;">
                         <div style="width: 31%; margin-inline-end: 2%;" class="row">
@@ -193,8 +192,9 @@
                             <input id="Email" name="Email" type="text" runat="server" style="width: 100%;" class="InputAdd" />
 
                         </div>
-                        <div style="width: 30%;" class="row ContactDetailsStatus">
-                            <select runat="server" id="SelectFirstStatus" class="selectGlobal"></select>
+                        <div style="width: 30%;" class="row">
+                            <lable class="InputLable" style="width: 30%;">סטטוס ראשי</lable>
+
                         </div>
                     </div>
                 
@@ -205,7 +205,8 @@
                         </div>
 
                         <div style="width: 30%; justify-content: flex-end;" class="row">
-                            <select runat="server" id="SelectSecondStatus" class="selectGlobal"></select>
+                             <select runat="server" id="SelectFirstStatus" class="selectGlobal"></select>
+
                         </div>
                     </div>
                     <div class="row  ">
@@ -217,6 +218,11 @@
                         </div>
                         <div style="width: 21%; margin-inline-end: 4%;" class="row">
                             <lable class="InputLable">זמן מעקב</lable>
+                        </div>   
+                        <div style="width: 30%;" class="row">
+                             <lable class="InputLable" style="width: 30%;">סטטוס משני</lable>
+
+                          
                         </div>
                   
                     </div>
@@ -230,8 +236,12 @@
                         <div class="row" style="width: 16%; margin-inline-end: 4%;">
                             <input id="InterestedIn" name="InterestedIn" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
-                        <div style="width: 22%; margin-inline-end: 1%;" class="row">
+                        <div style="width: 22%; margin-inline-end: 4%;" class="row">
                             <input id="TrackingTime" name="TrackingTime" type="datetime-local" runat="server" style="width: 100%;" class="InputAdd" />
+                        </div>  
+                        <div style="width: 30%; justify-content: flex-end;" class="row">
+                               <select runat="server" id="SelectSecondStatus" class="selectGlobal"></select>
+
                         </div>
                     </div>
 
@@ -277,7 +287,7 @@
                     <div class="row MarginRow" style="width: 100%;">
                     
                         <div class="row ColUpLid">
-                            <label class="InputLable">טלפון:</label>
+                            <label class="InputLable">טלפון העסק:</label>
                             <input id="BusinessPhone" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row ColUpLid">
@@ -472,18 +482,14 @@
             </div>
 
             <div id="Div1" class="popUpOut MainDivDocuments" visible="false" runat="server">
-                <div id="Div2" class="popUpIn" style="width: 57%; height: 900px; margin-top: 160px; margin-bottom: 160px; direction: rtl; text-align: center; border-width: 2px;" runat="server">
+                <div id="Div2" class="popUpIn" style="width: 30%; height: 30%; margin-top:160px; margin-bottom:20px; direction: rtl; text-align: center; border-width: 2px;" runat="server">
                     <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ImageButton8" OnClick="CloseAddTime_Click" />
-                    <div class="col MainDivPopup">
-                        <label class="HeaderPopup">הגדר סטטוס להצעה</label>
-                        <label class="SecondaryHeaderPopup">בחר סוג רשומה עבור ההצעה החדשה. תוכל להוסיף את הרשמה בהגדרות האשיות שלך</label>
-                        <img src="images/icons/In_Treatment_Status_Button.png" runat="server" style="height: auto; width: 45%; margin-top: 48px;" />
-                        <div class="MainDivDocuments SecondaryDivPopup ListSelect" style="height: 350px;">
-                            <asp:RadioButtonList ID="rbList" runat="server" CssClass="radioButtonListBig"></asp:RadioButtonList>
-                        </div>
-                        <div>
-                            <asp:ImageButton ID="ImageButton9" runat="server" class="imgOkCancelPopUp" ImageUrl="images/icons/Choosing_Service_Request_Cancel_Button.png" Style="box-shadow: 0px 3px 9px 0px rgba(0, 0, 0, 0.5); border-radius: 40px;" OnClick="AddTimeOK_Click" />
-                            <asp:ImageButton ID="ImageButton10" runat="server" class="imgOkCancelPopUp" ImageUrl="images/icons/Choosing_Service_Request_Ok_Button.png" OnClick="AddTimeOK_Click" />
+                    <div class="col MainDivPopup" style="padding-top:60px;">
+                        <label class="HeaderPopup">ת.ז קיימת במערכת</label>
+                        <label class="SecondaryHeaderPopup">האם ברצונך לעבור לליד זה?</label>                      
+                        <div style ="width: 100%; margin-top: 10%;">
+                            <asp:Button ID="Yes" runat="server" style="width:30%" class="BtnSave" Text="כן"  OnClick="Yes_Click" />
+                            <asp:Button ID="No" runat="server" style="width:30%" class="BtnSave"  Text="לא" OnClick="No_Click" />
                         </div>
                     </div>
 

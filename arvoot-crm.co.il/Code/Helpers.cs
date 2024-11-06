@@ -561,7 +561,7 @@ namespace ControlPanel.HelpersFunctions
             {
                 return "missing parameter";
             }
-            string sql = "Select Top 1 Tz from Lead where Tz = @Tz and IsContact=1 ";
+            string sql = "Select Top 1 Tz from Lead where Tz = @Tz ";
             if (IDLead != -1)
             {
                 sql += " and ID<>" + IDLead;

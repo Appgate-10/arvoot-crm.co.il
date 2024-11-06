@@ -35,6 +35,7 @@ namespace ControlPanel
                 SelectFirstStatus.DataTextField = "Status";
                 SelectFirstStatus.DataValueField = "ID";
                 SelectFirstStatus.DataBind();
+                SelectFirstStatus.SelectedIndex = 1;
 
                 SqlCommand cmdSecondStatus = new SqlCommand("SELECT * FROM SecondStatusLead");
                 DataSet dsSecondStatus = DbProvider.GetDataSet(cmdSecondStatus);
@@ -136,6 +137,16 @@ namespace ControlPanel
         }
         protected void ShereLid_Click(object sender, ImageClickEventArgs e)
         {
+
+        }   
+        protected void Yes_Click(object sender, EventArgs e)
+        {
+            System.Web.HttpContext.Current.Response.Redirect("LeadEdit.aspx");
+            Div1.Visible = false;
+        } 
+        protected void No_Click(object sender, EventArgs e)
+        {
+            Div1.Visible = false;
 
         }
         protected void DeleteLid_Click(object sender, ImageClickEventArgs e)
@@ -248,10 +259,9 @@ namespace ControlPanel
             }
             if (Tz.Value != "" && Helpers.insuredTzExist(Tz.Value, -1) == "true")
             {
-                ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "ת.ז קיימת במערכת";
+                Div1.Visible = true;
                 return false;
+                
             }
             //סטטוס מעקב לחייב למלא תאריך
             if (SelectFirstStatus.SelectedIndex == 8 && TrackingTime.Value == "")
@@ -268,6 +278,12 @@ namespace ControlPanel
                 FormError_lable.Visible = true;
                 FormError_lable.Text = "יש להזין סטטוס משני";
                 return false;
+            }
+            if (BdiValidity.SelectedIndex == 2 && InvalidBdiReason.Value == "")
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין סיבה לאי תקינות";
             }
             if (ErrorCount == 0)
             {

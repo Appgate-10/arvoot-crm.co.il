@@ -1027,6 +1027,12 @@ namespace ControlPanel
                 FormError_lable.Text = "יש להזין סטטוס משני";
                 return false;
             }
+            if (BdiValidity.SelectedIndex == 2 && InvalidBdiReason.Value == "")
+            {
+                ErrorCount++;
+                FormError_lable.Visible = true;
+                FormError_lable.Text = "יש להזין סיבה לאי תקינות";
+            }
             if (ErrorCount == 0)
             {
                 string sql = @" Update Lead set 

@@ -11,7 +11,7 @@ namespace ControlPanel
 {
 
 
-    public partial class _LeadEdite
+    public partial class _LeadEdit
     {
 
         /// <summary>

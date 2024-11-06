@@ -113,7 +113,7 @@
     <Content Include="Offers.aspx" />
     <Content Include="css\theme.css" />
     <Content Include="images\icons\Export_New_Contact_Button.png" />
-    <Content Include="LeadEdite.aspx" />
+    <Content Include="LeadEdit.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="OfferEdit.aspx" />
     <Content Include="OfferAdd.aspx" />
@@ -359,12 +359,12 @@
     <Compile Include="DownloadFile.ashx.cs">
       <DependentUpon>DownloadFile.ashx</DependentUpon>
     </Compile>
-    <Compile Include="LeadEdite.aspx.cs">
-      <DependentUpon>LeadEdite.aspx</DependentUpon>
+    <Compile Include="LeadEdit.aspx.cs">
+      <DependentUpon>LeadEdit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="LeadEdite.aspx.designer.cs">
-      <DependentUpon>LeadEdite.aspx</DependentUpon>
+    <Compile Include="LeadEdit.aspx.designer.cs">
+      <DependentUpon>LeadEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>

@@ -169,17 +169,18 @@ namespace ControlPanel
       
         protected void btn_save_Click(object sender, EventArgs e)
         {
-            bool success = funcSave(sender, e);
-            if (!success)
+            long success = funcSave(sender, e);
+            if (success == 0)
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
             }
             else
             {
-                System.Web.HttpContext.Current.Response.Redirect(ListPageUrl);
+                //System.Web.HttpContext.Current.Response.Redirect(ListPageUrl);
+                Response.Redirect("LeadEdit.aspx?LeadID=" + success.ToString());
             }
         }
-        public bool funcSave(object sender, EventArgs e)
+        public long funcSave(object sender, EventArgs e)
         {
             //שם פרטי שם משפחה תאריך לידה תז טלפון אימייל סטטוס ראשי
             int ErrorCount = 0;
@@ -192,7 +193,7 @@ namespace ControlPanel
                 FormError_label.Text = "יש להזין שם פרטי";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין שם פרטי";
-                return false;
+                return 0;
             }
             if (LastName.Value == "")
             {
@@ -201,7 +202,7 @@ namespace ControlPanel
                 FormError_label.Text = "יש להזין שם משפחה";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין שם משפחה";
-                return false;
+                return 0;
             }
       
             if (Phone1.Value == "")
@@ -211,7 +212,7 @@ namespace ControlPanel
                 FormError_label.Text = "יש להזין מספר טלפון";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין מספר טלפון";
-                return false;
+                return 0;
             }
             if (Phone1.Value.Length < 9 || Phone1.Value.Substring(0, 1) != "0")
             {
@@ -220,7 +221,7 @@ namespace ControlPanel
                 FormError_label.Text = "יש להזין מספר טלפון תקין";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין מספר טלפון תקין";
-                return false;
+                return 0;
             } 
             if (Phone2.Value != "" &&( Phone2.Value.Length < 9 || Phone2.Value.Substring(0, 1) != "0"))
             {
@@ -229,7 +230,7 @@ namespace ControlPanel
                 FormError_label.Text = "יש להזין מספר טלפון תקין";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין מספר טלפון תקין";
-                return false;
+                return 0;
             }
             if (Helpers.insuredPhoneExist(Phone1.Value, -1 ) == "true")
             {
@@ -238,7 +239,7 @@ namespace ControlPanel
                 FormError_label.Text = "מספר הטלפון קיים במערכת";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "מספר הטלפון קיים במערכת";
-                return false;
+                return 0;
             }
             if (Email.Value != "" && !Email.Value.Contains("@"))
             {
@@ -247,7 +248,7 @@ namespace ControlPanel
                 FormError_label.Text = "יש להזין אימייל תקין";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין אימייל תקין";
-                return false;
+                return 0;
             }
              if (DateBirth.Value != "" && DateTime.Parse(DateBirth.Value) > DateTime.Now)
             {
@@ -256,6 +257,7 @@ namespace ControlPanel
                 FormError_label.Text = "יש להזין תאריך לידה תקין";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין תאריך לידה תקין";
+                return 0;
             }
             if (Tz.Value != "" && Tz.Value.Length != 9)
             {
@@ -264,6 +266,7 @@ namespace ControlPanel
                 FormError_label.Text = "יש להזין ת.ז תקינה";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין ת.ז תקינה";
+                return 0;
             }
             if (Tz.Value != "" && Helpers.insuredTzExist(Tz.Value, -1) == "true")
             {
@@ -272,7 +275,7 @@ namespace ControlPanel
                 FormError_label.Text = "ת.ז קיימת במערכת";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "ת.ז קיימת במערכת";
-                return false;
+                return 0;
             }
             //סטטוס מעקב לחייב למלא תאריך
             if (SelectFirstStatus.SelectedIndex == 8 && TrackingTime.Value == "")
@@ -282,7 +285,7 @@ namespace ControlPanel
                 FormError_label.Text = "יש להזין זמן מעקב";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין זמן מעקב";
-                return false;
+                return 0;
             }
             //סטטוס לא רלוונטי לחייב למלא סטטוס משני
             if (SelectFirstStatus.SelectedIndex == 7 && SelectSecondStatus.SelectedIndex ==0)
@@ -292,7 +295,7 @@ namespace ControlPanel
                 FormError_label.Text = "יש להזין סטטוס משני";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין סטטוס משני";
-                return false;
+                return 0;
             }
             if (ErrorCount == 0)
             {
@@ -503,7 +506,7 @@ namespace ControlPanel
                         DbProvider.ExecuteCommand(cmdAlert);
 
                     }
-                    return true;
+                    return LeadID;
                 }
                 else
                 {
@@ -516,7 +519,7 @@ namespace ControlPanel
 
             }
 
-            return false;
+            return 0;
         }
         
 

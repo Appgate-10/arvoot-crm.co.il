@@ -14,7 +14,7 @@ using System.Globalization;
 
 namespace ControlPanel
 {
-    public partial class _LeadEdite : System.Web.UI.Page
+    public partial class _LeadEdit : System.Web.UI.Page
     {
         ControlPanelInit Pageinit = new ControlPanelInit();
         private string strSrc = "חפש קובץ";
@@ -460,8 +460,6 @@ namespace ControlPanel
             if (!success)
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-
-
             }
             else
             {
@@ -587,8 +585,9 @@ namespace ControlPanel
                 ExportNewContact_lable.Visible = true;
                 ExportNewContact_lable.Text = "יש להזין תאריך לידה";
             }
-            else if (DateTime.ParseExact(DateBirth.Value, "dd.MM.yyyy", CultureInfo.InvariantCulture) > DateTime.Now)
-            {
+            //else if (DateTime.ParseExact(DateBirth.Value, "dd.MM.yyyy", CultureInfo.InvariantCulture) > DateTime.Now)
+                else if (DateTime.Parse(DateBirth.Value) > DateTime.Now)
+                    {
                 ErrorCount++;
                 ExportNewContact_lable.Visible = true;
                 ExportNewContact_lable.Text = "יש להזין תאריך לידה תקין";
@@ -628,7 +627,7 @@ namespace ControlPanel
             {
                 ErrorCount++;
                 ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין כתובת עסק";//Gila נראה שאמור להיות כתוב כתובת נכס
+                ExportNewContact_lable.Text = "יש להזין כתובת נכס";
             }
          /*   else if (SelectFamilyStatus.SelectedIndex == 0)
             {
@@ -798,7 +797,7 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@SecondStatusLeadID", string.IsNullOrEmpty(SelectSecondStatus.Value) ? (object)DBNull.Value : int.Parse(SelectSecondStatus.Value));
                 cmd.Parameters.AddWithValue("@SourceLeadID", string.IsNullOrEmpty(SelectSourceLead.Value) ? (object)DBNull.Value : int.Parse(SelectSourceLead.Value));
                 cmd.Parameters.AddWithValue("@InterestedIn", string.IsNullOrEmpty(InterestedIn.Value) ? (object)DBNull.Value : InterestedIn.Value);
-                cmd.Parameters.AddWithValue("@TrackingTime", string.IsNullOrEmpty(TrackingTime.Value) ? (object)DBNull.Value : DateTime.ParseExact(TrackingTime.Value, "dd/MM/yyyy", CultureInfo.InvariantCulture)  );
+                cmd.Parameters.AddWithValue("@TrackingTime", string.IsNullOrEmpty(TrackingTime.Value) ? (object)DBNull.Value : DateTime.Parse(TrackingTime.Value ));
 
                 cmd.Parameters.AddWithValue("@Note", string.IsNullOrEmpty(Note.Value) ? (object)DBNull.Value : Note.Value);
 

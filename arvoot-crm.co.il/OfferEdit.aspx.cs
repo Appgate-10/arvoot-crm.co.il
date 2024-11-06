@@ -156,8 +156,6 @@ namespace ControlPanel
             }
             else
             {
-                //Gila האם צריך להוסיף שורה זו?
-                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
                 TaskDiv.Visible = false;
             }
         }

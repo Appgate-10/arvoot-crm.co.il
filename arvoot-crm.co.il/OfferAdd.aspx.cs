@@ -295,7 +295,7 @@ namespace ControlPanel
                     for (int i = 0; i < myFile.Count; i++) {
                         try
                         {
-                            string FilePath1 = String.Format("{0}/OfferDocuments/", ConfigurationManager.AppSettings["MapPath1"]);                          
+                            string FilePath1 = String.Format("{0}/OfferDocuments/", ConfigurationManager.AppSettings["MapPath"]);                          
                             FileName1 = myFile[i].FileName;
 
                             myFile[i].PostedFile.SaveAs(Path.Combine(FilePath1, FileName1)); 
@@ -360,6 +360,7 @@ namespace ControlPanel
             else
             {
                 Response.Redirect("Contact.aspx?ContactID=" + Request.QueryString["ContactID"].ToString());
+                //Response.Redirect("Offers.aspx");
                // System.Web.HttpContext.Current.Response.Redirect(ListPageUrl);
             }
            

@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="DownloadFile.ashx.cs" Class="cp.cappsino.co.DownloadFile" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="DownloadFile.ashx.cs" Class="ControlPanel.DownloadFile" %>

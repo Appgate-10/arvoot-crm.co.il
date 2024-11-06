@@ -62,7 +62,7 @@
                 <asp:Button runat="server" ID="btn_save" Text="שמור" OnClick="btn_save_Click" Style="width: 110px; height: 35px;" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
             </div>
             <div>
-                <asp:Label ID="FormError_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
+                <asp:Label ID="FormError_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
             </div>
             <div class="NewOfferDiv">
                 <label class="NewOfferLable">ניהול ליד</label>
@@ -439,6 +439,13 @@
                 </div>
 
             </div>
+            <div class="DivLidTop">
+
+                <asp:Button runat="server" ID="BtnSave2" Text="שמור" OnClick="btn_save_Click" Style="width: 110px; height: 35px;" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
+            </div>
+            <div>
+                <asp:Label ID="FormErrorBottom_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
+            </div>
 
             <div id="StatusPopUp" class="popUpOut MainDivDocuments" style="display: none;" runat="server">
                 <div id="Div3" class="popUpIn" style="width: 57%; height: 940px; margin-top: 160px; margin-bottom: 160px; direction: rtl; text-align: center; border-width: 2px;" runat="server">
@@ -483,7 +490,7 @@
 
             <div id="Div1" class="popUpOut MainDivDocuments" visible="false" runat="server">
                 <div id="Div2" class="popUpIn" style="width: 30%; height: 30%; margin-top:160px; margin-bottom:20px; direction: rtl; text-align: center; border-width: 2px;" runat="server">
-                    <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ImageButton8" OnClick="CloseAddTime_Click" />
+                    <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ImageButton8" OnClick="CloseTzPopUp_Click" />
                     <div class="col MainDivPopup" style="padding-top:60px;">
                         <label class="HeaderPopup">ת.ז קיימת במערכת</label>
                         <label class="SecondaryHeaderPopup">האם ברצונך לעבור לליד זה?</label>                      

@@ -70,6 +70,12 @@ namespace ControlPanel
             AllTasksList.Visible = false;
             
         }
+        protected void navigateToOtherPage(object sender, EventArgs e)
+        {
+            System.Web.HttpContext.Current.Response.Redirect("HomePage.aspx");
+
+
+        }
         protected void DeleteTask_Command(object sender, CommandEventArgs e)
         {
             string strDel = "delete from Tasks where ID = @ID ";

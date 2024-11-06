@@ -622,7 +622,11 @@ namespace ControlPanel
             }
             else
             {
-                System.Web.HttpContext.Current.Response.Redirect("Contacts.aspx");
+                //System.Web.HttpContext.Current.Response.Redirect("Contacts.aspx");
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+                loadData();
+
             }
         }
         public bool funcSave(object sender, EventArgs e)
@@ -671,7 +675,7 @@ namespace ControlPanel
                 ExportNewContact_lable.Visible = true;
                 ExportNewContact_lable.Text = "יש להזין ת.ז תקינה";
             }
-            else if (Helpers.insuredTzExist(Tz.Value, -1) == "true")
+            else if (Helpers.insuredTzExist(Tz.Value, long.Parse(Request.QueryString["ContactID"])) == "true")
             {
                 ErrorCount++;
                 ExportNewContact_lable.Visible = true;
@@ -694,7 +698,7 @@ namespace ControlPanel
             {
                 ErrorCount++;
                 ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין כתובת עסק";//Gila נראה שאמור להיות כתוב כתובת נכס
+                ExportNewContact_lable.Text = "יש להזין כתובת נכס";
             }
           
             /*   else if (SelectFamilyStatus.SelectedIndex == 0)
@@ -777,7 +781,7 @@ namespace ControlPanel
                 FormError_lable.Text = "יש להזין מספר טלפון תקין";
                 return false;
             }
-            else if (Helpers.insuredPhoneExist(Phone1.Value, long.Parse(Request.QueryString["LeadID"])) == "true")
+            else if (Helpers.insuredPhoneExist(Phone1.Value, long.Parse(Request.QueryString["ContactID"])) == "true")
             {
                 ErrorCount++;
                 ExportNewContact_lable.Visible = true;
@@ -961,7 +965,6 @@ namespace ControlPanel
 ,InterestedIn=@InterestedIn
 ,TrackingTime=@TrackingTime
 ,Note=@Note
-,AgentID=@AgentID
 ,BusinessName=@BusinessName
 ,BusinessSeniority=@BusinessSeniority
 ,PrevBusinessSeniority=@PrevBusinessSeniority
@@ -996,10 +999,10 @@ namespace ControlPanel
 
                 cmd.Parameters.AddWithValue("@FirstName", FirstName.Value);
                 cmd.Parameters.AddWithValue("@LastName", LastName.Value);
-                cmd.Parameters.AddWithValue("@GenderID", string.IsNullOrEmpty(SelectGender.Value) ? (object)DBNull.Value : SelectGender.Value);
+                cmd.Parameters.AddWithValue("@GenderID", string.IsNullOrWhiteSpace(SelectGender.Value) ? (object)DBNull.Value : SelectGender.Value);
                 cmd.Parameters.AddWithValue("@DateBirth", DateBirth.Value);
                 cmd.Parameters.AddWithValue("@Address", string.IsNullOrEmpty(Address.Value) ? (object)DBNull.Value : Address.Value);
-                cmd.Parameters.AddWithValue("@FamilyStatusID", string.IsNullOrEmpty(SelectFamilyStatus.Value) ? (object)DBNull.Value : SelectFamilyStatus.Value);
+                cmd.Parameters.AddWithValue("@FamilyStatusID", string.IsNullOrWhiteSpace(SelectFamilyStatus.Value) ? (object)DBNull.Value : SelectFamilyStatus.Value);
                 cmd.Parameters.AddWithValue("@Tz", Tz.Value);
                 cmd.Parameters.AddWithValue("@IssuanceDateTz", string.IsNullOrEmpty(IssuanceDateTz.Value) ? (object)DBNull.Value : DateTime.Parse(IssuanceDateTz.Value));
                 //cmd.Parameters.AddWithValue("@IsValidIssuanceDateTz", IsValidIssuanceDateTz.Checked == true ? 1 : 0);
@@ -1008,24 +1011,11 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@Phone1", Phone1.Value);
                 cmd.Parameters.AddWithValue("@Phone2", string.IsNullOrEmpty(Phone2.Value) ? (object)DBNull.Value : Phone2.Value);
                 cmd.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(Email.Value) ? (object)DBNull.Value : (Email.Value));
-                cmd.Parameters.AddWithValue("@SourceLeadID", string.IsNullOrEmpty(SelectSourceLead.Value) ? (object)DBNull.Value : int.Parse(SelectSourceLead.Value));
+                cmd.Parameters.AddWithValue("@SourceLeadID", string.IsNullOrWhiteSpace(SelectSourceLead.Value) ? (object)DBNull.Value : int.Parse(SelectSourceLead.Value));
                 cmd.Parameters.AddWithValue("@InterestedIn", string.IsNullOrEmpty(InterestedIn.Value) ? (object)DBNull.Value : InterestedIn.Value);
                 cmd.Parameters.AddWithValue("@TrackingTime", string.IsNullOrEmpty(TrackingTime.Value) ? (object)DBNull.Value : DateTime.Parse(TrackingTime.Value));
 
                 cmd.Parameters.AddWithValue("@Note", string.IsNullOrEmpty(Note.Value) ? (object)DBNull.Value : Note.Value);
-
-
-
-                try
-                {
-                    Pageinit.CheckManagerPermissions();
-                    cmd.Parameters.AddWithValue("@AgentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
-                }
-                catch (Exception ex)
-                {
-                    System.Web.HttpContext.Current.Response.Redirect("SignIn.aspx");
-                }
-
 
                 cmd.Parameters.AddWithValue("@BusinessName", string.IsNullOrEmpty(BusinessName.Value) ? (object)DBNull.Value : BusinessName.Value);
                 cmd.Parameters.AddWithValue("@BusinessSeniority", string.IsNullOrEmpty(BusinessSeniority.Value) ? (object)DBNull.Value : BusinessSeniority.Value);
@@ -1035,8 +1025,8 @@ namespace ControlPanel
                 //cmd.Parameters.AddWithValue("@BusinessEmail", string.IsNullOrEmpty(BusinessEmail.Value) ? (object)DBNull.Value : BusinessEmail.Value);
                 cmd.Parameters.AddWithValue("@BusinessPhone", string.IsNullOrEmpty(BusinessPhone.Value) ? (object)DBNull.Value : BusinessPhone.Value);
                 cmd.Parameters.AddWithValue("@BusinessGrossSalary", string.IsNullOrEmpty(BusinessGrossSalary.Value) ? (object)DBNull.Value : BusinessGrossSalary.Value);
-                cmd.Parameters.AddWithValue("@BusinessLineBusiness", string.IsNullOrEmpty(SelectBusinessEmploymentStatus.Value) ? (object)DBNull.Value : int.Parse(SelectBusinessEmploymentStatus.Value));
-                cmd.Parameters.AddWithValue("@PartnerLineBusiness", string.IsNullOrEmpty(SelectPartnerEmploymentStatus.Value) ? (object)DBNull.Value : int.Parse(SelectPartnerEmploymentStatus.Value));
+                cmd.Parameters.AddWithValue("@BusinessLineBusiness", string.IsNullOrWhiteSpace(SelectBusinessEmploymentStatus.Value) ? (object)DBNull.Value : int.Parse(SelectBusinessEmploymentStatus.Value));
+                cmd.Parameters.AddWithValue("@PartnerLineBusiness", string.IsNullOrWhiteSpace(SelectPartnerEmploymentStatus.Value) ? (object)DBNull.Value : int.Parse(SelectPartnerEmploymentStatus.Value));
                 cmd.Parameters.AddWithValue("@PartnerName", string.IsNullOrEmpty(PartnerName.Value) ? (object)DBNull.Value : PartnerName.Value);
                 cmd.Parameters.AddWithValue("@PartnerGrossSalary", string.IsNullOrEmpty(PartnerGrossSalary.Value) ? (object)DBNull.Value : PartnerGrossSalary.Value);
                 cmd.Parameters.AddWithValue("@PartnerAge", string.IsNullOrEmpty(PartnerAge.Value) ? (object)DBNull.Value : PartnerAge.Value);
@@ -1047,7 +1037,7 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@AssetType", string.IsNullOrEmpty(AssetType.Value) ? (object)DBNull.Value : AssetType.Value);
                 cmd.Parameters.AddWithValue("@AssetAddress", string.IsNullOrEmpty(AssetAddress.Value) ? (object)DBNull.Value : AssetAddress.Value);
 
-                cmd.Parameters.AddWithValue("@HaveMortgageOnAsset", SelectHaveMortgageOnAsset);
+                cmd.Parameters.AddWithValue("@HaveMortgageOnAsset", SelectHaveMortgageOnAsset.SelectedIndex);
                 cmd.Parameters.AddWithValue("@MortgageAmount", string.IsNullOrEmpty(MortgageAmount.Value) ? (object)DBNull.Value : long.Parse(MortgageAmount.Value));
                 cmd.Parameters.AddWithValue("@MonthlyRepaymentAmount", string.IsNullOrEmpty(MonthlyRepaymentAmount.Value) ? (object)DBNull.Value : int.Parse(MonthlyRepaymentAmount.Value));
                 cmd.Parameters.AddWithValue("@LendingBank", string.IsNullOrEmpty(LendingBank.Value) ? (object)DBNull.Value : LendingBank.Value);

@@ -17,7 +17,7 @@ namespace ControlPanel
         ControlPanelInit Pageinit = new ControlPanelInit();
         private string strSrc = "חפש קובץ";
         public string StrSrc { get { return strSrc; } }
-        public string ListPageUrl = "LeadAdd.aspx";
+        public string ListPageUrl = "Leads.aspx";
 
         //בליד התעודה זהות לא ייחודית
 
@@ -141,7 +141,21 @@ namespace ControlPanel
         }   
         protected void Yes_Click(object sender, EventArgs e)
         {
-            System.Web.HttpContext.Current.Response.Redirect("LeadEdit.aspx");
+            SqlCommand cmd = new SqlCommand("select ID,IsContact from Lead where Tz = @Tz");
+            cmd.Parameters.AddWithValue("Tz" , Tz.Value);
+            DataTable dt = DbProvider.GetDataTable(cmd);
+            if(dt.Rows.Count > 0)
+            {
+                if (int.Parse(dt.Rows[0]["IsContact"].ToString()) == 0)
+                {
+                    System.Web.HttpContext.Current.Response.Redirect("LeadEdit.aspx?LeadID=" + dt.Rows[0]["ID"].ToString());
+                }
+                else
+                {
+                    System.Web.HttpContext.Current.Response.Redirect("Contact.aspx?ContactID=" + dt.Rows[0]["ID"].ToString());
+                }
+            }
+            
             Div1.Visible = false;
         } 
         protected void No_Click(object sender, EventArgs e)
@@ -176,114 +190,146 @@ namespace ControlPanel
         protected void CloseAddTime_Click(object sender, ImageClickEventArgs e)
         {
         }
-
+        protected void CloseTzPopUp_Click(object sender, ImageClickEventArgs e)
+        {
+            Div1.Visible = false;
+        }
       
         protected void btn_save_Click(object sender, EventArgs e)
         {
-            bool success = funcSave(sender, e);
-            if (!success)
+            long success = funcSave(sender, e);
+            if (success == 0)
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
             }
             else
             {
-                System.Web.HttpContext.Current.Response.Redirect(ListPageUrl);
+                //System.Web.HttpContext.Current.Response.Redirect(ListPageUrl);
+                Response.Redirect("LeadEdit.aspx?LeadID=" + success.ToString());
             }
         }
-        public bool funcSave(object sender, EventArgs e)
+        public long funcSave(object sender, EventArgs e)
         {
             //שם פרטי שם משפחה תאריך לידה תז טלפון אימייל סטטוס ראשי
             int ErrorCount = 0;
-            FormError_lable.Visible = false;
+            FormError_label.Visible = false;
+            FormErrorBottom_label.Visible = false;
             if (FirstName.Value == "")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין שם פרטי";
-                return false;
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין שם פרטי";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין שם פרטי";
+                return 0;
             }
             if (LastName.Value == "")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין שם משפחה";
-                return false;
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין שם משפחה";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין שם משפחה";
+                return 0;
             }
       
             if (Phone1.Value == "")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין מספר טלפון";
-                return false;
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין מספר טלפון";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין מספר טלפון";
+                return 0;
             }
             if (Phone1.Value.Length < 9 || Phone1.Value.Substring(0, 1) != "0")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין מספר טלפון תקין";
-                return false;
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין מספר טלפון תקין";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין מספר טלפון תקין";
+                return 0;
             } 
             if (Phone2.Value != "" &&( Phone2.Value.Length < 9 || Phone2.Value.Substring(0, 1) != "0"))
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין מספר טלפון תקין";
-                return false;
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין מספר טלפון תקין";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין מספר טלפון תקין";
+                return 0;
             }
             if (Helpers.insuredPhoneExist(Phone1.Value, -1 ) == "true")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "מספר הטלפון קיים במערכת";
-                return false;
+                FormError_label.Visible = true;
+                FormError_label.Text = "מספר הטלפון קיים במערכת";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "מספר הטלפון קיים במערכת";
+                return 0;
             }
             if (Email.Value != "" && !Email.Value.Contains("@"))
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין אימייל תקין";
-                return false;
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין אימייל תקין";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין אימייל תקין";
+                return 0;
             }
              if (DateBirth.Value != "" && DateTime.Parse(DateBirth.Value) > DateTime.Now)
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין תאריך לידה תקין";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין תאריך לידה תקין";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין תאריך לידה תקין";
+                return 0;
             }
             if (Tz.Value != "" && Tz.Value.Length != 9)
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין ת.ז תקינה";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין ת.ז תקינה";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין ת.ז תקינה";
+                return 0;
             }
             if (Tz.Value != "" && Helpers.insuredTzExist(Tz.Value, -1) == "true")
             {
                 Div1.Visible = true;
-                return false;
-                
+                return 0;
+   
             }
             //סטטוס מעקב לחייב למלא תאריך
             if (SelectFirstStatus.SelectedIndex == 8 && TrackingTime.Value == "")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין זמן מעקב";
-                return false;
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין זמן מעקב";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין זמן מעקב";
+                return 0;
             }
             //סטטוס לא רלוונטי לחייב למלא סטטוס משני
             if (SelectFirstStatus.SelectedIndex == 7 && SelectSecondStatus.SelectedIndex ==0)
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין סטטוס משני";
-                return false;
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין סטטוס משני";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין סטטוס משני";
+                return 0;
             }
             if (BdiValidity.SelectedIndex == 2 && InvalidBdiReason.Value == "")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין סיבה לאי תקינות";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין סיבה לאי תקינות";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין סיבה לאי תקינות";
+                return 0;
             }
             if (ErrorCount == 0)
             {
@@ -494,18 +540,20 @@ namespace ControlPanel
                         DbProvider.ExecuteCommand(cmdAlert);
 
                     }
-                    return true;
+                    return LeadID;
                 }
                 else
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-                    FormError_lable.Text = "* התרחשה שגיאה";
-                    FormError_lable.Visible = true;
+                    FormError_label.Text = "* התרחשה שגיאה";
+                    FormError_label.Visible = true;
+                    FormErrorBottom_label.Text = "* התרחשה שגיאה";
+                    FormErrorBottom_label.Visible = true;
                 }
 
             }
 
-            return false;
+            return 0;
         }
         
 

@@ -58,7 +58,7 @@
                             <label style="margin-inline-end: 5px;">עודכן ב: </label>
                             <label id="currentTime" runat="server"></label>
                         </div>
-                        <asp:ImageButton runat="server" OnClientClick="navigateToOtherPage()" ImageUrl="~/images/icons/Topbar_Logo_1.png " />
+                        <asp:ImageButton runat="server" OnClick="navigateToOtherPage" ImageUrl="~/images/icons/Topbar_Logo_1.png " />
                     </div>
                     <div class="row nav-bar" id="AfterSignIn2" runat="server">
                         <div style="width: 14.5%; text-align: right; padding-left: 2%; color: #973595;">
@@ -308,7 +308,7 @@
                                     
                             <div class="col form-input-wrapper">
                                         <span class="form-span-wrapper">סיסמא</span>
-                                        <input runat="server" type="text" name="PasswordAgent" id="PasswordAgent" placeholder="סיסמא" />
+                                        <input runat="server" type="text" name="PasswordAgent" id="PasswordAgent" placeholder="סיסמא" autocomplete="off" />
                                     </div>
                                 </div>
                         <div class="col form-group-wrapper" style="margin-right: 15px; height: 100%;">
@@ -427,7 +427,7 @@
     }
 
     function navigateToOtherPage() {
-        window.location.href = 'HomePage.aspx';
+        window.location.replace('/HomePage.aspx');
     }
 
 

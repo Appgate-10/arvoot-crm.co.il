@@ -179,7 +179,6 @@ namespace ControlPanel
             if (HttpContext.Current.Session["AgentLevel"] != null) {
                 switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
                 {
-             
                     case 2:
                         sqlJoin =  " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on C.ID = B.ParentID ";
                         sqlWhere = " and C.ID = @ID";
@@ -523,7 +522,7 @@ namespace ControlPanel
 
         protected void BtnDetailsLead_Command(object sender, CommandEventArgs e)
         {
-            Response.Redirect("LeadEdite.aspx?LeadID=" + e.CommandArgument.ToString());
+            Response.Redirect("LeadEdit.aspx?LeadID=" + e.CommandArgument.ToString());
         }
 
         protected void AgentsList_SelectedIndexChanged(object sender, EventArgs e)

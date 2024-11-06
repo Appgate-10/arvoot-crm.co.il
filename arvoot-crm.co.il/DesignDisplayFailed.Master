@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="DesignDisplayFailed.master.cs" Inherits="cp.cappsino.co.DesignDisplayFailed" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="DesignDisplayFailed.master.cs" Inherits="ControlPanel.DesignDisplayFailed" %>
 
 <!DOCTYPE html>
 

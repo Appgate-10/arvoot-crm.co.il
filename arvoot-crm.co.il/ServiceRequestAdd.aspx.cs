@@ -269,57 +269,72 @@ namespace ControlPanel
             Session["payments"] = payments;
 
             int ErrorCount = 0;
-            FormError_lable.Visible = false;
+            FormError_label.Visible = false;
+            FormErrorBottom_label.Visible = false;
             //שם פרטי שם משפחה תאריך לידה תז טלפון אימייל סטטוס ראשי
 
             if (Invoice.Value == "")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין חשבון";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין חשבון";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין חשבון";
                 return 0;
             }
             if (AllSum.Value == "")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין סכום כולל לגבייה";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין סכום כולל לגבייה";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין סכום כולל לגבייה";
                 return 0;
             }
            if(SelectPurpose.SelectedIndex == 0)
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין מטרת הגבייה";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין מטרת הגבייה";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין מטרת הגבייה";
                 return 0;
             }
 
             if (payments.Count == 0)
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין פרטי תשלום ראשון";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין פרטי תשלום ראשון";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין פרטי תשלום ראשון";
                 return 0;
             }
             if (payments[0].SumPayment == 0)
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין סכום לתשלום ראשון";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין סכום לתשלום ראשון";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין סכום לתשלום ראשון";
                 return 0;
             }
             if (payments[0].DatePayment == "")
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין תאריך תשלום ראשון";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין תאריך תשלום ראשון";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין תאריך תשלום ראשון";
                 return 0;
             }
             if (payments[0].NumPayment == 0)
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין מספר תשלומים לתשלום ראשון";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין מספר תשלומים לתשלום ראשון";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין מספר תשלומים לתשלום ראשון";
                 return 0;
             }
 
@@ -331,20 +346,26 @@ namespace ControlPanel
                     {
                         if (payments[i].SumPayment == 0)
                         {
-                            FormError_lable.Visible = true;
-                            FormError_lable.Text = "יש להזין סכום לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1);
+                            FormError_label.Visible = true;
+                            FormError_label.Text = "יש להזין סכום לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1);
+                            FormErrorBottom_label.Visible = true;
+                            FormErrorBottom_label.Text = "יש להזין סכום לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1);
                             return 0;
                         }
                         if (payments[i].DatePayment == "")
                         {
-                            FormError_lable.Visible = true;
-                            FormError_lable.Text = "יש להזין תאריך תשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
+                            FormError_label.Visible = true;
+                            FormError_label.Text = "יש להזין תאריך תשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
+                            FormErrorBottom_label.Visible = true;
+                            FormErrorBottom_label.Text = "יש להזין תאריך תשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
                             return 0;
                         }
                         if (payments[i].NumPayment == 0)
                         {
-                            FormError_lable.Visible = true;
-                            FormError_lable.Text = "יש להזין מספר תשלומים לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
+                            FormError_label.Visible = true;
+                            FormError_label.Text = "יש להזין מספר תשלומים לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
+                            FormErrorBottom_label.Visible = true;
+                            FormErrorBottom_label.Text = "יש להזין מספר תשלומים לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
                             return 0;
                         }
                     }
@@ -357,22 +378,28 @@ namespace ControlPanel
                 if (BankName.Value == "")
                 {
                     ErrorCount++;
-                    FormError_lable.Visible = true;
-                    FormError_lable.Text = "יש להזין שם בנק";
+                    FormError_label.Visible = true;
+                    FormError_label.Text = "יש להזין שם בנק";
+                    FormErrorBottom_label.Visible = true;
+                    FormErrorBottom_label.Text = "יש להזין שם בנק";
                     return 0;
                 } 
                 if (Branch.Value == "")
                 {
                     ErrorCount++;
-                    FormError_lable.Visible = true;
-                    FormError_lable.Text = "יש להזין סניף";
+                    FormError_label.Visible = true;
+                    FormError_label.Text = "יש להזין סניף";
+                    FormErrorBottom_label.Visible = true;
+                    FormErrorBottom_label.Text = "יש להזין סניף";
                     return 0;
                 }
                 if (AccountNumber.Value == "")
                 {
                     ErrorCount++;
-                    FormError_lable.Visible = true;
-                    FormError_lable.Text = "יש להזין מספר חשבון";
+                    FormError_label.Visible = true;
+                    FormError_label.Text = "יש להזין מספר חשבון";
+                    FormErrorBottom_label.Visible = true;
+                    FormErrorBottom_label.Text = "יש להזין מספר חשבון";
                     return 0;
                 }
             }
@@ -381,22 +408,26 @@ namespace ControlPanel
                 if (CreditNumber.Value == "")
                 {
                     ErrorCount++;
-                    FormError_lable.Visible = true;
-                    FormError_lable.Text = "יש להזין מספר כרטיס";
+                    FormError_label.Visible = true;
+                    FormError_label.Text = "יש להזין מספר כרטיס";
+                    FormErrorBottom_label.Visible = true;
+                    FormErrorBottom_label.Text = "יש להזין מספר כרטיס";
                     return 0;
                 }
                 //if (CreditValidity.Value == "")
                 //{
                 //    ErrorCount++;
-                //    FormError_lable.Visible = true;
-                //    FormError_lable.Text = "יש להזין תוקף";
+                //    FormError_label.Visible = true;
+                //    FormError_label.Text = "יש להזין תוקף";
                 //    return false;
                 //}
                 if (CardholdersID.Value == "")
                 {
                     ErrorCount++;
-                    FormError_lable.Visible = true;
-                    FormError_lable.Text = "יש להזין ת.ז. בעל הכרטיס";
+                    FormError_label.Visible = true;
+                    FormError_label.Text = "יש להזין ת.ז. בעל הכרטיס";
+                    FormErrorBottom_label.Visible = true;
+                    FormErrorBottom_label.Text = "יש להזין ת.ז. בעל הכרטיס";
                     return 0;
                 }
             }
@@ -486,8 +517,10 @@ namespace ControlPanel
                 else
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-                    FormError_lable.Text = "* התרחשה שגיאה";
-                    FormError_lable.Visible = true;
+                    FormError_label.Text = "* התרחשה שגיאה";
+                    FormError_label.Visible = true;
+                    FormErrorBottom_label.Text = "* התרחשה שגיאה";
+                    FormErrorBottom_label.Visible = true;
                 }
 
             }

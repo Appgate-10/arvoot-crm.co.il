@@ -153,26 +153,26 @@ namespace ControlPanel
 
                   
                     case 2:
-                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on C.ID = B.ParentID ";
                         sqlWhere = " and C.ID = @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     case 3:
-                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID  ";
-                        sqlWhere = " and B.ID = @ID";
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID  ";
+                        sqlWhere = " and (B.ID = @ID OR A.ID = @ID) ";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
 
                         break;
                     case 6:
-                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 ";
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) ";
                         sqlWhere = " and A.ID = @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     case 4:
-                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ParentID = A.ParentID  ";
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ParentID = A.ParentID  ";
                         sqlWhere = " and B.ID = @ID and IsInOperatingQueue = 1";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);

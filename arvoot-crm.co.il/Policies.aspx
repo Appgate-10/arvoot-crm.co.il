@@ -62,21 +62,6 @@
                                     <div style="width: 15%; text-align: right"><%#Eval("OfferType") %></div>
                                     <div style="width: 17%; text-align: right; padding-right: 4%"><%#Eval("CreateDate") %></div>
 
-
-
-                           <%--     <div style="width: 5%; text-align: center">
-                                    <asp:Image ID="BtnDetailsContact" Style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
-                                </div>
-                                <div style="width: 30%; text-align: right"><%#Eval("FullNameAgent") %></div>
-                                <div style="width: 10%; text-align: right"><%#Eval("DateBirth") %></div>
-                                <div style="width: 10%; text-align: right;"><%#Eval("Phone1") %></div>
-                                <div style="width: 10%; text-align: right;"><%#Eval("Tz") %></div>
-                                <div style="width: 10%; text-align: right;"><%#Eval("LastName") %></div>
-                                <div style="width: 10%; text-align: right"><%#Eval("FirstName") %></div>
-                                <div style="width: 10%; text-align: right"><%#Eval("createDate") %></div>
-                                <div style="width: 5%; text-align: center">
-                                     <asp:CheckBox ID="chk" runat="server" />
-                                </div>--%>
                             </div>
                         </asp:LinkButton>
                     </ItemTemplate>

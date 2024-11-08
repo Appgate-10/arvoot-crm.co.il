@@ -64,7 +64,7 @@
 
             </div>
             <div>
-                <asp:Label ID="FormError_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
+                <asp:Label ID="FormError_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
             </div>
             <div class="NewOfferDiv">
                 <label class="NewOfferLable">בקשת שירות חדשה</label>
@@ -383,6 +383,15 @@
                         <input id="CardholdersID" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                     </div>
                 </div>
+            </div>
+
+             <div class="DivLidTop"
+               
+                <asp:Button runat="server" ID="BtnSaveBottom" Text="שמור" OnClick="btn_save_Click" Style="width: 110px; height: 35px;" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
+
+            </div>
+            <div>
+                <asp:Label ID="FormErrorBottom_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
             </div>
 
             <%--            <asp:ImageButton ID="ImageButton2" runat="server" Style="margin-bottom: 50px; float: right; margin-top: 38px;" ImageUrl="~/images/icons/Choosing_Service_New_Service_Button.png" OnClick="CopyLid_Click" />--%>

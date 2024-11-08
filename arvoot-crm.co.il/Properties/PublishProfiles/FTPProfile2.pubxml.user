@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 This file is used by the publish/package process of your Web project. You can customize the behavior of this process
@@ -8,7 +7,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword />
-    <History>False|2024-11-06T12:19:56.4620630Z;</History>
+    <History>False|2024-11-06T13:59:11.4848732Z;</History>
     <_PublishTargetUrl>ftp://192.117.146.93:2121/vhosts/arvoot-crm.co.il/httpdocs</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
@@ -16,10 +15,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/03/2024 13:03:22</publishTime>
     </File>
     <File Include="bin/arvoot-crm.co.il.dll">
-      <publishTime>11/06/2024 14:20:02</publishTime>
+      <publishTime>11/07/2024 10:28:04</publishTime>
     </File>
     <File Include="bin/arvoot-crm.co.il.pdb">
-      <publishTime>11/06/2024 14:20:02</publishTime>
+      <publishTime>11/07/2024 10:28:04</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>10/08/2024 12:23:04</publishTime>
@@ -160,7 +159,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/05/2024 14:23:59</publishTime>
     </File>
     <File Include="HomePage.aspx">
-      <publishTime>11/05/2024 15:20:17</publishTime>
+      <publishTime>11/06/2024 15:57:00</publishTime>
     </File>
     <File Include="images/16X16.png">
       <publishTime>10/30/2024 10:24:16</publishTime>
@@ -592,7 +591,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/06/2024 14:16:19</publishTime>
     </File>
     <File Include="LeadEdit.aspx">
-      <publishTime>11/06/2024 14:16:19</publishTime>
+      <publishTime>11/06/2024 15:26:04</publishTime>
     </File>
     <File Include="Leads.aspx">
       <publishTime>10/30/2024 13:02:44</publishTime>
@@ -601,10 +600,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/03/2024 13:03:22</publishTime>
     </File>
     <File Include="OfferAdd.aspx">
-      <publishTime>11/03/2024 13:03:22</publishTime>
+      <publishTime>11/06/2024 15:39:43</publishTime>
     </File>
     <File Include="OfferEdit.aspx">
-      <publishTime>11/03/2024 13:03:22</publishTime>
+      <publishTime>06/11/2024 23:04:01</publishTime>
     </File>
     <File Include="Offers.aspx">
       <publishTime>10/15/2024 13:55:57</publishTime>
@@ -619,10 +618,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/04/2024 14:43:14</publishTime>
     </File>
     <File Include="ServiceRequestAdd.aspx">
-      <publishTime>11/03/2024 13:03:22</publishTime>
+      <publishTime>06/11/2024 23:19:30</publishTime>
     </File>
     <File Include="ServiceRequestEdit.aspx">
-      <publishTime>11/03/2024 13:03:22</publishTime>
+      <publishTime>06/11/2024 23:23:20</publishTime>
     </File>
     <File Include="ServiceRequests.aspx">
       <publishTime>10/27/2024 15:17:31</publishTime>
@@ -631,19 +630,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/04/2024 14:49:13</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/06/2024 14:20:11</publishTime>
+      <publishTime>11/06/2024 15:59:29</publishTime>
     </File>
   </ItemGroup>
-=======
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-This file is used by the publish/package process of your Web project. You can customize the behavior of this process
-by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
--->
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword />
-  </PropertyGroup>
->>>>>>> e47bb7c7c0353c7fbd78333c9b825fa622bd2cf0
 </Project>

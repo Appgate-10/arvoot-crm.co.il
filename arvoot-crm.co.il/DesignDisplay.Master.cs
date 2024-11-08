@@ -13,6 +13,7 @@ using System.IO;
 using System.Web.UI.HtmlControls;
 using System.Configuration;
 using ControlPanel.HelpersFunctions;
+using System.Text;
 
 namespace ControlPanel
 {
@@ -40,6 +41,19 @@ namespace ControlPanel
                     MainContentDiv.Style.Add("width", "100%");
                 }
             }
+
+            else
+            {
+                string eventTarget = Request["__EVENTTARGET"];
+                string eventArgument = Request["__EVENTARGUMENT"];
+
+                if (eventTarget == "EditAgent" && !string.IsNullOrEmpty(eventArgument))
+                {
+                    int agentId = int.Parse(eventArgument);
+                    EditAgent(agentId);
+                }
+            }
+
         }
         protected void Repeater2_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -63,12 +77,12 @@ namespace ControlPanel
             DataSet ds = DbProvider.GetDataSet(cmdAlerts);
             Repeater1.DataSource = ds;
             Repeater1.DataBind();
-        }  
+        }
         protected void CloseTasksListPopUp_Click(object sender, EventArgs e)
         {
             loadCountAlert();
             AllTasksList.Visible = false;
-            
+
         }
         protected void navigateToOtherPage(object sender, EventArgs e)
         {
@@ -84,7 +98,7 @@ namespace ControlPanel
             if (DbProvider.ExecuteCommand(cmdDel) <= 0)
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-               
+
             }
             TaskListOpen_Click(sender, null);
         }
@@ -117,7 +131,7 @@ namespace ControlPanel
             var popUpId = btn.ID.Replace("BtnBarItem", "PopUp");
             var popUp = (HtmlGenericControl)FindControl(popUpId);
 
-            if (HttpContext.Current.Session["popUp"] != null&& HttpContext.Current.Session["popUp"].ToString()!=popUpId) 
+            if (HttpContext.Current.Session["popUp"] != null && HttpContext.Current.Session["popUp"].ToString() != popUpId)
             {
                 var prevPopUpIp = (HtmlGenericControl)FindControl(HttpContext.Current.Session["popUp"].ToString());
                 var prevBtnStr = HttpContext.Current.Session["popUp"].ToString().Replace("PopUp", "BtnBarItem");
@@ -126,7 +140,7 @@ namespace ControlPanel
             }
             HttpContext.Current.Session["popUp"] = popUpId;
             bool isOpen = popUp.Visible;
-            OpenCloseBtnPopUp(isOpen,btn,popUp);
+            OpenCloseBtnPopUp(isOpen, btn, popUp);
         }
         public void OpenCloseBtnPopUp(bool isOpen, Button btn, HtmlGenericControl popUp)
         {
@@ -171,7 +185,7 @@ namespace ControlPanel
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
             string imageFileUrl = DbProvider.GetOneParamValueString(cmd);
-            if(!string.IsNullOrEmpty(imageFileUrl))
+            if (!string.IsNullOrEmpty(imageFileUrl))
                 ProfileAgent.ImageUrl = ConfigurationManager.AppSettings["FilesUrl"] + "Agent/" + imageFileUrl;
             AgentName.Text = HttpContext.Current.Session["AgentName"].ToString();
             currentTime.InnerText = DateTime.Now.ToShortTimeString();
@@ -179,8 +193,8 @@ namespace ControlPanel
             loadCountAlert();
             loadActivityHistory(DateTime.Today);
 
-        }     
-        
+        }
+
         public void loadCountAlert()
         {
             //string sql = "select COUNT(*) from Tasks ";
@@ -204,16 +218,16 @@ namespace ControlPanel
         {
             string sqlHistory = "SELECT * FROM ActivityHistory WHERE AgentID = @agentID AND Show = 1 ";
             sqlHistory += "AND DATEADD(dd, 0, DATEDIFF(dd, 0, @theDate)) = DATEADD(dd, 0, DATEDIFF(dd, 0, CreateDate)) ";
-           
+
             SqlCommand cmdHistory = new SqlCommand(sqlHistory);
             cmdHistory.Parameters.AddWithValue("@agentID", HttpContext.Current.Session["AgentID"]);
             cmdHistory.Parameters.AddWithValue("@theDate", selectedDate);
-            
+
             DataSet dsHistory = DbProvider.GetDataSet(cmdHistory);
 
             Repeater2.DataSource = dsHistory;
             Repeater2.DataBind();
-            }
+        }
         protected void LogOutBU_Click(object sender, EventArgs e)
         {
 
@@ -228,12 +242,16 @@ namespace ControlPanel
 
             //System.Web.HttpContext.Current.Response.Redirect("SignIn.aspx");
 
+
+            setProfileEditPopUp(int.Parse(HttpContext.Current.Session["AgentID"].ToString()), false);
+            /*
             SqlCommand cmdAgent = new SqlCommand("Select * From ArvootManagers Where ID = @AgentID");
             cmdAgent.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
             DataTable dtAgent = DbProvider.GetDataTable(cmdAgent);
             if (dtAgent.Rows.Count > 0)
             {
                 SetAgentPopUp.Visible = true;
+                BtnAgents.Visible = true;
                 Name.Value = dtAgent.Rows[0]["FullName"].ToString();
                 EmailA.Value = dtAgent.Rows[0]["Email"].ToString();
                 Tz.Value = dtAgent.Rows[0]["Tz"].ToString();
@@ -247,7 +265,7 @@ namespace ControlPanel
                 {
                     ImageFile_1_display.Src = "images/icons/User_Image_Avatar.png";
                 }
-                
+
 
                 switch (HttpContext.Current.Session["AgentLevel"].ToString())
                 {
@@ -310,10 +328,12 @@ namespace ControlPanel
                             break;
                         }
                 }
+
             }
+            */
 
 
-            
+
 
         }
 
@@ -336,12 +356,12 @@ namespace ControlPanel
                 {
                     loadActivityHistory(DateTime.Today);
                 }
-                else 
+                else
                 {
                     loadActivityHistory(seldate);
                 }
             }
-            
+
         }
         protected void BtnDeleteAllHistory_Click(object sender, ImageClickEventArgs e)
         {
@@ -353,7 +373,7 @@ namespace ControlPanel
             cmdDelHistory.Parameters.AddWithValue("@theDate", seldate == DateTime.MinValue ? DateTime.Today : seldate);
             if (DbProvider.ExecuteCommand(cmdDelHistory) > 0)
             {
-                
+
                 if (seldate == DateTime.MinValue)
                 {
                     loadActivityHistory(DateTime.Today);
@@ -387,22 +407,22 @@ namespace ControlPanel
         {
             //if (NewAlertPopUp.Visible == false)
             //{
-                SqlCommand cmdAlerts = new SqlCommand("SELECT * From Alerts WHERE AgentID = @AgentID AND Show = 1 AND DisplayDate <= getdate() AND IsRead = 0");
-                cmdAlerts.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
-                DataSet ds = DbProvider.GetDataSet(cmdAlerts);
-                if (ds.Tables[0].Rows.Count > 0)
-                {
-                    NewAlertPopUp.Visible = true;
-                    RepeaterNewAlerts.DataSource = ds;
-                    RepeaterNewAlerts.DataBind();
+            SqlCommand cmdAlerts = new SqlCommand("SELECT * From Alerts WHERE AgentID = @AgentID AND Show = 1 AND DisplayDate <= getdate() AND IsRead = 0");
+            cmdAlerts.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+            DataSet ds = DbProvider.GetDataSet(cmdAlerts);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                NewAlertPopUp.Visible = true;
+                RepeaterNewAlerts.DataSource = ds;
+                RepeaterNewAlerts.DataBind();
                 SqlCommand cmdUpdate = new SqlCommand("UPDATE Alerts SET IsRead = 1 WHERE AgentID = @AgentID AND Show = 1 AND DisplayDate <= getdate() AND IsRead = 0");
-                    cmdUpdate.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
-                    DbProvider.ExecuteCommand(cmdUpdate);
+                cmdUpdate.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+                DbProvider.ExecuteCommand(cmdUpdate);
 
-                }
+            }
             //}
-            
-            
+
+
         }
 
         protected void ClosePopUpSetAgent_Click(object sender, ImageClickEventArgs e)
@@ -415,14 +435,29 @@ namespace ControlPanel
             bool success = funcSave(sender, e);
             if (!success)
             {
+                HiddenAgentID.Value = "";
+                HiddenAgentLevel.Value = "";
                 ScriptManager.RegisterStartupScript(UpdatePanelAlerts, UpdatePanelAlerts.GetType(), "showalert", "HideLoadingDiv();", true);
             }
             else
             {
                 //Response.Redirect(ListPageUrl);
-                SetAgentPopUp.Visible = false;
                 ScriptManager.RegisterStartupScript(UpdatePanelAlerts, UpdatePanelAlerts.GetType(), "showalert", "HideLoadingDiv();", true);
-                loadData();
+                if (HiddenAgentID.Value == HttpContext.Current.Session["AgentID"].ToString())
+                {
+                    HiddenAgentID.Value = "";
+                    HiddenAgentLevel.Value = "";
+                    SetAgentPopUp.Visible = false;
+                    loadData();
+                }
+                else
+                {
+                    HiddenAgentID.Value = "";
+                    HiddenAgentLevel.Value = "";
+                    setProfileEditPopUp(int.Parse(HttpContext.Current.Session["AgentID"].ToString()), false);
+                }
+                
+
             }
         }
 
@@ -479,14 +514,14 @@ namespace ControlPanel
                 FormErrorAgent_lable.Text = "יש להזין אימייל תקין";
                 return false;
             }
-            if (Helpers.AgentEmailExist(EmailA.Value, long.Parse(HttpContext.Current.Session["AgentID"].ToString())) == "true")
+            if (Helpers.AgentEmailExist(EmailA.Value, long.Parse(/*HttpContext.Current.Session["AgentID"].ToString()*/HiddenAgentID.Value)) == "true")
             {
                 ErrorCount++;
                 FormErrorAgent_lable.Visible = true;
                 FormErrorAgent_lable.Text = "אימייל זה כבר קיים במערכת";
                 return false;
             }
-            if (Address.Visible == true && string.IsNullOrWhiteSpace(Address.Value) && !HttpContext.Current.Session["AgentLevel"].ToString().Equals("1"))
+            if (Address.Visible == true && string.IsNullOrWhiteSpace(Address.Value) && /*!HttpContext.Current.Session["AgentLevel"].ToString()*/!HiddenAgentLevel.Value.Equals("1"))
             {
                 FormErrorAgent_lable.Visible = true;
                 FormErrorAgent_lable.Text = "יש להזין " + NameOrAddress.InnerText;
@@ -500,7 +535,7 @@ namespace ControlPanel
                 FormErrorAgent_lable.Visible = true;
                 return false;
             }
-            if (Helpers.AgentPhoneExist(Phone.Value, long.Parse(HttpContext.Current.Session["AgentID"].ToString())) == "true")
+            if (Helpers.AgentPhoneExist(Phone.Value, long.Parse(/*HttpContext.Current.Session["AgentID"].ToString()*/HiddenAgentID.Value)) == "true")
             {
                 ErrorCount++;
                 FormErrorAgent_lable.Visible = true;
@@ -522,7 +557,7 @@ namespace ControlPanel
                 ErrorCount++;
                 return false;
             }
-            if (Helpers.AgentTzExist(Tz.Value, long.Parse(HttpContext.Current.Session["AgentID"].ToString())) == "true")
+            if (Helpers.AgentTzExist(Tz.Value, long.Parse(/*HttpContext.Current.Session["AgentID"].ToString()*/HiddenAgentID.Value)) == "true")
             {
                 ErrorCount++;
                 FormErrorAgent_lable.Visible = true;
@@ -558,7 +593,7 @@ namespace ControlPanel
 
                 SqlCommand cmd = new SqlCommand(sql);
 
-                cmd.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+                cmd.Parameters.AddWithValue("@AgentID", /*HttpContext.Current.Session["AgentID"].ToString()*/HiddenAgentID.Value);
                 cmd.Parameters.AddWithValue("@Email", EmailA.Value);
                 cmd.Parameters.AddWithValue("@Password", Md5.GetMd5Hash(Md5.CreateMd5Hash(), "Pass755" + PasswordAgent.Value));
                 cmd.Parameters.AddWithValue("@FullName", Name.Value);
@@ -575,7 +610,7 @@ namespace ControlPanel
                 catch (Exception) { cmd.Parameters.AddWithValue("@ImageFile", ""); }
 
 
-                switch (HttpContext.Current.Session["AgentLevel"].ToString())
+                switch (/*HttpContext.Current.Session["AgentLevel"].ToString()*/HiddenAgentLevel.Value)
                 {
                     case "2":
                         {
@@ -620,14 +655,14 @@ namespace ControlPanel
 
 
                     }
-                    if (HttpContext.Current.Session["AgentLevel"].ToString().Equals("2"))
+                    if (/*HttpContext.Current.Session["AgentLevel"].ToString()*/HiddenAgentLevel.Equals("2"))
                     {
                         string sqlAgentNumbers = "Update AgentNumbers Set AgentNumber = @AgentNumber Where CompanyManagerId = @CompanyManagerId And SourceId = @SourceId";
 
                         if (!string.IsNullOrEmpty(AgentNumber1.Value))
                         {
                             SqlCommand cmdAgentNumbers = new SqlCommand(sqlAgentNumbers);
-                            cmdAgentNumbers.Parameters.AddWithValue("@CompanyManagerId", HttpContext.Current.Session["AgentID"]);
+                            cmdAgentNumbers.Parameters.AddWithValue("@CompanyManagerId", /*HttpContext.Current.Session["AgentID"]*/HiddenAgentID.Value);
                             cmdAgentNumbers.Parameters.AddWithValue("@SourceId", CompanyID1.Value);
                             cmdAgentNumbers.Parameters.AddWithValue("@AgentNumber", AgentNumber1.Value);
                             DbProvider.ExecuteCommand(cmdAgentNumbers);
@@ -636,7 +671,7 @@ namespace ControlPanel
                         if (!string.IsNullOrEmpty(AgentNumber2.Value))
                         {
                             SqlCommand cmdAgentNumbers = new SqlCommand(sqlAgentNumbers);
-                            cmdAgentNumbers.Parameters.AddWithValue("@CompanyManagerId", HttpContext.Current.Session["AgentID"]);
+                            cmdAgentNumbers.Parameters.AddWithValue("@CompanyManagerId", /*HttpContext.Current.Session["AgentID"]*/HiddenAgentID.Value);
                             cmdAgentNumbers.Parameters.AddWithValue("@SourceId", CompanyID2.Value);
                             cmdAgentNumbers.Parameters.AddWithValue("@AgentNumber", AgentNumber2.Value);
                             DbProvider.ExecuteCommand(cmdAgentNumbers);
@@ -646,7 +681,7 @@ namespace ControlPanel
                         if (!string.IsNullOrEmpty(AgentNumber3.Value))
                         {
                             SqlCommand cmdAgentNumbers = new SqlCommand(sqlAgentNumbers);
-                            cmdAgentNumbers.Parameters.AddWithValue("@CompanyManagerId", HttpContext.Current.Session["AgentID"]);
+                            cmdAgentNumbers.Parameters.AddWithValue("@CompanyManagerId", /*HttpContext.Current.Session["AgentID"]*/HiddenAgentID.Value);
                             cmdAgentNumbers.Parameters.AddWithValue("@SourceId", CompanyID3.Value);
                             cmdAgentNumbers.Parameters.AddWithValue("@AgentNumber", AgentNumber3.Value);
                             DbProvider.ExecuteCommand(cmdAgentNumbers);
@@ -720,5 +755,225 @@ namespace ControlPanel
                 ImageFile_1_lable_2.Visible = true;
             }
         }
+
+        private List<Agent> GetChildrenOfConnectedAgent(string AgentID)
+        {
+            List<Agent> agents = new List<Agent>();
+            string sqlAgents = "Select A.*, T.Type as TypeName From ArvootManagers A Inner Join EmployeeType T On T.ID = A.Type ";
+            if (AgentID == HttpContext.Current.Session["AgentID"].ToString() && HttpContext.Current.Session["AgentLevel"].ToString() == "1")
+            {
+                sqlAgents += "Where ParentID Is Null And A.ID <> @AgentID ";
+            }
+            else
+            {
+                sqlAgents += "Where ParentID = @AgentID ";
+            }
+            SqlCommand cmdAgents = new SqlCommand(sqlAgents);
+            cmdAgents.Parameters.AddWithValue("@AgentID", AgentID);
+            DataTable dtAgents = DbProvider.GetDataTable(cmdAgents);
+            foreach (DataRow row in dtAgents.Rows)
+            {
+                List<Agent> childrenAgent = GetChildrenOfConnectedAgent(row["ID"].ToString());
+                Agent ag = new Agent
+                {
+                    Id = int.Parse(row["ID"].ToString()),
+                    Name = row["FullName"].ToString(),
+                    Email = row["Email"].ToString(),
+                    Phone = row["Phone"].ToString(),
+                    Level = int.Parse(row["Type"].ToString()),
+                    LevelName = row["TypeName"].ToString(),
+                    ParentId = !string.IsNullOrWhiteSpace(row["ParentID"].ToString()) ? int.Parse(row["ParentID"].ToString()) : 0,
+                    Children = childrenAgent
+                };
+                agents.Add(ag);
+            }
+
+            return agents;
+        }
+
+        private string RenderAgentHierarchy(List<Agent> agents)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var agent in agents)
+            {
+                sb.Append(RenderAgentItem(agent));
+            }
+            return sb.ToString();
+        }
+
+        private string RenderAgentItem(Agent agent)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($@"<div class='agent-item'>
+<div class='ListDivParams agent-info' onclick='toggleChildren({agent.Id})'>
+<div style='width: 10%; text-align: right; background-color: transparent' id='expandIcon_{agent.Id}' class='expand-icon'>▶</div>
+<div style='width: 20%; text-align: right; background-color: transparent'>{agent.Name}</div>
+<div style='width: 20%; text-align: right; background-color: transparent;'>{agent.Phone}</div>
+<div style='width: 20%; text-align: right; background-color: transparent'>{agent.Email}</div>
+<div style='width: 20%; text-align: right; background-color: transparent; padding-right: 4%' >{agent.LevelName}</div>
+<div style='width: 10%; text-align: right; background-color: transparent'>
+<asp:ImageButton runat='server' ID='EditButton' ImageUrl='/images/icons/Open_Mession_Edit_Button.png' OnClick='EditButton_Click' CommandArgument='{agent.Id}' />
+<input type='image' src='/images/icons/Open_Mession_Edit_Button.png' alt='Edit' style='position:relative; cursor:pointer;' onclick='editAgent({agent.Id}); return false;' />
+</div>
+</div>
+<div id='children_{agent.Id}' class='agent-children' style='display: none;'>");
+
+
+
+            if (agent.Children != null && agent.Children.Count > 0)
+            {
+                sb.Append(RenderAgentHierarchy(agent.Children));
+            }
+
+            sb.Append("</div></div>");
+            return sb.ToString();
+        }
+
+        protected void BtnAgents_Click(object sender, EventArgs e)
+        {
+            AgentsListPopUp.Visible = true;
+            //UpdatePanelAlerts.Update();
+            List<Agent> topLevelAgents = GetChildrenOfConnectedAgent(HttpContext.Current.Session["AgentID"].ToString());
+            AgentHierarchyLiteral.Text = RenderAgentHierarchy(topLevelAgents);
+        }
+
+        protected void CloseAgentsPopUp_Click(object sender, ImageClickEventArgs e)
+        {
+            AgentsListPopUp.Visible = false;
+        }
+
+        protected void EditButton_Click(object sender, ImageClickEventArgs e)
+        {
+            ImageButton btn = sender as ImageButton;
+        }
+
+        private void EditAgent(int agentId)
+        {
+            setProfileEditPopUp(agentId, true);
+        }
+
+        public void setProfileEditPopUp(int agentID, bool isChild)
+        {
+            SqlCommand cmdAgent = new SqlCommand("Select * From ArvootManagers Where ID = @AgentID");
+            cmdAgent.Parameters.AddWithValue("@AgentID", agentID);
+            DataTable dtAgent = DbProvider.GetDataTable(cmdAgent);
+            if (dtAgent.Rows.Count > 0)
+            {
+                HiddenAgentID.Value = agentID.ToString();
+                HiddenAgentLevel.Value = dtAgent.Rows[0]["Type"].ToString();
+                SetAgentPopUp.Visible = true;
+                if (isChild == true)
+                {
+                    BtnAgents.Visible = false;
+                }
+                else
+                {
+                    BtnAgents.Visible = true;
+                }
+                
+                AgentsListPopUp.Visible = false;
+                Name.Value = dtAgent.Rows[0]["FullName"].ToString();
+                EmailA.Value = dtAgent.Rows[0]["Email"].ToString();
+                Tz.Value = dtAgent.Rows[0]["Tz"].ToString();
+                Phone.Value = dtAgent.Rows[0]["Phone"].ToString();
+                PasswordAgent.Value = "";//dtAgent.Rows[0]["Password"].ToString();
+                if (!string.IsNullOrWhiteSpace(dtAgent.Rows[0]["ImageFile"].ToString()))
+                {
+                    ImageFile_1_display.Src = ConfigurationManager.AppSettings["FilesUrl"] + "Agent/" + dtAgent.Rows[0]["ImageFile"].ToString();
+                }
+                else
+                {
+                    ImageFile_1_display.Src = "images/icons/User_Image_Avatar.png";
+                }
+
+
+                switch (dtAgent.Rows[0]["Type"].ToString())
+                {
+                    case "1":
+                        {
+                            Address.Visible = false;
+                            NameOrAddress.Visible = false;
+                            numbersAgentTitle.Visible = false;
+                            numbersAgent.Visible = false;
+                            break;
+                        }
+                    case "2":
+                        {
+                            Address.Visible = true;
+                            NameOrAddress.Visible = true;
+                            NameOrAddress.InnerText = "שם החברה";
+                            Address.Attributes["placeholder"] = "שם החברה";
+                            Address.Value = dtAgent.Rows[0]["CompanyName"].ToString();
+                            numbersAgentTitle.Visible = true;
+                            numbersAgent.Visible = true;
+                            Div1.Style.Add("height", "100%");
+                            Div1.Style.Add("overflow-x", "scroll");
+                            SqlCommand sql = new SqlCommand("select * from SourceLoanOrInsurance where ID<4");
+                            DataTable dt = DbProvider.GetDataTable(sql);
+                            company1.InnerText = dt.Rows[0]["Text"].ToString();
+                            CompanyID1.Value = dt.Rows[0]["ID"].ToString();
+                            company2.InnerText = dt.Rows[1]["Text"].ToString();
+                            CompanyID2.Value = dt.Rows[1]["ID"].ToString();
+                            company3.InnerText = dt.Rows[2]["Text"].ToString();
+                            CompanyID3.Value = dt.Rows[2]["ID"].ToString();
+
+                            SqlCommand cmdAgentNumbers = new SqlCommand("SELECT * FROM AgentNumbers Where CompanyManagerId = @AgentID Order By SourceId");
+                            cmdAgentNumbers.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
+                            DataTable dtAgentsNumbers = DbProvider.GetDataTable(cmdAgentNumbers);
+                            if (dtAgentsNumbers.Rows.Count > 0)
+                            {
+                                try
+                                {
+                                    AgentNumber1.Value = dtAgentsNumbers.Rows[0]["AgentNumber"].ToString();
+                                    AgentNumber2.Value = dtAgentsNumbers.Rows[1]["AgentNumber"].ToString();
+                                    AgentNumber3.Value = dtAgentsNumbers.Rows[2]["AgentNumber"].ToString();
+                                }
+                                catch (Exception ex)
+                                {
+                                }
+                            }
+                            break;
+                        }
+                    case "3":
+                        {
+                            numbersAgentTitle.Visible = false;
+                            numbersAgent.Visible = false;
+                            Address.Visible = true;
+                            NameOrAddress.Visible = true;
+                            NameOrAddress.InnerText = "שם הסניף";
+                            Address.Attributes["placeholder"] = "כתובת";
+                            Address.Value = dtAgent.Rows[0]["BranchName"].ToString();
+                            break;
+                        }
+                    case "4":
+                    case "5":
+                    case "6":
+                        {
+                            numbersAgentTitle.Visible = false;
+                            numbersAgent.Visible = false;
+                            Address.Visible = false;
+                            NameOrAddress.Visible = false;
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+                }
+
+            }
+        }
     }
+}
+
+public class Agent
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public string Phone { get; set; }
+    public int Level { get; set; }
+    public string LevelName { get; set; }
+    public int? ParentId { get; set; }
+    public List<Agent> Children { get; set; } = new List<Agent>();
 }

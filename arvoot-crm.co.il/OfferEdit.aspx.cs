@@ -137,8 +137,10 @@ namespace ControlPanel
                 else
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-                    FormError_lable.Text = "* התרחשה שגיאה";
-                    FormError_lable.Visible = true;
+                    FormError_label.Text = "* התרחשה שגיאה";
+                    FormError_label.Visible = true;
+                    FormErrorBottom_label.Text = "* התרחשה שגיאה";
+                    FormErrorBottom_label.Visible = true;
                 }
 
             }
@@ -197,8 +199,10 @@ namespace ControlPanel
             if (DbProvider.ExecuteCommand(cmd) <= 0)
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-                FormError_lable.Text = "* התרחשה שגיאה";
-                FormError_lable.Visible = true;
+                FormError_label.Text = "* התרחשה שגיאה";
+                FormError_label.Visible = true;
+                FormErrorBottom_label.Text = "* התרחשה שגיאה";
+                FormErrorBottom_label.Visible = true;
             }
             else
             {
@@ -497,8 +501,10 @@ where s.OfferID = @OfferID";
             if (DbProvider.ExecuteCommand(cmdDel) <= 0)
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-                FormError_lable.Text = "* התרחשה שגיאה";
-                FormError_lable.Visible = true;
+                FormError_label.Text = "* התרחשה שגיאה";
+                FormError_label.Visible = true;
+                FormErrorBottom_label.Text = "* התרחשה שגיאה";
+                FormErrorBottom_label.Visible = true;
             }
             PopUpTasksList_Click(sender, null);
         }
@@ -570,62 +576,72 @@ where s.OfferID = @OfferID";
         {
 
             int ErrorCount = 0;
-            FormError_lable.Visible = false;
+            FormError_label.Visible = false;
             if (string.IsNullOrEmpty(NameOffer.Value))
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין שם ההצעה";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין שם ההצעה";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין שם ההצעה";
                 return false;
             }
             if (SelectSourceLoanOrInsurance.SelectedIndex == 0)
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין מקור ההלוואה/ביטוח";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין מקור ההלוואה/ביטוח";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין מקור ההלוואה/ביטוח";
                 return false;
             }  
            /* if (SelectOfferType.SelectedIndex == 0)
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין סוג הצעה";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין סוג הצעה";
                 return false;
             } */
         
             if (string.IsNullOrEmpty(ReasonLackSuccess.Value))
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין סיבה לחוסר הצלחה";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין סיבה לחוסר הצלחה";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין סיבה לחוסר הצלחה";
                 return false;
             }
             if (string.IsNullOrEmpty(ReturnDateToCustomer.Value))
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין מועד חזרה ללקוח";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין מועד חזרה ללקוח";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין מועד חזרה ללקוח";
                 return false;
             }
             if (string.IsNullOrEmpty(DateSentToInsuranceCompany.Value))
             {
                 ErrorCount++;
-                FormError_lable.Visible = true;
-                FormError_lable.Text = "יש להזין תאריך שליחה לחברת הביטוח";
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין תאריך שליחה לחברת הביטוח";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין תאריך שליחה לחברת הביטוח";
                 return false;
             }
             //if (SelectStatusOffer.SelectedIndex == 0)
             //{
             //    ErrorCount++;
-            //    FormError_lable.Visible = true;
-            //    FormError_lable.Text = "יש להזין סטטוס הצעה";
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש להזין סטטוס הצעה";
             //    return false;
             //}
             //if (SelectTurnOffer.SelectedIndex == 0)
             //{
             //    ErrorCount++;
-            //    FormError_lable.Visible = true;
-            //    FormError_lable.Text = "יש להזין תור";
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש להזין תור";
             //    return false;
             //}
             if (ErrorCount == 0)
@@ -696,16 +712,20 @@ where s.OfferID = @OfferID";
                     else
                     {
                         ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-                        FormError_lable.Text = "* התרחשה שגיאה";
-                        FormError_lable.Visible = true;
+                        FormError_label.Text = "* התרחשה שגיאה";
+                        FormError_label.Visible = true;
+                        FormErrorBottom_label.Text = "* התרחשה שגיאה";
+                        FormErrorBottom_label.Visible = true;
                     }
                     return true;
                 }
                 else
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-                    FormError_lable.Text = "* התרחשה שגיאה";
-                    FormError_lable.Visible = true;
+                    FormError_label.Text = "* התרחשה שגיאה";
+                    FormError_label.Visible = true;
+                    FormErrorBottom_label.Text = "* התרחשה שגיאה";
+                    FormErrorBottom_label.Visible = true;
                 }
             }
 

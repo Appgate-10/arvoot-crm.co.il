@@ -107,7 +107,7 @@ namespace ControlPanel
 						   ,A.FullName as FullNameAgent,A.Phone PhoneAgent,A.Email as EmailAgent, A.ID as AgentID
                            ,CONVERT(varchar,Lead.CreateDate, 104) CreateDate
                            from Lead
-						   left join ArvootManagers A on Lead.AgentID=A.ID and A.Type = 6
+						   left join ArvootManagers A on Lead.AgentID=A.ID and A.Type  in (3,6)
                            inner join FirstStatusLead on Lead.FirstStatusLeadID=FirstStatusLead.ID
                            left join SecondStatusLead on Lead.SecondStatusLeadID=SecondStatusLead.ID
                            where Lead.ID=@LeadID";
@@ -1200,7 +1200,11 @@ namespace ControlPanel
                 {
                     Pageinit.CheckManagerPermissions();
                     //heni - 13.10.24 - אין מענה פעם שלישית להעביר ליד למנהל
-                    cmd.Parameters.AddWithValue("@AgentID", int.Parse(SelectFirstStatus.Value) == 5? (object)DBNull.Value : long.Parse(HiddenAgentID.Value/*HttpContext.Current.Session["AgentID"].ToString()*/));
+
+                    SqlCommand cmdBranchManager = new SqlCommand("SELECT CASE WHEN a.Type = 3 THEN a.ID ELSE a.ParentID END as ManagerID FROM ArvootManagers a WHERE a.ID = @AgentID");
+                    cmdBranchManager.Parameters.AddWithValue("@AgentID", HiddenAgentID.Value);
+                    string branchAgent = DbProvider.GetOneParamValueString(cmdBranchManager);
+                    cmd.Parameters.AddWithValue("@AgentID", int.Parse(SelectFirstStatus.Value) == 5 ? /*(object)DBNull.Value*/ long.Parse(branchAgent) : long.Parse(HiddenAgentID.Value/*HttpContext.Current.Session["AgentID"].ToString()*/));
                 }
                 catch (Exception ex)
                 {

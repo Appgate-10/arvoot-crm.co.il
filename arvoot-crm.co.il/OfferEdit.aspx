@@ -32,7 +32,7 @@
                 <asp:Button runat="server" ID="btn_save" Text="שמור" OnClick="btn_save_Click" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
             </div>
             <div>
-                <asp:Label ID="FormError_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
+                <asp:Label ID="FormError_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
             </div>
             <div class="NewOfferDiv">
                  <input placeholder="עריכת הצעה" id="NameOffer" style="font-size: 20pt;" runat="server" class="NewOfferLable"/> 
@@ -186,8 +186,6 @@
                 </div>--%>
             </div>
 
-
-
             <div class="col MarginDiv SecondaryDiv PaddingDiv">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
                     <div class="row" style="align-items: center;">
@@ -309,6 +307,13 @@
 
             </div>
 
+            </div>
+            <div class="DivLidTop" style="height:36px;">
+      
+               <asp:Button runat="server" ID="BtnSaveBottom" Text="שמור" OnClick="btn_save_Click" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
+            </div>
+            <div>
+                <asp:Label ID="FormErrorBottom_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
             </div>
 
                         <div id="TaskDiv" class="popUpOut MainDivDocuments" visible="false" runat="server">

@@ -42,13 +42,13 @@ namespace ControlPanel
         protected global::System.Web.UI.WebControls.Button btn_save;
 
         /// <summary>
-        /// FormError_lable control.
+        /// FormError_label control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label FormError_lable;
+        protected global::System.Web.UI.WebControls.Label FormError_label;
 
         /// <summary>
         /// OfferID control.
@@ -301,5 +301,23 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText CardholdersID;
+
+        /// <summary>
+        /// BtnSaveBottom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnSaveBottom;
+
+        /// <summary>
+        /// FormErrorBottom_label control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label FormErrorBottom_label;
     }
 }

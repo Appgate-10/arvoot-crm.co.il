@@ -36,10 +36,15 @@ namespace ControlPanel
                     MoveTo.Visible = true;
                     SetStatus.Visible = true;
                 }
-                if (HttpContext.Current.Session["AgentLevel"] != null && (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 4 || int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 5))
+                if (HttpContext.Current.Session["AgentLevel"] != null && (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 3 || int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 6))
+                {
+                    NewLidBtn.Visible = true;
+                }
+                else
                 {
                     NewLidBtn.Visible = false;
                 }
+
                 loadUsers(1,false);
             }
         }
@@ -180,25 +185,25 @@ namespace ControlPanel
                 switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
                 {
                     case 2:
-                        sqlJoin =  " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlJoin =  " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on C.ID = B.ParentID ";
                         sqlWhere = " and C.ID = @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     case 3:
-                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6 inner join ArvootManagers B on B.ID = A.ParentID  ";
-                        sqlWhere = " and B.ID = @ID";
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID  ";
+                        sqlWhere = " and (B.ID = @ID OR A.ID = @ID) ";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;   
                     case 6:
-                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6";
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type  in (3,6)";
                         sqlWhere = " and A.ID = @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     default:
-                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID and A.Type = 6";
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID and A.Type  in (3,6)";
                         break;
 
                 }
@@ -327,7 +332,7 @@ namespace ControlPanel
             SubStatusList.DataBind();
             SubStatusList.Items.Insert(0, new ListItem("סטטוס משני", ""));
 
-            SqlCommand cmdAgents = new SqlCommand("SELECT  FullName as AgentName,ID FROM ArvootManagers where Type = 6");
+            SqlCommand cmdAgents = new SqlCommand("SELECT  FullName as AgentName,ID FROM ArvootManagers where Type  in (3,6)");
             DataSet dsAgents = DbProvider.GetDataSet(cmdAgents);
             AgentsList.DataSource = dsAgents;
             AgentsList.DataTextField = "AgentName";

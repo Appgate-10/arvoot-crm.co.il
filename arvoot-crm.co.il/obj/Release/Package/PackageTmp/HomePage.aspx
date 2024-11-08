@@ -385,32 +385,63 @@
                         <span style="color: #932B90; margin-bottom: 1%;">מספרי סוכנים:
                         </span>
                    </div>
-                   
-                   <div visible="false"  id="numbersAgent" runat="server" class="row" style="justify-content: center; width: 100%; height:9%; ">
-                        <div class="col  form-group-wrapper  form-input-wrapper" id="Div2" runat="server" style="width: 30%; margin-left:32px">
-                            <span id="company1" runat="server" class="form-span-wrapper">מגדל</span>
-                            <asp:HiddenField  ID="CompanyID1" runat="server"/>
-                            <input type="text" runat="server" name="EmailA" id="AgentNumber1" style="height:100%" placeholder="מספר סוכן" />                        
-                        </div>
+                   <div style="height:29%" id="numbersAgent" visible="false" runat="server" >
+                       <div     class="row" style="justify-content: center; width: 100%; height:33%; ">
+
+                            <div class="col  form-group-wrapper  form-input-wrapper" id="Div2" runat="server" style="width: 30%; margin-left:32px">
+                                <span id="company1" runat="server" class="form-span-wrapper">מגדל</span>
+                                <asp:HiddenField  ID="CompanyID1" runat="server"/>
+                                <input type="text" runat="server" name="EmailA" id="AgentNumber1" style="height:100%" placeholder="מספר סוכן" />                        
+                            </div>
          
-                        <div class="col  form-group-wrapper form-input-wrapper" style="width: 30%;">
-                             <span id="company2" runat="server" class="form-span-wrapper">כלל</span>
-                             <asp:HiddenField  ID="CompanyID2" runat="server"/>
-                            <input type="text" runat="server" name="EmailA" id="AgentNumber2" style="height:100%" placeholder="מספר סוכן" />                        
+                            <div class="col  form-group-wrapper form-input-wrapper" style="width: 30%;">
+                                 <span id="company2" runat="server" class="form-span-wrapper">כלל</span>
+                                 <asp:HiddenField  ID="CompanyID2" runat="server"/>
+                                <input type="text" runat="server" name="EmailA" id="AgentNumber2" style="height:100%" placeholder="מספר סוכן" />                        
+                            </div>
+
+                            <div class="col  form-group-wrapper  form-input-wrapper" style="width: 30%; margin-right:32px" runat="server">
+                                <span  id="company3" runat="server" class="form-span-wrapper">איילון</span>
+                                <asp:HiddenField  ID="CompanyID3" runat="server"/>
+                                <input type="text" runat="server" name="EmailA" id="AgentNumber3" style="height:100%" placeholder="מספר סוכן" />                        
+                            </div>
+                        </div> 
+                       <div  class="row" style="justify-content: center; width: 100%; height:33%; ">
+
+                            <div class="col  form-group-wrapper  form-input-wrapper" runat="server" style="width: 30%; margin-left:32px">
+                                <span id="company4" runat="server" class="form-span-wrapper">מגדל</span>
+                                <asp:HiddenField  ID="CompanyID4" runat="server"/>
+                                <input type="text" runat="server" name="EmailA" id="AgentNumber4" style="height:100%" placeholder="מספר סוכן" />                        
+                            </div>
+         
+                            <div class="col  form-group-wrapper form-input-wrapper" style="width: 30%;">
+                                 <span id="company5" runat="server" class="form-span-wrapper">כלל</span>
+                                 <asp:HiddenField  ID="CompanyID5" runat="server"/>
+                                <input type="text" runat="server" name="EmailA" id="AgentNumber5" style="height:100%" placeholder="מספר סוכן" />                        
+                            </div>
+
+                            <div class="col  form-group-wrapper  form-input-wrapper" style="width: 30%; margin-right:32px" id="Div3" runat="server">
+                                <span  id="company6" runat="server" class="form-span-wrapper">איילון</span>
+                                <asp:HiddenField  ID="CompanyID6" runat="server"/>
+                                <input type="text" runat="server" name="EmailA" id="AgentNumber6" style="height:100%" placeholder="מספר סוכן" />                        
+                            </div>
                         </div>
 
-                        <div class="col  form-group-wrapper  form-input-wrapper" style="width: 30%; margin-right:32px" id="Div3" runat="server">
-                            <span  id="company3" runat="server" class="form-span-wrapper">איילון</span>
-                            <asp:HiddenField  ID="CompanyID3" runat="server"/>
-                            <input type="text" runat="server" name="EmailA" id="AgentNumber3" style="height:100%" placeholder="מספר סוכן" />                        
+                         <div  class="row" style="justify-content: right; width: 100%; height:33%; margin-right: 11px; ">
+
+                            <div class="col  form-group-wrapper  form-input-wrapper" runat="server" style="width: 30%; margin-left:32px">
+                                <span id="company7" runat="server" class="form-span-wrapper">מגדל</span>
+                                <asp:HiddenField  ID="CompanyID7" runat="server"/>
+                                <input type="text" runat="server" name="EmailA" id="Text1" style="height:100%" placeholder="מספר סוכן" />                        
+                            </div>
+         
                         </div>
-                    </div>
-        
+                   </div>
                    <div class="RowGrayPopUpPay" style="margin-bottom: 6%;"></div>
                    <div class="col">
                         <asp:Label ID="Label3" runat="server" Text="" CssClass="ErrorLable2" Visible="false"></asp:Label>
 
-                        <asp:Button ID="AddNewAgent" Name="AddNewAgent" runat="server" OnClick="SaveNewAgent_Click" Text="צרף עובד חברה/סוכן חדש" class="AddAgentButton" OnClientClick="reload(LoadingDiv)" />
+                        <asp:Button ID="AddNewAgent" Name="AddNewAgent" style="margin-bottom:40px" runat="server" OnClick="SaveNewAgent_Click" Text="צרף עובד חברה/סוכן חדש" class="AddAgentButton" OnClientClick="reload(LoadingDiv)" />
                           <asp:Label ID="FormErrorAgent_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
                    </div>
 

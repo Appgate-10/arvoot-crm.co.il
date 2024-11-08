@@ -84,8 +84,8 @@
                 <asp:Button runat="server" ID="btn_save" Text="שמור" OnClick="btn_save_Click" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
             </div>
             <div>
-                <asp:Label ID="FormError_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
-                <asp:Label ID="ExportNewContact_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="true" Style="float: left;  margin-left: 15%;"></asp:Label>
+                <asp:Label ID="FormError_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
+                <%--<asp:Label ID="ExportNewContact_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="true" Style="float: left;"></asp:Label>--%>
             </div>
             <div class="NewOfferDiv">
                 <label class="NewOfferLable">ניהול ליד</label>
@@ -673,6 +673,13 @@
                     <label class="InputLable">תאריך שינוי סטטוס:</label>
                     <input id="DateChangeFirstStatus" name="DateChangeFirstStatus" type="date" runat="server" style="width: 100%;" class="InputAdd" disabled="disabled" />
                 </div>
+            </div>
+
+            <div class="DivLidTop">
+                <asp:Button runat="server" ID="BtnSaveBottomBtn" Text="שמור" OnClick="btn_save_Click" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
+            </div>
+            <div>
+                <asp:Label ID="FormErrorBottom_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
             </div>
 
             <%--<div class="row">

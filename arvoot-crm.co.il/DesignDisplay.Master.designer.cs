@@ -267,6 +267,60 @@ namespace ControlPanel
         protected global::System.Web.UI.UpdatePanel UpdatePanelAlerts;
 
         /// <summary>
+        /// AgentsListPopUp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl AgentsListPopUp;
+
+        /// <summary>
+        /// AgentsIn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl AgentsIn;
+
+        /// <summary>
+        /// CloseAgentsPopUp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton CloseAgentsPopUp;
+
+        /// <summary>
+        /// HiddenAgentID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HiddenAgentID;
+
+        /// <summary>
+        /// HiddenAgentLevel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HiddenAgentLevel;
+
+        /// <summary>
+        /// AgentHierarchyLiteral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal AgentHierarchyLiteral;
+
+        /// <summary>
         /// SetAgentPopUp control.
         /// </summary>
         /// <remarks>
@@ -544,6 +598,15 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button SaveAgent;
+
+        /// <summary>
+        /// BtnAgents control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnAgents;
 
         /// <summary>
         /// FormErrorAgent_lable control.

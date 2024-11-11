@@ -187,10 +187,10 @@ namespace ControlPanel
             //int PageNumber = 1;
 
             string sql = @"select  Lead.Tz,Lead.FirstName+' '+Lead.LastName as FullName,A.FullName as FullNameAgent from Lead
-                           inner join ArvootManagers A on Lead.AgentID=A.ID ";
+                           inner join ArvootManagers A on Lead.AgentID=A.ID where Lead.ID = @LeadID ";
 
             SqlCommand cmd = new SqlCommand(sql);
-
+            cmd.Parameters.AddWithValue("@LeadID", Request.QueryString["ContactID"]);
 
             DataTable dt = DbProvider.GetDataTable(cmd);
             if (dt.Rows.Count > 0)

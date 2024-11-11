@@ -26,16 +26,17 @@ namespace ControlPanel
             ImageFile_1_display.Attributes.Add("onclick", "document.getElementById('" + ImageFile_1_FileUpload.ClientID + "').click();");
 
             if (!Page.IsPostBack)
-            {
-
-                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) > 4)
-                {
-                    BtnAgents.Visible = false;
-                }
+            {             
 
                 string pageName = Path.GetFileNameWithoutExtension(Page.AppRelativeVirtualPath);
+                
                 if (pageName.ToLower() != "signin")
                 {
+                    if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) > 4)
+                    {
+                        BtnAgents.Visible = false;
+                    }
+
                     MainContentDiv.Attributes.Add("class", "MainContentDiv");
                     ContentDiv.Attributes.Add("class", "ContentDiv");
                     DivContentPlaceHolder.Style.Add("width", "100%");
@@ -903,7 +904,7 @@ namespace ControlPanel
                 HiddenAgentID.Value = agentID.ToString();
                 HiddenAgentLevel.Value = dtAgent.Rows[0]["Type"].ToString();
                 SetAgentPopUp.Visible = true;
-                if (isChild == true)
+                if (isChild == true || (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) > 4))
                 {
                     BtnAgents.Visible = false;
                 }

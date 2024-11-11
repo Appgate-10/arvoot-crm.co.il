@@ -404,7 +404,7 @@ where s.OfferID = @OfferID";
                 try
                 {
                     string ext = Path.GetExtension(ImageFile_FileUpload.FileName).ToLower();
-                    if (ext == ".pdf")
+                    if (ext == ".pdf" || ext ==".jpeg" || ext ==".png" || ext ==".jpg")
                     {
                         var uploadedFiles = (List<FileDetail>)Session["UploadedFiles"];
 

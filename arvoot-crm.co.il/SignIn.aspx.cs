@@ -52,7 +52,7 @@ namespace ControlPanel
             if (ErrorCount == 0)
             {
 
-                SqlCommand cmd = new SqlCommand("Select TOP 1 * From ArvootManagers where Email = @Email And Password = @Password");
+                SqlCommand cmd = new SqlCommand("Select TOP 1 * From ArvootManagers where Email = @Email And Password = @Password and Show=1");
                 cmd.Parameters.AddWithValue("@Password",  Md5.GetMd5Hash(Md5.CreateMd5Hash(), "Pass755" + Password.Value));
                 cmd.Parameters.AddWithValue("@Email", Email.Value);
                 DataTable dataTable = DbProvider.GetDataTable(cmd);

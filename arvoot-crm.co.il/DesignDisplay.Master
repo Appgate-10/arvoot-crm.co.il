@@ -582,6 +582,15 @@
         __doPostBack('EditAgent', agentId);
     }
 
+    function deleteAgent(agentId,show) {
+        debugger;
+        // Perform client-side action here if needed
+        console.log('Deleting agent with ID:', agentId);
+
+        // Call server-side method using __doPostBack
+        __doPostBack('DeleteAgent', agentId+"|"+show);
+    }
+
 </script>
 
 

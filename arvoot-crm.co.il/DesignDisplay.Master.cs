@@ -14,6 +14,7 @@ using System.Web.UI.HtmlControls;
 using System.Configuration;
 using ControlPanel.HelpersFunctions;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace ControlPanel
 {
@@ -51,6 +52,19 @@ namespace ControlPanel
                 {
                     int agentId = int.Parse(eventArgument);
                     EditAgent(agentId);
+                }
+                if (eventTarget == "DeleteAgent" && !string.IsNullOrEmpty(eventArgument))
+                {
+                    string[] args = eventArgument.Split('|');
+                    if (args.Length == 2)
+                    {
+                        int agentId = int.Parse(args[0].ToString());
+                        int show = int.Parse(args[1].ToString());
+
+                        // Now you can use these parameters
+                       DeleteAgent(agentId, show);
+                    }
+                    //       DeleteAgent(data.agentId, data.show);
                 }
             }
 
@@ -782,6 +796,7 @@ namespace ControlPanel
                     Phone = row["Phone"].ToString(),
                     Level = int.Parse(row["Type"].ToString()),
                     LevelName = row["TypeName"].ToString(),
+                    Show = int.Parse(row["Show"].ToString()),
                     ParentId = !string.IsNullOrWhiteSpace(row["ParentID"].ToString()) ? int.Parse(row["ParentID"].ToString()) : 0,
                     Children = childrenAgent
                 };
@@ -803,6 +818,12 @@ namespace ControlPanel
 
         private string RenderAgentItem(Agent agent)
         {
+            string show1 = "", show2 = "display: none";
+            if (agent.Show == 1)
+            {
+                show1 = "display:none";
+                show2 = "";
+            }
             StringBuilder sb = new StringBuilder();
             sb.Append($@"<div class='agent-item'>
 <div class='ListDivParams agent-info' onclick='toggleChildren({agent.Id})'>
@@ -814,6 +835,10 @@ namespace ControlPanel
 <div style='width: 10%; text-align: right; background-color: transparent'>
 <asp:ImageButton runat='server' ID='EditButton' ImageUrl='/images/icons/Open_Mession_Edit_Button.png' OnClick='EditButton_Click' CommandArgument='{agent.Id}' />
 <input type='image' src='/images/icons/Open_Mession_Edit_Button.png' alt='Edit' style='position:relative; cursor:pointer;' onclick='editAgent({agent.Id}); return false;' />
+</div>
+<div style='width: 10%; text-align: right; background-color: transparent' onclick='event.stopPropagation()'>
+<input type='image' src='/images/icons/Non_Active_Icon.png' alt='Active' style='position:relative; cursor:pointer;width:15px;" + show2 + $@"' onclick='deleteAgent({agent.Id},0); return false;' />
+<input type='image' src='/images/icons/Active_Icon.png' alt='Delete' style='position:relative; cursor:pointer;width:15px;" + show1 + $@"' onclick='deleteAgent({agent.Id},1); return false;' />
 </div>
 </div>
 <div id='children_{agent.Id}' class='agent-children' style='display: none;'>");
@@ -850,6 +875,16 @@ namespace ControlPanel
         private void EditAgent(int agentId)
         {
             setProfileEditPopUp(agentId, true);
+        } 
+        
+        private void DeleteAgent(int agentId,int Show)
+        {
+            SqlCommand cmdUpdate = new SqlCommand("update ArvootManagers set Show = @Show Where ID = @AgentID");
+            cmdUpdate.Parameters.AddWithValue("@AgentID", agentId);
+            cmdUpdate.Parameters.AddWithValue("@Show", Show);
+            DbProvider.ExecuteCommand(cmdUpdate);
+            BtnAgents_Click(null, null);
+
         }
 
         public void setProfileEditPopUp(int agentID, bool isChild)
@@ -975,5 +1010,6 @@ public class Agent
     public int Level { get; set; }
     public string LevelName { get; set; }
     public int? ParentId { get; set; }
+    public int Show { get; set; }
     public List<Agent> Children { get; set; } = new List<Agent>();
 }

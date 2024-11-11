@@ -27,6 +27,12 @@ namespace ControlPanel
 
             if (!Page.IsPostBack)
             {
+
+                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) > 4)
+                {
+                    BtnAgents.Visible = false;
+                }
+
                 string pageName = Path.GetFileNameWithoutExtension(Page.AppRelativeVirtualPath);
                 if (pageName.ToLower() != "signin")
                 {

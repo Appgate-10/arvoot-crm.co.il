@@ -29,7 +29,7 @@
                 <asp:Button runat="server" ID="btnMoveToOperatingQueqe" Text="העבר לתור תפעול" OnClick="btnMoveToOperatingQueqe_Click" CssClass="BtnMove" OnClientClick="reload(LoadingDiv);" />
                 <asp:Button runat="server" ID="btnMoveToOperator" Text="העבר למתפעלת" OnClick="btnMoveToOperator_Click" CssClass="BtnMove" OnClientClick="reload(LoadingDiv);" />
                 <asp:ImageButton ID="DeleteLid" runat="server" OnClientClick="return confirm('האם אתה בטוח שברצונך למחוק את ההצעה');" ImageUrl="~/images/icons/Delete_Lid_Button.png" OnClick="DeleteOffer_Click" />
-                <asp:Button runat="server" ID="btn_save" Text="שמור" OnClick="btn_save_Click" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
+                <asp:Button runat="server" ID="btn_save" Text="שמור" OnClick="btn_save_Click" CssClass="BtnSave" Style="width: 110px; height: 35px;" OnClientClick="reload(LoadingDiv);" />
             </div>
             <div>
                 <asp:Label ID="FormError_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>

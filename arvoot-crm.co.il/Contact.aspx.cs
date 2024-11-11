@@ -30,6 +30,10 @@ namespace ControlPanel
             {
                 Pageinit.CheckManagerPermissions();
 
+                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) > 3)
+                {
+                    DeleteContact.Visible = false;
+                }
 
 
                 SqlCommand cmdSourceLead = new SqlCommand("SELECT * FROM SourceLead");
@@ -86,8 +90,8 @@ namespace ControlPanel
                 SelectContactStatus.DataBind();
 
                 loadData();
-            }
 
+            }
         }
         public void loadData()
         {
@@ -694,12 +698,12 @@ namespace ControlPanel
                 ExportNewContact_lable.Visible = true;
                 ExportNewContact_lable.Text = "יש לבחור האם קיים נכס בבעלות הלקוח";
             }
-            else if (AssetAddress.Value == "")
-            {
-                ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין כתובת נכס";
-            }
+            //else if (SelectHaveAsset.SelectedIndex == 1 && AssetAddress.Value == "")
+            //{
+            //    ErrorCount++;
+            //    ExportNewContact_lable.Visible = true;
+            //    ExportNewContact_lable.Text = "יש להזין כתובת נכס";
+            //}
           
             /*   else if (SelectFamilyStatus.SelectedIndex == 0)
                {

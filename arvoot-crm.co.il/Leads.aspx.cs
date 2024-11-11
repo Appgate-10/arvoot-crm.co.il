@@ -20,7 +20,7 @@ namespace ControlPanel
     public partial class _leads : System.Web.UI.Page
     {
         ControlPanelInit Pageinit = new ControlPanelInit();
-        private string strSrc = "Search";
+        private string strSrc = "חפש ליד";
         public string StrSrc { get { return strSrc; } }
         public string ListPageUrl = "Leads.aspx";
 
@@ -219,7 +219,7 @@ namespace ControlPanel
                 Session["search"] = Request.QueryString["Q"];
                 if (Request.QueryString["Q"].ToString().Length > 0)
                 {
-                    sqlWhere =  " and ( userFirstName like @SrcParam Or userLastName like @SrcParam Or userEmail like @SrcParam OR userPhone like @SrcParam )";
+                    sqlWhere = " and ( Lead.FirstName like @SrcParam Or Lead.LastName like @SrcParam Or Lead.tz like @SrcParam OR Lead.Phone1 like @SrcParam )";
                 }
                 strSrc = Request.QueryString["Q"].ToString();
             }

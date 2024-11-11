@@ -465,7 +465,7 @@ namespace ControlPanel
             }
             else
             {
-                Response.Redirect("Contacts.aspx");
+                Response.Redirect("Contact.aspx?ContactID=" + Request.QueryString["LeadID"]);
             }
         }
 

@@ -20,7 +20,16 @@
 
         </ContentTemplate>
     </asp:UpdatePanel>
-   
+     <div class="NewOfferDiv row">
+        <label class="NewOfferLable" style="margin-inline-end: 3%;">לידים</label>
+        <%--  <div class=" HeaderBoxSearch" >--%>
+        <div class="row DivSearchBox">
+            <a href="javascript:window.location.href = 'Leads.aspx?Q=' + document.getElementById('Q').value;">
+                <img src="images/icons/Search_Contact_User_Button.png" class="ImgSearch" /></a>
+            <input type="text" class="InputTextSearch" style="text-align: right;" value="<% = StrSrc%>" name="Q" id="Q" onblur="javascript:if(this.value==''){this.value='חפש ליד'};" onfocus="javascript:if(this.value=='חפש ליד'){this.value='';}" onkeypress="javascript:runSearch(event, 'Leads.aspx');" />
+        </div>
+        <%-- </div>--%>
+    </div>
     <div class="ListDivParamsHeadFlex">
         <div style="width: 5%; text-align: right;"></div>
         <div style="width: 7%; text-align: right;">ת.הקמה</div>

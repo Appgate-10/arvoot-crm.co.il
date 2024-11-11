@@ -80,7 +80,7 @@
                 <asp:ImageButton ID="ShereLid" runat="server" ImageUrl="~/images/icons/Shere_Lid_Button.png" OnClick="ShereLid_Click" />--%>
                 <asp:ImageButton ID="DeleteContact" runat="server" OnClientClick="return confirm('האם אתה בטוח שברצונך למחוק את האיש קשר?');"  ImageUrl="~/images/icons/Delete_Lid_Button.png" OnClick="DeleteContact_Click" />
 
-                <asp:Button runat="server" ID="btn_save" Text="שמור" OnClick="btn_save_Click" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
+                <asp:Button runat="server" ID="btn_save" Text="שמור" OnClick="btn_save_Click"  Style="width: 110px; height: 35px;" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
             </div>
             <div>
                 <asp:Label ID="FormError_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>

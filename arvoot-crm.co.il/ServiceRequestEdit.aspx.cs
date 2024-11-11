@@ -28,6 +28,12 @@ namespace ControlPanel
             {
                 Pageinit.CheckManagerPermissions();
 
+                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) > 3)
+                {
+                    DeleteLid.Visible = false;
+                }
+
+
                 SqlCommand cmdServiceRequestPurpose = new SqlCommand("SELECT * FROM ServiceRequestPurpose");
                 DataSet dsSourceLoanOrInsurance = DbProvider.GetDataSet(cmdServiceRequestPurpose);
                 SelectPurpose.DataSource = dsSourceLoanOrInsurance;

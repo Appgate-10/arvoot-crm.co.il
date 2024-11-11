@@ -34,6 +34,11 @@ namespace ControlPanel
                 Pageinit.CheckManagerPermissions();
                 UploadDocument.Attributes.Add("onclick", "document.getElementById('" + ImageFile_FileUpload.ClientID + "').click();");
 
+                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) > 3)
+                {
+                    DeleteLid.Visible = false;
+                }
+
                 SqlCommand cmdSourceLoanOrInsurance = new SqlCommand("SELECT * FROM SourceLoanOrInsurance");
                 DataSet dsSourceLoanOrInsurance = DbProvider.GetDataSet(cmdSourceLoanOrInsurance);
                 SelectSourceLoanOrInsurance.DataSource = dsSourceLoanOrInsurance;

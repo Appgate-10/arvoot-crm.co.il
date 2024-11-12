@@ -30,6 +30,7 @@ namespace ControlPanel
             {
                 Pageinit.CheckManagerPermissions();
 
+          
                 SqlCommand cmdServiceRequestPurpose = new SqlCommand("SELECT * FROM ServiceRequestPurpose");
                 DataSet dsSourceLoanOrInsurance = DbProvider.GetDataSet(cmdServiceRequestPurpose);
                 SelectPurpose.DataSource = dsSourceLoanOrInsurance;
@@ -61,6 +62,18 @@ namespace ControlPanel
                 SelectYear.DataSource = years.ToArray();
                 SelectYear.DataBind();
                 loadData();
+                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) > 3)
+                {
+                    IsApprove4.Enabled = false;
+                    if (IsApprove4.Checked)
+                    {
+                        Num4.Disabled = true;
+                        ReferenceCreditOrDenial.Disabled = true;
+                        DateCreditOrDenial.Disabled = true;
+                        Sum4.Disabled = true;
+                        NoteCreditOrDenial.Disabled = true;
+                    }
+                }
             }
         }
 
@@ -618,15 +631,26 @@ namespace ControlPanel
             {
                 HtmlGenericControl paymentTitle = (HtmlGenericControl)e.Item.FindControl("paymentTitle");
                 HtmlGenericControl sumTitle = (HtmlGenericControl)e.Item.FindControl("sumTitle");
-                HtmlGenericControl divIsApproved = (HtmlGenericControl)e.Item.FindControl("divIsApproved");
+                CheckBox IsApprove1 = (CheckBox)e.Item.FindControl("IsApprove1");
+                HtmlInputControl Sum = (HtmlInputControl)e.Item.FindControl("Sum1");
+                HtmlInputControl DatePayment = (HtmlInputControl)e.Item.FindControl("DatePayment1");
+                HtmlInputControl Num = (HtmlInputControl)e.Item.FindControl("Num1");
+                HtmlInputControl ReferencePayment = (HtmlInputControl)e.Item.FindControl("ReferencePayment1");
 
                 if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) < 4)
                 {
-                    divIsApproved.Visible = true;
+                    IsApprove1.Enabled = true;
                 }
                 else
                 {
-                    divIsApproved.Visible = false;
+                    IsApprove1.Enabled = false;
+                    if (IsApprove1.Checked)
+                    {
+                        Sum.Disabled = true;
+                        DatePayment.Disabled = true;
+                        Num.Disabled = true;
+                        ReferencePayment.Disabled = true;
+                    }
                 }
                 paymentTitle.InnerText = "פירוט תשלום " + Helpers.NumberToHebrewOrdinal(e.Item.ItemIndex + 1);
                 sumTitle.InnerText = "סכום לתשלום " + Helpers.NumberToHebrewOrdinal(e.Item.ItemIndex + 1) + ":";
@@ -707,6 +731,38 @@ namespace ControlPanel
         protected void IsApprove1_CheckedChanged(object sender, EventArgs e)
         {
             updateBalanceValue();
+            var btn = (CheckBox)sender;
+            var item = (RepeaterItem)btn.NamingContainer;
+            HtmlInputControl Sum = (HtmlInputControl)item.FindControl("Sum1");
+            HtmlInputControl DatePayment = (HtmlInputControl)item.FindControl("DatePayment1");
+            HtmlInputControl Num = (HtmlInputControl)item.FindControl("Num1");
+            HtmlInputControl ReferencePayment = (HtmlInputControl)item.FindControl("ReferencePayment1");
+            Label ErrorCheckBox = (Label)item.FindControl("ErrorCheckBox");
+            CheckBox IsApprove = (CheckBox)item.FindControl("IsApprove1");
+
+            if (IsApprove.Checked)
+            {
+
+                if (string.IsNullOrEmpty(Sum.Value))
+                {
+                    ErrorCheckBox.Text = "יש למלא סכום כדי לאשר";
+                    IsApprove.Checked = false;
+                }
+                else
+                if (string.IsNullOrEmpty(DatePayment.Value))
+                {
+                    ErrorCheckBox.Text = "יש למלא תאריך כדי לאשר";
+                    IsApprove.Checked = false;
+                }
+                else
+                if (string.IsNullOrEmpty(ReferencePayment.Value))
+                {
+                    ErrorCheckBox.Text = "יש למלא אסמכתא כדי לאשר";
+                    IsApprove.Checked = false;
+                }
+                else ErrorCheckBox.Text = "";
+
+            }
         }
 
         public void updateBalanceValue()
@@ -757,11 +813,36 @@ namespace ControlPanel
         protected void IsApprove4_CheckedChanged(object sender, EventArgs e)
         {
             updateBalanceValue();
+
+            if (IsApprove4.Checked)
+            {
+
+                if (string.IsNullOrEmpty(Sum4.Value))
+                {
+                    ErrorCheckBox.Text = "יש למלא סכום כדי לאשר";
+                    IsApprove4.Checked = false;
+                }
+                else
+                if (string.IsNullOrEmpty(DateCreditOrDenial.Value))
+                {
+                    ErrorCheckBox.Text = "יש למלא תאריך כדי לאשר";
+                    IsApprove4.Checked = false;
+                }
+                else
+                if (string.IsNullOrEmpty(ReferenceCreditOrDenial.Value))
+                {
+                    ErrorCheckBox.Text = "יש למלא אסמכתא כדי לאשר";
+                    IsApprove4.Checked = false;
+                }
+                else ErrorCheckBox.Text = "";
+
+            }
         }
 
         protected void btnReloadBalance_ServerClick(object sender, EventArgs e)
         {
             updateBalanceValue();
+
         }
     }
 

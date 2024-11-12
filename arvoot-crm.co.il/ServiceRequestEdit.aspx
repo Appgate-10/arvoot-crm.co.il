@@ -10,7 +10,12 @@
     <meta http-equiv="title" content="<% = Title%>" />
     <title><% = Title %></title>
     <style>
-        input[type=checkbox] + label::before {
+          .lblAns {
+            text-align: right;
+            color: #636e88;
+            font-weight: 700;
+        }
+      /*  input[type=checkbox] + label::before {
             display: inline-block;
             content: url('images/Chack_Box_1_Off.png');
             position: relative;
@@ -47,7 +52,7 @@
                 content: url('images/Chack_Box_1_On.png');
                 display: inline-block;
                 zoom: 75%;
-            }
+            }*/
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -226,9 +231,9 @@
                         <label class="InputLable">תאריך תשלום:</label>
                         <input id="DatePayment1" name="DatePayment1" type="date" runat="server" style="width: 100%;" class="InputAdd" value='<%# Eval("DatePayment").ToString() %>' />
                     </div>
-                    <div id="divIsApproved" runat="server" visible="false" style="width: 28%; direction: rtl; float: right;">
+                    <div id="divIsApproved" runat="server"  style="width: 28%; direction: rtl; float: right;">
                         <asp:CheckBox runat="server" ID="IsApprove1" Checked='<%# Boolean.Parse(Eval("IsApprovedPayment").ToString()) %>' AutoPostBack="true" OnCheckedChanged="IsApprove1_CheckedChanged" />
-                        <asp:Label ID="lblIsApprove1" AssociatedControlID="IsApprove1" runat="server" CssClass="lblAns" Text=" נבדק ואושר לביצוע"></asp:Label>
+                        <asp:Label ID="lblIsApprove1" AssociatedControlID="IsApprove1" runat="server" CssClass="lblAns" Text="נבדק ואושר לביצוע"></asp:Label>
                     </div>
                 </div>
                 <div class="row MarginRow PaddingRow" style="width: 100%;">
@@ -239,6 +244,10 @@
                     <div style="width: 15%; margin-left: 35%;" class="row">
                         <label class="InputLable">אסמכתא:</label>
                         <input id="ReferencePayment1" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" value='<%# Eval("ReferencePayment").ToString() %>'/>
+                    </div> 
+                    <div style="width: 28%;" class="row">
+                         <asp:Label ID="ErrorCheckBox" Style="color:red;font-weight:400" runat="server" CssClass="InputLable" Text=""></asp:Label>
+
                     </div>
                 </div>
                         <asp:HiddenField ID="hiddenPaymentID" runat="server" Value='<%# Eval("ID").ToString() %>'/>
@@ -270,9 +279,10 @@
                         <label class="InputLable">תאריך תשלום:</label>
                         <input id="DateCreditOrDenial" name="DateCreditOrDenial" type="date" runat="server" style="width: 100%;" class="InputAdd" />
                     </div>
-                    <div style="width: 28%; direction: rtl; float: right;">
+                    <div id="divIsApproved2" runat="server" style="width: 28%; direction: rtl; float: right;">
                         <asp:CheckBox runat="server" ID="IsApprove4" AutoPostBack="true" OnCheckedChanged="IsApprove4_CheckedChanged" />
                         <asp:Label ID="lblIsApprove4" AssociatedControlID="IsApprove4" runat="server" CssClass="lblAns" Text=" נבדק ואושר לביצוע"></asp:Label>
+                        
                     </div>
                 </div>
                 <div class="row PaddingRow" style="width: 100%;">
@@ -284,7 +294,10 @@
                         <label class="InputLable">אסמכתא:</label>
                         <input id="ReferenceCreditOrDenial" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                     </div>
-
+                      <div id="div1" runat="server" style="width: 28%; direction: rtl; float: right;">
+                        <asp:Label ID="ErrorCheckBox" Style="color:red;font-weight:400" runat="server" CssClass="InputLable" Text=""></asp:Label>
+                        
+                    </div>
                 </div>
                   <div class="row MarginRow PaddingRow" style="width: 100%;">
                     <div style="width: 18%; margin-left: 3%;" class="row">

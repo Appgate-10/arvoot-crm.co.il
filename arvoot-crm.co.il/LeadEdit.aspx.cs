@@ -638,28 +638,13 @@ namespace ControlPanel
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין כתובת";
             }
-            else if(SelectHaveAsset.SelectedIndex == 0)
+          
+            else if (SelectFamilyStatus.SelectedIndex == 0)
             {
                 ErrorCount++;
                 FormError_label.Visible = true;
-                FormError_label.Text = "יש לבחור האם קיים נכס בבעלות הלקוח";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש לבחור האם קיים נכס בבעלות הלקוח";
+                FormError_label.Text = "יש לבחור מצב משפחתי";
             }
-            else if(SelectHaveAsset.SelectedIndex == 1 && AssetAddress.Value == "")
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין כתובת נכס";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין כתובת נכס";
-            }
-         /*   else if (SelectFamilyStatus.SelectedIndex == 0)
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש לבחור מצב תעסוקתי";
-            }*/
             else if (BdiValidity.SelectedIndex == 0)
             {
                 ErrorCount++;
@@ -675,6 +660,41 @@ namespace ControlPanel
                 FormError_label.Text = "יש להזין סיבה לאי תקינות";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין סיבה לאי תקינות";
+            }
+            else if (Phone1.Value == "")
+            {
+                ErrorCount++;
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין מספר טלפון";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין מספר טלפון";
+                return false;
+            }
+            else if (Phone1.Value.Length < 9 || Phone1.Value.Substring(0, 1) != "0")
+            {
+                ErrorCount++;
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש להזין מספר טלפון תקין";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין מספר טלפון תקין";
+                return false;
+            }
+            else if (Helpers.insuredPhoneExist(Phone1.Value, long.Parse(Request.QueryString["LeadID"])) == "true")
+            {
+                ErrorCount++;
+                FormError_label.Visible = true;
+                FormError_label.Text = "מספר הטלפון קיים במערכת";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "מספר הטלפון קיים במערכת";
+                return false;
+            }
+            else if (SelectSourceLead.SelectedIndex == 0)
+            {
+                ErrorCount++;
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש לבחור את מקור הליד";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש לבחור את מקור הליד";
             }
             else if (BusinessName.Value == "")
             {
@@ -692,36 +712,22 @@ namespace ControlPanel
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין ותק במקום העבודה הנוכחי";
             }
-            else if (PrevBusinessSeniority.Value == "")
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין ותק במקום העבודה הקודם";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין ותק במקום העבודה הקודם";
-            }
-            else if (PrevBusinessSeniority.Value == "")
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין ותק במקום העבודה הקודם";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין ותק במקום העבודה הקודם";
-            }
-            else if (BusinessCity.Value == "")
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין עיר בה ממוקם העסק";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין עיר בה ממוקם העסק";
-            }
-            //else if (SelectBusinessLineBusiness.SelectedIndex == 0)
+            //else if (PrevBusinessSeniority.Value == "")
             //{
             //    ErrorCount++;
             //    FormError_label.Visible = true;
-            //    FormError_label.Text = "יש לבחור מצב תעסוקתי";
-            //}            
+            //    FormError_label.Text = "יש להזין ותק במקום העבודה הקודם";
+            //    FormErrorBottom_label.Visible = true;
+            //    FormErrorBottom_label.Text = "יש להזין ותק במקום העבודה הקודם";
+            //}
+            else if (SelectBusinessLineBusiness.SelectedIndex == 0)
+            {
+                ErrorCount++;
+                FormError_label.Visible = true;
+                FormError_label.Text = "יש לבחור מצב תעסוקתי";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "ייש לבחור מצב תעסוקתי";
+            }
             else if (BusinessProfession.Value == "")
             {
                 ErrorCount++;
@@ -738,32 +744,38 @@ namespace ControlPanel
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין שכר ברוטו";
             }
-            else if(Phone1.Value == "")
+            //else if (BusinessCity.Value == "")
+            //{
+            //    ErrorCount++;
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש להזין עיר בה ממוקם העסק";
+            //    FormErrorBottom_label.Visible = true;
+            //    FormErrorBottom_label.Text = "יש להזין עיר בה ממוקם העסק";
+            //}
+            //else if (SelectBusinessLineBusiness.SelectedIndex == 0)
+            //{
+            //    ErrorCount++;
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש לבחור מצב תעסוקתי";
+            //}            
+
+           
+  
+            else if (SelectHaveAsset.SelectedIndex == 0)
             {
                 ErrorCount++;
                 FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין מספר טלפון";
+                FormError_label.Text = "יש לבחור האם קיים נכס בבעלות הלקוח";
                 FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין מספר טלפון";
-                return false;
+                FormErrorBottom_label.Text = "יש לבחור האם קיים נכס בבעלות הלקוח";
             }
-            else if(Phone1.Value.Length < 9 || Phone1.Value.Substring(0, 1) != "0")
+            else if (SelectHaveMortgageOnAsset.SelectedIndex == 0)
             {
                 ErrorCount++;
                 FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין מספר טלפון תקין";
+                FormError_label.Text = "יש לבחור האם קיים משכנתא על הנכס";
                 FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין מספר טלפון תקין";
-                return false;
-            }
-            else if (Helpers.insuredPhoneExist(Phone1.Value, long.Parse(Request.QueryString["LeadID"])) == "true")
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "מספר הטלפון קיים במערכת";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "מספר הטלפון קיים במערכת";
-                return false;
+                FormErrorBottom_label.Text = "יש לבחור האם קיים משכנתא על הנכס";
             }
             if (ErrorCount == 0)
             {

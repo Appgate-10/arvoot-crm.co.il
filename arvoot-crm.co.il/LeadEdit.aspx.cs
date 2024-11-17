@@ -769,7 +769,7 @@ namespace ControlPanel
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש לבחור האם קיים נכס בבעלות הלקוח";
             }
-            else if (SelectHaveMortgageOnAsset.SelectedIndex == 0)
+            else if (SelectHaveAsset.SelectedIndex == 1 && SelectHaveMortgageOnAsset.SelectedIndex == 0)
             {
                 ErrorCount++;
                 FormError_label.Visible = true;

@@ -76,7 +76,7 @@ namespace ControlPanel
                 try
                 {
                     string ext = Path.GetExtension(ImageFile_FileUpload.FileName).ToLower();
-                    if (ext == ".pdf")
+                    if (ext == ".pdf" || ext == ".jpeg" || ext == ".png" || ext == ".jpg")
                     {
                         var uploadedFiles = (List<FileDetail>)Session["UploadedFiles"];
 
@@ -242,15 +242,15 @@ namespace ControlPanel
                 return false;
             } */
         
-            if (string.IsNullOrEmpty(ReasonLackSuccess.Value))
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין סיבה לחוסר הצלחה";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין סיבה לחוסר הצלחה";
-                return 0;
-            }
+            //if (string.IsNullOrEmpty(ReasonLackSuccess.Value))
+            //{
+            //    ErrorCount++;
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש להזין סיבה לחוסר הצלחה";
+            //    FormErrorBottom_label.Visible = true;
+            //    FormErrorBottom_label.Text = "יש להזין סיבה לחוסר הצלחה";
+            //    return 0;
+            //}
             if (string.IsNullOrEmpty(ReturnDateToCustomer.Value))
             {
                 ErrorCount++;

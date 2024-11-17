@@ -210,13 +210,13 @@ namespace ControlPanel
                            left join OfferType on OfferType.ID = Offer.OfferTypeID
                            left join StatusOffer on StatusOffer.ID = Offer.StatusOfferID 
                            left join Lead on Lead.ID = Offer.LeadID" 
-                            + sqlJoin + " where  OfferType.ID in(1,2,3,12)";
+                            + sqlJoin + " where  OfferType.ID in(1,2,3,13)";
 
 
 
             cmd.CommandText =sql + sqlWhere;
 
-            string sqlCnt = @"select count(*) from Offer left join Lead on Lead.ID = Offer.LeadID " + sqlJoin + " where  OfferTypeID in(1,2,3,12)";
+            string sqlCnt = @"select count(*) from Offer left join Lead on Lead.ID = Offer.LeadID " + sqlJoin + " where  OfferTypeID in(1,2,3,13)";
             cmdCount.CommandText = sqlCnt + sqlWhere;
 
             try

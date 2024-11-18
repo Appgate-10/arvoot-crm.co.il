@@ -254,8 +254,10 @@ namespace ControlPanel
            
 
             string sql = @"select Lead.Tz,Lead.FirstName+' '+Lead.LastName as FullName,A.FullName as FullNameAgent, Lead.AgentID from Lead
-                           inner join ArvootManagers A on Lead.AgentID=A.ID ";
+                           inner join ArvootManagers A on Lead.AgentID=A.ID inner join Offer on Offer.LeadID = Lead.ID where Offer.ID = @OfferID";
+
             SqlCommand cmd = new SqlCommand(sql);
+            cmd.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
 
             DataTable dt = DbProvider.GetDataTable(cmd);
             if (dt.Rows.Count > 0)
@@ -608,15 +610,15 @@ where s.OfferID = @OfferID";
                 return false;
             } */
         
-            if (string.IsNullOrEmpty(ReasonLackSuccess.Value))
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין סיבה לחוסר הצלחה";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין סיבה לחוסר הצלחה";
-                return false;
-            }
+            //if (string.IsNullOrEmpty(ReasonLackSuccess.Value))
+            //{
+            //    ErrorCount++;
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש להזין סיבה לחוסר הצלחה";
+            //    FormErrorBottom_label.Visible = true;
+            //    FormErrorBottom_label.Text = "יש להזין סיבה לחוסר הצלחה";
+            //    return false;
+            //}
             if (string.IsNullOrEmpty(ReturnDateToCustomer.Value))
             {
                 ErrorCount++;

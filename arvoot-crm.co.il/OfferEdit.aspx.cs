@@ -442,9 +442,9 @@ where s.OfferID = @OfferID";
                         ImageFile_lable.Visible = true;
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
-                    ImageFile_lable.Text = "* בבקשה נסה שוב";
+                    ImageFile_lable.Text = ex.Message;//"* בבקשה נסה שוב";
                     ImageFile_lable.Visible = true;
                 }
             }

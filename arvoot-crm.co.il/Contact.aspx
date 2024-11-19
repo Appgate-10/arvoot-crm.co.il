@@ -329,7 +329,7 @@
                             <input id="BusinessProfession" name="BusinessProfession" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                         <div class="row ColUpLid">
-                            <label class="InputLable">*ותק במקום העבודה הקודם:</label>
+                            <label class="InputLable">ותק במקום העבודה הקודם:</label>
                             <input id="PrevBusinessSeniority" name="PrevBusinessSeniority" type="number" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                        
@@ -342,7 +342,7 @@
                             <input id="BusinessPhone" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                          <div class="row ColUpLid">
-                            <label class="InputLable">*עיר בה ממקום העסק:</label>
+                            <label class="InputLable">עיר בה ממקום העסק:</label>
                             <input id="BusinessCity" name="BusinessCity" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
                    

@@ -37,6 +37,15 @@ namespace ControlPanel
 
         protected void Repeater1_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+
+            var divStatus = (HtmlGenericControl)e.Item.FindControl("statusVal");
+            var divOperator = (HtmlGenericControl)e.Item.FindControl("operatorVal");
+
+            if (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 4)
+            {
+                divStatus.Style.Add("width", "23%");
+                divOperator.Style.Add("display", "block");
+            }
             //var divShowStatus = (HtmlGenericControl)e.Item.FindControl("ShowStatus");
             //ImageButton btnSuspensionBU = (ImageButton)e.Item.FindControl("SuspensionBU");
             //ImageButton btnActivatingBU = (ImageButton)e.Item.FindControl("ActivatingBU");
@@ -187,7 +196,8 @@ namespace ControlPanel
                         sqlWhere = " and B.ID = @ID and IsInOperatingQueue = 1";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
-
+                        status.Style.Add("width", "23%");
+                        operatoring.Style.Add("display", "block");
                         break;
                     case 5:
                         sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID ";
@@ -205,16 +215,17 @@ namespace ControlPanel
 
             //Heni 28.10.24 -  where  OfferType.ID  in(1,2,3,12) -הסטטוסים מסוג ביטוח מוצגים בפוליסות 
 
-            string sql = @"SELECT Offer.ID, Offer.CreateDate, OfferType.Name as OfferType, A.FullName as FullNameAgent ,StatusOffer.Status as StatusOffer
+            string sql = @"SELECT Offer.ID, Offer.CreateDate, OfferType.Name as OfferType, A.FullName as FullNameAgent ,StatusOffer.Status as StatusOffer, operators.FullName as OperatorName
                            from Offer
                            left join OfferType on OfferType.ID = Offer.OfferTypeID
                            left join StatusOffer on StatusOffer.ID = Offer.StatusOfferID 
-                           left join Lead on Lead.ID = Offer.LeadID" 
-                            + sqlJoin + " where  OfferType.ID in(1,2,3,13)";
+                           left join Lead on Lead.ID = Offer.LeadID
+                            left join ArvootManagers operators on operators.ID = Offer.OperatorID"
+                             + sqlJoin + " where  OfferType.ID in(1,2,3,13)";
 
 
 
-            cmd.CommandText =sql + sqlWhere;
+            cmd.CommandText = sql + sqlWhere;
 
             string sqlCnt = @"select count(*) from Offer left join Lead on Lead.ID = Offer.LeadID " + sqlJoin + " where  OfferTypeID in(1,2,3,13)";
             cmdCount.CommandText = sqlCnt + sqlWhere;

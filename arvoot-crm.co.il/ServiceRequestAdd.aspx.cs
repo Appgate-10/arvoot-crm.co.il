@@ -83,7 +83,7 @@ namespace ControlPanel
         }
         public void loadData()
         {
-            string sql = @"select Lead.FirstName + ' ' + Lead.LastName as FullName, o.NameOffer  from Lead 
+            string sql = @"select Lead.FirstName + ' ' + Lead.LastName as FullName, o.NameOffer ,Lead.ID as LeadID from Lead 
                             left join Offer o on o.LeadID =Lead.ID  where o.ID = @ID ";
 
             SqlCommand cmd = new SqlCommand(sql);
@@ -93,7 +93,8 @@ namespace ControlPanel
             if (dt.Rows.Count > 0)
             {
                 FullName.Text = dt.Rows[0]["FullName"].ToString();
-                OfferName.Value = dt.Rows[0]["NameOffer"].ToString();
+                ContactID.Value = dt.Rows[0]["LeadID"].ToString();
+                OfferName.Text = dt.Rows[0]["NameOffer"].ToString();
             }
 
             List<serviceRequestPayment> payments = new List<serviceRequestPayment>();
@@ -285,7 +286,7 @@ namespace ControlPanel
             FormError_label.Visible = false;
             FormErrorBottom_label.Visible = false;
             //שם פרטי שם משפחה תאריך לידה תז טלפון אימייל סטטוס ראשי
-
+/*
             if (Invoice.Value == "")
             {
                 ErrorCount++;
@@ -294,7 +295,7 @@ namespace ControlPanel
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין חשבון";
                 return 0;
-            }
+            }*/
             if (AllSum.Value == "")
             {
                 ErrorCount++;
@@ -314,77 +315,77 @@ namespace ControlPanel
                 return 0;
             }
 
-            if (payments.Count == 0)
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין פרטי תשלום ראשון";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין פרטי תשלום ראשון";
-                return 0;
-            }
-            if (payments[0].SumPayment == 0)
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין סכום לתשלום ראשון";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין סכום לתשלום ראשון";
-                return 0;
-            }
-            if (payments[0].DatePayment == "")
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין תאריך תשלום ראשון";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין תאריך תשלום ראשון";
-                return 0;
-            }
-            if (payments[0].NumPayment == 0)
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין מספר תשלומים לתשלום ראשון";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין מספר תשלומים לתשלום ראשון";
-                return 0;
-            }
+            //if (payments.Count == 0)
+            //{
+            //    ErrorCount++;
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש להזין פרטי תשלום ראשון";
+            //    FormErrorBottom_label.Visible = true;
+            //    FormErrorBottom_label.Text = "יש להזין פרטי תשלום ראשון";
+            //    return 0;
+            //}
+            //if (payments[0].SumPayment == 0)
+            //{
+            //    ErrorCount++;
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש להזין סכום לתשלום ראשון";
+            //    FormErrorBottom_label.Visible = true;
+            //    FormErrorBottom_label.Text = "יש להזין סכום לתשלום ראשון";
+            //    return 0;
+            //}
+            //if (payments[0].DatePayment == "")
+            //{
+            //    ErrorCount++;
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש להזין תאריך תשלום ראשון";
+            //    FormErrorBottom_label.Visible = true;
+            //    FormErrorBottom_label.Text = "יש להזין תאריך תשלום ראשון";
+            //    return 0;
+            //}
+            //if (payments[0].NumPayment == 0)
+            //{
+            //    ErrorCount++;
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש להזין מספר תשלומים לתשלום ראשון";
+            //    FormErrorBottom_label.Visible = true;
+            //    FormErrorBottom_label.Text = "יש להזין מספר תשלומים לתשלום ראשון";
+            //    return 0;
+            //}
 
-            if (payments.Count > 1)
-            {
-                for (int i = 1; i < payments.Count; i++)
-                {
-                    if (payments[i].SumPayment > 0 || payments[i].DatePayment != "" || payments[i].NumPayment > 0)
-                    {
-                        if (payments[i].SumPayment == 0)
-                        {
-                            FormError_label.Visible = true;
-                            FormError_label.Text = "יש להזין סכום לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1);
-                            FormErrorBottom_label.Visible = true;
-                            FormErrorBottom_label.Text = "יש להזין סכום לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1);
-                            return 0;
-                        }
-                        if (payments[i].DatePayment == "")
-                        {
-                            FormError_label.Visible = true;
-                            FormError_label.Text = "יש להזין תאריך תשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
-                            FormErrorBottom_label.Visible = true;
-                            FormErrorBottom_label.Text = "יש להזין תאריך תשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
-                            return 0;
-                        }
-                        if (payments[i].NumPayment == 0)
-                        {
-                            FormError_label.Visible = true;
-                            FormError_label.Text = "יש להזין מספר תשלומים לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
-                            FormErrorBottom_label.Visible = true;
-                            FormErrorBottom_label.Text = "יש להזין מספר תשלומים לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
-                            return 0;
-                        }
-                    }
-                }
+            //if (payments.Count > 1)
+            //{
+            //    for (int i = 1; i < payments.Count; i++)
+            //    {
+            //        if (payments[i].SumPayment > 0 || payments[i].DatePayment != "" || payments[i].NumPayment > 0)
+            //        {
+            //            if (payments[i].SumPayment == 0)
+            //            {
+            //                FormError_label.Visible = true;
+            //                FormError_label.Text = "יש להזין סכום לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1);
+            //                FormErrorBottom_label.Visible = true;
+            //                FormErrorBottom_label.Text = "יש להזין סכום לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1);
+            //                return 0;
+            //            }
+            //            if (payments[i].DatePayment == "")
+            //            {
+            //                FormError_label.Visible = true;
+            //                FormError_label.Text = "יש להזין תאריך תשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
+            //                FormErrorBottom_label.Visible = true;
+            //                FormErrorBottom_label.Text = "יש להזין תאריך תשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
+            //                return 0;
+            //            }
+            //            if (payments[i].NumPayment == 0)
+            //            {
+            //                FormError_label.Visible = true;
+            //                FormError_label.Text = "יש להזין מספר תשלומים לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
+            //                FormErrorBottom_label.Visible = true;
+            //                FormErrorBottom_label.Text = "יש להזין מספר תשלומים לתשלום " + Helpers.NumberToHebrewOrdinal(i + 1); ;
+            //                return 0;
+            //            }
+            //        }
+            //    }
                 
-            }
+            //}
 
             if(SelectMethodsPayment.SelectedIndex == 1)
             {
@@ -413,6 +414,15 @@ namespace ControlPanel
                     FormError_label.Text = "יש להזין מספר חשבון";
                     FormErrorBottom_label.Visible = true;
                     FormErrorBottom_label.Text = "יש להזין מספר חשבון";
+                    return 0;
+                }
+                if (AccountHolder.Value == "")
+                {
+                    ErrorCount++;
+                    FormError_label.Visible = true;
+                    FormError_label.Text = "יש להזין בעל החשבון";
+                    FormErrorBottom_label.Visible = true;
+                    FormErrorBottom_label.Text = "יש להזין בעל החשבון";
                     return 0;
                 }
             }
@@ -448,12 +458,12 @@ namespace ControlPanel
 
             if (ErrorCount == 0)
             {
-                string sql = @" INSERT INTO ServiceRequest (OfferID,Invoice,Sum,Note,PurposeID,
+                string sql = @" INSERT INTO ServiceRequest (OfferID,Sum,Note,PurposeID,
                                 SumCreditOrDenial,DateCreditOrDenial,NumCreditOrDenial,ReferenceCreditOrDenial,NoteCreditOrDenial,
-                                IsApprovedCreditOrDenial,PaymentMethodID,BankName,Branch,AccountNumber,CreditNumber,CreditValidity,CardholdersID)
+                                IsApprovedCreditOrDenial,PaymentMethodID,BankName,Branch,AccountNumber,AccountHolder,CreditNumber,CreditValidity,CardholdersID)
                                 OUTPUT Inserted.ID 
-                                VALUES (@OfferID,@Invoice,@Sum,@Note,@PurposeID,@SumCreditOrDenial,@DateCreditOrDenial,@NumCreditOrDenial,@ReferenceCreditOrDenial,@NoteCreditOrDenial,
-                                @IsApprovedCreditOrDenial,@PaymentMethodID,@BankName,@Branch,@AccountNumber,@CreditNumber,@CreditValidity,@CardholdersID )";
+                                VALUES (@OfferID,@Sum,@Note,@PurposeID,@SumCreditOrDenial,@DateCreditOrDenial,@NumCreditOrDenial,@ReferenceCreditOrDenial,@NoteCreditOrDenial,
+                                @IsApprovedCreditOrDenial,@PaymentMethodID,@BankName,@Branch,@AccountNumber,@AccountHolder,@CreditNumber,@CreditValidity,@CardholdersID )";
 
                 //Balance,@Balance
 
@@ -469,7 +479,7 @@ namespace ControlPanel
                 SqlCommand cmd = new SqlCommand(sql);
 
                 cmd.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
-                cmd.Parameters.AddWithValue("@Invoice", Invoice.Value);
+               // cmd.Parameters.AddWithValue("@Invoice", Invoice.Value);
                 cmd.Parameters.AddWithValue("@Sum", AllSum.Value);
                 cmd.Parameters.AddWithValue("@Note", Note.Value);
                 //cmd.Parameters.AddWithValue("@Balance", Balance.Value);
@@ -499,6 +509,7 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@BankName", string.IsNullOrEmpty(BankName.Value) ? (object)DBNull.Value : BankName.Value);
                 cmd.Parameters.AddWithValue("@Branch", string.IsNullOrEmpty(Branch.Value) ? (object)DBNull.Value : Branch.Value);
                 cmd.Parameters.AddWithValue("@AccountNumber", string.IsNullOrEmpty(AccountNumber.Value) ? (object)DBNull.Value : AccountNumber.Value);
+                cmd.Parameters.AddWithValue("@AccountHolder", string.IsNullOrEmpty(AccountHolder.Value) ? (object)DBNull.Value : AccountHolder.Value);
                 cmd.Parameters.AddWithValue("@CreditNumber", string.IsNullOrEmpty(CreditNumber.Value) ? (object)DBNull.Value : "XXXX-XXXX-XXXX-" + CreditNumber.Value.Substring(12));
                 cmd.Parameters.AddWithValue("@CreditValidity", string.IsNullOrEmpty(SelectMonth.Value) || string.IsNullOrEmpty(SelectYear.Value) ? (object)DBNull.Value : SelectMonth.Value +"/"+ SelectYear.Value);
                 cmd.Parameters.AddWithValue("@CardholdersID", string.IsNullOrEmpty(CardholdersID.Value) ? (object)DBNull.Value : CardholdersID.Value);
@@ -842,6 +853,16 @@ namespace ControlPanel
         protected void btnReloadBalance_ServerClick(object sender, EventArgs e)
         {
             updateBalanceValue();
+
+        }
+        protected void OpenOffer_Click(object sender, EventArgs e)
+        {
+            System.Web.HttpContext.Current.Response.Redirect("OfferEdit.aspx?OfferID=" + Request.QueryString["OfferID"]);
+
+        }
+        protected void OpenContact_Click(object sender, EventArgs e)
+        {
+            System.Web.HttpContext.Current.Response.Redirect("Contact.aspx?ContactID=" + ContactID.Value);
 
         }
     }

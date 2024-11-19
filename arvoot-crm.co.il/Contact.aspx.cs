@@ -735,24 +735,24 @@ namespace ControlPanel
                 ExportNewContact_lable.Visible = true;
                 ExportNewContact_lable.Text = "יש להזין ותק במקום העבודה הנוכחי";
             }
-            else if (PrevBusinessSeniority.Value == "")
-            {
-                ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין ותק במקום העבודה הקודם";
-            }
-            else if (PrevBusinessSeniority.Value == "")
-            {
-                ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין ותק במקום העבודה הקודם";
-            }
-            else if (BusinessCity.Value == "")
-            {
-                ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין עיר בה ממוקם העסק";
-            }
+            //else if (PrevBusinessSeniority.Value == "")
+            //{
+            //    ErrorCount++;
+            //    ExportNewContact_lable.Visible = true;
+            //    ExportNewContact_lable.Text = "יש להזין ותק במקום העבודה הקודם";
+            //}
+            //else if (PrevBusinessSeniority.Value == "")
+            //{
+            //    ErrorCount++;
+            //    ExportNewContact_lable.Visible = true;
+            //    ExportNewContact_lable.Text = "יש להזין ותק במקום העבודה הקודם";
+            //}
+            //else if (BusinessCity.Value == "")
+            //{
+            //    ErrorCount++;
+            //    ExportNewContact_lable.Visible = true;
+            //    ExportNewContact_lable.Text = "יש להזין עיר בה ממוקם העסק";
+            //}
             //else if (SelectBusinessLineBusiness.SelectedIndex == 0)
             //{
             //    ErrorCount++;

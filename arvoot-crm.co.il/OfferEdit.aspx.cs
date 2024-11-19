@@ -77,8 +77,7 @@ namespace ControlPanel
                 SelectStatusTask.DataBind();
                 //loadUsers(1);
                 loadData();
-                if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) !=4)
-                    btnMoveToOperator.Visible = false;
+              
             }
         }
         protected void CloseTaskPopUp_Click(object sender, EventArgs e)
@@ -288,9 +287,9 @@ namespace ControlPanel
                 SelectOfferType.Value = rowOffer["OfferTypeID"].ToString();
                 //SelectTurnOffer.Value = rowOffer["TurnOfferID"].ToString();
                 ReasonLackSuccess.Value = rowOffer["ReasonLackSuccess"].ToString();
-                ReturnDateToCustomer.Value = DateTime.ParseExact(rowOffer["ReturnDateToCustomer"].ToString(), "dd.MM.yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd");
+                ReturnDateToCustomer.Value = string.IsNullOrWhiteSpace(rowOffer["ReturnDateToCustomer"].ToString()) ? "":DateTime.ParseExact(rowOffer["ReturnDateToCustomer"].ToString(), "dd.MM.yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd");
                 Note.Value = rowOffer["Note"].ToString();
-                DateSentToInsuranceCompany.Value = Convert.ToDateTime(rowOffer["DateSentToInsuranceCompany"]).ToString("yyyy-MM-dd"); 
+                DateSentToInsuranceCompany.Value = string.IsNullOrWhiteSpace(rowOffer["DateSentToInsuranceCompany"].ToString()) ? "" : Convert.ToDateTime(rowOffer["DateSentToInsuranceCompany"]).ToString("yyyy-MM-dd"); 
                 SelectStatusOffer.Value = rowOffer["StatusOfferID"].ToString();
                 CurrentStatusOfferID.Value = rowOffer["StatusOfferID"].ToString();
                 NameOffer.Value = rowOffer["NameOffer"].ToString();
@@ -304,7 +303,7 @@ namespace ControlPanel
                     DataTable dtOwner = DbProvider.GetDataTable(cmdOwner);
                     if (dtOwner.Rows.Count > 0)
                     {
-                        lblOwner.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
+                        lblOwner.InnerText = dtOwner.Rows[0]["FullNameAgent"].ToString();
                     }
 
                     movedToOperating.Visible = false;
@@ -314,33 +313,34 @@ namespace ControlPanel
                 {
                     movedToOperating.Visible = true;
                     isInOperatingManager = true;
+                   
                 }
 
                 if (isInOperatingManager == true)
                 {
                     btnMoveToOperatingQueqe.Visible = false;
 
-                    if (dt.Rows.Count > 0 && HttpContext.Current.Session != null)
-                    {
-                        if (dt.Rows[0]["AgentID"].ToString() == HttpContext.Current.Session["AgentID"].ToString())
-                        {
-                            //אם הגיעו מהסוכן - בעל ההצעה יש לחסום אפשרות לעריכה
-                            DeleteLid.Enabled = false;
-                            btn_save.Enabled = false;
-                            SelectStatusOffer.Disabled = true;
-                            SelectOfferType.Disabled = true;
-                            ImageButton2.Enabled = false;
-                            ReasonLackSuccess.Disabled = true;
-                            Note.Disabled = true;
-                            ReturnDateToCustomer.Disabled = true;
-                            DateSentToInsuranceCompany.Disabled = true;
-                            SelectSourceLoanOrInsurance.Disabled = true;
-                            UploadDocument.Enabled = false;
-                            ImageButton3.Enabled = false;
-                            ImageButton4.Enabled = false;
-                            ImageButton1.Enabled = false;
-                        }
-                    }
+                    //if (dt.Rows.Count > 0 && HttpContext.Current.Session != null)
+                    //{
+                    //    if (dt.Rows[0]["AgentID"].ToString() == HttpContext.Current.Session["AgentID"].ToString())
+                    //    {
+                    //        //אם הגיעו מהסוכן - בעל ההצעה יש לחסום אפשרות לעריכה
+                    //        DeleteLid.Enabled = false;
+                    //        btn_save.Enabled = false;
+                    //        SelectStatusOffer.Disabled = true;
+                    //        SelectOfferType.Disabled = true;
+                    //        ImageButton2.Enabled = false;
+                    //        ReasonLackSuccess.Disabled = true;
+                    //        Note.Disabled = true;
+                    //        ReturnDateToCustomer.Disabled = true;
+                    //        DateSentToInsuranceCompany.Disabled = true;
+                    //        SelectSourceLoanOrInsurance.Disabled = true;
+                    //        UploadDocument.Enabled = false;
+                    //        ImageButton3.Enabled = false;
+                    //        ImageButton4.Enabled = false;
+                    //        ImageButton1.Enabled = false;
+                    //    }
+                    //}
 
                         
                     
@@ -357,16 +357,21 @@ namespace ControlPanel
                 Repeater1.DataSource = dtOfferDocument;
                 Repeater1.DataBind();
                 
-                string sqlServiceRequest = @"select s.ID, Invoice,Sum,CONVERT(varchar, CreateDate, 104)  CreateDate, p.purpose as PurposeName,
+                string sqlServiceRequest = @"select s.ID, Lead.FirstName + ' ' + Lead.LastName as Invoice ,Sum,CONVERT(varchar, s.CreateDate, 104)  CreateDate, p.purpose as PurposeName,
 (select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1) as paid, SumCreditOrDenial, IsApprovedCreditOrDenial
 from ServiceRequest s 
 left join ServiceRequestPurpose p on s.PurposeID = p.ID 
+left join Offer on Offer.ID = s.OfferID 
+left join Lead on Lead.ID = Offer.LeadID
 where s.OfferID = @OfferID";
                 SqlCommand cmdServiceRequest = new SqlCommand(sqlServiceRequest);
                 cmdServiceRequest.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
                 dtServiceRequest = DbProvider.GetDataTable(cmdServiceRequest);
                 Repeater2.DataSource = dtServiceRequest;
                 Repeater2.DataBind();
+                if ((HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) != 4)|| rowOffer["IsInOperatingQueue"].ToString() != "1")
+                    btnMoveToOperator.Visible = false;
+
             }
 
        }
@@ -601,15 +606,17 @@ where s.OfferID = @OfferID";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין מקור ההלוואה/ביטוח";
                 return false;
-            }  
-           /* if (SelectOfferType.SelectedIndex == 0)
+            }
+            if (SelectOfferType.SelectedIndex == 0)
             {
                 ErrorCount++;
                 FormError_label.Visible = true;
                 FormError_label.Text = "יש להזין סוג הצעה";
+                FormErrorBottom_label.Visible = true;
+                FormErrorBottom_label.Text = "יש להזין סוג הצעה";
                 return false;
-            } */
-        
+            }
+
             //if (string.IsNullOrEmpty(ReasonLackSuccess.Value))
             //{
             //    ErrorCount++;
@@ -619,23 +626,35 @@ where s.OfferID = @OfferID";
             //    FormErrorBottom_label.Text = "יש להזין סיבה לחוסר הצלחה";
             //    return false;
             //}
-            if (string.IsNullOrEmpty(ReturnDateToCustomer.Value))
+            if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 5)
             {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין מועד חזרה ללקוח";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין מועד חזרה ללקוח";
-                return false;
-            }
-            if (string.IsNullOrEmpty(DateSentToInsuranceCompany.Value))
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין תאריך שליחה לחברת הביטוח";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין תאריך שליחה לחברת הביטוח";
-                return false;
+                if (SelectStatusOffer.SelectedIndex == 10 && string.IsNullOrEmpty(ReturnDateToCustomer.Value))
+                {
+                    ErrorCount++;
+                    FormError_label.Visible = true;
+                    FormError_label.Text = "יש להזין מועד חזרה ללקוח";
+                    FormErrorBottom_label.Visible = true;
+                    FormErrorBottom_label.Text = "יש להזין מועד חזרה ללקוח";
+                    return false;
+                }
+                if (SelectStatusOffer.SelectedIndex == 3 && string.IsNullOrEmpty(DateSentToInsuranceCompany.Value))
+                {
+                    ErrorCount++;
+                    FormError_label.Visible = true;
+                    FormError_label.Text = "יש להזין תאריך שליחה לחברת הביטוח";
+                    FormErrorBottom_label.Visible = true;
+                    FormErrorBottom_label.Text = "יש להזין תאריך שליחה לחברת הביטוח";
+                    return false;
+                }
+                if ((SelectStatusOffer.SelectedIndex == 9 || SelectStatusOffer.SelectedIndex == 5 || SelectStatusOffer.SelectedIndex == 4) && string.IsNullOrEmpty(ReasonLackSuccess.Value))
+                {
+                    ErrorCount++;
+                    FormError_label.Visible = true;
+                    FormError_label.Text = "יש להזין סיבה לחוסר הצלחה";
+                    FormErrorBottom_label.Visible = true;
+                    FormErrorBottom_label.Text = "יש להזין סיבה לחוסר הצלחה";
+                    return false;
+                }
             }
             //if (SelectStatusOffer.SelectedIndex == 0)
             //{
@@ -662,8 +681,8 @@ where s.OfferID = @OfferID";
                 cmdInsert.Parameters.AddWithValue("@SourceLoanOrInsuranceID", SelectSourceLoanOrInsurance.Value);
                 cmdInsert.Parameters.AddWithValue("@OfferTypeID", SelectOfferType.Value);
                 cmdInsert.Parameters.AddWithValue("@ReasonLackSuccess", ReasonLackSuccess.Value);
-                cmdInsert.Parameters.AddWithValue("@ReturnDateToCustomer", DateTime.Parse(ReturnDateToCustomer.Value));
-                cmdInsert.Parameters.AddWithValue("@DateSentToInsuranceCompany", DateTime.Parse(DateSentToInsuranceCompany.Value));
+                cmdInsert.Parameters.AddWithValue("@ReturnDateToCustomer", string.IsNullOrEmpty(ReturnDateToCustomer.Value) ? (object)DBNull.Value : DateTime.Parse(ReturnDateToCustomer.Value));
+                cmdInsert.Parameters.AddWithValue("@DateSentToInsuranceCompany", string.IsNullOrEmpty(DateSentToInsuranceCompany.Value) ? (object)DBNull.Value : DateTime.Parse(DateSentToInsuranceCompany.Value));
                 cmdInsert.Parameters.AddWithValue("@Note", string.IsNullOrEmpty(Note.Value) ? (object)DBNull.Value : Note.Value);
                 cmdInsert.Parameters.AddWithValue("@StatusOfferID", SelectStatusOffer.Value);
                 //cmdInsert.Parameters.AddWithValue("@TurnOfferID", SelectTurnOffer.Value);
@@ -694,36 +713,39 @@ where s.OfferID = @OfferID";
                         }
                         
                     }
-                    List<FileDetail> myFile = (List<FileDetail>)Session["UploadedFiles"];
-                    if (myFile != null)
+                    try
                     {
-                        for (int i = 0; i < myFile.Count; i++)
+                        List<FileDetail> myFile = (List<FileDetail>)Session["UploadedFiles"];
+                        if (myFile != null)
                         {
-                            try
+                            for (int i = 0; i < myFile.Count; i++)
                             {
-                                string FilePath1 = String.Format("{0}/OfferDocuments/", ConfigurationManager.AppSettings["MapPath"]);
-                                string FileName1 = myFile[i].FileName;
+                                try
+                                {
+                                    string FilePath1 = String.Format("{0}/OfferDocuments/", ConfigurationManager.AppSettings["MapPath"]);
+                                    string FileName1 = myFile[i].FileName;
 
-                                myFile[i].PostedFile.SaveAs(Path.Combine(FilePath1, FileName1));
-                                SqlCommand cmdInsertDoc = new SqlCommand(@"insert into OfferDocuments (FileName,OfferID) 
+                                    myFile[i].PostedFile.SaveAs(Path.Combine(FilePath1, FileName1));
+                                    SqlCommand cmdInsertDoc = new SqlCommand(@"insert into OfferDocuments (FileName,OfferID) 
                                                      values(@FileName,@OfferID)");
-                                cmdInsertDoc.Parameters.AddWithValue("@FileName", FileName1);
-                                cmdInsertDoc.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
-                                DbProvider.ExecuteCommand(cmdInsertDoc);
+                                    cmdInsertDoc.Parameters.AddWithValue("@FileName", FileName1);
+                                    cmdInsertDoc.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
+                                    DbProvider.ExecuteCommand(cmdInsertDoc);
+                                }
+                                catch (Exception) { }
                             }
-                            catch (Exception) { }
-                        }
 
-                        return true;
-                    }
-                    else
-                    {
-                        ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-                        FormError_label.Text = "* התרחשה שגיאה";
-                        FormError_label.Visible = true;
-                        FormErrorBottom_label.Text = "* התרחשה שגיאה";
-                        FormErrorBottom_label.Visible = true;
-                    }
+                            return true;
+                        }
+                        /* else
+                         {
+                             ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+                             FormError_label.Text = "* התרחשה שגיאה";
+                             FormError_label.Visible = true;
+                             FormErrorBottom_label.Text = "* התרחשה שגיאה";
+                             FormErrorBottom_label.Visible = true;
+                         }*/
+                    }catch(Exception ex) { }
                     return true;
                 }
                 else
@@ -792,7 +814,8 @@ where s.OfferID = @OfferID";
         
         protected void btnMoveToOperator_Click(object sender, EventArgs e) {
             ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-            SqlCommand cmdOperators = new SqlCommand("SELECT  FullName as OperatorName,ID FROM ArvootManagers where Type =5");
+            SqlCommand cmdOperators = new SqlCommand("SELECT  FullName as OperatorName,ID FROM ArvootManagers where Type =5 and ParentID = (select ParentID from ArvootManagers where ID=@ID)");
+            cmdOperators.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"].ToString());
             DataSet dsOperators = DbProvider.GetDataSet(cmdOperators);
             OperatorsList.DataSource = dsOperators;
             OperatorsList.DataTextField = "OperatorName";

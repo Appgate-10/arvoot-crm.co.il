@@ -42,13 +42,22 @@ namespace ControlPanel
         protected global::System.Web.UI.WebControls.Label FormError_label;
 
         /// <summary>
+        /// ContactID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField ContactID;
+
+        /// <summary>
         /// FullName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label FullName;
+        protected global::System.Web.UI.WebControls.Button FullName;
 
         /// <summary>
         /// OfferName control.
@@ -57,16 +66,7 @@ namespace ControlPanel
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText OfferName;
-
-        /// <summary>
-        /// Invoice control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText Invoice;
+        protected global::System.Web.UI.WebControls.Button OfferName;
 
         /// <summary>
         /// SelectPurpose control.
@@ -301,6 +301,15 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText CardholdersID;
+
+        /// <summary>
+        /// AccountHolder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText AccountHolder;
 
         /// <summary>
         /// BtnSaveBottom control.

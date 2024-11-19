@@ -114,13 +114,13 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputText ReasonLackSuccess;
 
         /// <summary>
-        /// Note control.
+        /// sla control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText Note;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sla;
 
         /// <summary>
         /// ReturnDateToCustomer control.
@@ -148,6 +148,15 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl DateSentToInsuranceCompany;
+
+        /// <summary>
+        /// Note control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea Note;
 
         /// <summary>
         /// ImageFile_lable control.

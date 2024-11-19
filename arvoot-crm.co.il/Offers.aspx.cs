@@ -37,7 +37,15 @@ namespace ControlPanel
 
         protected void Repeater1_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            //var divShowStatus = (HtmlGenericControl)e.Item.FindControl("ShowStatus");
+            var divStatus = (HtmlGenericControl)e.Item.FindControl("statusVal");
+            var divOperator = (HtmlGenericControl)e.Item.FindControl("operatorVal");
+
+            if (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 4)
+            {
+                divStatus.Style.Add("width", "23%");
+                divOperator.Style.Add("display", "block");
+            }
+
             //ImageButton btnSuspensionBU = (ImageButton)e.Item.FindControl("SuspensionBU");
             //ImageButton btnActivatingBU = (ImageButton)e.Item.FindControl("ActivatingBU");
 
@@ -183,10 +191,11 @@ namespace ControlPanel
                         break;
                     case 4:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ParentID = A.ParentID  ";
-                        sqlWhere = " and B.ID = @ID and IsInOperatingQueue = 1";
+                        sqlWhere = " and B.ID = @ID and (IsInOperatingQueue = 1 or OperatorID is not null)";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
-
+                        status.Style.Add("width", "23%");
+                        operatoring.Style.Add("display", "block");
                         break;
                     case 5:
                         sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID ";                        
@@ -202,11 +211,12 @@ namespace ControlPanel
                 }
             }
 
-            string sql = @"SELECT Offer.ID, Offer.CreateDate, OfferType.Name as OfferType, A.FullName as FullNameAgent ,StatusOffer.Status as StatusOffer
+            string sql = @"SELECT Offer.ID, Offer.CreateDate, OfferType.Name as OfferType, A.FullName as FullNameAgent ,StatusOffer.Status as StatusOffer, operators.FullName as OperatorName
                            from Offer
                            left join OfferType on OfferType.ID = Offer.OfferTypeID
                            left join StatusOffer on StatusOffer.ID = Offer.StatusOfferID 
-                           left join Lead on Lead.ID = Offer.LeadID" +
+                           left join Lead on Lead.ID = Offer.LeadID     
+                           left join ArvootManagers operators on operators.ID = Offer.OperatorID" +
                            sqlJoin +" where  OfferType.ID not in(1,2,3,13)";
 
 

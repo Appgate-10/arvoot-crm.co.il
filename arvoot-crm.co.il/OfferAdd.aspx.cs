@@ -48,13 +48,16 @@ namespace ControlPanel
                 SelectStatusOffer.DataValueField = "ID";
                 SelectStatusOffer.DataBind();
 
+
                 SqlCommand cmdOfferType = new SqlCommand("SELECT * FROM OfferType");
                 DataSet dsOfferType = DbProvider.GetDataSet(cmdOfferType);
                 SelectOfferType.DataSource = dsOfferType;
                 SelectOfferType.DataTextField = "Name";
                 SelectOfferType.DataValueField = "ID";
-                SelectOfferType.DataBind(); 
-                
+                SelectOfferType.DataBind();
+                SelectOfferType.Items.Insert(0, new ListItem("בחר", ""));
+
+
                 //SqlCommand cmdTurnOffer = new SqlCommand("SELECT * FROM TurnOffer");
                 //DataSet dsTurnOffer = DbProvider.GetDataSet(cmdTurnOffer);
                 //SelectTurnOffer.DataSource = dsTurnOffer;
@@ -233,41 +236,46 @@ namespace ControlPanel
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין מקור ההלוואה/ביטוח";
                 return 0;
-            }  
-           /* if (SelectOfferType.SelectedIndex == 0)
+            }
+            if (SelectOfferType.SelectedIndex == 0)
             {
                 ErrorCount++;
                 FormError_label.Visible = true;
                 FormError_label.Text = "יש להזין סוג הצעה";
-                return false;
-            } */
-        
-            //if (string.IsNullOrEmpty(ReasonLackSuccess.Value))
-            //{
-            //    ErrorCount++;
-            //    FormError_label.Visible = true;
-            //    FormError_label.Text = "יש להזין סיבה לחוסר הצלחה";
-            //    FormErrorBottom_label.Visible = true;
-            //    FormErrorBottom_label.Text = "יש להזין סיבה לחוסר הצלחה";
-            //    return 0;
-            //}
-            if (string.IsNullOrEmpty(ReturnDateToCustomer.Value))
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין מועד חזרה ללקוח";
                 FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין מועד חזרה ללקוח";
+                FormErrorBottom_label.Text = "יש להזין סוג הצעה";
                 return 0;
             }
-            if (string.IsNullOrEmpty(DateSentToInsuranceCompany.Value))
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין תאריך שליחה לחברת הביטוח";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין תאריך שליחה לחברת הביטוח";
-                return 0;
+
+           
+            if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 5) {
+                if (SelectStatusOffer.SelectedIndex== 11 && string.IsNullOrEmpty(ReturnDateToCustomer.Value))
+                {
+                    ErrorCount++;
+                    FormError_label.Visible = true;
+                    FormError_label.Text = "יש להזין מועד חזרה ללקוח";
+                    FormErrorBottom_label.Visible = true;
+                    FormErrorBottom_label.Text = "יש להזין מועד חזרה ללקוח";
+                    return 0;
+                }
+                if (SelectStatusOffer.SelectedIndex == 4 && string.IsNullOrEmpty(DateSentToInsuranceCompany.Value))
+                {
+                    ErrorCount++;
+                    FormError_label.Visible = true;
+                    FormError_label.Text = "יש להזין תאריך שליחה לחברת הביטוח";
+                    FormErrorBottom_label.Visible = true;
+                    FormErrorBottom_label.Text = "יש להזין תאריך שליחה לחברת הביטוח";
+                    return 0;
+                }
+                if ((SelectStatusOffer.SelectedIndex == 10 ||SelectStatusOffer.SelectedIndex == 6 || SelectStatusOffer.SelectedIndex == 5) && string.IsNullOrEmpty(ReasonLackSuccess.Value))
+                {
+                    ErrorCount++;
+                    FormError_label.Visible = true;
+                    FormError_label.Text = "יש להזין סיבה לחוסר הצלחה";
+                    FormErrorBottom_label.Visible = true;
+                    FormErrorBottom_label.Text = "יש להזין סיבה לחוסר הצלחה";
+                    return 0;
+                }
             }
             //if (SelectStatusOffer.SelectedIndex == 0)
             //{
@@ -293,8 +301,8 @@ namespace ControlPanel
                 cmdInsert.Parameters.AddWithValue("@SourceLoanOrInsuranceID", SelectSourceLoanOrInsurance.Value);
                 cmdInsert.Parameters.AddWithValue("@OfferTypeID", SelectOfferType.Value);
                 cmdInsert.Parameters.AddWithValue("@ReasonLackSuccess", ReasonLackSuccess.Value);
-                cmdInsert.Parameters.AddWithValue("@ReturnDateToCustomer", DateTime.Parse(ReturnDateToCustomer.Value));
-                cmdInsert.Parameters.AddWithValue("@DateSentToInsuranceCompany", DateTime.Parse(DateSentToInsuranceCompany.Value));
+                cmdInsert.Parameters.AddWithValue("@ReturnDateToCustomer", string.IsNullOrEmpty(ReturnDateToCustomer.Value) ? (object)DBNull.Value : DateTime.Parse(ReturnDateToCustomer.Value));
+                cmdInsert.Parameters.AddWithValue("@DateSentToInsuranceCompany", string.IsNullOrEmpty(DateSentToInsuranceCompany.Value) ? (object)DBNull.Value : DateTime.Parse(DateSentToInsuranceCompany.Value));
                 cmdInsert.Parameters.AddWithValue("@Note", string.IsNullOrEmpty(Note.Value) ? (object)DBNull.Value : Note.Value);
                 cmdInsert.Parameters.AddWithValue("@NameOffer", string.IsNullOrEmpty(NameOffer.Value) ? (object)DBNull.Value : NameOffer.Value);
                 cmdInsert.Parameters.AddWithValue("@StatusOfferID", SelectStatusOffer.Value);

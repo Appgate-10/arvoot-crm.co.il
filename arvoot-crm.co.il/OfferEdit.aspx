@@ -127,30 +127,32 @@
                     </div>
                    
                 </div>
-                <div class="row MarginRow PaddingRow" style="width: 100%;">
-                    <div style="width: 31%; margin-left: 24%" class="row">
+                <div  class="row MarginRow "  style="width: 100%;">
+                    <div  style="width: 80%;">
+                                       <div class="row MarginRow PaddingRow" style="width: 100%;">
+                    <div style="width: 26%; margin-left: 24%" class="row">
                         <lable class="InputLable">מועד כניסה לתוקף:</lable>
                         <lable class="ColorLable" id="EffectiveDate" runat="server"></lable>
                     </div>
-                    <div style="width: 20%; margin-left: 2%;" class="row">
+                    <div style="width: 47%; margin-left: 2%;" class="row">
                         <label class="InputLable">סיבה לחוסר הצלחה:</label>
                         <input id="ReasonLackSuccess" name="ReasonLackSuccess" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                     </div>
-                    <div style="width: 23%;" class="row">
-                        <label class="InputLable">הערות:</label>
-                        <input id="Note" name="FirstName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
+                    <div style="width: 18%;" class="row">
+                        <label style="width:100%;text-align: left;" class="InputLable">הערות:</label>
+<%--                        <textarea id="Note" name="FirstName" type="text" runat="server" style="width: 100%;" class="InputAdd" />--%>
                     </div>
                 </div>
                 <div class="row MarginRow " style="width: 100%;">
-                    <div style="width: 31%; margin-left: 24%" class="row">
+                    <div style="width: 21%; margin-left: 24%" class="row">
                         <%--       todo-לחשב כמה ימים עברו מפתיחת ההצעה
                         מועד כניסה לתוקף-לחשב כמה ימים עברו--%>
                         <lable class="InputLable">sla מפתיחת ההצעה:</lable>
                         <lable id="sla" runat="server" class="ColorLable">0</lable>
                     </div>
-                    <div style="width: 20%; margin-left: 2%;" class="row">
+                    <div style="width: 47%; margin-left: 2%;" class="row">
                         <label class="InputLable">מועד חזרה ללקוח :</label>
-                        <input id="ReturnDateToCustomer" name="FirstName" type="date" runat="server" style="width: 100%;" class="InputAdd" />
+                        <input id="ReturnDateToCustomer" name="FirstName" type="date" runat="server" style="width: 20%;" class="InputAdd" />
                     </div>
                 </div>
                 <%-- <div class="row MarginRow " style="width: 100%;">
@@ -168,7 +170,7 @@
                         <lable class="InputLable">מספר בקשות שירות גביה:</lable>
                         <lable class="ColorLable">3.6.2023</lable>
                     </div>--%>
-                    <div style="width: 31%; margin-left: 24%" class="row">
+                    <div style="width: 31%; margin-left: 14%" class="row">
                         <lable class="InputLable">מקור ההלוואה/ביטוח:</lable>
                         <%--                        <lable class="ColorLable">לאומי</lable>--%>
                         <select runat="server" id="SelectSourceLoanOrInsurance" class="selectGlobal"></select>
@@ -184,6 +186,15 @@
                         <lable class="ColorLable">לאומי</lable>
                     </div>
                 </div>--%>
+
+                    </div>
+                    <div  style="width: 20%;">
+                         <textarea id="Note" name="FirstName" type="text" runat="server" style="width: 100%;height: 164px;border: 1px solid rgb(0, 152, 255);
+                                    border-radius: 12px;margin-top: 20px;resize: none;overflow-y: scroll;scrollbar-width: none;" class="InputAdd" />
+
+                    </div>
+                </div>
+ 
             </div>
 
             <div class="col MarginDiv SecondaryDiv PaddingDiv">

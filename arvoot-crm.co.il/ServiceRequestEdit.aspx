@@ -112,6 +112,7 @@
                         </div>
                         <div>
                               <asp:HiddenField  id="OfferID" runat="server"></asp:HiddenField>
+                              <asp:HiddenField  id="ContactID" runat="server"></asp:HiddenField>
 
 <%--                            <label class="LableBlue">עריכת בקשת שירות</label>--%>
                         </div>
@@ -120,23 +121,25 @@
                       
                     </div>
                 </div>
-                <div class="row MarginRow " style="width: 100%;">
+                <div class="row " style="width: 100%;">
                     <div style="width: 31%; margin-left: 24%" class="row">
                         <div style="width: 132px;">
                             <lable class="FontWeightBold">שם איש קשר:</lable>
                         </div>
                         <div style="width: 100%;">
-                            <asp:Label   ID="FullName" runat="server" name="FullName" type="text" style="width: 100%; border-bottom: 0px;" runat="server" class="InputAdd" />
+                            <asp:Button OnClick="OpenContact_Click"  ID="FullName" runat="server" name="FullName" type="text" 
+                                style="width: 100%; border-bottom: 0px;background: none;text-align: right;font-size: medium;" class="InputAdd" />
                         </div>
                     </div>
                     <div style="width: 17%; margin-left: 10%;" class="row">
                         <label class="InputLable">הצעה:</label>
-                        <input id="OfferName" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
+                        <asp:Button id="OfferName"  OnClick="OpenOffer_Click"  name="FullName" type="text" 
+                            runat="server" style="width: 100%; border-bottom: 0px;background: none;text-align: right;font-size: medium;" class="InputAdd" />
                     </div>
                     <div style="width: 18%">
                     </div>
                 </div>
-                <div class="row GrayLine" style="width: 100%;">
+          <%--      <div class="row GrayLine" style="width: 100%;">
                     <div style="width: 31%; margin-left: 24%;" class="row">
                         <div style="width: 132px;">
                             <lable class="FontWeightBold">חשבון:</lable>
@@ -146,7 +149,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div>--%>
                 <div class="row PaddingRow" style="width: 100%;">
                     <div style="width: 31%; margin-left: 24%" class="row">
                         <div style="width: 132px;">
@@ -161,7 +164,7 @@
                     <div style="width: 17%; margin-left: 3%;" class="row">
                         <label class="InputLable">סכום כולל לגבייה:</label>
                              <span class="input-symbol-shekel">
-                        <input id="AllSum" name="FullName" type="number" runat="server" style="width: 85%;" class="InputAdd" />
+                        <input id="AllSum" name="FullName" type="number" min="0" runat="server" style="width: 85%;" class="InputAdd" />
                                  </span>
                     </div>
                   
@@ -224,7 +227,7 @@
                     <div style="width: 18%; margin-left: 3%;" class="row">
                         <label id="sumTitle" runat="server" class="InputLable">סכום לתשלום ראשון:</label>
                              <span class="input-symbol-shekel">
-                        <input id="Sum1" name="FullName" type="number" runat="server" style="width: 85%;" class="InputAdd" value='<%# Eval("SumPayment").ToString() == "0" ? "" : Eval("SumPayment").ToString() %>'/>
+                        <input id="Sum1" name="FullName" type="number" min="0" runat="server" style="width: 85%;" class="InputAdd" value='<%# Eval("SumPayment").ToString() == "0" ? "" : Eval("SumPayment").ToString() %>'/>
                                  </span>
                     </div>
                     <div style="width: 15%; margin-left: 35%;" class="row">
@@ -239,7 +242,7 @@
                 <div class="row MarginRow PaddingRow" style="width: 100%;">
                     <div style="width: 18%; margin-left: 3%;" class="row">
                         <label class="InputLable">מספר תשלומים:</label>
-                        <input id="Num1" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" value='<%#Eval("NumPayment").ToString() == "0" ? "" : Eval("NumPayment").ToString() %>' />
+                        <input id="Num1" name="FullName" type="number" min="0" runat="server" style="width: 100%;" class="InputAdd" value='<%#Eval("NumPayment").ToString() == "0" ? "" : Eval("NumPayment").ToString() %>' />
                     </div>
                     <div style="width: 15%; margin-left: 35%;" class="row">
                         <label class="InputLable">אסמכתא:</label>
@@ -272,7 +275,7 @@
                     <div style="width: 18%; margin-left: 3%;" class="row">
                         <label class="InputLable">סכום:</label>
                              <span class="input-symbol-shekel">
-                        <input id="Sum4" name="FullName" type="number" runat="server" style="width: 90%;" class="InputAdd" />
+                        <input id="Sum4" name="FullName" type="number" min="0" runat="server" style="width: 90%;" class="InputAdd" />
                                  </span>
                     </div>
                     <div style="width: 15%; margin-left: 35%;" class="row">
@@ -288,7 +291,7 @@
                 <div class="row PaddingRow" style="width: 100%;">
                     <div style="width: 18%; margin-left: 3%;" class="row">
                         <label class="InputLable">מספר תשלומים:</label>
-                        <input id="Num4" name="FullName" type="number" runat="server" style="width: 100%;" class="InputAdd" />
+                        <input id="Num4" name="FullName" type="number" min="0" runat="server" style="width: 100%;" class="InputAdd" />
                     </div>
                     <div style="width: 15%; margin-left: 35%;" class="row">
                         <label class="InputLable">אסמכתא:</label>
@@ -395,7 +398,7 @@
 <%--                        <input id="CreditValidity" name="FullName" type="date" runat="server" style="width: 100%;" class="InputAdd" />--%>
                     </div>
                 </div>
-                <div class="row PaddingRow MarginRow" style="width: 100%;">
+                <div class="row PaddingRow " style="width: 100%;">
                     <div style="width: 18%; margin-left: 3%;" class="row">
                     </div>
                     <div style="width: 20%; margin-left: 5%;" class="row">
@@ -405,6 +408,17 @@
                     <div style="width: 20%; margin-left: 34%;" class="row">
                         <label class="InputLable">ת.ז. בעל הכרטיס:</label>
                         <input id="CardholdersID" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
+                    </div>
+                </div>
+                    <div class="row PaddingRow MarginRow" style="width: 100%;">
+                    <div style="width: 18%; margin-left: 3%;" class="row">
+                    </div>
+                    <div style="width: 20%; margin-left: 5%;" class="row">
+                        <label class="InputLable">בעל החשבון:</label>
+                        <input id="AccountHolder" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
+                    </div>
+                    <div style="width: 20%; margin-left: 34%;" class="row">
+                       
                     </div>
                 </div>
             </div>

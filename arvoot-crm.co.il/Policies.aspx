@@ -35,8 +35,9 @@
 
                 <div style="width: 17%; text-align: right; padding-right: 4%">תאריך</div>
                     <div style="width: 15%; text-align: right;">הצעה</div>
-                    <div style="width: 30%; text-align: right;">בעלים</div>
-                    <div style="width: 33%; text-align: right;">סטטוס</div>
+                    <div style="width: 20%; text-align: right;">בעלים</div>
+                    <div id="status" runat="server"  style="width: 43%; text-align: right;">סטטוס</div>
+                    <div id="operatoring" runat="server"  style="width: 20%; text-align: right;display:none">מתפעלת</div>
                     <div style="width: 5%; text-align: center;"></div>
 
 
@@ -54,11 +55,12 @@
 
                             <div class='ListDivParams'>
 
-                                <div style="width: 5%; text-align: center">
+                                  <div style="width: 5%; text-align: center">
                                     <asp:Image ID="BtnDetailsOffer" style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
                                     </div>
-                                    <div style="width: 33%; text-align: right"><%#Eval("StatusOffer") %></div>
-                                    <div style="width: 30%; text-align: right;"><%#Eval("FullNameAgent") %></div>
+                                    <div  id="operatorVal" runat="server" style="width: 20%; text-align: right;display:none"><%#Eval("OperatorName") %></div>
+                                    <div  id="statusVal" runat="server"  style="width: 43%; text-align: right"><%#Eval("StatusOffer") %></div>
+                                    <div style="width: 20%; text-align: right;"><%#Eval("FullNameAgent") %></div>
                                     <div style="width: 15%; text-align: right"><%#Eval("OfferType") %></div>
                                     <div style="width: 17%; text-align: right; padding-right: 4%"><%#Eval("CreateDate") %></div>
 

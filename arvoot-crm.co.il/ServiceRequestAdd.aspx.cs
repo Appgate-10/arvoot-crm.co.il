@@ -83,8 +83,14 @@ namespace ControlPanel
         }
         public void loadData()
         {
-            string sql = @"select Lead.FirstName + ' ' + Lead.LastName as FullName, o.NameOffer ,Lead.ID as LeadID from Lead 
-                            left join Offer o on o.LeadID =Lead.ID  where o.ID = @ID ";
+            string sql = @"select Lead.FirstName + ' ' + Lead.LastName as FullName, o.NameOffer ,Lead.ID as LeadID, parent2.CompanyName,
+                           A.FullName as FullNameAgent from Lead 
+                           left join Offer o on o.LeadID =Lead.ID 
+                           inner join ArvootManagers A on Lead.AgentID=A.ID 
+                           left join ArvootManagers parent on parent.ID = A.ParentID
+                           left join ArvootManagers parent2 on parent2.ID = parent.ParentID
+                           where o.ID = @ID ";
+
 
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Parameters.AddWithValue("@ID", Request.QueryString["OfferID"]);
@@ -95,6 +101,8 @@ namespace ControlPanel
                 FullName.Text = dt.Rows[0]["FullName"].ToString();
                 ContactID.Value = dt.Rows[0]["LeadID"].ToString();
                 OfferName.Text = dt.Rows[0]["NameOffer"].ToString();
+                lblOwner.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
+                lblAgency.InnerText = dt.Rows[0]["CompanyName"].ToString();
             }
 
             List<serviceRequestPayment> payments = new List<serviceRequestPayment>();

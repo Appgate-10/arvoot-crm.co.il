@@ -81,7 +81,13 @@ namespace ControlPanel
         {
             if (Request.QueryString["ServiceRequestID"] != null)
             {
-                string sql = @"select s.*, o.NameOffer, o.LeadID,Lead.FirstName+' '+Lead.LastName as ContactName from ServiceRequest s  left join Offer o on o.ID = s.OfferID left join Lead on Lead.ID = o.LeadID  where s.ID = @ID  ";
+                string sql = @"select s.*, o.NameOffer, o.LeadID,Lead.FirstName+' '+Lead.LastName as ContactName, parent2.CompanyName, A.FullName as FullNameAgent 
+                               from ServiceRequest s  left join Offer o on o.ID = s.OfferID left join Lead on Lead.ID = o.LeadID  
+                               inner join ArvootManagers A on Lead.AgentID=A.ID 
+                               left join ArvootManagers parent on parent.ID = A.ParentID
+                               left join ArvootManagers parent2 on parent2.ID = parent.ParentID
+                               where s.ID = @ID  ";
+
 
                 SqlCommand cmd = new SqlCommand(sql);
                 cmd.Parameters.AddWithValue("@ID", Request.QueryString["ServiceRequestID"]);
@@ -96,7 +102,8 @@ namespace ControlPanel
                     SelectPurpose.Value = ds.Rows[0]["PurposeID"].ToString();
                     Note.Value = ds.Rows[0]["Note"].ToString();
                     OfferName.Text = ds.Rows[0]["NameOffer"].ToString();
-
+                    lblAgency.InnerText = ds.Rows[0]["CompanyName"].ToString();
+                    lblOwner.InnerText = ds.Rows[0]["FullNameAgent"].ToString();
                     //Sum1.Value = ds.Rows[0]["SumPayment1"].ToString();
                     //if (!string.IsNullOrEmpty(ds.Rows[0]["DatePayment1"].ToString()))
                     //{

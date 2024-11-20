@@ -85,15 +85,15 @@
                         </div>
                         <div class="col" style="width: 12%;">
                             <label class="LableDetails">סוכנות</label>
-                            <label class="PaddingAgentCus"></label>
+                            <label id="lblAgency" runat="server" class="PaddingAgentCus"></label>
                         </div>
                         <div class="col" style="width: 12%;">
                             <label class="LableDetails">בעלים</label>
-                            <label class="PaddingAgentCus"></label>
+                            <label id="lblOwner" runat="server" class="PaddingAgentCus"></label>
                         </div>
                         <div class="col" style="width: 14%;">
-                            <label class="LableDetails">טלפון</label>
-                            <label class="PaddingAgentCus"></label>
+                        <%--    <label class="LableDetails">טלפון</label>
+                            <label class="PaddingAgentCus"></label>--%>
                         </div>
                         <div  style="width: 50%;">
 

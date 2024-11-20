@@ -33,7 +33,7 @@ namespace ControlPanel
             {
                 Pageinit.CheckManagerPermissions();
                 UploadDocument.Attributes.Add("onclick", "document.getElementById('" + ImageFile_FileUpload.ClientID + "').click();");
-
+                Session["UploadedFiles"] = null;
                 if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) > 3)
                 {
                     DeleteLid.Visible = false;
@@ -252,8 +252,11 @@ namespace ControlPanel
         {
            
 
-            string sql = @"select Lead.Tz,Lead.FirstName+' '+Lead.LastName as FullName,A.FullName as FullNameAgent, Lead.AgentID from Lead
-                           inner join ArvootManagers A on Lead.AgentID=A.ID inner join Offer on Offer.LeadID = Lead.ID where Offer.ID = @OfferID";
+            string sql = @"select Lead.Tz,Lead.FirstName+' '+Lead.LastName as FullName,A.FullName as FullNameAgent, Lead.AgentID, parent2.CompanyName from Lead
+                           inner join ArvootManagers A on Lead.AgentID=A.ID inner join Offer on Offer.LeadID = Lead.ID 
+                           left join ArvootManagers parent on parent.ID = A.ParentID
+                           left join ArvootManagers parent2 on parent2.ID = parent.ParentID
+                           where Offer.ID = @OfferID";
 
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
@@ -267,6 +270,7 @@ namespace ControlPanel
                 AgentName.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
                 Tz.InnerText = dt.Rows[0]["Tz"].ToString();
                 EffectiveDate.InnerText = DateTime.Now.ToString("dd.MM.yyyy");
+                lblAgency.InnerText = dt.Rows[0]["CompanyName"].ToString();
             }
 
             string sqlOffer = @"select LeadID, CONVERT(varchar,Offer.CreateDate, 104) as CreateDate, IsInOperatingQueue, OperatorID,
@@ -418,8 +422,14 @@ where s.OfferID = @OfferID";
                     string ext = Path.GetExtension(ImageFile_FileUpload.FileName).ToLower();
                     if (ext == ".pdf" || ext ==".jpeg" || ext ==".png" || ext ==".jpg")
                     {
-                        var uploadedFiles = (List<FileDetail>)Session["UploadedFiles"];
-
+                        var uploadedFiles = new List<FileDetail>();
+                        try
+                        {
+                            uploadedFiles = (List<FileDetail>)Session["UploadedFiles"];
+                        }
+                        catch {
+                          
+                        }
                         var fileDetail = new FileDetail
                         {
                             FileName = ImageFile_FileUpload.FileName,
@@ -444,7 +454,7 @@ where s.OfferID = @OfferID";
                 }
                 catch(Exception ex)
                 {
-                    ImageFile_lable.Text = ex.Message;//"* בבקשה נסה שוב";
+                    ImageFile_lable.Text = "* בבקשה נסה שוב";//ex.Message;
                     ImageFile_lable.Visible = true;
                 }
             }

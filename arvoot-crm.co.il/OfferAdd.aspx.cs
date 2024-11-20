@@ -189,8 +189,11 @@ namespace ControlPanel
         {
             //int PageNumber = 1;
 
-            string sql = @"select  Lead.Tz,Lead.FirstName+' '+Lead.LastName as FullName,A.FullName as FullNameAgent from Lead
-                           inner join ArvootManagers A on Lead.AgentID=A.ID where Lead.ID = @LeadID ";
+            string sql = @"select Lead.Tz, Lead.FirstName+' '+Lead.LastName as FullName, A.FullName as FullNameAgent, parent2.CompanyName from Lead
+                           inner join ArvootManagers A on Lead.AgentID=A.ID 
+                           left join ArvootManagers parent on parent.ID = A.ParentID
+                           left join ArvootManagers parent2 on parent2.ID = parent.ParentID
+                           where Lead.ID = @LeadID ";
 
             SqlCommand cmd = new SqlCommand(sql);
             cmd.Parameters.AddWithValue("@LeadID", Request.QueryString["ContactID"]);
@@ -201,6 +204,7 @@ namespace ControlPanel
                 FullName.InnerText = dt.Rows[0]["FullName"].ToString();
              //FullNameAgent.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
                 lblOwner.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
+                lblAgency.InnerText = dt.Rows[0]["CompanyName"].ToString();
                 Tz.InnerText = dt.Rows[0]["Tz"].ToString();
                 EffectiveDate.InnerText = DateTime.Now.ToString("dd.MM.yyyy");
             }

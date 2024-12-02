@@ -185,8 +185,8 @@ namespace ControlPanel
                 switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
                 {
                     case 2:
-                        sqlJoin =  " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on C.ID = B.ParentID ";
-                        sqlWhere = " and C.ID = @ID";
+                        sqlJoin =  " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlWhere = " and (C.ID = @ID OR B.ID = @ID)";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
@@ -499,7 +499,12 @@ namespace ControlPanel
             FormError_lable.Visible = false;
             MoveLeadPopUp.Visible = true;
            
-            SqlCommand cmdAgents = new SqlCommand("SELECT  FullName as AgentName,ID FROM ArvootManagers where Type=6");
+            SqlCommand cmdAgents = new SqlCommand();
+            string sqlType = "";
+            if (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 3) sqlType = " and Type = 6";
+            string sqlAgents = "SELECT  FullName as AgentName,ID,* FROM ArvootManagers where ParentID = @ParentID " + sqlType;
+            cmdAgents.Parameters.AddWithValue("@ParentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
+            cmdAgents.CommandText = sqlAgents;
             DataSet dsAgents = DbProvider.GetDataSet(cmdAgents);
             AgentList.DataSource = dsAgents;
             AgentList.DataTextField = "AgentName";

@@ -568,7 +568,7 @@ namespace ControlPanel
                         sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID and A.Type  in (3,6) ";
                         break;
                     case 2:
-                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type  in (3,6) inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type  in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
                         sqlWhere = " Where C.ID = @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdPayments.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);

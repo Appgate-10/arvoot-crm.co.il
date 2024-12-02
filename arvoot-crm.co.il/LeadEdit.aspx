@@ -336,7 +336,9 @@
                         <lable class="InputLable">הערות</lable>
                     </div>
                     <div class="row MarginRow">
-                        <input id="Note" name="Note" type="text" runat="server" style="width: 66%;" class="InputAdd" />
+                          <textarea id="Note" name="FirstName" type="text" runat="server" style="width: 100%; height: 100px; border: 1px solid rgb(0, 152, 255); border-radius: 12px; margin-top: 20px; resize: none; overflow-y: scroll; scrollbar-width: none; padding: 5px;"
+                                                class="InputAdd" />
+
                     </div>
                 </div>
 

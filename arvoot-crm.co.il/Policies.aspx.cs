@@ -193,7 +193,7 @@ namespace ControlPanel
                         break;
                     case 4:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ParentID = A.ParentID  ";
-                        sqlWhere = " and B.ID = @ID and IsInOperatingQueue = 1";
+                        sqlWhere = " and B.ID = @ID and (IsInOperatingQueue = 1 or OperatorID is not null)";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         status.Style.Add("width", "23%");

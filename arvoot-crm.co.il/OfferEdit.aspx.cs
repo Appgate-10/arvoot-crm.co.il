@@ -824,7 +824,9 @@ where s.OfferID = @OfferID";
         
         protected void btnMoveToOperator_Click(object sender, EventArgs e) {
             ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
-            SqlCommand cmdOperators = new SqlCommand("SELECT  FullName as OperatorName,ID FROM ArvootManagers where Type =5 and ParentID = (select ParentID from ArvootManagers where ID=@ID)");
+            SqlCommand cmdOperators = new SqlCommand(@"select FullName as OperatorName,ID from ArvootManagers where Type = 5 and Show = 1 and ParentID in(
+                                                       select ID from ArvootManagers where Type = 3 and ParentID = (
+                                                       select ParentID from ArvootManagers where ID = (select ParentID from ArvootManagers where ID = @ID )))");
             cmdOperators.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"].ToString());
             DataSet dsOperators = DbProvider.GetDataSet(cmdOperators);
             OperatorsList.DataSource = dsOperators;

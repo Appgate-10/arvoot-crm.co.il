@@ -74,7 +74,9 @@
                             <label class="LableBlue">פירוט הצעה</label>
                         </div>
                     </div>
-                    <div>
+                    <div class="row">
+                        <label class="InputLable">סטטוס:</label>
+
                         <select runat="server" id="SelectStatusOffer" class="selectGlobal"></select>
 
                         <%--                        <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="~/images/icons/In_Treatment_Status_Button.png" OnClick="CopyLid_Click" />--%>

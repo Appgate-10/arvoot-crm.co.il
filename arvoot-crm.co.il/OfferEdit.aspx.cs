@@ -59,8 +59,10 @@ namespace ControlPanel
                 SelectOfferType.DataSource = dsOfferType;
                 SelectOfferType.DataTextField = "Name";
                 SelectOfferType.DataValueField = "ID";
-                SelectOfferType.DataBind(); 
-                
+                SelectOfferType.DataBind();
+                SelectOfferType.Items.Insert(0, new ListItem("בחר", ""));
+
+
                 //SqlCommand cmdTurnOffer = new SqlCommand("SELECT * FROM TurnOffer");
                 //DataSet dsTurnOffer = DbProvider.GetDataSet(cmdTurnOffer);
                 //SelectTurnOffer.DataSource = dsTurnOffer;
@@ -308,6 +310,8 @@ namespace ControlPanel
                     if (dtOwner.Rows.Count > 0)
                     {
                         lblOwner.InnerText = dtOwner.Rows[0]["FullNameAgent"].ToString();
+                        if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 4)
+                            btnMoveToOperator2.Style["display"] = "block";
                     }
 
                     movedToOperating.Visible = false;

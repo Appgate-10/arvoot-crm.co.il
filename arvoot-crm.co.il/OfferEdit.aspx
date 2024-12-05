@@ -51,7 +51,16 @@
                         </div>
                         <div class="col" style="width: 25%;">
                             <label class="LableDetails">בעלים</label>
-                            <label id="lblOwner" runat="server" class="PaddingAgentCus ColorLable"></label>
+                            <div style="position: relative;">
+                                <label id="lblOwner" runat="server" class="PaddingAgentCus ColorLable"></label>
+                                <asp:Button OnClick="btnMoveToOperator_Click" 
+                                            ID="btnMoveToOperator2" 
+                                            runat="server" 
+                                            OnClientClick="reload(LoadingDiv);"
+                                            BackColor="Transparent" 
+                                            BorderStyle="None" 
+                                            Style="position: absolute; top: 0; left: 0; cursor:pointer; display:none; width:100%" />
+                            </div>
                         </div>
                         <div class="col" style="width: 30%;">
                             <%--<label class="LableDetails">טלפון</label>

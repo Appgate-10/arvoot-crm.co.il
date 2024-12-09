@@ -867,7 +867,7 @@ namespace ControlPanel
                 try
                 {
                     Pageinit.CheckManagerPermissions();
-                    cmd.Parameters.AddWithValue("@AgentID", long.Parse(HiddenAgentID.Value/*HttpContext.Current.Session["AgentID"].ToString()*/));
+                    cmd.Parameters.AddWithValue("@AgentID", long.Parse(HiddenAgentID.Value));
                 }
                 catch (Exception ex)
                 {
@@ -1216,7 +1216,7 @@ namespace ControlPanel
                     SqlCommand cmdBranchManager = new SqlCommand("SELECT CASE WHEN a.Type = 3 THEN a.ID ELSE a.ParentID END as ManagerID FROM ArvootManagers a WHERE a.ID = @AgentID");
                     cmdBranchManager.Parameters.AddWithValue("@AgentID", HiddenAgentID.Value);
                     string branchAgent = DbProvider.GetOneParamValueString(cmdBranchManager);
-                    cmd.Parameters.AddWithValue("@AgentID", int.Parse(SelectFirstStatus.Value) == 5 ? /*(object)DBNull.Value*/ long.Parse(branchAgent) : long.Parse(HiddenAgentID.Value/*HttpContext.Current.Session["AgentID"].ToString()*/));
+                    cmd.Parameters.AddWithValue("@AgentID", (int.Parse(SelectFirstStatus.Value) == 5 || int.Parse(SelectFirstStatus.Value) == 8) ? /*(object)DBNull.Value*/ long.Parse(branchAgent) : long.Parse(HiddenAgentID.Value/*HttpContext.Current.Session["AgentID"].ToString()*/));
                 }
                 catch (Exception ex)
                 {

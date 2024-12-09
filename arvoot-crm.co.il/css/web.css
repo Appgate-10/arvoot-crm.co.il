@@ -2316,6 +2316,20 @@ H2 {
     font-family: 'Open Sans Hebrew', sans-serif; 
 }
 
+.BtnSort {
+    background-color: #273283;
+    color: white;
+    padding: 0px 2%;
+    border: none;
+    border-radius: 4px;
+    font-size: medium;
+    font-weight: bold;
+    height:95%;
+    margin-inline-start: 5px;
+    cursor: pointer;
+    font-family: 'Open Sans Hebrew', sans-serif;
+}
+
 .BtnMove {
     background-color: white;
     color: #973595;
@@ -2520,6 +2534,26 @@ H2 {
         background-color: #669EFF;
         border-radius: 50%;
     }
+
+.inputSortDate {
+    display: inline-block;
+    vertical-align: top;
+    width: 148px;
+    /*color: #000000;*/
+    color: #606b86;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 33px;
+    line-height: 45px;
+    /* border-radius: 18px;
+    border: solid 2px #b0adad;*/
+    border-radius: 6px;
+    border: solid 1px #a3a3a4;
+    background-color: #fbfdfe;
+    margin-right: 20px;
+    text-align: center;
+    font-size: 12pt;
+}
 
 .div-arrows-img {
     align-items: center;

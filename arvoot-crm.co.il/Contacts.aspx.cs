@@ -208,7 +208,7 @@ namespace ControlPanel
                         break;
                     case 6:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type  in (3,6) ";
-                        sqlWhere += " and A.ID = @ID";
+                        sqlWhere += " and A.ParentID = (select ParentID from ArvootManagers where ID = @ID)";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break; 
                     case 4:

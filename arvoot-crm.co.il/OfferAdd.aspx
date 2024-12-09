@@ -108,7 +108,11 @@
                         <lable class="ColorLable" id="Tz" runat="server"></lable>
 
                     </div>
-
+                    <div style="width: 31%; margin-left: 14%" class="row">
+                                <lable class="InputLable">מקור ההלוואה/ביטוח:</lable>
+                                <%--                        <lable class="ColorLable">לאומי</lable>--%>
+                                <select runat="server" id="SelectSourceLoanOrInsurance" class="selectGlobal"></select>
+                            </div>
                 </div>
                 <div class="row MarginRow " style="width: 100%;">
                     <div style="width: 80%;">
@@ -154,9 +158,9 @@
                         <lable class="ColorLable">3.6.2023</lable>
                     </div>--%>
                             <div style="width: 31%; margin-left: 14%" class="row">
-                                <lable class="InputLable">מקור ההלוואה/ביטוח:</lable>
-                                <%--                        <lable class="ColorLable">לאומי</lable>--%>
-                                <select runat="server" id="SelectSourceLoanOrInsurance" class="selectGlobal"></select>
+                                  <lable class="InputLable">תאריך שליחה למתפעלת:</lable>
+                                     <%--                        <lable class="ColorLable">לאומי</lable>--%>
+                                  <lable class="ColorLable" id="DateSentToOperator" runat="server"></lable>
                             </div>
                             <div style="width: 20%; margin-left: 2%;" class="row">
                                 <label class="InputLable">תאריך שליחה לחברת הביטוח :</label>

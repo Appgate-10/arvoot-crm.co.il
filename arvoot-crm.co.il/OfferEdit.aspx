@@ -103,7 +103,7 @@
                     <div style="min-width:180px;"  class="row">
                         <label class="InputLable">סטטוס:</label>
 
-                        <select runat="server" id="SelectStatusOffer" class="selectGlobal"></select>
+                        <asp:DropDownList  runat="server" AutoPostBack="true" ID="SelectStatusOffer" OnSelectedIndexChanged="SelectStatusOffer_Change"   class="selectGlobal"></asp:DropDownList>
 
                         <%--                        <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="~/images/icons/In_Treatment_Status_Button.png" OnClick="CopyLid_Click" />--%>
                     </div>
@@ -111,8 +111,9 @@
                 <div class="row MarginRow " style="width: 100%;">
                     <div style="width: 31%; margin-left: 24%" class="row">
                         <lable class="InputLable">מבוטח ראשי:</lable>
-                        <lable class="ColorLable" id="FullName" runat="server"></lable>
-                        
+<%--                        <lable class="ColorLable" id="FullName" runat="server"></lable>--%>
+                            <asp:Button OnClick="OpenContact_Click"  ID="FullName" runat="server" name="FullName" type="text" 
+                                style="width: 100%; border-bottom: 0px;background: none;text-align: right;font-size: medium;" class="InputAdd" />
                  
                     </div>
                     <%--<div style="width: 20%; margin-left: 2%;" class="row">
@@ -136,7 +137,11 @@
                         <lable class="ColorLable" id="Tz" runat="server"></lable>
 
                     </div>
-                   
+                     <div style="width: 31%; margin-left: 14%" class="row">
+                        <lable class="InputLable">מקור ההלוואה/ביטוח:</lable>
+                        <%--                        <lable class="ColorLable">לאומי</lable>--%>
+                        <select runat="server" id="SelectSourceLoanOrInsurance" class="selectGlobal"></select>
+                    </div>
                 </div>
                 <div  class="row MarginRow "  style="width: 100%;">
                     <div  style="width: 80%;">
@@ -182,13 +187,14 @@
                         <lable class="ColorLable">3.6.2023</lable>
                     </div>--%>
                     <div style="width: 31%; margin-left: 14%" class="row">
-                        <lable class="InputLable">מקור ההלוואה/ביטוח:</lable>
+                        <lable class="InputLable">תאריך שליחה למתפעלת:</lable>
                         <%--                        <lable class="ColorLable">לאומי</lable>--%>
-                        <select runat="server" id="SelectSourceLoanOrInsurance" class="selectGlobal"></select>
+                       <lable class="ColorLable" id="DateSentToOperator" runat="server"></lable>
+
                     </div>
-                    <div style="width: 20%; margin-left: 2%;" class="row">
+                    <div style="width: 45%; margin-left: 2%;" class="row">
                         <label class="InputLable">תאריך שליחה לחברת הביטוח :</label>
-                        <input id="DateSentToInsuranceCompany" name="FirstName" type="date" runat="server" style="width: 100%;" class="InputAdd" />
+                        <lable id="DateSentToInsuranceCompany" runat="server" style="width: 100%;" class="ColorLable" />
                     </div>
                 </div>
                 <%--         <div class="row MarginRow " style="width: 100%;">
@@ -248,13 +254,18 @@
                                     <asp:ImageButton ID="ImageButton4" runat="server" ImageUrl="~/images/icons/Pdf_Icon.png" OnClick="DeleteLid_Click" />
                                 </div>
                                 <div class="row DivBackground DivBackgroundRep">
-                                    <div runat="server" style="width: 93%; text-align: right;" class="RowDocuments DivNameFile">
-                                        <%--                                    <%#Eval("File") %>--%>
-                                   <asp:Label ID="FileName" Text='<%# Eval("FileName") %>' runat="server"/> 
+                                    <div runat="server" style="width: 86%; text-align: right;" class="RowDocuments DivNameFile">
+                                        
+                                             <asp:Label ID="FileName" Text='<%# Eval("FileName") %>' runat="server"/> 
+                                 
                                     </div>
                                     <div style="width: 7%; text-align: center;" class="RowDocuments">
                                         <%--<asp:ImageButton ID="ImageButton5" runat="server" CommandArgument='<%#Eval("File") %>' OnCommand="UploadFile_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icon/Upload_Button.png" />--%>
                                         <asp:ImageButton ID="UploadFile" runat="server" OnCommand="UploadFile_Command" CommandArgument='<%# Eval("FileName") + "," + Eval("ID") %>' Style="vertical-align: middle; position: relative" ImageUrl="~/images/icons/Choosing_New_Service_Request_Downlaod_Button.png" />
+                                    </div>       
+                                    <div style="width: 7%; text-align: center;" class="RowDocuments">
+                                        <%--<asp:ImageButton ID="ImageButton5" runat="server" CommandArgument='<%#Eval("File") %>' OnCommand="UploadFile_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icon/Upload_Button.png" />--%>
+                                        <asp:ImageButton ID="RemoveFile" runat="server" OnCommand="RemoveFile_Command" CommandArgument='<%# +  Container.ItemIndex + "," + Eval("ID")   %>' Style="vertical-align: middle; position: relative; height:70%" ImageUrl="~/images/icons/Delete_Lid_Button.png" />
                                     </div>
                                 <%--    <div style="width: 7%; text-align: center;" class="RowDocuments">
                                         <%--<asp:ImageButton ID="ImageButton5" runat="server" CommandArgument='<%#Eval("File") %>' OnCommand="UploadFile_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icon/Upload_Button.png" />

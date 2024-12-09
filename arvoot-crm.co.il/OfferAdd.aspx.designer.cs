@@ -105,6 +105,15 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Tz;
 
         /// <summary>
+        /// SelectSourceLoanOrInsurance control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectSourceLoanOrInsurance;
+
+        /// <summary>
         /// EffectiveDate control.
         /// </summary>
         /// <remarks>
@@ -141,13 +150,13 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl ReturnDateToCustomer;
 
         /// <summary>
-        /// SelectSourceLoanOrInsurance control.
+        /// DateSentToOperator control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectSourceLoanOrInsurance;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DateSentToOperator;
 
         /// <summary>
         /// DateSentToInsuranceCompany control.

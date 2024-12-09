@@ -332,7 +332,7 @@ namespace ControlPanel
             SubStatusList.DataBind();
             SubStatusList.Items.Insert(0, new ListItem("סטטוס משני", ""));
 
-            SqlCommand cmdAgents = new SqlCommand("SELECT  FullName as AgentName,ID FROM ArvootManagers where Type  in (3,6)");
+            SqlCommand cmdAgents = new SqlCommand("SELECT  FullName as AgentName,ID FROM ArvootManagers where Type  in (3,6) and Show = 1");
             DataSet dsAgents = DbProvider.GetDataSet(cmdAgents);
             AgentsList.DataSource = dsAgents;
             AgentsList.DataTextField = "AgentName";

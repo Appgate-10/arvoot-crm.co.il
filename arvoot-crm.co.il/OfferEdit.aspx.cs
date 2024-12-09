@@ -31,9 +31,11 @@ namespace ControlPanel
 
             if (!Page.IsPostBack)
             {
+
                 Pageinit.CheckManagerPermissions();
                 UploadDocument.Attributes.Add("onclick", "document.getElementById('" + ImageFile_FileUpload.ClientID + "').click();");
-                Session["UploadedFiles"] = null;
+
+                
                 if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) > 3)
                 {
                     DeleteLid.Visible = false;
@@ -81,6 +83,7 @@ namespace ControlPanel
                 loadData();
               
             }
+           
         }
         protected void CloseTaskPopUp_Click(object sender, EventArgs e)
         {
@@ -225,7 +228,38 @@ namespace ControlPanel
 
 
 
+        }    
+        
+        protected void RemoveFile_Command(object sender, CommandEventArgs e)
+        {
+            string[] parameters = e.CommandArgument.ToString().Split(',');
+            if (!parameters[1].ToString().Equals("0"))
+            {
+                SqlCommand sqlCommand = new SqlCommand("delete from OfferDocuments where ID = @ID");
+                sqlCommand.Parameters.AddWithValue("@ID", parameters[1]);
+                DbProvider.ExecuteCommand(sqlCommand);
+            }
+            else
+            {
+                int curIndex = int.Parse(parameters[0]);
+                SqlCommand sqlCount = new SqlCommand("select count(*) from OfferDocuments where OfferID = @OfferID");
+                sqlCount.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
+                long countDs = DbProvider.GetOneParamValueLong(sqlCount);
+                List<FileDetail> list = (List<FileDetail>)Session["UploadedFiles"];
+                int index = (int)(curIndex - countDs);
+                list.RemoveAt(index);
+                Session["UploadedFiles"] = list;
+            }
+
+            BindFileRepeater();
+
+
+
+
         }
+
+
+
 
         protected void CloseMovePopUp_Click(object sender, ImageClickEventArgs e)
         {
@@ -234,7 +268,7 @@ namespace ControlPanel
         protected void MoveToOperator_Save(object sender, EventArgs e)
         {
             MoveToOperatorPopUp.Visible = false;
-            string sql = "update Offer set OperatorID = @OperatorID, IsInOperatingQueue = 0 where ID = @ID";
+            string sql = "update Offer set OperatorID = @OperatorID, IsInOperatingQueue = 0, DateSentToOperator = getdate() where ID = @ID";
             SqlCommand sqlCommand = new SqlCommand(sql);
             sqlCommand.Parameters.AddWithValue("@OperatorID", OperatorsList.SelectedValue);
             sqlCommand.Parameters.AddWithValue("@ID", Request.QueryString["OfferID"]);
@@ -249,6 +283,13 @@ namespace ControlPanel
             Response.Redirect("Offers.aspx");
 
 
+        }
+        protected void SelectStatusOffer_Change(object sender, EventArgs e)
+        {
+            if(SelectStatusOffer.SelectedValue == "4" )
+            {
+                DateSentToInsuranceCompany.InnerText = DateTime.Now.ToString("dd.MM.yyyy");
+            }
         }
         public void loadData()
         {
@@ -266,7 +307,7 @@ namespace ControlPanel
             DataTable dt = DbProvider.GetDataTable(cmd);
             if (dt.Rows.Count > 0)
             {
-                FullName.InnerText = dt.Rows[0]["FullName"].ToString();
+                FullName.Text = dt.Rows[0]["FullName"].ToString();
                 //FullNameAgent.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
                 lblOwner.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
                 AgentName.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
@@ -275,11 +316,11 @@ namespace ControlPanel
                 lblAgency.InnerText = dt.Rows[0]["CompanyName"].ToString();
             }
 
-            string sqlOffer = @"select LeadID, CONVERT(varchar,Offer.CreateDate, 104) as CreateDate, IsInOperatingQueue, OperatorID,
+            string sqlOffer = @"select LeadID, CONVERT(varchar,Offer.CreateDate, 104) as CreateDate, CONVERT(varchar,Offer.DateSentToOperator, 104) as DateSentToOperator, IsInOperatingQueue, OperatorID,
                                  DATEDIFF(DAY,iif(Offer.OperatingQueueDate is null, Offer.CreateDate , Offer.OperatingQueueDate )  ,
                                 iif(CompletedDate is null, getdate(),CompletedDate)) as sla, SourceLoanOrInsuranceID, OfferTypeID,TurnOfferID,
                                 ReasonLackSuccess,CONVERT(varchar,Offer.ReturnDateToCustomer, 104) ReturnDateToCustomer,
-                                Note,DateSentToInsuranceCompany, StatusOfferID,NameOffer from Offer where ID = @OfferID";
+                                Note,CONVERT(varchar,Offer.DateSentToInsuranceCompany, 104) as DateSentToInsuranceCompany, StatusOfferID,NameOffer from Offer where ID = @OfferID";
             SqlCommand cmdOffer = new SqlCommand(sqlOffer);
             cmdOffer.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
             DataTable dtOffer = DbProvider.GetDataTable(cmdOffer);
@@ -288,6 +329,7 @@ namespace ControlPanel
                 DataRow rowOffer = dtOffer.Rows[0];
                 ContactID.Value = rowOffer["LeadID"].ToString(); 
                 EffectiveDate.InnerText = rowOffer["CreateDate"].ToString();
+                DateSentToOperator.InnerText = rowOffer["DateSentToOperator"].ToString();
                 sla.InnerText = rowOffer["sla"].ToString();
                     SelectSourceLoanOrInsurance.Value = rowOffer["SourceLoanOrInsuranceID"].ToString();
                 SelectOfferType.Value = rowOffer["OfferTypeID"].ToString();
@@ -295,8 +337,8 @@ namespace ControlPanel
                 ReasonLackSuccess.Value = rowOffer["ReasonLackSuccess"].ToString();
                 ReturnDateToCustomer.Value = string.IsNullOrWhiteSpace(rowOffer["ReturnDateToCustomer"].ToString()) ? "":DateTime.ParseExact(rowOffer["ReturnDateToCustomer"].ToString(), "dd.MM.yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd");
                 Note.Value = rowOffer["Note"].ToString();
-                DateSentToInsuranceCompany.Value = string.IsNullOrWhiteSpace(rowOffer["DateSentToInsuranceCompany"].ToString()) ? "" : Convert.ToDateTime(rowOffer["DateSentToInsuranceCompany"]).ToString("yyyy-MM-dd"); 
-                SelectStatusOffer.Value = rowOffer["StatusOfferID"].ToString();
+                DateSentToInsuranceCompany.InnerText = string.IsNullOrWhiteSpace(rowOffer["DateSentToInsuranceCompany"].ToString()) ? "" : rowOffer["DateSentToInsuranceCompany"].ToString(); 
+                SelectStatusOffer.SelectedValue = rowOffer["StatusOfferID"].ToString();
                 CurrentStatusOfferID.Value = rowOffer["StatusOfferID"].ToString();
                 NameOffer.Value = rowOffer["NameOffer"].ToString();
 
@@ -366,12 +408,12 @@ namespace ControlPanel
                 Repeater1.DataBind();
                 
                 string sqlServiceRequest = @"select s.ID, Lead.FirstName + ' ' + Lead.LastName as Invoice ,Sum,CONVERT(varchar, s.CreateDate, 104)  CreateDate, p.purpose as PurposeName,
-(select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1) as paid, SumCreditOrDenial, IsApprovedCreditOrDenial
-from ServiceRequest s 
-left join ServiceRequestPurpose p on s.PurposeID = p.ID 
-left join Offer on Offer.ID = s.OfferID 
-left join Lead on Lead.ID = Offer.LeadID
-where s.OfferID = @OfferID";
+                            (select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1) as paid, SumCreditOrDenial, IsApprovedCreditOrDenial
+                            from ServiceRequest s 
+                            left join ServiceRequestPurpose p on s.PurposeID = p.ID 
+                            left join Offer on Offer.ID = s.OfferID 
+                            left join Lead on Lead.ID = Offer.LeadID
+                            where s.OfferID = @OfferID";
                 SqlCommand cmdServiceRequest = new SqlCommand(sqlServiceRequest);
                 cmdServiceRequest.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
                 dtServiceRequest = DbProvider.GetDataTable(cmdServiceRequest);
@@ -395,15 +437,16 @@ where s.OfferID = @OfferID";
             DataTable dtUploadedFiles = new DataTable();          
             dtUploadedFiles.Columns.Add("ID", typeof(int));
             dtUploadedFiles.Columns.Add("FileName", typeof(string));
-
-            foreach (var file in (List<FileDetail>)Session["UploadedFiles"])
+            if (Session["UploadedFiles"] != null)
             {
-                DataRow row = dtUploadedFiles.NewRow();
-                row["FileName"] = file.FileName;
-                row["ID"] = 0;
-                dtUploadedFiles.Rows.Add(row);
+                foreach (var file in (List<FileDetail>)Session["UploadedFiles"])
+                {
+                    DataRow row = dtUploadedFiles.NewRow();
+                    row["FileName"] = file.FileName;
+                    row["ID"] = 0;
+                    dtUploadedFiles.Rows.Add(row);
+                }
             }
-
             // Combine both DataTables
             string sqlOfferDocument = @"select ID,FileName from OfferDocuments where OfferID = @OfferID";
             SqlCommand cmdOfferDocument = new SqlCommand(sqlOfferDocument);
@@ -419,46 +462,66 @@ where s.OfferID = @OfferID";
 
         protected void ImageFile_btnUpload_Click(object sender, EventArgs e)
         {
-            if (ImageFile_FileUpload.HasFile)
+            if (ImageFile_FileUpload != null && ImageFile_FileUpload.HasFiles)
             {
                 try
                 {
-                    string ext = Path.GetExtension(ImageFile_FileUpload.FileName).ToLower();
-                    if (ext == ".pdf" || ext ==".jpeg" || ext ==".png" || ext ==".jpg")
+                    var uploadedFiles = new List<FileDetail>();
+                    try
                     {
-                        var uploadedFiles = new List<FileDetail>();
-                        try
-                        {
-                            uploadedFiles = (List<FileDetail>)Session["UploadedFiles"];
-                        }
-                        catch {
-                          
-                        }
-                        var fileDetail = new FileDetail
-                        {
-                            FileName = ImageFile_FileUpload.FileName,
-                            FileSize = ImageFile_FileUpload.PostedFile.ContentLength,
-                            PostedFile = ImageFile_FileUpload.PostedFile
-                        };
-
-                        // Optionally save the file to server
-                        // FileUploadControl.SaveAs(Server.MapPath("~/Uploads/") + FileUploadControl.FileName);
-                        if (uploadedFiles == null) uploadedFiles = new List<FileDetail>();
-                        uploadedFiles.Add(fileDetail);
-                        Session["UploadedFiles"] = uploadedFiles;
-
-                        BindFileRepeater();
-
+                        uploadedFiles = (List<FileDetail>)Session["UploadedFiles"] ?? new List<FileDetail>();
                     }
-                    else
+                    catch
                     {
-                        ImageFile_lable.Text = "* הסיומת לא תקינה";
+                        uploadedFiles = new List<FileDetail>();
+                    }
+
+                    // Track successful and failed uploads
+                    int successfulUploads = 0;
+                    int failedUploads = 0;
+
+                    foreach (HttpPostedFile postedFile in ImageFile_FileUpload.PostedFiles)
+                    {
+                        string ext = Path.GetExtension(postedFile.FileName).ToLower();
+                        if (ext == ".pdf" || ext == ".jpeg" || ext == ".png" || ext == ".jpg")
+                        {
+                            var fileDetail = new FileDetail
+                            {
+                                FileName = postedFile.FileName,
+                                FileSize = postedFile.ContentLength,
+                                PostedFile = postedFile,
+                                
+                            };
+
+                            uploadedFiles.Add(fileDetail);
+                            successfulUploads++;
+                        }
+                        else
+                        {
+                            failedUploads++;
+                        }
+                    }
+
+                    // Update session with uploaded files
+                    Session["UploadedFiles"] = uploadedFiles;
+
+                    // Provide user feedback
+                    if (successfulUploads > 0)
+                    {
+                        BindFileRepeater();
+                        ImageFile_lable.Text = $"{successfulUploads} קבצים הועלו בהצלחה";
+                        ImageFile_lable.Visible = true;
+                    }
+
+                    if (failedUploads > 0)
+                    {
+                        ImageFile_lable.Text += $"\n{failedUploads} קבצים לא הועלו בשל סיומת לא תקינה";
                         ImageFile_lable.Visible = true;
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    ImageFile_lable.Text = "* בבקשה נסה שוב";//ex.Message;
+                    ImageFile_lable.Text = "* בבקשה נסה שוב";
                     ImageFile_lable.Visible = true;
                 }
             }
@@ -651,7 +714,7 @@ where s.OfferID = @OfferID";
                     FormErrorBottom_label.Text = "יש להזין מועד חזרה ללקוח";
                     return false;
                 }
-                if (SelectStatusOffer.SelectedIndex == 3 && string.IsNullOrEmpty(DateSentToInsuranceCompany.Value))
+              /*  if (SelectStatusOffer.SelectedIndex == 3 && string.IsNullOrEmpty(DateSentToInsuranceCompany.Value))
                 {
                     ErrorCount++;
                     FormError_label.Visible = true;
@@ -659,7 +722,7 @@ where s.OfferID = @OfferID";
                     FormErrorBottom_label.Visible = true;
                     FormErrorBottom_label.Text = "יש להזין תאריך שליחה לחברת הביטוח";
                     return false;
-                }
+                }*/
                 if ((SelectStatusOffer.SelectedIndex == 9 || SelectStatusOffer.SelectedIndex == 5 || SelectStatusOffer.SelectedIndex == 4) && string.IsNullOrEmpty(ReasonLackSuccess.Value))
                 {
                     ErrorCount++;
@@ -696,19 +759,19 @@ where s.OfferID = @OfferID";
                 cmdInsert.Parameters.AddWithValue("@OfferTypeID", SelectOfferType.Value);
                 cmdInsert.Parameters.AddWithValue("@ReasonLackSuccess", ReasonLackSuccess.Value);
                 cmdInsert.Parameters.AddWithValue("@ReturnDateToCustomer", string.IsNullOrEmpty(ReturnDateToCustomer.Value) ? (object)DBNull.Value : DateTime.Parse(ReturnDateToCustomer.Value));
-                cmdInsert.Parameters.AddWithValue("@DateSentToInsuranceCompany", string.IsNullOrEmpty(DateSentToInsuranceCompany.Value) ? (object)DBNull.Value : DateTime.Parse(DateSentToInsuranceCompany.Value));
+                cmdInsert.Parameters.AddWithValue("@DateSentToInsuranceCompany", string.IsNullOrEmpty(DateSentToInsuranceCompany.InnerText) ? (object)DBNull.Value : DateTime.Parse(DateSentToInsuranceCompany.InnerText));
                 cmdInsert.Parameters.AddWithValue("@Note", string.IsNullOrEmpty(Note.Value) ? (object)DBNull.Value : Note.Value);
-                cmdInsert.Parameters.AddWithValue("@StatusOfferID", SelectStatusOffer.Value);
+                cmdInsert.Parameters.AddWithValue("@StatusOfferID", SelectStatusOffer.SelectedValue);
                 //cmdInsert.Parameters.AddWithValue("@TurnOfferID", SelectTurnOffer.Value);
                 cmdInsert.Parameters.AddWithValue("@NameOffer", NameOffer.Value);
-                cmdInsert.Parameters.AddWithValue("@CompletedDate", (SelectStatusOffer.Value == "9" && SelectStatusOffer.Value != CurrentStatusOfferID.Value)?DateTime.Now.ToString(): (object)DBNull.Value);
+                cmdInsert.Parameters.AddWithValue("@CompletedDate", (SelectStatusOffer.SelectedValue == "9" && SelectStatusOffer.SelectedValue != CurrentStatusOfferID.Value)?DateTime.Now.ToString(): (object)DBNull.Value);
                 cmdInsert.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
 
                 if (DbProvider.ExecuteCommand(cmdInsert) > 0)
                 {
 
 
-                    if (SelectStatusOffer.Value == "9" && SelectStatusOffer.Value != CurrentStatusOfferID.Value)
+                    if (SelectStatusOffer.SelectedValue == "9" && SelectStatusOffer.SelectedValue != CurrentStatusOfferID.Value)
                     {
                         string sqlBranchManager = @"SELECT a.ParentID from Offer
                                                     INNER JOIN [Lead] l On l.ID = Offer.LeadID
@@ -748,7 +811,7 @@ where s.OfferID = @OfferID";
                                 }
                                 catch (Exception) { }
                             }
-
+                            Session["UploadedFiles"] = null;
                             return true;
                         }
                         /* else
@@ -809,6 +872,7 @@ where s.OfferID = @OfferID";
         {
             public string FileName { get; set; }
             public int FileSize { get; set; }
+         
             public HttpPostedFile PostedFile { get; set; }
         }
 
@@ -824,13 +888,21 @@ where s.OfferID = @OfferID";
             {
                 Response.Redirect("Contact.aspx?ContactID=" + ContactID.Value);
             }
-        }    
-        
+        }
+        protected void OpenContact_Click(object sender, EventArgs e)
+        {
+            System.Web.HttpContext.Current.Response.Redirect("Contact.aspx?ContactID=" + ContactID.Value);
+
+        }
+
         protected void btnMoveToOperator_Click(object sender, EventArgs e) {
+
             ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+
             SqlCommand cmdOperators = new SqlCommand(@"select FullName as OperatorName,ID from ArvootManagers where Type = 5 and Show = 1 and ParentID in(
                                                        select ID from ArvootManagers where Type = 3 and ParentID = (
                                                        select ParentID from ArvootManagers where ID = (select ParentID from ArvootManagers where ID = @ID )))");
+
             cmdOperators.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"].ToString());
             DataSet dsOperators = DbProvider.GetDataSet(cmdOperators);
             OperatorsList.DataSource = dsOperators;

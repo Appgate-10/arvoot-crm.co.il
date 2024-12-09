@@ -165,7 +165,7 @@ namespace ControlPanel
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectStatusOffer;
+        protected global::System.Web.UI.WebControls.DropDownList SelectStatusOffer;
 
         /// <summary>
         /// FullName control.
@@ -174,7 +174,7 @@ namespace ControlPanel
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl FullName;
+        protected global::System.Web.UI.WebControls.Button FullName;
 
         /// <summary>
         /// SelectOfferType control.
@@ -193,6 +193,15 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl Tz;
+
+        /// <summary>
+        /// SelectSourceLoanOrInsurance control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectSourceLoanOrInsurance;
 
         /// <summary>
         /// EffectiveDate control.
@@ -231,13 +240,13 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl ReturnDateToCustomer;
 
         /// <summary>
-        /// SelectSourceLoanOrInsurance control.
+        /// DateSentToOperator control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect SelectSourceLoanOrInsurance;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DateSentToOperator;
 
         /// <summary>
         /// DateSentToInsuranceCompany control.
@@ -246,7 +255,7 @@ namespace ControlPanel
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl DateSentToInsuranceCompany;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DateSentToInsuranceCompany;
 
         /// <summary>
         /// Note control.

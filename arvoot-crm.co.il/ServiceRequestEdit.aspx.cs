@@ -278,8 +278,8 @@ namespace ControlPanel
             else
             {
                 int curIndex = int.Parse(parameters[0]);
-                SqlCommand sqlCount = new SqlCommand("select count(*) from ServiceRequestDocuments where OfferID = @OfferID");
-                sqlCount.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
+                SqlCommand sqlCount = new SqlCommand("select count(*) from ServiceRequestDocuments where ServiceRequestID = @ServiceRequestID");
+                sqlCount.Parameters.AddWithValue("@ServiceRequestID", Request.QueryString["ServiceRequestID"]);
                 long countDs = DbProvider.GetOneParamValueLong(sqlCount);
                 List<FileDetail> list = (List<FileDetail>)Session["UploadedFilesService"];
                 int index = (int)(curIndex - countDs);
@@ -636,6 +636,40 @@ SumPayment3=@SumPayment3,DatePayment3=@DatePayment3, NumPayment3=@NumPayment3, R
 
                     }
 
+                    try
+                    {
+                        List<FileDetail> myFile = (List<FileDetail>)Session["UploadedFilesService"];
+                        if (myFile != null)
+                        {
+                            for (int i = 0; i < myFile.Count; i++)
+                            {
+                                try
+                                {
+                                    string FilePath1 = String.Format("{0}/ServiceRequestDocuments/", ConfigurationManager.AppSettings["MapPath"]);
+                                    string FileName1 = myFile[i].FileName;
+
+                                    myFile[i].PostedFile.SaveAs(Path.Combine(FilePath1, FileName1));
+                                    SqlCommand cmdInsertDoc = new SqlCommand(@"insert into ServiceRequestDocuments (FileName,ServiceRequestID) 
+                                                     values(@FileName,@ServiceRequestID)");
+                                    cmdInsertDoc.Parameters.AddWithValue("@FileName", FileName1);
+                                    cmdInsertDoc.Parameters.AddWithValue("@ServiceRequestID", Request.QueryString["ServiceRequestID"]);
+                                    DbProvider.ExecuteCommand(cmdInsertDoc);
+                                }
+                                catch (Exception) { }
+                            }
+                            Session["UploadedFilesService"] = null;
+                            return true;
+                        }
+                        /* else
+                         {
+                             ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
+                             FormError_label.Text = "* התרחשה שגיאה";
+                             FormError_label.Visible = true;
+                             FormErrorBottom_label.Text = "* התרחשה שגיאה";
+                             FormErrorBottom_label.Visible = true;
+                         }*/
+                    }
+                    catch (Exception ex) { }
 
                     return true;
                 }

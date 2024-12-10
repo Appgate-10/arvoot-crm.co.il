@@ -439,12 +439,19 @@ namespace ControlPanel
             dtUploadedFiles.Columns.Add("FileName", typeof(string));
             if (Session["UploadedFiles"] != null)
             {
-                foreach (var file in (List<FileDetail>)Session["UploadedFiles"])
+                try
                 {
-                    DataRow row = dtUploadedFiles.NewRow();
-                    row["FileName"] = file.FileName;
-                    row["ID"] = 0;
-                    dtUploadedFiles.Rows.Add(row);
+                    foreach (var file in (List<FileDetail>)Session["UploadedFiles"])
+                    {
+                        DataRow row = dtUploadedFiles.NewRow();
+                        row["FileName"] = file.FileName;
+                        row["ID"] = 0;
+                        dtUploadedFiles.Rows.Add(row);
+                    }
+                }
+                catch (Exception ex)
+                {
+
                 }
             }
             // Combine both DataTables

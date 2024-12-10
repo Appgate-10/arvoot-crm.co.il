@@ -406,7 +406,82 @@
                     </div>
                 </div>
             </div>
+                 <div class="col MarginDiv SecondaryDiv PaddingDiv">
+                <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
+                    <div class="row" style="align-items: center;">
+                        <div class="div-arrows-img">
+                            <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
+                        </div>
+                        <div>
+                            <label class="LableBlue">מסמכים </label>
+                        </div>
 
+                    </div>
+
+                    <div class="row HeaderBoxD" style="justify-content: flex-end;">
+                        <div>
+                            <asp:Label ID="ImageFile_lable" runat="server" Text="* Please Upload Image" CssClass="ErrorLable2" Visible="false"></asp:Label>
+                            <asp:ImageButton Style="margin-left: 20px" ID="UploadDocument" runat="server" ImageUrl="~/images/icons/Uplaod_File_Button.png" OnClick="DeleteLid_Click" />
+
+                        </div>
+
+                        <%--  <div class="HeaderSearchBox">
+                            <input type="text" class="InputTextSearch" value="<% = StrSrc%>" name="Q" id="Q" onblur="javascript:if(this.value==''){this.value='חפש קובץ'};" onfocus="javascript:if(this.value=='חפש קובץ'){this.value='';}" onkeypress="javascript:runSearch(event, 'Enrollment.aspx');" />
+                            <a href="javascript:window.location.href = 'Enrollment.aspx?Q=' + document.getElementById('Q').value;">
+                                <img src="images/icons/Search_Pdf_Button.png" class="SearchIcon" /></a>
+                        </div>--%>
+                    </div>
+                </div>
+                <%--  <div class="row PaddingRow MarginRow" style="width: 100%;">
+                    <asp:ImageButton ID="ImageButton2" Style="margin-inline-end: 10px" runat="server" ImageUrl="~/images/icons/Mark_For_Archives_Button.png" OnClick="CopyLid_Click" />
+                    <asp:ImageButton ID="ImageButton3" Style="margin-inline-end: 10px" runat="server" ImageUrl="~/images/icons/Send_Mail_Button.png" OnClick="ShereDoc_Click" />
+                    <asp:ImageButton ID="ImageButton4" runat="server" ImageUrl="~/images/icons/Send_Sms_Button.png" OnClick="DeleteLid_Click" />
+                    
+                </div>--%>
+
+                <div class="MainDivDocuments" style="height: 290px;">
+                    <asp:Repeater ID="Repeater1" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
+                        <ItemTemplate>
+                            <div class="row SecondaryDivDocuments" runat="server">
+                                <div style="width: 2%;" class="RowDocuments">
+                                    <%--                                     <asp:CheckBox runat="server" Style="vertical-align:middle" AutoPostBack="true" ID="IsPromoted" />--%>
+                                </div>
+                                <div style="width: 2%; text-align: left;" class="RowDocuments">
+                                    <asp:ImageButton ID="ImageButton4" Style="vertical-align: middle" runat="server" ImageUrl="~/images/icons/Pdf_Icon.png" />
+                                </div>
+                                <div class="row DivBackground DivBackgroundRep">
+                                    <div runat="server" style="width: 93%; text-align: right;" class="RowDocuments DivNameFile">
+                                        <%--                                    <%#Eval("File") %>--%>
+                                        <%--<asp:Label ID="FileNameLabel" runat="server" />--%>
+                                        <%# Eval("FileName") %>
+                                    </div>
+                                    <div style="width: 7%; text-align: center;" class="RowDocuments">
+                                        <%--<asp:ImageButton ID="ImageButton5" runat="server" CommandArgument='<%#Eval("File") %>' OnCommand="UploadFile_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icon/Upload_Button.png" />--%>
+                                        <asp:ImageButton ID="DownloadFile" runat="server" OnCommand="Download_Click" CommandArgument='<%# Container.ItemIndex %>' Style="vertical-align: middle; position: relative" ImageUrl="~/images/icons/Choosing_New_Service_Request_Downlaod_Button.png" />
+                                    </div>
+                                    <%--   <div style="width: 7%; text-align: center;" class="RowDocuments">
+                                        <%--<asp:ImageButton ID="ImageButton5" runat="server" CommandArgument='<%#Eval("File") %>' OnCommand="UploadFile_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icon/Upload_Button.png" />
+                                        <asp:ImageButton ID="ImageButton5" runat="server" OnCommand="UploadFile_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icons/Choosing_New_Service_Request_Shere_Button.png" />
+                                    </div>--%>
+                                </div>
+
+
+
+                            </div>
+
+                            <div style="height: 20px;"></div>
+                        </ItemTemplate>
+
+
+                    </asp:Repeater>
+                </div>
+                <div style="width: 20%; text-align: left; padding-top: 14px;">
+
+                    <%--                      <asp:ImageButton ID="ImageButton1" Style="width:250px;height:auto" runat="server" ImageUrl="~/images/icons/Choosing_Service_New_Service_Button.png" OnClick="ServiceRequestAdd_Click" />--%>
+                </div>
+
+
+            </div>
              <div class="DivLidTop"
                
                 <asp:Button runat="server" ID="BtnSaveBottom" Text="שמור" OnClick="btn_save_Click" Style="width: 110px; height: 35px;" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
@@ -420,6 +495,10 @@
         </ContentTemplate>
     </asp:UpdatePanel>
 
+    
+    <input type="text" runat="server" name="ImageFile" id="ImageFile" style="display: none" />
+    <asp:FileUpload ID="ImageFile_FileUpload" runat="server" onchange="ImageFile_UploadFile(this)" AllowMultiple="true" Style="display: none" />
+    <asp:Button ID="ImageFile_btnUpload" Text="2" runat="server" OnClick="ImageFile_btnUpload_Click" Style="display: none" />
 
     <br />
     <br />

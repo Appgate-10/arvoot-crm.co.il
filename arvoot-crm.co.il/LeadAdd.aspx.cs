@@ -29,7 +29,7 @@ namespace ControlPanel
             {
                 Pageinit.CheckManagerPermissions();
 
-                SqlCommand cmd = new SqlCommand("SELECT * FROM FirstStatusLead");
+                SqlCommand cmd = new SqlCommand("SELECT * FROM FirstStatusLead where ID != 10");
                 DataSet ds = DbProvider.GetDataSet(cmd);
                 SelectFirstStatus.DataSource = ds;
                 SelectFirstStatus.DataTextField = "Status";

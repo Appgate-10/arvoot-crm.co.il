@@ -74,38 +74,64 @@ namespace ControlPanel
 
         protected void ImageFile_btnUpload_Click(object sender, EventArgs e)
         {
-            if (ImageFile_FileUpload.HasFile)
+            if (ImageFile_FileUpload != null && ImageFile_FileUpload.HasFiles)
             {
                 try
                 {
-                    string ext = Path.GetExtension(ImageFile_FileUpload.FileName).ToLower();
-                    if (ext == ".pdf" || ext == ".jpeg" || ext == ".png" || ext == ".jpg")
+                    var uploadedFiles = new List<FileDetail>();
+                    try
                     {
-                        var uploadedFiles = (List<FileDetail>)Session["UploadedFiles"];
-
-                        var fileDetail = new FileDetail
-                        {
-                            FileName = ImageFile_FileUpload.FileName,
-                            FileSize = ImageFile_FileUpload.PostedFile.ContentLength,
-                            PostedFile = ImageFile_FileUpload.PostedFile
-                        };
-
-                        // Optionally save the file to server
-                        // FileUploadControl.SaveAs(Server.MapPath("~/Uploads/") + FileUploadControl.FileName);
-
-                        uploadedFiles.Add(fileDetail);
-                        Session["UploadedFiles"] = uploadedFiles;
-
-                        BindFileRepeater();
-
+                        uploadedFiles = (List<FileDetail>)Session["UploadedFiles"] ?? new List<FileDetail>();
                     }
-                    else
+                    catch
                     {
-                        ImageFile_lable.Text = "* הסיומת לא תקינה";
+                        uploadedFiles = new List<FileDetail>();
+                    }
+
+                    // Track successful and failed uploads
+                    int successfulUploads = 0;
+                    int failedUploads = 0;
+
+                    foreach (HttpPostedFile postedFile in ImageFile_FileUpload.PostedFiles)
+                    {
+                        string ext = Path.GetExtension(postedFile.FileName).ToLower();
+                        if (ext == ".pdf" || ext == ".jpeg" || ext == ".png" || ext == ".jpg")
+                        {
+                            var fileDetail = new FileDetail
+                            {
+                                FileName = postedFile.FileName,
+                                FileSize = postedFile.ContentLength,
+                                PostedFile = postedFile,
+
+                            };
+
+                            uploadedFiles.Add(fileDetail);
+                            successfulUploads++;
+                        }
+                        else
+                        {
+                            failedUploads++;
+                        }
+                    }
+
+                    // Update session with uploaded files
+                    Session["UploadedFiles"] = uploadedFiles;
+
+                    // Provide user feedback
+                    if (successfulUploads > 0)
+                    {
+                        BindFileRepeater();
+                        ImageFile_lable.Text = $"{successfulUploads} קבצים הועלו בהצלחה";
+                        ImageFile_lable.Visible = true;
+                    }
+
+                    if (failedUploads > 0)
+                    {
+                        ImageFile_lable.Text += $"\n{failedUploads} קבצים לא הועלו בשל סיומת לא תקינה";
                         ImageFile_lable.Visible = true;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     ImageFile_lable.Text = "* בבקשה נסה שוב";
                     ImageFile_lable.Visible = true;

@@ -11,6 +11,7 @@ using System.Configuration;
 using System.Web.UI.HtmlControls;
 using System.Data.SqlClient;
 using System.Text;
+using System.IO;
 
 namespace ControlPanel
 {
@@ -20,6 +21,7 @@ namespace ControlPanel
         private string strSrc = "Search";
         public string StrSrc { get { return strSrc; } }
         public string ListPageUrl = "OfferEdit.aspx";
+        string FileName1;
 
 
         protected void Page_Load(object sender, EventArgs e)
@@ -29,8 +31,10 @@ namespace ControlPanel
             if (!Page.IsPostBack)
             {
                 Pageinit.CheckManagerPermissions();
+                UploadDocument.Attributes.Add("onclick", "document.getElementById('" + ImageFile_FileUpload.ClientID + "').click();");
+                Session["UploadedFilesService"] = new List<FileDetail>();
+                BindFileRepeater();
 
-          
                 SqlCommand cmdServiceRequestPurpose = new SqlCommand("SELECT * FROM ServiceRequestPurpose");
                 DataSet dsSourceLoanOrInsurance = DbProvider.GetDataSet(cmdServiceRequestPurpose);
                 SelectPurpose.DataSource = dsSourceLoanOrInsurance;
@@ -73,6 +77,79 @@ namespace ControlPanel
                         Sum4.Disabled = true;
                         NoteCreditOrDenial.Disabled = true;
                     }
+                }
+            }
+        }
+
+        private void BindFileRepeater()
+        {
+            var uploadedFiles = (List<FileDetail>)Session["UploadedFilesService"];
+            Repeater1.DataSource = uploadedFiles;
+            Repeater1.DataBind();
+        }
+        protected void ImageFile_btnUpload_Click(object sender, EventArgs e)
+        {
+            if (ImageFile_FileUpload != null && ImageFile_FileUpload.HasFiles)
+            {
+                try
+                {
+                    var uploadedFiles = new List<FileDetail>();
+                    try
+                    {
+                        uploadedFiles = (List<FileDetail>)Session["UploadedFilesService"] ?? new List<FileDetail>();
+                    }
+                    catch
+                    {
+                        uploadedFiles = new List<FileDetail>();
+                    }
+
+                    // Track successful and failed uploads
+                    int successfulUploads = 0;
+                    int failedUploads = 0;
+
+                    foreach (HttpPostedFile postedFile in ImageFile_FileUpload.PostedFiles)
+                    {
+                        string ext = Path.GetExtension(postedFile.FileName).ToLower();
+                        if (ext == ".pdf" || ext == ".jpeg" || ext == ".png" || ext == ".jpg")
+                        {
+                            var fileDetail = new FileDetail
+                            {
+                                FileName = postedFile.FileName,
+                                FileSize = postedFile.ContentLength,
+                                PostedFile = postedFile,
+
+                            };
+
+                            uploadedFiles.Add(fileDetail);
+                            successfulUploads++;
+                        }
+                        else
+                        {
+                            failedUploads++;
+                        }
+                    }
+
+                    // Update session with uploaded files
+                    Session["UploadedFilesService"] = uploadedFiles;
+
+                    // Provide user feedback
+                    if (successfulUploads > 0)
+                    {
+                        BindFileRepeater();
+                        ImageFile_lable.Text = $"{successfulUploads} קבצים הועלו בהצלחה";
+                        ImageFile_lable.Visible = true;
+                    }
+
+                    if (failedUploads > 0)
+                    {
+                        ImageFile_lable.Text += $"\n{failedUploads} קבצים לא הועלו בשל סיומת לא תקינה";
+                        ImageFile_lable.Visible = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ImageFile_lable.Text = "* בבקשה נסה שוב";
+                    ImageFile_lable.Visible = true;
                 }
             }
         }
@@ -158,6 +235,31 @@ namespace ControlPanel
         {
 
         }
+        protected void Download_Click(object sender, CommandEventArgs e)
+        {
+
+            //int index = Convert.ToInt32(e.CommandArgument);
+            //List<FileUpload> myFiles = (List<FileUpload>)Session["MyFiles"];
+
+            //if (myFiles != null && index < myFiles.Count)
+            //{
+            //        string fileName = myFiles[index].FileName;
+            //        string filePath = Server.MapPath(Path.Combine(UPLOAD_DIRECTORY, fileName));
+
+
+            //    if (File.Exists(filePath))
+            //    {
+            //        Response.Clear();
+            //        Response.ContentType = "application/octet-stream";
+            //        Response.AddHeader("Content-Disposition", "attachment; filename=" + fileName);
+            //        Response.TransmitFile(filePath);
+            //        Response.Flush();
+            //        Response.End();
+            //    }
+            //}
+
+        }
+
         protected void DeleteLid_Click(object sender, ImageClickEventArgs e)
         {
         }
@@ -526,6 +628,29 @@ namespace ControlPanel
 
                 if (serviceRequestID > 0)
                 {
+
+
+                    List<FileDetail> myFile = (List<FileDetail>)Session["UploadedFilesService"];
+                    if (myFile != null)
+                    {
+                        for (int i = 0; i < myFile.Count; i++)
+                        {
+                            try
+                            {
+                                string FilePath1 = String.Format("{0}/ServiceRequestDocuments/", ConfigurationManager.AppSettings["MapPath"]);
+                                FileName1 = myFile[i].FileName;
+
+                                myFile[i].PostedFile.SaveAs(Path.Combine(FilePath1, FileName1));
+                                SqlCommand cmdInsertDoc = new SqlCommand(@"insert into ServiceRequestDocuments (FileName,ServiceRequestID) 
+                                                     values(@FileName,@ServiceRequestID)");
+                                cmdInsertDoc.Parameters.AddWithValue("@FileName", FileName1);
+                                cmdInsertDoc.Parameters.AddWithValue("@ServiceRequestID", serviceRequestID);
+                                DbProvider.ExecuteCommand(cmdInsertDoc);
+                            }
+                            catch (Exception) { }
+                        }
+
+                    }
                     foreach (serviceRequestPayment payment in payments)
                     {
                         if (payment.SumPayment > 0)
@@ -571,6 +696,7 @@ namespace ControlPanel
             else
             {
                 Session["payments"] = null;
+                Session["UploadedFilesService"] = null;
                 Response.Redirect("ServiceRequestEdit.aspx?ServiceRequestID=" + success.ToString());
             }
         }
@@ -873,6 +999,12 @@ namespace ControlPanel
             System.Web.HttpContext.Current.Response.Redirect("Contact.aspx?ContactID=" + ContactID.Value);
 
         }
+    }
+    public class FileDetail
+    {
+        public string FileName { get; set; }
+        public int FileSize { get; set; }
+        public HttpPostedFile PostedFile { get; set; }
     }
 
     public class serviceRequestPayment

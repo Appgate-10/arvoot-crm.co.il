@@ -10,6 +10,8 @@ using System.Data;
 using System.Configuration;
 using System.Web.UI.HtmlControls;
 using System.Data.SqlClient;
+using System.IO;
+
 namespace ControlPanel
 {
     public partial class _serviceRequestEdit : System.Web.UI.Page
@@ -17,6 +19,8 @@ namespace ControlPanel
         ControlPanelInit Pageinit = new ControlPanelInit();
         private string strSrc = "Search";
         public string StrSrc { get { return strSrc; } }
+        DataTable dtServiceRequestDocument;
+
         public string ListPageUrl = "ServiceRequestEdit.aspx";
 
 
@@ -28,7 +32,9 @@ namespace ControlPanel
             {
                 Pageinit.CheckManagerPermissions();
 
-                       
+                UploadDocument.Attributes.Add("onclick", "document.getElementById('" + ImageFile_FileUpload.ClientID + "').click();");
+                Session["UploadedFilesService"] = new List<FileDetail>();
+                BindFileRepeater();
 
                 SqlCommand cmdServiceRequestPurpose = new SqlCommand("SELECT * FROM ServiceRequestPurpose");
                 DataSet dsSourceLoanOrInsurance = DbProvider.GetDataSet(cmdServiceRequestPurpose);
@@ -217,9 +223,91 @@ namespace ControlPanel
                     Session["payments"] = payments;
                     RepeaterPayments.DataSource = payments;
                     RepeaterPayments.DataBind();
+
+                    string sqlServiceRequestDocument = @"select * from ServiceRequestDocuments where ServiceRequestID = @ServiceRequestID";
+                    SqlCommand cmdServiceRequestDocument = new SqlCommand(sqlServiceRequestDocument);
+                    cmdServiceRequestDocument.Parameters.AddWithValue("@ServiceRequestID", Request.QueryString["ServiceRequestID"]);
+                    dtServiceRequestDocument = DbProvider.GetDataTable(cmdServiceRequestDocument);
+                    Repeater1.DataSource = dtServiceRequestDocument;
+                    Repeater1.DataBind();
                 }
             }
             
+        }
+        private void BindFileRepeater()
+        {
+            DataTable dtUploadedFiles = new DataTable();
+            dtUploadedFiles.Columns.Add("ID", typeof(int));
+            dtUploadedFiles.Columns.Add("FileName", typeof(string));
+            if (Session["UploadedFilesService"] != null)
+            {
+                foreach (var file in (List<FileDetail>)Session["UploadedFilesService"])
+                {
+                    DataRow row = dtUploadedFiles.NewRow();
+                    row["FileName"] = file.FileName;
+                    row["ID"] = 0;
+                    dtUploadedFiles.Rows.Add(row);
+                }
+            }
+            // Combine both DataTables
+            string sqlServiceRequestDocument = @"select ID,FileName from ServiceRequestDocuments where ServiceRequestID = @ServiceRequestID";
+            SqlCommand cmdServiceRequestDocument = new SqlCommand(sqlServiceRequestDocument);
+            cmdServiceRequestDocument.Parameters.AddWithValue("@ServiceRequestID", Request.QueryString["ServiceRequestID"]);
+            dtServiceRequestDocument = DbProvider.GetDataTable(cmdServiceRequestDocument);
+            DataTable combinedDataTable = dtServiceRequestDocument.Copy();
+            combinedDataTable.Merge(dtUploadedFiles);
+
+            // Bind combined DataTable to Repeater
+            Repeater1.DataSource = combinedDataTable;
+            Repeater1.DataBind();
+        }
+        protected void Repeater1_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+
+        }
+
+        protected void RemoveFile_Command(object sender, CommandEventArgs e)
+        {
+            string[] parameters = e.CommandArgument.ToString().Split(',');
+            if (!parameters[1].ToString().Equals("0"))
+            {
+                SqlCommand sqlCommand = new SqlCommand("delete from ServiceRequestDocuments where ID = @ID");
+                sqlCommand.Parameters.AddWithValue("@ID", parameters[1]);
+                DbProvider.ExecuteCommand(sqlCommand);
+            }
+            else
+            {
+                int curIndex = int.Parse(parameters[0]);
+                SqlCommand sqlCount = new SqlCommand("select count(*) from ServiceRequestDocuments where OfferID = @OfferID");
+                sqlCount.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
+                long countDs = DbProvider.GetOneParamValueLong(sqlCount);
+                List<FileDetail> list = (List<FileDetail>)Session["UploadedFilesService"];
+                int index = (int)(curIndex - countDs);
+                list.RemoveAt(index);
+                Session["UploadedFilesService"] = list;
+            }
+
+            BindFileRepeater();
+
+
+
+
+        }
+
+
+        protected void UploadFile_Command(object sender, CommandEventArgs e)
+        {
+            string[] parameters = e.CommandArgument.ToString().Split(',');
+            if (!parameters[1].ToString().Equals("0"))
+                Response.Redirect("DownloadFile.ashx?fileName=" + parameters[0]);
+            else ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('עליך לשמור את הקובץ לפני הורדה');", true);
+
+
+
+        }
+        protected void DeleteLid_Click(object sender, ImageClickEventArgs e)
+        {
+
         }
         protected void RadioButttonMethodsPayment_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -645,6 +733,72 @@ SumPayment3=@SumPayment3,DatePayment3=@DatePayment3, NumPayment3=@NumPayment3, R
                 paymentTitle.InnerText = "פירוט תשלום " + Helpers.NumberToHebrewOrdinal(e.Item.ItemIndex + 1);
                 sumTitle.InnerText = "סכום לתשלום " + Helpers.NumberToHebrewOrdinal(e.Item.ItemIndex + 1) + ":";
 
+            }
+        }
+        protected void ImageFile_btnUpload_Click(object sender, EventArgs e)
+        {
+            if (ImageFile_FileUpload != null && ImageFile_FileUpload.HasFiles)
+            {
+                try
+                {
+                    var uploadedFiles = new List<FileDetail>();
+                    try
+                    {
+                        uploadedFiles = (List<FileDetail>)Session["UploadedFilesService"] ?? new List<FileDetail>();
+                    }
+                    catch
+                    {
+                        uploadedFiles = new List<FileDetail>();
+                    }
+
+                    // Track successful and failed uploads
+                    int successfulUploads = 0;
+                    int failedUploads = 0;
+
+                    foreach (HttpPostedFile postedFile in ImageFile_FileUpload.PostedFiles)
+                    {
+                        string ext = Path.GetExtension(postedFile.FileName).ToLower();
+                        if (ext == ".pdf" || ext == ".jpeg" || ext == ".png" || ext == ".jpg")
+                        {
+                            var fileDetail = new FileDetail
+                            {
+                                FileName = postedFile.FileName,
+                                FileSize = postedFile.ContentLength,
+                                PostedFile = postedFile,
+
+                            };
+
+                            uploadedFiles.Add(fileDetail);
+                            successfulUploads++;
+                        }
+                        else
+                        {
+                            failedUploads++;
+                        }
+                    }
+
+                    // Update session with uploaded files
+                    Session["UploadedFilesService"] = uploadedFiles;
+
+                    // Provide user feedback
+                    if (successfulUploads > 0)
+                    {
+                        BindFileRepeater();
+                        ImageFile_lable.Text = $"{successfulUploads} קבצים הועלו בהצלחה";
+                        ImageFile_lable.Visible = true;
+                    }
+
+                    if (failedUploads > 0)
+                    {
+                        ImageFile_lable.Text += $"\n{failedUploads} קבצים לא הועלו בשל סיומת לא תקינה";
+                        ImageFile_lable.Visible = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ImageFile_lable.Text = "* בבקשה נסה שוב";
+                    ImageFile_lable.Visible = true;
+                }
             }
         }
 

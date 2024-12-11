@@ -450,7 +450,7 @@
                                     <asp:ImageButton ID="ImageButton4" Style="vertical-align: middle" runat="server" ImageUrl="~/images/icons/Pdf_Icon.png" />
                                 </div>
                                 <div class="row DivBackground DivBackgroundRep">
-                                    <div runat="server" style="width: 93%; text-align: right;" class="RowDocuments DivNameFile">
+                                    <div runat="server" style="width: 86%; text-align: right;" class="RowDocuments DivNameFile">
                                         <%--                                    <%#Eval("File") %>--%>
                                         <%--<asp:Label ID="FileNameLabel" runat="server" />--%>
                                         <%# Eval("FileName") %>
@@ -458,6 +458,10 @@
                                     <div style="width: 7%; text-align: center;" class="RowDocuments">
                                         <%--<asp:ImageButton ID="ImageButton5" runat="server" CommandArgument='<%#Eval("File") %>' OnCommand="UploadFile_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icon/Upload_Button.png" />--%>
                                         <asp:ImageButton ID="DownloadFile" runat="server" OnCommand="Download_Click" CommandArgument='<%# Container.ItemIndex %>' Style="vertical-align: middle; position: relative" ImageUrl="~/images/icons/Choosing_New_Service_Request_Downlaod_Button.png" />
+                                    </div>
+                                       <div style="width: 7%; text-align: center;" class="RowDocuments">
+                                        <%--<asp:ImageButton ID="ImageButton5" runat="server" CommandArgument='<%#Eval("File") %>' OnCommand="UploadFile_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icon/Upload_Button.png" />--%>
+                                        <asp:ImageButton ID="RemoveFile" runat="server" OnCommand="RemoveFile_Command" CommandArgument='<%# +  Container.ItemIndex    %>' Style="vertical-align: middle; position: relative; height:70%" ImageUrl="~/images/icons/Delete_Lid_Button.png" />
                                     </div>
                                     <%--   <div style="width: 7%; text-align: center;" class="RowDocuments">
                                         <%--<asp:ImageButton ID="ImageButton5" runat="server" CommandArgument='<%#Eval("File") %>' OnCommand="UploadFile_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icon/Upload_Button.png" />

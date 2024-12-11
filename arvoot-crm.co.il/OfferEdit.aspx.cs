@@ -765,8 +765,8 @@ namespace ControlPanel
                 cmdInsert.Parameters.AddWithValue("@SourceLoanOrInsuranceID", SelectSourceLoanOrInsurance.Value);
                 cmdInsert.Parameters.AddWithValue("@OfferTypeID", SelectOfferType.Value);
                 cmdInsert.Parameters.AddWithValue("@ReasonLackSuccess", ReasonLackSuccess.Value);
-                cmdInsert.Parameters.AddWithValue("@ReturnDateToCustomer", string.IsNullOrEmpty(ReturnDateToCustomer.Value) ? (object)DBNull.Value : DateTime.Parse(ReturnDateToCustomer.Value));
-                cmdInsert.Parameters.AddWithValue("@DateSentToInsuranceCompany", string.IsNullOrEmpty(DateSentToInsuranceCompany.InnerText) ? (object)DBNull.Value : DateTime.Parse(DateSentToInsuranceCompany.InnerText));
+                cmdInsert.Parameters.AddWithValue("@ReturnDateToCustomer", string.IsNullOrEmpty(ReturnDateToCustomer.Value) ? (object)DBNull.Value :  DateTime.Parse(ReturnDateToCustomer.Value));
+                cmdInsert.Parameters.AddWithValue("@DateSentToInsuranceCompany", string.IsNullOrEmpty(DateSentToInsuranceCompany.InnerText) ? (object)DBNull.Value : DateTime.ParseExact(DateSentToInsuranceCompany.InnerText, "dd.MM.yyyy", CultureInfo.InvariantCulture));
                 cmdInsert.Parameters.AddWithValue("@Note", string.IsNullOrEmpty(Note.Value) ? (object)DBNull.Value : Note.Value);
                 cmdInsert.Parameters.AddWithValue("@StatusOfferID", SelectStatusOffer.SelectedValue);
                 //cmdInsert.Parameters.AddWithValue("@TurnOfferID", SelectTurnOffer.Value);

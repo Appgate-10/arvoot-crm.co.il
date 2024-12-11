@@ -153,6 +153,22 @@ namespace ControlPanel
                 }
             }
         }
+        protected void RemoveFile_Command(object sender, CommandEventArgs e)
+        {
+
+
+            int curIndex = int.Parse(e.CommandArgument.ToString());
+            List<FileDetail> list = (List<FileDetail>)Session["UploadedFilesService"];
+            int index = (int)(curIndex);
+            list.RemoveAt(index);
+            Session["UploadedFiles"] = list;
+
+            BindFileRepeater();
+            ImageFile_FileUpload.Dispose();
+
+
+
+        }
 
 
         protected void Repeater1_ItemDataBound(object sender, RepeaterItemEventArgs e)

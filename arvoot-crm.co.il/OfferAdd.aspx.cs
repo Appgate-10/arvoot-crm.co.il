@@ -23,16 +23,16 @@ namespace ControlPanel
         string FileName1;
         protected void Page_Load(object sender, EventArgs e)
         {
-       
-            //  UploadDocument.Attributes.Add("onclick", "document.getElementById('" + ImageFile_FileUpload.ClientID + "').click();");
-            
+
+            Page.Form.Attributes.Add("enctype", "multipart/form-data");
+
+
             if (!Page.IsPostBack)
             {
-                Page.Form.Attributes.Add("enctype", "multipart/form-data");
                 Pageinit.CheckManagerPermissions();
                 UploadDocument.Attributes.Add("onclick", "document.getElementById('" + ImageFile_FileUpload.ClientID + "').click();");
-                Session["UploadedFiles"] = new List<FileDetail>();
-                BindFileRepeater();
+                /*Session["UploadedFiles"] = new List<FileDetail>();
+                BindFileRepeater();*/
                 SqlCommand cmdSourceLoanOrInsurance = new SqlCommand("SELECT * FROM SourceLoanOrInsurance");
                 DataSet dsSourceLoanOrInsurance = DbProvider.GetDataSet(cmdSourceLoanOrInsurance);
                 SelectSourceLoanOrInsurance.DataSource = dsSourceLoanOrInsurance;
@@ -398,6 +398,22 @@ namespace ControlPanel
 
 
             return 0;
+        }
+        protected void RemoveFile_Command(object sender, CommandEventArgs e)
+        {
+           
+            
+            int curIndex = int.Parse(e.CommandArgument.ToString());
+            List<FileDetail> list = (List<FileDetail>)Session["UploadedFiles"];
+            int index = (int)(curIndex );
+            list.RemoveAt(index);
+            Session["UploadedFiles"] = list;           
+
+            BindFileRepeater();
+            ImageFile_FileUpload.Dispose();
+
+
+
         }
 
         protected void btn_save_Click(object sender, EventArgs e)

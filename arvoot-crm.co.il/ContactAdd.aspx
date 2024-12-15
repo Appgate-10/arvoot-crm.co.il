@@ -192,10 +192,10 @@
                             <input id="Email" name="Email" type="text" runat="server" style="width: 100%;" class="InputAdd" />
 
                         </div>
-                        <div style="width: 30%;" class="row">
+                      <%--  <div style="width: 30%;" class="row">
                             <lable class="InputLable" style="width: 30%;">סטטוס ראשי</lable>
 
-                        </div>
+                        </div>--%>
                     </div>
                 
                     <div class="row MarginRow" style="justify-content: space-between;">
@@ -204,10 +204,10 @@
                             <input id="Phone2" name="Phone2" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>
 
-                        <div style="width: 30%; justify-content: flex-end;" class="row">
+                     <%--   <div style="width: 30%; justify-content: flex-end;" class="row">
                              <select runat="server" id="SelectFirstStatus" class="selectGlobal"></select>
 
-                        </div>
+                        </div>--%>
                     </div>
                     <div class="row  ">
                         <div style="width: 25%;" class="row">
@@ -219,12 +219,12 @@
                         <div style="width: 21%; margin-inline-end: 4%;" class="row">
                             <lable class="InputLable">זמן מעקב</lable>
                         </div>   
-                        <div style="width: 30%;" class="row">
+                     <%--   <div style="width: 30%;" class="row">
                              <lable class="InputLable" style="width: 30%;">סטטוס משני</lable>
 
                           
                         </div>
-                  
+                  --%>
                     </div>
                    
                     <div class="row PaddingRow MarginRow">
@@ -239,10 +239,10 @@
                         <div style="width: 22%; margin-inline-end: 4%;" class="row">
                             <input id="TrackingTime" name="TrackingTime" type="datetime-local" runat="server" style="width: 100%;" class="InputAdd" />
                         </div>  
-                        <div style="width: 30%; justify-content: flex-end;" class="row">
+                      <%--  <div style="width: 30%; justify-content: flex-end;" class="row">
                                <select runat="server" id="SelectSecondStatus" class="selectGlobal"></select>
 
-                        </div>
+                        </div>--%>
                     </div>
 
 

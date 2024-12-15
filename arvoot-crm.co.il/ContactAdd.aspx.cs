@@ -29,20 +29,20 @@ namespace ControlPanel
             {
                 Pageinit.CheckManagerPermissions();
 
-                SqlCommand cmd = new SqlCommand("SELECT * FROM FirstStatusLead where ID != 10");
-                DataSet ds = DbProvider.GetDataSet(cmd);
-                SelectFirstStatus.DataSource = ds;
-                SelectFirstStatus.DataTextField = "Status";
-                SelectFirstStatus.DataValueField = "ID";
-                SelectFirstStatus.DataBind();
-                SelectFirstStatus.SelectedIndex = 1;
+                //SqlCommand cmd = new SqlCommand("SELECT * FROM FirstStatusLead where ID != 10");
+                //DataSet ds = DbProvider.GetDataSet(cmd);
+                //SelectFirstStatus.DataSource = ds;
+                //SelectFirstStatus.DataTextField = "Status";
+                //SelectFirstStatus.DataValueField = "ID";
+                //SelectFirstStatus.DataBind();
+                //SelectFirstStatus.SelectedIndex = 1;
 
-                SqlCommand cmdSecondStatus = new SqlCommand("SELECT * FROM SecondStatusLead");
-                DataSet dsSecondStatus = DbProvider.GetDataSet(cmdSecondStatus);
-                SelectSecondStatus.DataSource = dsSecondStatus;
-                SelectSecondStatus.DataTextField = "Status";
-                SelectSecondStatus.DataValueField = "ID";
-                SelectSecondStatus.DataBind();
+                //SqlCommand cmdSecondStatus = new SqlCommand("SELECT * FROM SecondStatusLead");
+                //DataSet dsSecondStatus = DbProvider.GetDataSet(cmdSecondStatus);
+                //SelectSecondStatus.DataSource = dsSecondStatus;
+                //SelectSecondStatus.DataTextField = "Status";
+                //SelectSecondStatus.DataValueField = "ID";
+                //SelectSecondStatus.DataBind();
 
                 SqlCommand cmdSourceLead = new SqlCommand("SELECT * FROM SourceLead");
                 DataSet dsSourceLead = DbProvider.GetDataSet(cmdSourceLead);
@@ -377,25 +377,25 @@ namespace ControlPanel
                 FormErrorBottom_label.Text = "יש לבחור האם קיים נכס בבעלות הלקוח";
             }
             //סטטוס מעקב לחייב למלא תאריך
-            else if(SelectFirstStatus.SelectedIndex == 8 && TrackingTime.Value == "")
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין זמן מעקב";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין זמן מעקב";
-                return 0;
-            }
-            //סטטוס לא רלוונטי לחייב למלא סטטוס משני
-            else if(SelectFirstStatus.SelectedIndex == 7 && SelectSecondStatus.SelectedIndex ==0)
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין סטטוס משני";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין סטטוס משני";
-                return 0;
-            }
+            //else if(SelectFirstStatus.SelectedIndex == 8 && TrackingTime.Value == "")
+            //{
+            //    ErrorCount++;
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש להזין זמן מעקב";
+            //    FormErrorBottom_label.Visible = true;
+            //    FormErrorBottom_label.Text = "יש להזין זמן מעקב";
+            //    return 0;
+            //}
+            ////סטטוס לא רלוונטי לחייב למלא סטטוס משני
+            //else if(SelectFirstStatus.SelectedIndex == 7 && SelectSecondStatus.SelectedIndex ==0)
+            //{
+            //    ErrorCount++;
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש להזין סטטוס משני";
+            //    FormErrorBottom_label.Visible = true;
+            //    FormErrorBottom_label.Text = "יש להזין סטטוס משני";
+            //    return 0;
+            //}
             else if (BdiValidity.SelectedIndex == 0)
             {
                 ErrorCount++;
@@ -593,9 +593,7 @@ namespace ControlPanel
       ,Phone1
       ,Phone2
       ,Email
-      ,FirstStatusLeadID
       ,DateChangeFirstStatus
-      ,SecondStatusLeadID
       ,SourceLeadID
       ,InterestedIn
       ,TrackingTime
@@ -627,6 +625,7 @@ namespace ControlPanel
       ,PurposeLoan
       ,MortgageBalance
       ,IsContact
+      ,FirstStatusLeadID
       ,CreateDate) output INSERTED.ID
       VALUES (
 	   @FirstName
@@ -642,9 +641,7 @@ namespace ControlPanel
       ,@Phone1
       ,@Phone2
       ,@Email
-      ,@FirstStatusLeadID
       ,GETDATE()
-      ,@SecondStatusLeadID
       ,@SourceLeadID
       ,@InterestedIn
       ,@TrackingTime
@@ -676,6 +673,7 @@ namespace ControlPanel
       ,@PurposeLoan
       ,@MortgageBalance
       ,1
+      ,1
       ,GETDATE())
   ";
 
@@ -698,8 +696,8 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@Phone1", Phone1.Value);
                 cmd.Parameters.AddWithValue("@Phone2", string.IsNullOrEmpty(Phone2.Value) ? (object)DBNull.Value : Phone2.Value);
                 cmd.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(Email.Value) ? (object)DBNull.Value : Address.Value);
-                cmd.Parameters.AddWithValue("@FirstStatusLeadID", SelectFirstStatus.Value);
-                cmd.Parameters.AddWithValue("@SecondStatusLeadID", string.IsNullOrEmpty(SelectSecondStatus.Value) ? (object)DBNull.Value : int.Parse(SelectSecondStatus.Value));
+                //cmd.Parameters.AddWithValue("@FirstStatusLeadID", SelectFirstStatus.Value);
+                //cmd.Parameters.AddWithValue("@SecondStatusLeadID", string.IsNullOrEmpty(SelectSecondStatus.Value) ? (object)DBNull.Value : int.Parse(SelectSecondStatus.Value));
 
                 cmd.Parameters.AddWithValue("@SourceLeadID", string.IsNullOrEmpty(SelectSourceLead.Value) ? (object)DBNull.Value : int.Parse(SelectSourceLead.Value));
                 cmd.Parameters.AddWithValue("@InterestedIn", string.IsNullOrEmpty(InterestedIn.Value) ? (object)DBNull.Value : InterestedIn.Value);
@@ -712,7 +710,7 @@ namespace ControlPanel
                 {
                     Pageinit.CheckManagerPermissions();
                     //heni - 13.10.24 - אין מענה פעם שלישית להעביר ליד למנהל
-                    cmd.Parameters.AddWithValue("@AgentID", int.Parse(SelectFirstStatus.Value) == 5 ? (object)DBNull.Value : long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
+                    cmd.Parameters.AddWithValue("@AgentID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
                 }
                 catch (Exception ex)
                 {

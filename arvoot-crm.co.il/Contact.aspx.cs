@@ -711,18 +711,7 @@ namespace ControlPanel
                    ExportNewContact_lable.Visible = true;
                    ExportNewContact_lable.Text = "יש לבחור מצב תעסוקתי";
                }*/
-            else if (BdiValidity.SelectedIndex == 0)
-            {
-                ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "תקין/ לא תקין BDI יש לבחור";
-            }
-            else if (BdiValidity.SelectedIndex == 2 && InvalidBdiReason.Value == "")
-            {
-                ErrorCount++;
-                ExportNewContact_lable.Visible = true;
-                ExportNewContact_lable.Text = "יש להזין סיבה לאי תקינות";
-            }
+           
             else if (BusinessName.Value == "")
             {
                 ErrorCount++;
@@ -849,6 +838,18 @@ namespace ControlPanel
             //    }
 
             //}
+            else if (BdiValidity.SelectedIndex == 0)
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "תקין/ לא תקין BDI יש לבחור";
+            }
+            else if (BdiValidity.SelectedIndex == 2 && InvalidBdiReason.Value == "")
+            {
+                ErrorCount++;
+                ExportNewContact_lable.Visible = true;
+                ExportNewContact_lable.Text = "יש להזין סיבה לאי תקינות";
+            }
             if (SelectHaveAsset.SelectedIndex == 0)
             {
                 if (AssetValue.Value != "")

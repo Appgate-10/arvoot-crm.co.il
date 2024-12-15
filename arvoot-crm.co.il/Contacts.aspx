@@ -16,6 +16,7 @@
     <asp:UpdatePanel ID="UpdatePanelButtons" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
     <asp:Button  ID="MoveTo" Class="NewLid"  Visible="false" Text="העבר איש קשר" Style="width: 130px; height: 35px; left:220px;" runat="server" OnClick="MoveTo_Click" />
+    <asp:Button  ID="NewContact" Class="NewLid"  Visible="false" Text="הקמת איש קשר" Style="width: 130px; height: 35px; left:220px;" runat="server" OnClick="NewContact_Click" />
         </ContentTemplate>
     </asp:UpdatePanel>
 

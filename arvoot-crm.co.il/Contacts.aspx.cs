@@ -31,8 +31,11 @@ namespace ControlPanel
                 {
                     MoveTo.Visible = true;
                 }
-
-                    loadUsers(1, false);
+                if (HttpContext.Current.Session["AgentLevel"] != null && (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 3 || int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 6))
+                {
+                    NewContact.Visible = true;
+                }
+                loadUsers(1, false);
                 //loadData();
             }
         }
@@ -284,6 +287,11 @@ namespace ControlPanel
                 AddForm.Update();
             }
 
+        }
+
+        protected void NewContact_Click(object sender, EventArgs e)
+        {
+            System.Web.HttpContext.Current.Response.Redirect("ContactAdd.aspx");
         }
 
         protected void SuspensionBU_Click(object sender, CommandEventArgs e)

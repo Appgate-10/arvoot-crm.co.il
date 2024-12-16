@@ -626,6 +626,7 @@ namespace ControlPanel
       ,MortgageBalance
       ,IsContact
       ,FirstStatusLeadID
+      ,SecondStatusLeadID
       ,CreateDate) output INSERTED.ID
       VALUES (
 	   @FirstName
@@ -673,6 +674,7 @@ namespace ControlPanel
       ,@PurposeLoan
       ,@MortgageBalance
       ,1
+      ,10
       ,1
       ,GETDATE())
   ";

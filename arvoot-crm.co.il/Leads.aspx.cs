@@ -112,6 +112,12 @@ namespace ControlPanel
 
 
                 }
+                else if (int.Parse(DataBinder.Eval(e.Item.DataItem, "FirstStatus").ToString()) == 10)
+                {
+                    image.ImageUrl = "~/images/icons/Status_4.png";
+
+
+                }
                 else image.ImageUrl = "";
 
 
@@ -175,7 +181,7 @@ namespace ControlPanel
             int PageSize = int.Parse(ConfigurationManager.AppSettings["PageSize"]);
             int CurrentRow = (PageNumber == 1) ? 0 : (PageSize * (PageNumber - 1));
             long ItemCount = 0;
-            string sqlWhere = "";
+            string sqlWhere = " where 1=1 ";
             string sqlJoin = "";
             SqlCommand cmd = new SqlCommand();
             SqlCommand cmdCount = new SqlCommand();
@@ -186,19 +192,19 @@ namespace ControlPanel
                 {
                     case 2:
                         sqlJoin =  " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
-                        sqlWhere = " and (C.ID = @ID OR B.ID = @ID)";
+                        sqlWhere += " and (C.ID = @ID OR B.ID = @ID)";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     case 3:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID  ";
-                        sqlWhere = " and (B.ID = @ID OR A.ID = @ID) ";
+                        sqlWhere += " and (B.ID = @ID OR A.ID = @ID) ";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;   
                     case 6:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type  in (3,6)";
-                        sqlWhere = " and A.ID = @ID";
+                        sqlWhere += " and A.ID = @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
@@ -212,14 +218,15 @@ namespace ControlPanel
                                  ,CONCAT(CONVERT(varchar, TrackingTime, 104), ' ', CONVERT(VARCHAR(5), TrackingTime, 108)) AS TrackingTime,Note,A.FullName as AgentName
                                   from Lead " + sqlJoin +
                               @"left join SecondStatusLead on Lead.SecondStatusLeadID=SecondStatusLead.ID
-                                  where Lead.IsContact=0 
                                   ";
+            //where Lead.IsContact = 0
+
             if (Request.QueryString["Q"] != null)
             {
                 Session["search"] = Request.QueryString["Q"];
                 if (Request.QueryString["Q"].ToString().Length > 0)
                 {
-                    sqlWhere = " and ( Lead.FirstName like @SrcParam Or Lead.LastName like @SrcParam Or Lead.tz like @SrcParam OR Lead.Phone1 like @SrcParam )";
+                    sqlWhere += " and ( Lead.FirstName like @SrcParam Or Lead.LastName like @SrcParam Or Lead.tz like @SrcParam OR Lead.Phone1 like @SrcParam )";
                 }
                 strSrc = Request.QueryString["Q"].ToString();
             }
@@ -266,7 +273,7 @@ namespace ControlPanel
             string sqlOrder = " Order by Lead.CreateDate desc OFFSET " + CurrentRow.ToString() + "  ROWS FETCH NEXT " + PageSize.ToString() + " ROWS ONLY ";
 
             //-- ניהול Paging
-            string sqlCnt = "Select Count(Lead.ID) FROM Lead " + sqlJoin + " where Lead.IsContact=0";
+            string sqlCnt = "Select Count(Lead.ID) FROM Lead " + sqlJoin ;
            
            
 

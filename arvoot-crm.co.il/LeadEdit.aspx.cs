@@ -852,7 +852,7 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@Phone1", Phone1.Value);
                 cmd.Parameters.AddWithValue("@Phone2", string.IsNullOrEmpty(Phone2.Value) ? (object)DBNull.Value : Phone2.Value);
                 cmd.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(Email.Value) ? (object)DBNull.Value : Email.Value);
-                cmd.Parameters.AddWithValue("@FirstStatusLeadID", SelectFirstStatus.Value);
+                cmd.Parameters.AddWithValue("@FirstStatusLeadID", "10");
                 //DateChangeFirstStatus
 
                 cmd.Parameters.AddWithValue("@SecondStatusLeadID", string.IsNullOrEmpty(SelectSecondStatus.Value) ? (object)DBNull.Value : int.Parse(SelectSecondStatus.Value));
@@ -1179,6 +1179,8 @@ namespace ControlPanel
                 {
                     sql += " ,DateChangeFirstStatus = GETDATE()";
                 }
+
+                
                 sql += " where ID = @LeadID";
                 SqlCommand cmd = new SqlCommand(sql);
 

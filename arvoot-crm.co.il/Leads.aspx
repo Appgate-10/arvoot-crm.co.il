@@ -81,7 +81,7 @@
                                 <div style="width: 8%; text-align: right;"><%#Eval("TrackingTime") %></div>
                                 <div id="AgentName" runat="server" style="width: 9%; text-align: right;"><%#Eval("AgentName") %></div>
                                 <div style="width: 15%; text-align: right;"><%--<%#Eval("SecondStatus") %>--%>
-                                      <asp:TextBox  ID="SubStatus"   Text='<%#Eval("SecondStatus ") %>'  style="vertical-align: middle;width: 90%;height: 40%;font-weight: bold;color: #35508C;background-repeat: no-repeat;
+                                      <asp:TextBox  ID="SubStatus"   Text='<%#Eval("SecondStatus") %>'  style="vertical-align: middle;width: 90%;height: 40%;font-weight: bold;color: #35508C;background-repeat: no-repeat;
                                                     background-size: 100% 100%;text-align: center;border: none; background-image: url(../images/icons/Secondary_Status_6.png);" runat="server"   />
 
                                 </div>

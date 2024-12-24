@@ -340,22 +340,26 @@ namespace ControlPanel
 
                 long offerID = DbProvider.GetOneParamValueLong(cmdInsert);
                 List<FileDetail> myFile = (List<FileDetail>)Session["UploadedFiles"];
-                if (offerID > 0 && myFile != null)
+                if (offerID > 0)
                 {
-                    for (int i = 0; i < myFile.Count; i++) {
-                        try
+                    if (myFile != null)
+                    {
+                        for (int i = 0; i < myFile.Count; i++)
                         {
-                            string FilePath1 = String.Format("{0}/OfferDocuments/", ConfigurationManager.AppSettings["MapPath"]);                          
-                            FileName1 = myFile[i].FileName;
+                            try
+                            {
+                                string FilePath1 = String.Format("{0}/OfferDocuments/", ConfigurationManager.AppSettings["MapPath"]);
+                                FileName1 = myFile[i].FileName;
 
-                            myFile[i].PostedFile.SaveAs(Path.Combine(FilePath1, FileName1)); 
-                            SqlCommand cmdInsertDoc = new SqlCommand(@"insert into OfferDocuments (FileName,OfferID) 
+                                myFile[i].PostedFile.SaveAs(Path.Combine(FilePath1, FileName1));
+                                SqlCommand cmdInsertDoc = new SqlCommand(@"insert into OfferDocuments (FileName,OfferID) 
                                                      values(@FileName,@OfferID)");
-                            cmdInsertDoc.Parameters.AddWithValue("@FileName", FileName1);
-                            cmdInsertDoc.Parameters.AddWithValue("@OfferID", offerID);
-                            DbProvider.ExecuteCommand(cmdInsertDoc);
+                                cmdInsertDoc.Parameters.AddWithValue("@FileName", FileName1);
+                                cmdInsertDoc.Parameters.AddWithValue("@OfferID", offerID);
+                                DbProvider.ExecuteCommand(cmdInsertDoc);
+                            }
+                            catch (Exception) { }
                         }
-                        catch (Exception) { }
                     }
 
                     SqlCommand cmdHistory = new SqlCommand("INSERT INTO ActivityHistory (AgentID, Details, CreateDate, Show) VALUES (@agentID, @details, GETDATE(), 1)");

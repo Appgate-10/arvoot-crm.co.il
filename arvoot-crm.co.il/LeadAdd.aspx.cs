@@ -532,11 +532,12 @@ namespace ControlPanel
 
                         DbProvider.ExecuteCommand(cmdTasks);
 
-                        string sqlAlert = "INSERT INTO Alerts (AgentID, Text, CreationDate, DisplayDate) Values (@AgentID, @Text, GETDATE(), @DisplayDate)";
+                        string sqlAlert = "INSERT INTO Alerts (AgentID, Text, CreationDate, DisplayDate, LeadID) Values (@AgentID, @Text, GETDATE(), @DisplayDate, @LeadID)";
                         SqlCommand cmdAlert = new SqlCommand(sqlAlert);
                         cmdAlert.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
                         cmdAlert.Parameters.AddWithValue("@Text", "מעקב ליד " + FirstName.Value + " " + LastName.Value + " " + Phone1.Value);
                         cmdAlert.Parameters.AddWithValue("@DisplayDate", DateTime.Parse(TrackingTime.Value));
+                        cmdAlert.Parameters.AddWithValue("@LeadID", LeadID);
                         DbProvider.ExecuteCommand(cmdAlert);
 
                     }

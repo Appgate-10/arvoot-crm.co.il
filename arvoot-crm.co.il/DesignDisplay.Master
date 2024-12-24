@@ -478,7 +478,11 @@
                         <div class="col MainDivPopup" style="padding-bottom: 55px; padding-top: 55px; width: 100%; height: 60%; overflow-y: auto; margin-right: 0; margin-left: 0;">
                             <asp:Repeater ID="RepeaterNewAlerts" runat="server">
                                 <ItemTemplate>
+                                    <asp:HiddenField ID="LeadID" runat="server" />
                                     <label class="SecondaryHeaderPopup" style="width: 85%; padding-top: 20px; padding-bottom: 20px; border-bottom: 0.5px solid lightgray;"><%#Eval("Text") %></label>
+                                    <asp:HiddenField ID="OfferID" runat="server" />
+                                    <asp:Button ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("LeadID") + "," + Eval("OfferID") %>' OnCommand="BtnDetails_Command" CssClass="repeaterButton"/>
+
                                 </ItemTemplate>
                             </asp:Repeater>
 
@@ -488,10 +492,11 @@
                         </div>
                         <div style="width: 60%; margin-right: auto; margin-left: auto; margin-top: auto; margin-bottom: auto; height: 25%;">
                             <asp:ImageButton ID="BtnOkAlertPopUp" runat="server" class="imgOkCancelPopUp" Style="margin-top: 5%;" ImageUrl="images/icons/Choosing_Service_Request_Ok_Button.png" OnClick="CloseAlertPopUp_Click" />
-                        </div>
+
+                       </div>
                     </div>
                 </div>
-                <asp:Timer ID="TimerAlerts" runat="server" OnTick="TimerAlerts_Tick" Interval="600000"></asp:Timer>
+                <asp:Timer ID="TimerAlerts" runat="server" OnTick="TimerAlerts_Tick" Interval="1000"></asp:Timer>
             </ContentTemplate>
         </asp:UpdatePanel>
         <input type="text" runat="server" name="ImageFile_1" id="ImageFile_1" style="display: none" />

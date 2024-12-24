@@ -30,7 +30,9 @@ namespace ControlPanel
                 Pageinit.CheckManagerPermissions();
                 SqlCommand cmdOperators = new SqlCommand(@"select FullName as OperatorName,ID from ArvootManagers where Show = 1 and (Type = 5 and ParentID in(
                                                        select ID from ArvootManagers where Type = 3 and ParentID = (
-                                                       select ParentID from ArvootManagers where ID = (select ParentID from ArvootManagers where ID = @ID )))) or ID = @ID");
+                                                       select ParentID from ArvootManagers where ID = (select ParentID from ArvootManagers where ID = @ID )))) or ( Type = 4 and ParentID in(
+                                                       select ID from ArvootManagers where Type = 3 and ParentID = (
+                                                       select ParentID from ArvootManagers where ID = (select ParentID from ArvootManagers where ID = @ID ))))");
                 cmdOperators.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"].ToString());
 
                 DataSet dsOperators = DbProvider.GetDataSet(cmdOperators);

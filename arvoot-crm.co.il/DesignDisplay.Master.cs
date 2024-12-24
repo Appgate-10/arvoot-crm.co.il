@@ -423,6 +423,35 @@ namespace ControlPanel
         {
             NewAlertPopUp.Visible = false;
         }
+        protected void BtnDetails_Command(object sender, CommandEventArgs e)
+        {
+            NewAlertPopUp.Visible = false;
+            string[] arg = e.CommandArgument.ToString().Split(',');
+
+            if (!arg[0].Equals("0"))
+            {
+                SqlCommand cmd = new SqlCommand("select IsContact from Lead where ID = @ID");
+                cmd.Parameters.AddWithValue("@ID", arg[0]);
+                DataTable dt = DbProvider.GetDataTable(cmd);
+                if (dt.Rows.Count > 0)
+                {
+                    if (int.Parse(dt.Rows[0]["IsContact"].ToString()) == 0)
+                    {
+                        System.Web.HttpContext.Current.Response.Redirect("LeadEdit.aspx?LeadID=" + arg[0]);
+                    }
+                    else
+                    {
+                        System.Web.HttpContext.Current.Response.Redirect("Contact.aspx?ContactID=" + arg[0]);
+                    }
+                }
+
+            }
+            else if (!arg[1].Equals("0"))
+            {
+                System.Web.HttpContext.Current.Response.Redirect("OfferEdit.aspx?OfferID=" + arg[1]);
+
+            }
+        }
 
         protected void TimerAlerts_Tick(object sender, EventArgs e)
         {
@@ -436,6 +465,7 @@ namespace ControlPanel
                 NewAlertPopUp.Visible = true;
                 RepeaterNewAlerts.DataSource = ds;
                 RepeaterNewAlerts.DataBind();
+               
                 SqlCommand cmdUpdate = new SqlCommand("UPDATE Alerts SET IsRead = 1 WHERE AgentID = @AgentID AND Show = 1 AND DisplayDate <= getdate() AND IsRead = 0");
                 cmdUpdate.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"]);
                 DbProvider.ExecuteCommand(cmdUpdate);

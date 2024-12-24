@@ -274,9 +274,10 @@ namespace ControlPanel
             sqlCommand.Parameters.AddWithValue("@ID", Request.QueryString["OfferID"]);
             DbProvider.ExecuteCommand(sqlCommand);
 
-            string sqlAlert = "INSERT INTO Alerts (AgentID, Text, CreationDate, DisplayDate) Values (@AgentID, @Text, GETDATE(), GETDATE())";
+            string sqlAlert = "INSERT INTO Alerts (AgentID, Text, CreationDate, DisplayDate, OfferID) Values (@AgentID, @Text, GETDATE(), GETDATE(), @OfferID)";
             SqlCommand cmdAlert = new SqlCommand(sqlAlert);
             cmdAlert.Parameters.AddWithValue("@AgentID", OperatorsList.SelectedValue);
+            cmdAlert.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
             cmdAlert.Parameters.AddWithValue("@Text", "ההצעה " + NameOffer.Value + " הועברה אליך לתפעול");
             DbProvider.ExecuteCommand(cmdAlert);
 
@@ -782,19 +783,26 @@ namespace ControlPanel
 
                     if (SelectStatusOffer.SelectedValue == "9" && SelectStatusOffer.SelectedValue != CurrentStatusOfferID.Value)
                     {
-                        string sqlBranchManager = @"SELECT a.ParentID from Offer
+                        string sqlBranchManager = @"SELECT a.ParentID, a.ID from Offer
                                                     INNER JOIN [Lead] l On l.ID = Offer.LeadID
                                                     INNER JOIN ArvootManagers a on a.ID = l.AgentID WHERE Offer.ID = @OfferID";
                         SqlCommand cmdBranchManager = new SqlCommand(sqlBranchManager);
                         cmdBranchManager.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
-                        string parentID = DbProvider.GetOneParamValueString(cmdBranchManager);
+                        DataTable dt = DbProvider.GetDataTable(cmdBranchManager);
 
-                        if (parentID != null)
+                        if (dt.Rows.Count > 0 )
                         {
-                            string sqlAlert = "INSERT INTO Alerts (AgentID, Text, CreationDate, DisplayDate) Values (@AgentID, @Text, GETDATE(), GETDATE())";
+                            string sqlAlert = "INSERT INTO Alerts (AgentID, Text, CreationDate, DisplayDate, OfferID) Values (@AgentID, @Text, GETDATE(), GETDATE(), @OfferID)";
                             SqlCommand cmdAlert = new SqlCommand(sqlAlert);
-                            cmdAlert.Parameters.AddWithValue("@AgentID", parentID);
+                            cmdAlert.Parameters.AddWithValue("@AgentID", dt.Rows[0]["ParentID"].ToString());
+                            cmdAlert.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
                             cmdAlert.Parameters.AddWithValue("@Text", "סיום טיפול בהצעה: " + NameOffer.Value + " על ידי: " + lblOwner.InnerText);
+                            DbProvider.ExecuteCommand(cmdAlert); 
+                            string sqlAlert2 = "INSERT INTO Alerts (AgentID, Text, CreationDate, DisplayDate, OfferID) Values (@AgentID, @Text, GETDATE(), GETDATE(), @OfferID)";
+                            SqlCommand cmdAlert2 = new SqlCommand(sqlAlert2);
+                            cmdAlert2.Parameters.AddWithValue("@AgentID", dt.Rows[0]["ID"].ToString());
+                            cmdAlert.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
+                            cmdAlert2.Parameters.AddWithValue("@Text", "סיום טיפול בהצעה: " + NameOffer.Value + " על ידי: " + lblOwner.InnerText);
                             DbProvider.ExecuteCommand(cmdAlert);
                         }
                         
@@ -910,7 +918,9 @@ namespace ControlPanel
 
             SqlCommand cmdOperators = new SqlCommand(@"select FullName as OperatorName,ID from ArvootManagers where Show = 1 and ( Type = 5 and ParentID in(
                                                        select ID from ArvootManagers where Type = 3 and ParentID = (
-                                                       select ParentID from ArvootManagers where ID = (select ParentID from ArvootManagers where ID = @ID )))) or ID = @ID");
+                                                       select ParentID from ArvootManagers where ID = (select ParentID from ArvootManagers where ID = @ID )))) or ( Type = 4 and ParentID in(
+                                                       select ID from ArvootManagers where Type = 3 and ParentID = (
+                                                       select ParentID from ArvootManagers where ID = (select ParentID from ArvootManagers where ID = @ID ))))");
 
             cmdOperators.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"].ToString());
             DataSet dsOperators = DbProvider.GetDataSet(cmdOperators);

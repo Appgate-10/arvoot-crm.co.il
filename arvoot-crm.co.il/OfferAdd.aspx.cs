@@ -374,9 +374,10 @@ namespace ControlPanel
 
                         if (parentID != null)
                         {
-                            string sqlAlert = "INSERT INTO Alerts (AgentID, Text, CreationDate, DisplayDate) Values (@AgentID, @Text, GETDATE(), GETDATE())";
+                            string sqlAlert = "INSERT INTO Alerts (AgentID, Text, CreationDate, DisplayDate, OfferID) Values (@AgentID, @Text, GETDATE(), GETDATE(), @OfferID)";
                             SqlCommand cmdAlert = new SqlCommand(sqlAlert);
                             cmdAlert.Parameters.AddWithValue("@AgentID", parentID);
+                            cmdAlert.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
                             cmdAlert.Parameters.AddWithValue("@Text", "סיום טיפול בהצעה: " + NameOffer.Value + " על ידי: " + lblOwner.InnerText);
                             DbProvider.ExecuteCommand(cmdAlert);
                         }

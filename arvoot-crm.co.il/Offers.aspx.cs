@@ -28,9 +28,9 @@ namespace ControlPanel
             if (!Page.IsPostBack)
             {
                 Pageinit.CheckManagerPermissions();
-                SqlCommand cmdOperators = new SqlCommand(@"select FullName as OperatorName,ID from ArvootManagers where Type = 5 and Show = 1 and ParentID in(
+                SqlCommand cmdOperators = new SqlCommand(@"select FullName as OperatorName,ID from ArvootManagers where Show = 1 and (Type = 5 and ParentID in(
                                                        select ID from ArvootManagers where Type = 3 and ParentID = (
-                                                       select ParentID from ArvootManagers where ID = (select ParentID from ArvootManagers where ID = @ID )))");
+                                                       select ParentID from ArvootManagers where ID = (select ParentID from ArvootManagers where ID = @ID )))) or ID = @ID");
                 cmdOperators.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"].ToString());
 
                 DataSet dsOperators = DbProvider.GetDataSet(cmdOperators);
@@ -40,7 +40,7 @@ namespace ControlPanel
                 OperatorsList.DataBind();
                 OperatorsList.Items.Insert(0, new ListItem("מתפעלת", ""));
 
-                SqlCommand cmdStatus = new SqlCommand("SELECT * FROM StatusOffer");
+                SqlCommand cmdStatus = new SqlCommand("SELECT * FROM StatusOffer where ID != 9 and ID != 10 ");
                 DataSet dsStatus = DbProvider.GetDataSet(cmdStatus);
                 StatusList.DataSource = dsStatus;
                 StatusList.DataTextField = "Status";
@@ -233,20 +233,21 @@ namespace ControlPanel
                         break;
                     case 3:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID  ";
-                        sqlWhere = " and (B.ID = @ID OR A.ID = @ID) ";
+                        sqlWhere = " and (B.ID = @ID OR A.ID = @ID) and StatusOffer.ID != 9 and  StatusOffer.ID != 10 ";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
 
                         break;
                     case 6:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) ";
-                        sqlWhere = " and A.ID = @ID and Offer.IsInOperatingQueue = 0 and Offer.OperatorID is null ";
+                        sqlWhere = " and A.ID = @ID and Offer.IsInOperatingQueue = 0 and Offer.OperatorID is null and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     case 4:
-                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ParentID = A.ParentID  ";
-                        sqlWhere = " and B.ID = @ID and (IsInOperatingQueue = 1 or OperatorID is not null)";
+
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on B.ParentID = C.ID  ";
+                        sqlWhere = " and C.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID )) and (IsInOperatingQueue = 1 or OperatorID is not null) and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         status.Style.Add("width", "10%");
@@ -254,7 +255,7 @@ namespace ControlPanel
                         break;
                     case 5:
                         sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID ";
-                        sqlWhere = " and OperatorID = @ID";
+                        sqlWhere = " and OperatorID = @ID and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
 
@@ -306,7 +307,7 @@ namespace ControlPanel
             
             try
             {
-                if (int.Parse(Session["selectedStatus"].ToString()) > 1)
+                if (int.Parse(Session["selectedStatus"].ToString()) > 0)
                 {
 
                     StatusList.SelectedValue = Session["selectedStatus"].ToString();
@@ -343,7 +344,7 @@ namespace ControlPanel
 
             cmd.CommandText = sql + sqlWhere;
 
-            string sqlCnt = @"select count(*)  from Offer  left join Lead on Lead.ID = Offer.LeadID " + sqlJoin + " where OfferTypeID not in(1,2,3,13)";
+            string sqlCnt = @"select count(*)  from Offer  left join Lead on Lead.ID = Offer.LeadID left join StatusOffer on StatusOffer.ID = Offer.StatusOfferID " + sqlJoin + " where OfferTypeID not in(1,2,3,13)";
             cmdCount.CommandText = sqlCnt + sqlWhere;
 
             try

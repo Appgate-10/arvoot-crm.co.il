@@ -289,7 +289,9 @@ namespace ControlPanel
             if(SelectStatusOffer.SelectedValue == "4" )
             {
                 DateSentToInsuranceCompany.InnerText = DateTime.Now.ToString("dd.MM.yyyy");
-            }
+            }    
+    
+            
         }
         public void loadData()
         {
@@ -345,7 +347,7 @@ namespace ControlPanel
                 bool isInOperatingManager = false;
                 if (!string.IsNullOrWhiteSpace(rowOffer["OperatorID"].ToString()))
                 {
-                    string sqlOwner = @"select ArvootManagers.FullName as FullNameAgent from ArvootManagers WHERE ID = @OperatorID and Type = 5 ";
+                    string sqlOwner = @"select ArvootManagers.FullName as FullNameAgent from ArvootManagers WHERE ID = @OperatorID and (Type = 5 or Type = 4)";
                     SqlCommand cmdOwner = new SqlCommand(sqlOwner);
                     cmdOwner.Parameters.AddWithValue("@OperatorID", rowOffer["OperatorID"]);
                     DataTable dtOwner = DbProvider.GetDataTable(cmdOwner);
@@ -906,9 +908,9 @@ namespace ControlPanel
 
             ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
 
-            SqlCommand cmdOperators = new SqlCommand(@"select FullName as OperatorName,ID from ArvootManagers where Type = 5 and Show = 1 and ParentID in(
+            SqlCommand cmdOperators = new SqlCommand(@"select FullName as OperatorName,ID from ArvootManagers where Show = 1 and ( Type = 5 and ParentID in(
                                                        select ID from ArvootManagers where Type = 3 and ParentID = (
-                                                       select ParentID from ArvootManagers where ID = (select ParentID from ArvootManagers where ID = @ID )))");
+                                                       select ParentID from ArvootManagers where ID = (select ParentID from ArvootManagers where ID = @ID )))) or ID = @ID");
 
             cmdOperators.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"].ToString());
             DataSet dsOperators = DbProvider.GetDataSet(cmdOperators);

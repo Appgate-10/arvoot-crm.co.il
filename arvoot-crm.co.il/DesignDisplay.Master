@@ -278,14 +278,15 @@
                     <div class="MainDivDocuments DivRepeaterPopUp">
                         <asp:Repeater ID="Repeater1" runat="server">
                             <ItemTemplate>
-                                <div class="row DivRpwRepeaterPopUp">
+                                <div class="row DivRpwRepeaterPopUp2">
+                                    <asp:Button ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("LeadID") + "," + Eval("OfferID") %>' OnCommand="BtnDetails_Command" CssClass="repeaterButton"/>
                                     <div style="width: 45%; text-align: right;" class="ColorLable"><%#Eval("Text") %></div>
                                     <div style="width: 50%; text-align: right;" class="ColorLable"><%#Eval("DisplayDate") %></div>
-                                    <%--<div style="width: 15%; text-align: right;" class="ColorLable"><%#Eval("Status") %></div>
-                                     <div style="width: 15%; text-align: right;" class="ColorLable"><%#Eval("FullName") %></div>--%>
                                     <div style="width: 5%; text-align: right;" class="ColorLable">
                                         <asp:ImageButton ID="DeleteAlert" runat="server" OnClientClick="return confirm('האם אתה בטוח שברצונך למחוק את ההתראה?');" CommandArgument='<%#Eval("ID") %>' OnCommand="DeleteAlert_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icons/Open_Mession_Delete_Button.png" />
                                     </div>
+
+
                                 </div>
                                 <div class="RowWhitePopUp"></div>
                             </ItemTemplate>
@@ -478,11 +479,18 @@
                         <div class="col MainDivPopup" style="padding-bottom: 55px; padding-top: 55px; width: 100%; height: 60%; overflow-y: auto; margin-right: 0; margin-left: 0;">
                             <asp:Repeater ID="RepeaterNewAlerts" runat="server">
                                 <ItemTemplate>
-                                    <asp:HiddenField ID="LeadID" runat="server" />
-                                    <label class="SecondaryHeaderPopup" style="width: 85%; padding-top: 20px; padding-bottom: 20px; border-bottom: 0.5px solid lightgray;"><%#Eval("Text") %></label>
-                                    <asp:HiddenField ID="OfferID" runat="server" />
-                                    <asp:Button ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("LeadID") + "," + Eval("OfferID") %>' OnCommand="BtnDetails_Command" CssClass="repeaterButton"/>
-
+                                      <div style="position: relative; width:100%">
+                                        <asp:Button ID="ButtonDiv" runat="server" 
+                                            CommandArgument='<%#Eval("LeadID") + "," + Eval("OfferID") %>' 
+                                            OnCommand="BtnDetails_Command" 
+                                            CssClass="repeaterButton" 
+                                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0;"/>
+            
+                                        <label class="SecondaryHeaderPopup" style="width: 100%; padding-top: 20px; padding-bottom: 20px; 
+                                            border-bottom: 0.5px solid lightgray; display: block;">
+                                            <%#Eval("Text") %>
+                                        </label>
+                                    </div>
                                 </ItemTemplate>
                             </asp:Repeater>
 
@@ -496,7 +504,8 @@
                        </div>
                     </div>
                 </div>
-                <asp:Timer ID="TimerAlerts" runat="server" OnTick="TimerAlerts_Tick" Interval="1000"></asp:Timer>
+               <%-- 600000 --%>
+                <asp:Timer ID="TimerAlerts" runat="server" OnTick="TimerAlerts_Tick" Interval="50000"></asp:Timer>
             </ContentTemplate>
         </asp:UpdatePanel>
         <input type="text" runat="server" name="ImageFile_1" id="ImageFile_1" style="display: none" />

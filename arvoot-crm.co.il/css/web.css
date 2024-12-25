@@ -1959,6 +1959,12 @@ H2 {
     background-color: #f6f6f6;
     padding: 1% 3%;
     border-radius: 4px;
+    position: relative;
+}
+
+.DivRpwRepeaterPopUp2 {
+    width: 100%;
+    position: relative;
 }
 
 .RowWhitePopUp {

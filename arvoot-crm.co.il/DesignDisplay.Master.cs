@@ -426,9 +426,10 @@ namespace ControlPanel
         protected void BtnDetails_Command(object sender, CommandEventArgs e)
         {
             NewAlertPopUp.Visible = false;
+            AllTasksList.Visible = false;
             string[] arg = e.CommandArgument.ToString().Split(',');
 
-            if (!arg[0].Equals("0"))
+            if (!string.IsNullOrEmpty(arg[0]) && !arg[0].Equals("0"))
             {
                 SqlCommand cmd = new SqlCommand("select IsContact from Lead where ID = @ID");
                 cmd.Parameters.AddWithValue("@ID", arg[0]);
@@ -446,7 +447,7 @@ namespace ControlPanel
                 }
 
             }
-            else if (!arg[1].Equals("0"))
+            else if (!string.IsNullOrEmpty(arg[1]) && !arg[1].Equals("0"))
             {
                 System.Web.HttpContext.Current.Response.Redirect("OfferEdit.aspx?OfferID=" + arg[1]);
 

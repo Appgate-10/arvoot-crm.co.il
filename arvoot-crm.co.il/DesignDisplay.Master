@@ -505,7 +505,7 @@
                     </div>
                 </div>
                <%-- 600000 --%>
-                <asp:Timer ID="TimerAlerts" runat="server" OnTick="TimerAlerts_Tick" Interval="50000"></asp:Timer>
+                <asp:Timer ID="TimerAlerts" runat="server" OnTick="TimerAlerts_Tick" Interval="600000"></asp:Timer>
             </ContentTemplate>
         </asp:UpdatePanel>
         <input type="text" runat="server" name="ImageFile_1" id="ImageFile_1" style="display: none" />

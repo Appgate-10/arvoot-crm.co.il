@@ -246,7 +246,7 @@
                 <div class="MainDivDocuments" style="height: 290px;">
                     <asp:Repeater ID="Repeater1" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
                         <ItemTemplate>
-                            <div class="row SecondaryDivDocuments" runat="server">
+                            <div class="row SecondaryDivDocumentsWithImg" runat="server">
                                 <div style="width: 2%;" class="RowDocuments">
                                     <asp:CheckBox runat="server" Style="vertical-align:middle" AutoPostBack="true" ID="IsPromoted" />
                                 </div>
@@ -254,18 +254,23 @@
                                     <asp:ImageButton ID="ImageButton4" runat="server" ImageUrl="~/images/icons/Pdf_Icon.png" OnClick="DeleteLid_Click" />
                                 </div>
                                 <div class="row DivBackground DivBackgroundRep">
-                                    <div runat="server" style="width: 86%; text-align: right;" class="RowDocuments DivNameFile">
+                                    <div runat="server" style="width: 79%; text-align: right;" class="RowDocuments DivNameFile">
                                         
                                              <asp:Label ID="FileName" Text='<%# Eval("FileName") %>' runat="server"/> 
                                  
                                     </div>
                                     <div style="width: 7%; text-align: center;" class="RowDocuments">
+                                        <asp:ImageButton ID="fileImg" OnCommand="OpenImage_Click" CommandArgument='<%# Eval("FileName") + "," + Eval("Base64String") %>'  Visible="true" runat="server" style="width: auto; height: 80%; margin-top: 6%; border-radius: 3px;" />
+                                        <asp:Image ID="filePdf" Visible="false" ImageUrl="~/images/icons/pdf.png" runat="server" style="width: auto; height: 50%; margin-top: 15%; border-radius: 3px;" />
+                                     
+                                    </div> 
+                                    <div style="width: 7%; text-align: center;" class="RowDocuments">
                                         <%--<asp:ImageButton ID="ImageButton5" runat="server" CommandArgument='<%#Eval("File") %>' OnCommand="UploadFile_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icon/Upload_Button.png" />--%>
-                                        <asp:ImageButton ID="UploadFile" runat="server" OnCommand="UploadFile_Command" CommandArgument='<%# Eval("FileName") + "," + Eval("ID") %>' Style="vertical-align: middle; position: relative" ImageUrl="~/images/icons/Choosing_New_Service_Request_Downlaod_Button.png" />
+                                        <asp:ImageButton ID="UploadFile" runat="server" OnCommand="UploadFile_Command" CommandArgument='<%# Eval("FileName") + "," + Eval("ID") %>' Style="vertical-align: middle; position: relative; margin-top: 16%; margin-bottom: 12%;" ImageUrl="~/images/icons/Choosing_New_Service_Request_Downlaod_Button.png" />
                                     </div>       
                                     <div style="width: 7%; text-align: center;" class="RowDocuments">
                                         <%--<asp:ImageButton ID="ImageButton5" runat="server" CommandArgument='<%#Eval("File") %>' OnCommand="UploadFile_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icon/Upload_Button.png" />--%>
-                                        <asp:ImageButton ID="RemoveFile" runat="server" OnCommand="RemoveFile_Command" CommandArgument='<%# +  Container.ItemIndex + "," + Eval("ID")   %>' Style="vertical-align: middle; position: relative; height:70%" ImageUrl="~/images/icons/Delete_Lid_Button.png" />
+                                        <asp:ImageButton ID="RemoveFile" runat="server" OnCommand="RemoveFile_Command" CommandArgument='<%# +  Container.ItemIndex + "," + Eval("ID")   %>' Style="vertical-align: middle; position: relative; height: 46%;margin-top: 16%;" ImageUrl="~/images/icons/Delete_Lid_Button.png" />
                                     </div>
                                 <%--    <div style="width: 7%; text-align: center;" class="RowDocuments">
                                         <%--<asp:ImageButton ID="ImageButton5" runat="server" CommandArgument='<%#Eval("File") %>' OnCommand="UploadFile_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icon/Upload_Button.png" />
@@ -442,6 +447,23 @@
                          <asp:Label ID="Label1" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
 
                         <%-- </div>--%>
+                    </div>
+
+                </div>
+            </div>
+
+         </ContentTemplate>
+     </asp:UpdatePanel>
+
+       <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+            <div id="popupImg" class="popUpOut MainDivDocuments " visible="false" runat="server">
+                <div id="Div2" class="popUpIn" style="width: 32%; height: 600px; margin-top: 160px; margin-bottom: 160px; direction: rtl; text-align: center; border-width: 2px;" runat="server">
+                    <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ImageButton7" OnClick="CloseImagePopUp_Click" />
+                   
+                    <div class="col" style="padding: 0px 5%; align-items: center;">
+                         <asp:Image ID="fileImg"  runat="server" style="width: auto; height: 80%; margin-top: 6%; border-radius: 3px;" />
+
                     </div>
 
                 </div>

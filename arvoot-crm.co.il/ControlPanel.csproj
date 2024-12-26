@@ -86,8 +86,10 @@
     <Content Include="ChatList.aspx" />
     <Content Include="images\Calendar_Big_BG.png" />
     <Content Include="images\icons\Calendar_Big_BG.png" />
+    <Content Include="images\icons\file.png" />
     <Content Include="images\icons\Last_Message_Icon.png" />
     <Content Include="images\icons\Not_Relevant_Button.png" />
+    <Content Include="images\icons\pdf.png" />
     <Content Include="images\icons\Secondary_Status_1.png" />
     <Content Include="images\icons\Secondary_Status_2.png" />
     <Content Include="images\icons\Secondary_Status_3.png" />

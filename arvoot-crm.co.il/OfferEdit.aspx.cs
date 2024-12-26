@@ -79,6 +79,7 @@ namespace ControlPanel
                 SelectStatusTask.DataTextField = "Status";
                 SelectStatusTask.DataValueField = "ID";
                 SelectStatusTask.DataBind();
+                Session["UploadedFiles"] = null;
                 //loadUsers(1);
                 loadData();
               
@@ -175,10 +176,48 @@ namespace ControlPanel
         {
             TaskDiv.Visible = true;
 
+        } 
+        
+        protected void OpenImage_Click(object sender, CommandEventArgs e)
+        {
+            popupImg.Visible = true;
+            UpdatePanel3.Update();
+            string[] parameters = e.CommandArgument.ToString().Split(',');
+            if (string.IsNullOrWhiteSpace(parameters[1]))
+                 fileImg.ImageUrl = String.Format("{0}/OfferDocuments/", ConfigurationManager.AppSettings["FilesUrl"]) + parameters[0];
+            else  fileImg.ImageUrl = "data:image/png;base64," + parameters[1];
+            
+
+
         }
         protected void Repeater1_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+            string filename = DataBinder.Eval(e.Item.DataItem, "FileName").ToString();
+            string Base64String = DataBinder.Eval(e.Item.DataItem, "Base64String").ToString();
+            string extension = System.IO.Path.GetExtension(filename).ToLower();
+            ImageButton fileImg = (ImageButton)e.Item.FindControl("fileImg");
+            Image filePdf = (Image)e.Item.FindControl("filePdf");
+            // Now extension will be ".jpg" and you can check:
+            switch (extension)
+            {
+                case ".jpg":
+                case ".jpeg":
+                case ".png":
+                    if(string.IsNullOrEmpty(Base64String))
+                        fileImg.ImageUrl = String.Format("{0}/OfferDocuments/", ConfigurationManager.AppSettings["FilesUrl"]) + filename;
+                    else fileImg.ImageUrl = "data:image/png;base64," + Base64String;
+                    break;
+                case ".pdf":
+                    fileImg.Visible = false;
+                    filePdf.Visible = true;
+                    break;
+                case ".doc":
+                case ".docx":
+                  //  fileImg.ImageUrl = "~/images/icons/pdf.png";
 
+                    break;
+                   
+            }
         }
         protected void CopyLid_Click(object sender, ImageClickEventArgs e)
         {
@@ -264,6 +303,11 @@ namespace ControlPanel
         protected void CloseMovePopUp_Click(object sender, ImageClickEventArgs e)
         {
             MoveToOperatorPopUp.Visible = false;
+        }     
+        protected void CloseImagePopUp_Click(object sender, ImageClickEventArgs e)
+        {
+            popupImg.Visible = false;
+            UpdatePanel3.Update();
         }  
         protected void MoveToOperator_Save(object sender, EventArgs e)
         {
@@ -403,7 +447,7 @@ namespace ControlPanel
                     btnMoveToOperatingQueqe.Visible = true;
                     movedToOperating.Visible = false;
                 }
-                string sqlOfferDocument = @"select * from OfferDocuments where OfferID = @OfferID";
+                string sqlOfferDocument = @"select *,'' as Base64String from OfferDocuments where OfferID = @OfferID";
                 SqlCommand cmdOfferDocument = new SqlCommand(sqlOfferDocument);
                 cmdOfferDocument.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
                 dtOfferDocument = DbProvider.GetDataTable(cmdOfferDocument);
@@ -440,6 +484,7 @@ namespace ControlPanel
             DataTable dtUploadedFiles = new DataTable();          
             dtUploadedFiles.Columns.Add("ID", typeof(int));
             dtUploadedFiles.Columns.Add("FileName", typeof(string));
+            dtUploadedFiles.Columns.Add("Base64String", typeof(string));
             if (Session["UploadedFiles"] != null)
             {
                 try
@@ -449,6 +494,7 @@ namespace ControlPanel
                         DataRow row = dtUploadedFiles.NewRow();
                         row["FileName"] = file.FileName;
                         row["ID"] = 0;
+                        row["Base64String"] = file.FileBase64String;
                         dtUploadedFiles.Rows.Add(row);
                     }
                 }
@@ -458,7 +504,7 @@ namespace ControlPanel
                 }
             }
             // Combine both DataTables
-            string sqlOfferDocument = @"select ID,FileName from OfferDocuments where OfferID = @OfferID";
+            string sqlOfferDocument = @"select ID,FileName,'' as Base64String from OfferDocuments where OfferID = @OfferID";
             SqlCommand cmdOfferDocument = new SqlCommand(sqlOfferDocument);
             cmdOfferDocument.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
             dtOfferDocument = DbProvider.GetDataTable(cmdOfferDocument);
@@ -495,12 +541,19 @@ namespace ControlPanel
                         string ext = Path.GetExtension(postedFile.FileName).ToLower();
                         if (ext == ".pdf" || ext == ".jpeg" || ext == ".png" || ext == ".jpg")
                         {
+                            string base64String = "";
+                            if (ext == ".jpeg" || ext == ".png" || ext == ".jpg") {
+                                System.IO.Stream fs = postedFile.InputStream;
+                                System.IO.BinaryReader br = new System.IO.BinaryReader(fs);
+                                Byte[] bytes = br.ReadBytes((Int32)fs.Length);
+                                base64String = Convert.ToBase64String(bytes, 0, bytes.Length);
+                            }
                             var fileDetail = new FileDetail
                             {
                                 FileName = postedFile.FileName,
                                 FileSize = postedFile.ContentLength,
                                 PostedFile = postedFile,
-                                
+                                FileBase64String = base64String
                             };
 
                             uploadedFiles.Add(fileDetail);
@@ -888,6 +941,7 @@ namespace ControlPanel
         public class FileDetail
         {
             public string FileName { get; set; }
+            public string FileBase64String { get; set; }
             public int FileSize { get; set; }
          
             public HttpPostedFile PostedFile { get; set; }

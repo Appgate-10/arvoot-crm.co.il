@@ -1491,7 +1491,9 @@ H2 {
 .SecondaryDivDocuments {
     height: 40px;
 }
-
+.SecondaryDivDocumentsWithImg {
+    height: 60px;
+}
 .RowDocuments {
     line-height: 40px;
     height: 100%;

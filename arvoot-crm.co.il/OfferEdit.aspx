@@ -320,7 +320,7 @@
 
                 </div>
                 <div runat="server" id="divRepeat" style="height: 463px; overflow-x: auto; margin-bottom: 20px">
-                    <asp:Repeater ID="Repeater2" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
+                    <asp:Repeater ID="Repeater2" runat="server" >
                         <ItemTemplate>
                             <asp:LinkButton ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnServiceRequest_Command" CssClass="ButtonDiv" >
 
@@ -458,11 +458,11 @@
        <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
             <div id="popupImg" class="popUpOut MainDivDocuments " visible="false" runat="server">
-                <div id="Div2" class="popUpIn" style="width: 32%; height: 600px; margin-top: 160px; margin-bottom: 160px; direction: rtl; text-align: center; border-width: 2px;" runat="server">
+                <div id="Div2" class="popUpIn" style="    width: 50%; height: 90%;margin-top: 40px; direction: rtl;  text-align: center; border-width: 2px;" runat="server">
                     <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ImageButton7" OnClick="CloseImagePopUp_Click" />
                    
                     <div class="col" style="padding: 0px 5%; align-items: center;">
-                         <asp:Image ID="fileImg"  runat="server" style="width: auto; height: 80%; margin-top: 6%; border-radius: 3px;" />
+                         <asp:Image ID="fileImg"  runat="server" style="width: auto;height: 721px; margin-top: 6%; border-radius: 3px;" />
 
                     </div>
 

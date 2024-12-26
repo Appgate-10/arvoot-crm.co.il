@@ -97,11 +97,21 @@ namespace ControlPanel
                         string ext = Path.GetExtension(postedFile.FileName).ToLower();
                         if (ext == ".pdf" || ext == ".jpeg" || ext == ".png" || ext == ".jpg")
                         {
+                            string base64String = "";
+                            if (ext == ".jpeg" || ext == ".png" || ext == ".jpg")
+                            {
+                                System.IO.Stream fs = postedFile.InputStream;
+                                System.IO.BinaryReader br = new System.IO.BinaryReader(fs);
+                                Byte[] bytes = br.ReadBytes((Int32)fs.Length);
+                                base64String = Convert.ToBase64String(bytes, 0, bytes.Length);
+                            }
                             var fileDetail = new FileDetail
                             {
                                 FileName = postedFile.FileName,
                                 FileSize = postedFile.ContentLength,
                                 PostedFile = postedFile,
+                                FileBase64String = base64String
+
 
                             };
 
@@ -145,18 +155,46 @@ namespace ControlPanel
             Repeater1.DataSource = uploadedFiles;
             Repeater1.DataBind();
         }
+        protected void OpenImage_Click(object sender, CommandEventArgs e)
+        {
+            popupImg.Visible = true;
+            UpdatePanel3.Update();
+            string[] parameters = e.CommandArgument.ToString().Split(',');
+            if (string.IsNullOrWhiteSpace(parameters[1]))
+                fileImg.ImageUrl = String.Format("{0}/OfferDocuments/", ConfigurationManager.AppSettings["FilesUrl"]) + parameters[0];
+            else fileImg.ImageUrl = "data:image/png;base64," + parameters[1];
+
+
+
+        }
 
         protected void Repeater1_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            string filename = DataBinder.Eval(e.Item.DataItem, "FileName").ToString();
+            string Base64String = DataBinder.Eval(e.Item.DataItem, "FileBase64String").ToString();
+            string extension = System.IO.Path.GetExtension(filename).ToLower();
+            ImageButton fileImg = (ImageButton)e.Item.FindControl("fileImg");
+            Image filePdf = (Image)e.Item.FindControl("filePdf");
+            // Now extension will be ".jpg" and you can check:
+            switch (extension)
             {
-                //FileUpload fileUpload = (FileUpload)e.Item.DataItem;
-                //Label fileNameLabel = (Label)e.Item.FindControl("FileNameLabel");
+                case ".jpg":
+                case ".jpeg":
+                case ".png":
+                    if (string.IsNullOrEmpty(Base64String))
+                        fileImg.ImageUrl = String.Format("{0}/OfferDocuments/", ConfigurationManager.AppSettings["FilesUrl"]) + filename;
+                    else fileImg.ImageUrl = "data:image/png;base64," + Base64String;
+                    break;
+                case ".pdf":
+                    fileImg.Visible = false;
+                    filePdf.Visible = true;
+                    break;
+                case ".doc":
+                case ".docx":
+                    //  fileImg.ImageUrl = "~/images/icons/pdf.png";
 
-                //if (fileUpload != null && fileNameLabel != null)
-                //{
-                //    fileNameLabel.Text = fileUpload.FileName;
-                //}
+                    break;
+
             }
 
         }
@@ -442,11 +480,17 @@ namespace ControlPanel
            // System.Web.HttpContext.Current.Response.Redirect("ServiceRequestAdd.aspx?LeadID" + Request.QueryString["ContactID"]);
 
         }
-
+        protected void CloseImagePopUp_Click(object sender, ImageClickEventArgs e)
+        {
+            popupImg.Visible = false;
+            UpdatePanel3.Update();
+        }
         public class FileDetail
         {
             public string FileName { get; set; }
+            public string FileBase64String { get; set; }
             public int FileSize { get; set; }
+
             public HttpPostedFile PostedFile { get; set; }
         }
     }

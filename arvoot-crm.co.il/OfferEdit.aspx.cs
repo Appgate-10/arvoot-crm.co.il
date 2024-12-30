@@ -550,7 +550,7 @@ namespace ControlPanel
                             }
                             var fileDetail = new FileDetail
                             {
-                                FileName = postedFile.FileName,
+                                FileName = Path.GetFileNameWithoutExtension(postedFile.FileName) + "_" + Helpers.CreateFileName(postedFile.FileName),
                                 FileSize = postedFile.ContentLength,
                                 PostedFile = postedFile,
                                 FileBase64String = base64String

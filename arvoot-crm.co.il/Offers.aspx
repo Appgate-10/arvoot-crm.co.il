@@ -21,7 +21,12 @@
         </div>
        
     </div>--%>
-    
+        <asp:UpdatePanel ID="UpdatePanelButtons" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+<%--               <asp:ImageButton  ID="ExcelExport"  ImageUrl="~/images/icons/Excel_Icon.png" Style="width: 62px;height: 58px;position: fixed;left: 250px;top: 27px;" runat="server"  />--%>
+
+            </ContentTemplate>
+    </asp:UpdatePanel>
     <div class="NewOfferDiv row">
         <label class="NewOfferLable" style="margin-inline-end: 3%;">הצעות </label>
         <%--  <div class=" HeaderBoxSearch" >--%>

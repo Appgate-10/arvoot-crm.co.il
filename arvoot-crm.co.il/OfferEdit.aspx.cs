@@ -262,7 +262,7 @@ namespace ControlPanel
         {
             string[] parameters = e.CommandArgument.ToString().Split(',');
             if (!parameters[1].ToString().Equals("0"))
-                Response.Redirect("DownloadFile.ashx?fileName=" + parameters[0]);
+                Response.Redirect("DownloadFile.ashx?fileName=" + parameters[0] + "&OfferID=" + Request.QueryString["OfferID"]);
             else ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('עליך לשמור את הקובץ לפני הורדה');", true);
 
 

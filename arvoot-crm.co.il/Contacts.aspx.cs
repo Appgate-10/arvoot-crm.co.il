@@ -223,6 +223,11 @@ namespace ControlPanel
                         sqlJoin = " inner join Offer on Offer.LeadID = Lead.ID and OperatorID = @ID left join ArvootManagers A on A.ID = Lead.AgentID ";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
+                    case 7:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlWhere += " and (C.ID = (select ParentID from ArvootManagers where ID = @ID) OR B.ID = (select ParentID from ArvootManagers where ID = @ID))";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
                     default:
                         sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID ";
                         break;

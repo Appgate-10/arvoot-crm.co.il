@@ -12,15 +12,7 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-<%--    <div class="NewOfferDiv row">
-        <label class="NewOfferLable" style="margin-inline-end: 3%;">אנשי קשר </label>
-        <div class="row DivSearchBox">
-            <a href="javascript:window.location.href = 'Contacts.aspx?Q=' + document.getElementById('Q').value;">
-                <img src="images/icons/Search_Contact_User_Button.png" class="ImgSearch" /></a>
-            <input type="text" class="InputTextSearch" style="text-align: right;" value="<% = StrSrc%>" name="Q" id="Q" onblur="javascript:if(this.value==''){this.value='חפש איש קשר'};" onfocus="javascript:if(this.value=='חפש איש קשר'){this.value='';}" onkeypress="javascript:runSearch(event, 'Contacts.aspx');" />
-        </div>
-       
-    </div>--%>
+
         <asp:UpdatePanel ID="UpdatePanelButtons" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
 <%--               <asp:ImageButton  ID="ExcelExport"  ImageUrl="~/images/icons/Excel_Icon.png" Style="width: 62px;height: 58px;position: fixed;left: 250px;top: 27px;" runat="server"  />--%>
@@ -30,9 +22,14 @@
     <div class="NewOfferDiv row">
         <label class="NewOfferLable" style="margin-inline-end: 3%;">הצעות </label>
         <%--  <div class=" HeaderBoxSearch" >--%>
+              <div class="row DivSearchBox">
+            <a href="javascript:window.location.href = 'Offers.aspx?Q=' + document.getElementById('Q').value;">
+                <img src="images/icons/Search_Contact_User_Button.png" class="ImgSearch" /></a>
+            <input type="text" class="InputTextSearch" style="text-align: right;" value="<% = StrSrc%>" name="Q" id="Q" onblur="javascript:if(this.value==''){this.value='חיפוש'};" onfocus="javascript:if(this.value=='חיפוש'){this.value='';}" onkeypress="javascript:runSearch(event, 'Offers.aspx');" />
+        </div>
         <div class="row" style="padding-top:2px;  ">
             
-                <div id="SortButton" style="margin-right: 20px; margin-top:4px; color:#273283">מ</div>
+                <div id="SortButton" style="margin-right: 60px; margin-top:4px; color:#273283">מ</div>
 
                 <asp:TextBox runat="server" type="text" class="inputSortDate" ID="FromDate" />
                 <div id="SortButton" style="margin-right: 20px; margin-top:4px; color:#273283">עד</div>

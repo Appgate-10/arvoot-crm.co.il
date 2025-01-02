@@ -113,10 +113,11 @@ namespace ControlPanel
                     case "2":
                         {
                             ManagementPermission.Text = "מנהל סניף";
-                            AgentPermission.Visible = false;
+                            AgentPermission.Text = "מזכירה";
+                           // AgentPermission.Visible = false;
                             SupervisorPermission.Visible = false;
                             Address.Visible = true;
-                            NameOrAddress.Visible = true;
+                            NameOrAddress.Visible = true;                           
                             NameOrAddress.InnerText = "שם הסניף";
                             Address.Attributes["placeholder"] = "כתובת";
                             break;
@@ -319,10 +320,26 @@ namespace ControlPanel
                         }
                     case "2":
                         {
+                            switch (HttpContext.Current.Session["Add_Level"].ToString())
+                            {
+                                case "1":
+                                    {
+                                        cmd.Parameters.AddWithValue("@Type", 3);
+                                        cmd.Parameters.AddWithValue("@BranchName", Address.Value);
+
+                                        break;
+                                    }  
+                                case "2":
+                                    {
+                                        cmd.Parameters.AddWithValue("@Type", 7);
+                                        cmd.Parameters.AddWithValue("@BranchName", DBNull.Value);
+
+                                        break;
+                                    }
+                            }
                             cmd.Parameters.AddWithValue("@ParentID", HttpContext.Current.Session["AgentID"]);
-                            cmd.Parameters.AddWithValue("@Type", 3);
+                        //    cmd.Parameters.AddWithValue("@Type", 3);
                             cmd.Parameters.AddWithValue("@CompanyName", DBNull.Value);
-                            cmd.Parameters.AddWithValue("@BranchName", Address.Value);
                             break;
                         }
                     case "3":
@@ -464,6 +481,11 @@ namespace ControlPanel
             SupervisorPermission.Attributes.Add("class", "Permissions");
             HttpContext.Current.Session["Add_Level"] = 2;
 
+            if (HttpContext.Current.Session["AgentLevel"].ToString() == "2")
+            {
+                NameOrAddress.Visible = false;
+                Address.Visible = false;
+            }
         }
 
         protected void SupervisorPermission_Click(object sender, EventArgs e)
@@ -480,6 +502,11 @@ namespace ControlPanel
             AgentPermission.Attributes.Add("class", "Permissions");
             SupervisorPermission.Attributes.Add("class", "Permissions");
             HttpContext.Current.Session["Add_Level"] = 1;
+            if (HttpContext.Current.Session["AgentLevel"].ToString() == "2")
+            {
+                NameOrAddress.Visible = true;
+                Address.Visible = true;
+            }
         }
 
         protected void ImageFile_1_btnUpload_Click(object sender, EventArgs e)
@@ -569,6 +596,12 @@ namespace ControlPanel
                         break;
                     case 2:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type  in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlWhere = " Where C.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdPayments.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break; 
+                    case 7:
+                        sqlJoin = " inner join ArvootManagers A on A.ParentID = Lead.AgentID and A.Type  in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
                         sqlWhere = " Where C.ID = @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdPayments.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);

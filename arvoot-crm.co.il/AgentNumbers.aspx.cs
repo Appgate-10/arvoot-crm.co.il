@@ -165,6 +165,12 @@ namespace ControlPanel
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
+                    case 7:
+                        sqlJoin = " inner join ArvootManagers A on A.ParentID = An.CompanyManagerId ";
+                        sqlWhere = "Where A.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
                     case 3:
                         sqlJoin = " inner join ArvootManagers A on A.ID = An.CompanyManagerId inner join ArvootManagers B on B.ParentID = A.ID ";
                         sqlWhere = "Where (B.ID = @ID OR A.ID = @ID) ";

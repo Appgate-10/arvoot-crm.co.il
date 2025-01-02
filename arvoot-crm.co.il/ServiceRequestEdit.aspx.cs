@@ -78,6 +78,15 @@ namespace ControlPanel
                         NoteCreditOrDenial.Disabled = true;
                     }
                 }
+
+
+                if (HttpContext.Current.Session["AgentLevel"].ToString() == "7")
+                {
+                    btn_save.Enabled = false;
+                    DeleteLid.Enabled = false;
+                    BtnSaveBottom.Enabled = false;
+                 
+                }
             }
         }
 

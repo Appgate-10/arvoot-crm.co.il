@@ -12,34 +12,49 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-<%--    <div class="NewOfferDiv row">
-        <label class="NewOfferLable" style="margin-inline-end: 3%;">אנשי קשר </label>
-        <div class="row DivSearchBox">
-            <a href="javascript:window.location.href = 'Contacts.aspx?Q=' + document.getElementById('Q').value;">
+    <div class="NewOfferDiv row">
+        <label class="NewOfferLable" style="margin-inline-end: 3%;">פוליסות </label>
+        <%--  <div class=" HeaderBoxSearch" >--%>
+              <div class="row DivSearchBox">
+            <a href="javascript:window.location.href = 'Policies.aspx?Q=' + document.getElementById('Q').value;">
                 <img src="images/icons/Search_Contact_User_Button.png" class="ImgSearch" /></a>
-            <input type="text" class="InputTextSearch" style="text-align: right;" value="<% = StrSrc%>" name="Q" id="Q" onblur="javascript:if(this.value==''){this.value='חפש איש קשר'};" onfocus="javascript:if(this.value=='חפש איש קשר'){this.value='';}" onkeypress="javascript:runSearch(event, 'Contacts.aspx');" />
+            <input type="text" class="InputTextSearch" style="text-align: right;" value="<% = StrSrc%>" name="Q" id="Q" onblur="javascript:if(this.value==''){this.value='חיפוש'};" onfocus="javascript:if(this.value=='חפש איש קשר'){this.value='';}" onkeypress="javascript:runSearch(event, 'Policies.aspx');" />
         </div>
-       
-    </div>--%>
+        <div class="row" style="padding-top:2px;  ">
+            
+                <div id="SortButton" style="margin-right: 60px; margin-top:4px; color:#273283">מ</div>
+
+                <asp:TextBox runat="server" type="text" class="inputSortDate" ID="FromDate" />
+                <div id="SortButton" style="margin-right: 20px; margin-top:4px; color:#273283">עד</div>
+
+
+                <asp:TextBox runat="server" type="text" class="inputSortDate" ID="ToDate" />
+             <div style="display: inline-flex; flex-direction: column; width: 160px;  margin-right: 30px;">
+                <asp:Button ID="SortBtn" OnCommand="SortBtn_Click" Text="סנן תאריך"  runat="server" CssClass="BtnSort" />
+            </div>
+        </div>
+
+        <%-- </div>--%>
+    </div>
     <div class="ListDivParamsHead ListDivParamsHeadS">
-<%--        <div style="width: 5%; text-align: right;"></div>
-        <div style="width: 10%; text-align: right;">ת.הקמה</div>
-        <div style="width: 10%; text-align: right;">שם פרטי</div>
-        <div style="width: 10%; text-align: right;">שם משפחה</div>
-        <div style="width: 10%; text-align: right;">ת.ז.</div>
-        <div style="width: 10%; text-align: right;">טלפון</div>
-        <div style="width: 10%; text-align: right;">תאריך לידה</div>
-        <div style="width: 30%; text-align: right;">בעלים</div>
-        <div style="width: 5%; text-align: center;"></div>
---%>
 
-                <div style="width: 17%; text-align: right; padding-right: 4%">תאריך</div>
+
+           <div style="width: 20%; text-align: right; padding-right: 2%">תאריך</div>
+                    <div style="width: 15%; text-align: right;">שם מבוטח</div>
+                    <div style="width: 10%; text-align: right;">ת.ז</div>
                     <div style="width: 15%; text-align: right;">הצעה</div>
-                    <div style="width: 20%; text-align: right;">בעלים</div>
-                    <div id="status" runat="server"  style="width: 43%; text-align: right;">סטטוס</div>
-                    <div id="operatoring" runat="server"  style="width: 20%; text-align: right;display:none">מתפעלת</div>
-                    <div style="width: 5%; text-align: center;"></div>
+                    <div style="width: 15%; text-align: right;">
+                         <asp:DropDownList style="width:30%" runat="server" ID="AgentList" OnSelectedIndexChanged="AgentList_SelectedIndexChanged" CssClass="StatusClaims" ToolTip="בעלים" AutoPostBack="true"></asp:DropDownList>
 
+                    </div>
+                    <div id="status" runat="server"  style="width: 20%; text-align: right;">
+                                     <asp:DropDownList style="width:60%" runat="server" ID="StatusList" OnSelectedIndexChanged="StatusList_SelectedIndexChanged" CssClass="StatusClaims" ToolTip="סטטוס" AutoPostBack="true"></asp:DropDownList>
+                    </div>
+                    <div id="operatoring" runat="server"  style="width: 10%; text-align: right;display:none">
+                          <asp:DropDownList  style="width:100%" runat="server" ID="OperatorsList" OnSelectedIndexChanged="OperatorsList_SelectedIndexChanged" CssClass="StatusClaims" ToolTip="מתפעלת" AutoPostBack="true"></asp:DropDownList>
+
+                    </div>
+                    <div style="width: 5%; text-align: center;"></div>
 
 
     </div>
@@ -55,14 +70,17 @@
 
                             <div class='ListDivParams'>
 
-                                  <div style="width: 5%; text-align: center">
+                                    <div style="width: 5%; text-align: center">
                                     <asp:Image ID="BtnDetailsOffer" style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
                                     </div>
-                                    <div  id="operatorVal" runat="server" style="width: 20%; text-align: right;display:none"><%#Eval("OperatorName") %></div>
-                                    <div  id="statusVal" runat="server"  style="width: 43%; text-align: right"><%#Eval("StatusOffer") %></div>
-                                    <div style="width: 20%; text-align: right;"><%#Eval("FullNameAgent") %></div>
+                                    <div  id="operatorVal" runat="server" style="width: 10%; text-align: right;display:none"><%#Eval("OperatorName") %></div>
+                                    <div  id="statusVal" runat="server"  style="width: 20%; text-align: right"><%#Eval("StatusOffer") %></div>
+                                    <div style="width: 15%; text-align: right;"><%#Eval("FullNameAgent") %></div>
                                     <div style="width: 15%; text-align: right"><%#Eval("OfferType") %></div>
-                                    <div style="width: 17%; text-align: right; padding-right: 4%"><%#Eval("CreateDate") %></div>
+                                    <div style="width: 10%; text-align: right"><%#Eval("Tz") %></div>
+                                    <div style="width: 15%; text-align: right"><%#Eval("FullName") %></div>
+                                    <div style="width: 20%; text-align: right; padding-right: 2%"><%#Eval("CreateDate") %></div>
+
 
                             </div>
                         </asp:LinkButton>

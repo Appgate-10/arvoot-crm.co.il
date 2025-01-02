@@ -86,6 +86,12 @@ namespace ControlPanel
                  
 
                 HttpContext.Current.Session["FirstStatusLeadID"] = null;
+                if(HttpContext.Current.Session["AgentLevel"].ToString() == "7")
+                {
+                    btn_save.Enabled = false;
+                    ExportNewContact.Enabled = false;
+                    BtnSaveBottomBtn.Enabled = false;
+                }    
 
                 loadData();
             }

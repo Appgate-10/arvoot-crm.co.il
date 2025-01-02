@@ -15,7 +15,7 @@ namespace ControlPanel
     public partial class _policies : System.Web.UI.Page
     {
         ControlPanelInit Pageinit = new ControlPanelInit();
-        private string strSrc = "חפש איש קשר";
+        private string strSrc = "חיפוש";
         public string StrSrc { get { return strSrc; } }
 
 
@@ -27,14 +27,67 @@ namespace ControlPanel
             {
                 Pageinit.CheckManagerPermissions();
 
+                SqlCommand cmdOperators = new SqlCommand(@"select FullName as OperatorName,ID from ArvootManagers where Show = 1 and (Type = 5 and ParentID in(
+                                                       select ID from ArvootManagers where Type = 3 and ParentID = (
+                                                       select ParentID from ArvootManagers where ID = (select ParentID from ArvootManagers where ID = @ID )))) or ( Type = 4 and ParentID in(
+                                                       select ID from ArvootManagers where Type = 3 and ParentID = (
+                                                       select ParentID from ArvootManagers where ID = (select ParentID from ArvootManagers where ID = @ID ))))");
+                cmdOperators.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"].ToString());
+
+                DataSet dsOperators = DbProvider.GetDataSet(cmdOperators);
+                OperatorsList.DataSource = dsOperators;
+                OperatorsList.DataTextField = "OperatorName";
+                OperatorsList.DataValueField = "ID";
+                OperatorsList.DataBind();
+                OperatorsList.Items.Insert(0, new ListItem("מתפעלת", ""));
+
+                SqlCommand cmdStatus = new SqlCommand("SELECT * FROM StatusOffer where  ID != 9 and ID != 10 ");
+                DataSet dsStatus = DbProvider.GetDataSet(cmdStatus);
+                StatusList.DataSource = dsStatus;
+                StatusList.DataTextField = "Status";
+                StatusList.DataValueField = "ID";
+                StatusList.DataBind();
+                StatusList.Items.Insert(0, new ListItem("סטטוס", ""));
+
+                SqlCommand cmdAgents = new SqlCommand(" SELECT  FullName as AgentName,ID FROM ArvootManagers where ParentID = (select ParentID FROM ArvootManagers where ID = @ID) and Type in (3,6)");
+                cmdAgents.Parameters.AddWithValue("@ID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
+                DataSet dsAgents = DbProvider.GetDataSet(cmdAgents);
+                AgentList.DataSource = dsAgents;
+                AgentList.DataTextField = "AgentName";
+                AgentList.DataValueField = "ID";
+                AgentList.DataBind();
+                AgentList.Items.Insert(0, new ListItem("בעלים", ""));
 
                 loadUsers(1);
                 //loadData();
             }
         }
 
+        protected void SortBtn_Click(object sender, EventArgs e)
+        {
+            ////??
+            //System.Web.HttpContext.Current.Response.Redirect("AdvertisementConfirm.aspx?FromDate=" + FromDate.Text + "&ToDate=" + ToDate.Text);
+            // אם חפשתי שם של עסק (קיו בחיפוש ואז מוסיף קיו ליורל)ורק אחרכ אני מסננת לפי תאריך אז אני צריכה לחפש גם לפי שם וגם לפי תאריך
+            //אבל אם חפשתי לפי תאריך וגם לפי שם אז אני מחפשת רק לפי תאריך
+
+            System.Web.HttpContext.Current.Response.Redirect("Policies.aspx?FromDate=" + FromDate.Text + "&ToDate=" + ToDate.Text);
 
 
+
+        }
+        protected void OperatorsList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Session["selectedOperator"] = OperatorsList.SelectedValue.ToString();
+
+            loadUsers(1);
+        }
+
+        protected void StatusList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Session["selectedStatus"] = StatusList.SelectedValue.ToString();
+
+            loadUsers(1);
+        }
         protected void Repeater1_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
 
@@ -177,6 +230,12 @@ namespace ControlPanel
                         sqlWhere = " and (C.ID = @ID OR B.ID = @ID)";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break; 
+                    case 7:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlWhere = " and (C.ID = (select ParentID from ArvootManagers where ID = @ID) OR B.ID = (select ParentID from ArvootManagers where ID = @ID))";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     case 3:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID  ";
@@ -216,6 +275,7 @@ namespace ControlPanel
             //Heni 28.10.24 -  where  OfferType.ID  in(1,2,3,12) -הסטטוסים מסוג ביטוח מוצגים בפוליסות 
 
             string sql = @"SELECT Offer.ID, Offer.CreateDate, OfferType.Name as OfferType, A.FullName as FullNameAgent ,StatusOffer.Status as StatusOffer, operators.FullName as OperatorName
+                           , Lead.FirstName + ' ' + Lead.LastName as FullName, Lead.Tz                           
                            from Offer
                            left join OfferType on OfferType.ID = Offer.OfferTypeID
                            left join StatusOffer on StatusOffer.ID = Offer.StatusOfferID 
@@ -270,7 +330,12 @@ namespace ControlPanel
             Repeater1.DataBind();
 
         }
+        protected void AgentList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Session["selectedAgent"] = AgentList.SelectedValue.ToString();
 
+            loadUsers(1);
+        }
         protected void SuspensionBU_Click(object sender, CommandEventArgs e)
         {
             SqlCommand cmdUpdate = new SqlCommand("Update Users Set Users.Show = 0 Where IDUser = @ID");

@@ -87,8 +87,7 @@ namespace ControlPanel
                 //RadioButttonSecondStatus.Items.Insert(0, new ListItem("בחר", "0"));
                 //CBIsValidIssuanceDateTz.Checked = true;
 
-
-
+          
                 loadData();
             }
 

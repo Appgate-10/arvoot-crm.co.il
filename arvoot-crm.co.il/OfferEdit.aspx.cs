@@ -81,6 +81,16 @@ namespace ControlPanel
                 SelectStatusTask.DataBind();
                 Session["UploadedFiles"] = null;
                 //loadUsers(1);
+                if (HttpContext.Current.Session["AgentLevel"].ToString() == "7")
+                {
+                    btn_save.Enabled = false;
+                    DeleteLid.Enabled = false;
+                    btnMoveToOperatingQueqe.Enabled = false;
+                    ImageButton1.Enabled = false;
+                    ImageButton2.Enabled = false;
+                    BtnSaveBottom.Enabled = false;
+                }
+
                 loadData();
               
             }

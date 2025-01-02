@@ -15,6 +15,42 @@ namespace ControlPanel
     {
 
         /// <summary>
+        /// FromDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox FromDate;
+
+        /// <summary>
+        /// ToDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ToDate;
+
+        /// <summary>
+        /// SortBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SortBtn;
+
+        /// <summary>
+        /// AgentList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList AgentList;
+
+        /// <summary>
         /// status control.
         /// </summary>
         /// <remarks>
@@ -24,6 +60,15 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl status;
 
         /// <summary>
+        /// StatusList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList StatusList;
+
+        /// <summary>
         /// operatoring control.
         /// </summary>
         /// <remarks>
@@ -31,6 +76,15 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl operatoring;
+
+        /// <summary>
+        /// OperatorsList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList OperatorsList;
 
         /// <summary>
         /// AddForm control.

@@ -664,6 +664,7 @@ namespace ControlPanel
 
                 switch (/*HttpContext.Current.Session["AgentLevel"].ToString()*/HiddenAgentLevel.Value)
                 {
+                    case "7":
                     case "2":
                         {
                             cmd.Parameters.AddWithValue("@CompanyName", Address.Value);

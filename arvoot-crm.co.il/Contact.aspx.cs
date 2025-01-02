@@ -89,6 +89,14 @@ namespace ControlPanel
                 SelectContactStatus.DataValueField = "ID";
                 SelectContactStatus.DataBind();
 
+                if (HttpContext.Current.Session["AgentLevel"].ToString() == "7")
+                {
+                    btn_save.Enabled = false;
+                    DeleteContact.Enabled = false;
+                    OfferAdd.Enabled = false;
+                }
+
+
                 loadData();
 
             }

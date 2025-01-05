@@ -164,6 +164,7 @@ namespace ControlPanel
                     Branch.Value = ds.Rows[0]["Branch"].ToString();
                     AccountNumber.Value = ds.Rows[0]["AccountNumber"].ToString();
                     AccountHolder.Value = ds.Rows[0]["AccountHolder"].ToString();
+                    Cvv.Value = ds.Rows[0]["Cvv"].ToString();
                     CreditNumber.Value = ds.Rows[0]["CreditNumber"].ToString();
                     string[] validity = ds.Rows[0]["CreditValidity"].ToString().Split('/');
                     //CreditValidity.Value = ds.Rows[0]["CreditValidity"].ToString(); 
@@ -515,7 +516,8 @@ namespace ControlPanel
                     FormErrorBottom_label.Visible = true;
                     FormErrorBottom_label.Text = "יש להזין בעל החשבון";
                     return false;
-                }
+                } 
+                
             }
             else if (SelectMethodsPayment.SelectedIndex == 2)
             {
@@ -544,6 +546,15 @@ namespace ControlPanel
                     FormErrorBottom_label.Text = "יש להזין ת.ז. בעל הכרטיס";
                     return false;
                 }
+                if (Cvv.Value == "")
+                {
+                    ErrorCount++;
+                    FormError_label.Visible = true;
+                    FormError_label.Text = "יש להזין Cvv";
+                    FormErrorBottom_label.Visible = true;
+                    FormErrorBottom_label.Text = "יש להזין Cvv";
+                    return false;
+                }
             }
 
             if (ErrorCount == 0)
@@ -551,7 +562,7 @@ namespace ControlPanel
 
                 string sql = @" Update ServiceRequest set  Sum=@Sum, Note=@Note, PurposeID=@PurposeID, 
                                 SumCreditOrDenial=@SumCreditOrDenial,DateCreditOrDenial=@DateCreditOrDenial, NumCreditOrDenial=@NumCreditOrDenial, ReferenceCreditOrDenial=@ReferenceCreditOrDenial, NoteCreditOrDenial=@NoteCreditOrDenial,
-                                IsApprovedCreditOrDenial=@IsApprovedCreditOrDenial, PaymentMethodID=@PaymentMethodID, BankName=@BankName, Branch=@Branch, AccountNumber=@AccountNumber, AccountHolder=@AccountHolder, CreditNumber=@CreditNumber,
+                                IsApprovedCreditOrDenial=@IsApprovedCreditOrDenial, PaymentMethodID=@PaymentMethodID, BankName=@BankName, Branch=@Branch, AccountNumber=@AccountNumber, AccountHolder=@AccountHolder, Cvv=@Cvv, CreditNumber=@CreditNumber,
                                 CreditValidity=@CreditValidity, CardholdersID=@CardholdersID  where ID = @ID";
 
                 //, Balance=@Balance
@@ -593,6 +604,7 @@ SumPayment3=@SumPayment3,DatePayment3=@DatePayment3, NumPayment3=@NumPayment3, R
                 cmd.Parameters.AddWithValue("@Branch", string.IsNullOrEmpty(Branch.Value) ? (object)DBNull.Value : Branch.Value);
                 cmd.Parameters.AddWithValue("@AccountNumber", string.IsNullOrEmpty(AccountNumber.Value) ? (object)DBNull.Value : AccountNumber.Value);
                 cmd.Parameters.AddWithValue("@AccountHolder", string.IsNullOrEmpty(AccountHolder.Value) ? (object)DBNull.Value : AccountHolder.Value);
+                cmd.Parameters.AddWithValue("@Cvv", string.IsNullOrEmpty(Cvv.Value) ? (object)DBNull.Value : Cvv.Value);
                 cmd.Parameters.AddWithValue("@CreditNumber", string.IsNullOrEmpty(CreditNumber.Value) ? (object)DBNull.Value : CreditNumber.Value);
                 cmd.Parameters.AddWithValue("@CreditValidity", string.IsNullOrEmpty(SelectMonth.Value) || string.IsNullOrEmpty(SelectYear.Value) ? (object)DBNull.Value : SelectMonth.Value + "/" + SelectYear.Value);
                 cmd.Parameters.AddWithValue("@CardholdersID", string.IsNullOrEmpty(CardholdersID.Value) ? (object)DBNull.Value : CardholdersID.Value);

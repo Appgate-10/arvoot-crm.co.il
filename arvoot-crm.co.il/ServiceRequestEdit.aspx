@@ -406,8 +406,8 @@
                         <input id="AccountNumber" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                     </div>
                     <div style="width: 20%; margin-left: 34%;" class="row">
-                        <label class="InputLable">ת.ז. בעל הכרטיס:</label>
-                        <input id="CardholdersID" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
+                        <label class="InputLable">Cvv:</label>
+                        <input id="Cvv" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                     </div>
                 </div>
                     <div class="row PaddingRow MarginRow" style="width: 100%;">
@@ -418,7 +418,8 @@
                         <input id="AccountHolder" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                     </div>
                     <div style="width: 20%; margin-left: 34%;" class="row">
-                       
+                        <label class="InputLable">ת.ז. בעל הכרטיס:</label>
+                        <input id="CardholdersID" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd" />
                     </div>
                 </div>
             </div>

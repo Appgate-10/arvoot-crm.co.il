@@ -312,13 +312,13 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputText AccountNumber;
 
         /// <summary>
-        /// CardholdersID control.
+        /// Cvv control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText CardholdersID;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText Cvv;
 
         /// <summary>
         /// AccountHolder control.
@@ -328,6 +328,15 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText AccountHolder;
+
+        /// <summary>
+        /// CardholdersID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText CardholdersID;
 
         /// <summary>
         /// ImageFile_lable control.

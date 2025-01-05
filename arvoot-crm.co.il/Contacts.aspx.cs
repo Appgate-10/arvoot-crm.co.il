@@ -162,12 +162,14 @@ namespace ControlPanel
             long ItemCount = 0;
             string sqlJoin = "";
             string sqlWhere = "";
+            bool isSearch = false;
             SqlCommand cmd = new SqlCommand();
             if (Request.QueryString["Q"] != null)
             {
                 if (Request.QueryString["Q"].ToString().Length > 0)
                 {
                     sqlWhere = " and( Lead.FirstName like @SrcParam OR Lead.LastName like @SrcParam Or Lead.tz like @SrcParam Or Lead.Phone1 like @SrcParam )";
+                    isSearch = true;
                 }
                 strSrc = Request.QueryString["Q"].ToString();
             }
@@ -211,7 +213,9 @@ namespace ControlPanel
                         break;
                     case 6:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type  in (3,6) ";
-                        sqlWhere += " and A.ParentID = (select ParentID from ArvootManagers where ID = @ID)";
+                        if(isSearch)
+                            sqlWhere += " and A.ParentID = (select ParentID from ArvootManagers where ID = @ID)";
+                        else sqlWhere += " and A.ID =  @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break; 
                     case 4:

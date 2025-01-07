@@ -1,0 +1,2293 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Simplexcel</name>
+    </assembly>
+    <members>
+        <member name="M:Simplexcel.CellAddressHelper.ColRowToReference(System.Int32,System.Int32)">
+            <summary>
+            Convert a zero-based row and column to an Excel Cell Reference, e.g. A1 for [0,0]
+            </summary>
+            <param name="col"></param>
+            <param name="row"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.CellAddressHelper.ColToReference(System.Int32)">
+            <summary>
+            Convert a zero-based column number to the proper Reference in Excel (e.g, 0 = A)
+            </summary>
+            <param name="col"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.CellAddressHelper.ReferenceToColRow(System.String,System.Int32@,System.Int32@)">
+            <summary>
+            Convert an Excel Cell Reference to a zero-based column/row representation (e.g., A1 => [0,0])
+            </summary>
+        </member>
+        <member name="T:Simplexcel.BuiltInCellFormat">
+            <summary>
+            Excel Built-In Cell formats
+            </summary>
+        </member>
+        <member name="F:Simplexcel.BuiltInCellFormat.General">
+            <summary>
+            General
+            </summary>
+        </member>
+        <member name="F:Simplexcel.BuiltInCellFormat.NumberNoDecimalPlaces">
+            <summary>
+            0
+            </summary>
+        </member>
+        <member name="F:Simplexcel.BuiltInCellFormat.NumberTwoDecimalPlaces">
+            <summary>
+            0.00
+            </summary>
+        </member>
+        <member name="F:Simplexcel.BuiltInCellFormat.PercentNoDecimalPlaces">
+            <summary>
+            0%
+            </summary>
+        </member>
+        <member name="F:Simplexcel.BuiltInCellFormat.PercentTwoDecimalPlaces">
+            <summary>
+            0.00%
+            </summary>
+        </member>
+        <member name="F:Simplexcel.BuiltInCellFormat.Text">
+            <summary>
+            @
+            </summary>
+        </member>
+        <member name="F:Simplexcel.BuiltInCellFormat.DateAndTime">
+            <summary>
+            m/d/yy h:mm
+            </summary>
+        </member>
+        <member name="F:Simplexcel.BuiltInCellFormat.DateOnly">
+            <summary>
+            mm-dd-yy
+            </summary>
+        </member>
+        <member name="F:Simplexcel.BuiltInCellFormat.TimeOnly">
+            <summary>
+            h:mm
+            </summary>
+        </member>
+        <member name="T:Simplexcel.Cell">
+            <summary>
+            A cell inside a Worksheet
+            </summary>
+        </member>
+        <member name="M:Simplexcel.Cell.#ctor(Simplexcel.CellType)">
+            <summary>
+            Create a new Cell of the given <see cref="P:Simplexcel.Cell.CellType"/>.
+            You can also implicitly create a cell from a string or number.
+            </summary>
+            <param name="cellType"></param>
+        </member>
+        <member name="M:Simplexcel.Cell.#ctor(Simplexcel.CellType,System.Object,System.String)">
+            <summary>
+            Create a new Cell of the given <see cref="P:Simplexcel.Cell.CellType"/>, with the given value and format. For some common formats, see <see cref="T:Simplexcel.BuiltInCellFormat"/>.
+            You can also implicitly create a cell from a string or number.
+            </summary>
+            <param name="type"> </param>
+            <param name="value"> </param>
+            <param name="format"> </param>
+        </member>
+        <member name="P:Simplexcel.Cell.Format">
+            <summary>
+            The Excel Format for the cell, see <see cref="T:Simplexcel.BuiltInCellFormat"/>
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Cell.Border">
+            <summary>
+            The border around the cell
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Cell.FontName">
+            <summary>
+            The name of the Font (Default: Calibri)
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Cell.FontSize">
+            <summary>
+            The Size of the Font (Default: 11)
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Cell.Bold">
+            <summary>
+            Should the text be bold?
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Cell.Italic">
+            <summary>
+            Should the text be italic?
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Cell.Underline">
+            <summary>
+            Should the text be underlined?
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Cell.TextColor">
+            <summary>
+            The font color.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Cell.Fill">
+            <summary>
+            The interior/fill color.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Cell.HorizontalAlignment">
+            <summary>
+            The Horizontal Alignment of content within a Cell
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Cell.VerticalAlignment">
+            <summary>
+            The Vertical Alignment of content within this Cell
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Cell.IgnoredErrors">
+            <summary>
+            Any errors that are ignored in this Cell
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Cell.CellType">
+            <summary>
+            The Type of the cell.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Cell.Value">
+            <summary>
+            The Content of the cell.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Cell.Hyperlink">
+            <summary>
+            Should this cell be a Hyperlink to something?
+            </summary>
+        </member>
+        <member name="M:Simplexcel.Cell.Formula(System.String)">
+            <summary>
+            Create a new <see cref="T:Simplexcel.Cell"/> that includes a Formula (e.g., SUM(A1:A5)). Do not include the initial = sign!
+            </summary>
+            <param name="formula">The formula, without the initial = sign (so "SUM(A1:A5)", not "=SUM(A1:A5)")</param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.Cell.op_Implicit(System.String)~Simplexcel.Cell">
+            <summary>
+            Create a new <see cref="T:Simplexcel.Cell"/> with a <see cref="P:Simplexcel.Cell.CellType"/> of Text from a string.
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.Cell.op_Implicit(System.Int64)~Simplexcel.Cell">
+            <summary>
+            Create a new <see cref="T:Simplexcel.Cell"/> with a <see cref="P:Simplexcel.Cell.CellType"/> of Number (formatted without decimal places) from an integer.
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.Cell.op_Implicit(System.Decimal)~Simplexcel.Cell">
+            <summary>
+            Create a new <see cref="T:Simplexcel.Cell"/> with a <see cref="P:Simplexcel.Cell.CellType"/> of Number (formatted with 2 decimal places) places from a decimal.
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.Cell.op_Implicit(System.Double)~Simplexcel.Cell">
+            <summary>
+            Create a new <see cref="T:Simplexcel.Cell"/> with a <see cref="P:Simplexcel.Cell.CellType"/> of Number (formatted with 2 decimal places) places from a double.
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.Cell.op_Implicit(System.DateTime)~Simplexcel.Cell">
+            <summary>
+            Create a new <see cref="T:Simplexcel.Cell"/> with a <see cref="P:Simplexcel.Cell.CellType"/> of Date, formatted as DateAndTime.
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.Cell.FromObject(System.Object)">
+            <summary>
+            Create a Cell from the given object, trying to determine the best cell type/format.
+            </summary>
+            <param name="val"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Simplexcel.Cell.LargeNumberPositiveLimit">
+            <summary>
+            The largest positive number Excel can handle before <see cref="T:Simplexcel.LargeNumberHandlingMode"/> applies
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Cell.LargeNumberNegativeLimit">
+            <summary>
+            The largest negative number Excel can handle before <see cref="T:Simplexcel.LargeNumberHandlingMode"/> applies
+            </summary>
+        </member>
+        <member name="M:Simplexcel.Cell.IsLargeNumber(System.Nullable{System.Decimal})">
+            <summary>
+            Check if the given number is so large that <see cref="T:Simplexcel.LargeNumberHandlingMode"/> would apply to it
+            </summary>
+            <param name="number">The number to check</param>
+            <returns></returns>
+        </member>
+        <member name="T:Simplexcel.CellAddress">
+            <summary>
+            The zero-based Address of a cell
+            </summary>
+            <remarks>
+            This is zero-based, so cell A1 is Row,Column [0,0]
+            </remarks>
+        </member>
+        <member name="F:Simplexcel.CellAddress.Row">
+            <summary>
+            The zero-based row
+            </summary>
+        </member>
+        <member name="F:Simplexcel.CellAddress.Column">
+            <summary>
+            The zero-based column
+            </summary>
+        </member>
+        <member name="M:Simplexcel.CellAddress.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Create a Cell Adress given the zero-based row and column
+            </summary>
+            <param name="row"></param>
+            <param name="column"></param>
+        </member>
+        <member name="M:Simplexcel.CellAddress.#ctor(System.String)">
+            <summary>
+            Create a CellAddress from a Reference like A1
+            </summary>
+            <param name="cellAddress"></param>
+        </member>
+        <member name="M:Simplexcel.CellAddress.ToString">
+            <summary>
+            Convert this CellAddress into a Cell Reference, e.g. A1 for [0,0]
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Simplexcel.CellBorder">
+            <summary>
+            Border around a cell
+            </summary>
+        </member>
+        <member name="F:Simplexcel.CellBorder.None">
+            <summary>
+            No Border
+            </summary>
+        </member>
+        <member name="F:Simplexcel.CellBorder.Top">
+            <summary>
+            Border at the top
+            </summary>
+        </member>
+        <member name="F:Simplexcel.CellBorder.Right">
+            <summary>
+            Border on the Right side
+            </summary>
+        </member>
+        <member name="F:Simplexcel.CellBorder.Bottom">
+            <summary>
+            Border at the bottom
+            </summary>
+        </member>
+        <member name="F:Simplexcel.CellBorder.Left">
+            <summary>
+            Border on the Left Side
+            </summary>
+        </member>
+        <member name="F:Simplexcel.CellBorder.All">
+            <summary>
+            Borders on all four sides
+            </summary>
+        </member>
+        <member name="T:Simplexcel.CellCollection">
+            <summary>
+            A Collection of <see cref="T:Simplexcel.Cell">Cells</see>
+            </summary>
+        </member>
+        <member name="P:Simplexcel.CellCollection.RowCount">
+            <summary>
+            How many Rows are in the sheet? (This counts the maximum row index, so empty rows are counted if they are followed by another row)
+            </summary>
+        </member>
+        <member name="P:Simplexcel.CellCollection.ColumnCount">
+            <summary>
+            How many Columns are in the sheet? (This counts the rightmost column, so empty columns are counted if they are followed by another column)
+            </summary>
+        </member>
+        <member name="P:Simplexcel.CellCollection.Item(System.String)">
+            <summary>
+            Get the cell with the given cell reference, e.g. Get the cell "A1". May return NULL.
+            </summary>
+            <param name="address"></param>
+            <returns>The Cell, or NULL of the Cell hasn't been created yet.</returns>
+        </member>
+        <member name="P:Simplexcel.CellCollection.Item(System.Int32,System.Int32)">
+            <summary>
+            Get the cell with the given zero based row and column, e.g. [0,0] returns the A1 cell. May return NULL.
+            </summary>
+            <param name="row"></param>
+            <param name="column"></param>
+            <returns>The Cell, or NULL of the Cell hasn't been created yet.</returns>
+        </member>
+        <member name="M:Simplexcel.CellCollection.GetEnumerator">
+            <summary>
+            Enumerate over the Cells in this Collection
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.CellCollection.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Enumerate over the Cells in this Collection
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Simplexcel.CellType">
+            <summary>
+            The Type of a Cell, important for handling the values corrently (e.g., Excel not converting long numbers into scientific notation or removing leading zeroes)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.CellType.Text">
+            <summary>
+            Cell contains text, so use it exactly as specified
+            </summary>
+        </member>
+        <member name="F:Simplexcel.CellType.Number">
+            <summary>
+            Cell contains a number (may strip leading zeroes but sorts properly)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.CellType.Date">
+            <summary>
+            Cell contains a date, must be greater than 01/01/0100
+            </summary>
+        </member>
+        <member name="F:Simplexcel.CellType.Formula">
+            <summary>
+            Cell contains a Formula (e.g., "SUM(A1:A10)")
+            </summary>
+        </member>
+        <member name="P:Simplexcel.GradientStop.Position">
+            <summary>
+            The position indicated here indicates the point where the color is pure.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.GradientStop.Color">
+            <summary>
+            The pure color of this Gradient Stop
+            </summary>
+        </member>
+        <member name="T:Simplexcel.HorizontalAlign">
+            <summary>
+            The Horizontal Alignment of content within a Cell
+            </summary>
+        </member>
+        <member name="F:Simplexcel.HorizontalAlign.None">
+            <summary>
+            No specific alignment, use Excel's default
+            </summary>
+        </member>
+        <member name="F:Simplexcel.HorizontalAlign.General">
+            <summary>
+            The horizontal alignment is general-aligned. Text data
+            is left-aligned. Numbers, dates, and times are rightaligned.
+            Boolean types are centered. Changing the
+            alignment does not change the type of data.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.HorizontalAlign.Left">
+            <summary>
+            The horizontal alignment is left-aligned, even in Right-to-Left mode.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.HorizontalAlign.Center">
+            <summary>
+            The horizontal alignment is centered, meaning the text is centered across the cell.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.HorizontalAlign.Right">
+            <summary>
+            The horizontal alignment is right-aligned, meaning that
+            cell contents are aligned at the right edge of the cell,
+            even in Right-to-Left mode.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.HorizontalAlign.Justify">
+            <summary>
+            The horizontal alignment is justified (flush left and
+            right). For each line of text, aligns each line of the
+            wrapped text in a cell to the right and left (except the
+            last line). If no single line of text wraps in the cell, then
+            the text is not justified.
+            </summary>
+        </member>
+        <member name="T:Simplexcel.IgnoredError">
+            <summary>
+            Information about Errors that are being ignored in a cell
+            </summary>
+        </member>
+        <member name="P:Simplexcel.IgnoredError.NumberStoredAsText">
+            <summary>
+            Ignore errors when numbers are formatted as text or are preceded by an apostrophe.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.IgnoredError.CalculatedColumn">
+            <summary>
+            Ignore errors when cells contain a value different from a calculated column formula.
+            In other words, for a calculated column, a cell in that column is considered to have
+            an error if its formula is different from the calculated column formula, or doesn't
+            contain a formula at all.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.IgnoredError.EmptyCellReference">
+            <summary>
+            Ignore errors when formulas refer to empty cells
+            </summary>
+        </member>
+        <member name="P:Simplexcel.IgnoredError.EvalError">
+            <summary>
+            Ignore errors when cells contain formulas that result in an error.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.IgnoredError.Formula">
+            <summary>
+            Ignore errors when a formula in a region of your worksheet differs from other formulas in the same region.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.IgnoredError.FormulaRange">
+            <summary>
+            Ignore errors when formulas omit certain cells in a region.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.IgnoredError.ListDataValidation">
+            <summary>
+            Ignore errors when a cell's value in a Table does not comply with the Data Validation rules specified.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.IgnoredError.TwoDigitTextYear">
+            <summary>
+            Ignore errors when formulas contain text formatted cells with years represented as 2 digits.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.IgnoredError.UnlockedFormula">
+            <summary>
+            Ignore errors when unlocked cells contain formulas.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.IgnoredError.IsDifferentFromDefault">
+            <summary>
+            Is this instance different from the default (does it need an ignoredError element?)
+            </summary>
+        </member>
+        <member name="M:Simplexcel.IgnoredError.GetHashCode">
+            <summary>
+            Get the HashCode for this instance, which is a unique combination based on the boolean properties
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.IgnoredError.Equals(System.Object)">
+            <summary>
+            Compare this <see cref="T:Simplexcel.IgnoredError"/> to another <see cref="T:Simplexcel.IgnoredError"/>
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.IgnoredError.Equals(Simplexcel.IgnoredError)">
+            <summary>
+            Compare this <see cref="T:Simplexcel.IgnoredError"/> to another <see cref="T:Simplexcel.IgnoredError"/>
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.IgnoredError.op_Equality(Simplexcel.IgnoredError,Simplexcel.IgnoredError)">
+            <summary>
+            Compare a <see cref="T:Simplexcel.IgnoredError"/> to another <see cref="T:Simplexcel.IgnoredError"/>
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.IgnoredError.op_Inequality(Simplexcel.IgnoredError,Simplexcel.IgnoredError)">
+            <summary>
+            Compare a <see cref="T:Simplexcel.IgnoredError"/> to another <see cref="T:Simplexcel.IgnoredError"/>
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Simplexcel.PatternFill">
+            <summary>
+            A Pattern Fill of a Cell.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.PatternFill.PatternType">
+            <summary>
+            The type of Fill Pattern to use.
+            Refer to the documentation for a list of each pattern.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.PatternFill.PatternColor">
+            <summary>
+            The Background Color of the cell
+            </summary>
+        </member>
+        <member name="P:Simplexcel.PatternFill.BackgroundColor">
+            <summary>
+            The Background Color of the Fill.
+            (No effect if <see cref="P:Simplexcel.PatternFill.PatternType"/> is <see cref="F:Simplexcel.PatternType.None"/>)
+            </summary>
+        </member>
+        <member name="M:Simplexcel.PatternFill.Equals(System.Object)">
+            <summary>
+            Compare to another <see cref="T:Simplexcel.PatternFill"/> object.
+            </summary>
+        </member>
+        <member name="M:Simplexcel.PatternFill.Equals(Simplexcel.PatternFill)">
+            <summary>
+            Compare to another <see cref="T:Simplexcel.PatternFill"/> object.
+            </summary>
+        </member>
+        <member name="M:Simplexcel.PatternFill.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:Simplexcel.PatternFill.op_Equality(Simplexcel.PatternFill,Simplexcel.PatternFill)">
+            <summary>
+            Check whether the <see cref="T:Simplexcel.PatternFill"/> objects <paramref name="left"/> and <paramref name="right"/> are <see cref="M:Simplexcel.PatternFill.Equals(Simplexcel.PatternFill)">Equal</see>.
+            </summary>
+        </member>
+        <member name="M:Simplexcel.PatternFill.op_Inequality(Simplexcel.PatternFill,Simplexcel.PatternFill)">
+            <summary>
+            Check whether the <see cref="T:Simplexcel.PatternFill"/> objects <paramref name="left"/> and <paramref name="right"/> are not <see cref="M:Simplexcel.PatternFill.Equals(Simplexcel.PatternFill)">Equal</see>.
+            </summary>
+        </member>
+        <member name="T:Simplexcel.PatternType">
+            <summary>
+            The Type of the pattern in a <see cref="T:Simplexcel.PatternFill"/>.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.None">
+            <summary>
+            none
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.Solid">
+            <summary>
+            solid
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.Gray750">
+            <summary>
+            75% Gray
+            darkGray
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.Gray500">
+            <summary>
+            50% Gray
+            mediumGray
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.Gray250">
+            <summary>
+            25% Gray
+            lightGray
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.Gray125">
+            <summary>
+            12.5% Gray
+            gray125
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.Gray0625">
+            <summary>
+            6.25% Gray
+            gray0625
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.HorizontalStripe">
+            <summary>
+            Horizontal Stripe
+            darkHorizontal
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.VerticalStripe">
+            <summary>
+            Vertical Stripe
+            darkVertical
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.ReverseDiagonalStripe">
+            <summary>
+            Reverse Diagonal Stripe
+            darkDown
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.DiagonalStripe">
+            <summary>
+            Diagonal Stripe
+            darkUp
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.DiagonalCrosshatch">
+            <summary>
+            Diagonal Crosshatch
+            darkGrid
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.ThickDiagonalCrosshatch">
+            <summary>
+            Thick Diagonal Crosshatch
+            darkTrellis
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.ThinHorizontalStripe">
+            <summary>
+            Thin Horizontal Stripe
+            lightHorizontal
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.ThinVerticalStripe">
+            <summary>
+            Thin Vertical Stripe
+            lightVertical
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.ThinReverseDiagonalStripe">
+            <summary>
+            Thin Reverse Diagonal Stripe
+            lightDown
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.ThinDiagonalStripe">
+            <summary>
+            Thin Diagonal Stripe
+            lightUp
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.ThinHorizontalCrosshatch">
+            <summary>
+            Thin Horizontal Crosshatch
+            lightGrid
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PatternType.ThinDiagonalCrosshatch">
+            <summary>
+            Thin Diagonal Crosshatch
+            lightTrellis
+            </summary>
+        </member>
+        <member name="T:Simplexcel.VerticalAlign">
+            <summary>
+            The Vertical Alignment of content within a Cell
+            </summary>
+        </member>
+        <member name="F:Simplexcel.VerticalAlign.None">
+            <summary>
+            No specific alignment, use Excel's default
+            </summary>
+        </member>
+        <member name="F:Simplexcel.VerticalAlign.Top">
+            <summary>
+            The vertical alignment is aligned-to-top.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.VerticalAlign.Middle">
+            <summary>
+            The vertical alignment is centered across the height of the cell.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.VerticalAlign.Bottom">
+            <summary>
+            The vertical alignment is aligned-to-bottom.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.VerticalAlign.Justify">
+            <summary>
+            When text direction is horizontal: the vertical alignment of lines of text is
+            distributed vertically, where each line of text inside the cell is evenly
+            distributed across the height of the cell, with flush top and bottom margins.
+            
+            When text direction is vertical: similar behavior as horizontal justification.
+            The alignment is justified (flush top and bottom in this case). For each line
+            of text, each line of the wrapped text in a cell is aligned to the top and
+            bottom (except the last line). If no single line of text wraps in the cell,
+            then the text is not justified.
+            </summary>
+        </member>
+        <member name="T:Simplexcel.XlsxColumnAttribute">
+            <summary>
+            Used with <see cref="M:Simplexcel.Worksheet.Populate``1(System.Collections.Generic.IEnumerable{``0},System.Boolean)"/> or <see cref="M:Simplexcel.Worksheet.FromData``1(System.String,System.Collections.Generic.IEnumerable{``0},System.Boolean)"/>, allows setting how object properties are handled.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxColumnAttribute.Name">
+            <summary>
+            The name of the Column, used as the Header row.
+            If this is NULL, the Property Name will be used.
+            If this is an Empty string, then no text will be in the Cell header.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxColumnAttribute.ColumnIndex">
+            <summary>
+            The Index of the Column, e.g., "0" for "A".
+            If there are Columns with and without an Index, the columns
+            without an Index will be added after the last column with an Index.
+            
+            It is recommended that either all object properties or none specify Column Indexes
+            </summary>
+        </member>
+        <member name="M:Simplexcel.XlsxColumnAttribute.#ctor">
+            <summary>
+            Create a new XlsxColumnAttribute
+            </summary>
+        </member>
+        <member name="M:Simplexcel.XlsxColumnAttribute.#ctor(System.String)">
+            <summary>
+            Create a new XlsxColumnAttribute with the given name
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="T:Simplexcel.XlsxIgnoreColumnAttribute">
+            <summary>
+            This attribute causes <see cref="M:Simplexcel.Worksheet.FromData``1(System.String,System.Collections.Generic.IEnumerable{``0},System.Boolean)"/> to ignore the property completely
+            </summary>
+        </member>
+        <member name="T:Simplexcel.Color">
+            <summary>
+            Specify a Color, as System.Drawing.Color isn't used.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.R">
+            <summary>
+            The Red component of the Color
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.G">
+            <summary>
+            The Green component of the Color
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.B">
+            <summary>
+            The Blue component of the Color
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.A">
+            <summary>
+            The Alpha component of the Color (0 = Fully Transparent)
+            </summary>
+        </member>
+        <member name="M:Simplexcel.Color.FromArgb(System.Byte,System.Byte,System.Byte,System.Byte)">
+            <summary>
+            Create a <see cref="T:Simplexcel.Color"/> from the given values
+            </summary>
+            <param name="alpha"></param>
+            <param name="red"></param>
+            <param name="green"></param>
+            <param name="blue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.Color.ToString">
+            <summary>
+            Output the Color as a Hex String in ARGB order, e.g., "FFFF0000"
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:Simplexcel.Color.AliceBlue">
+            <summary>
+            AliceBlue (Hex #FFF0F8FF, ARGB: 255, 240, 248, 255)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.AntiqueWhite">
+            <summary>
+            AntiqueWhite (Hex #FFFAEBD7, ARGB: 255, 250, 235, 215)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Aqua">
+            <summary>
+            Aqua (Hex #FF00FFFF, ARGB: 255, 0, 255, 255)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Aquamarine">
+            <summary>
+            Aquamarine (Hex #FF7FFFD4, ARGB: 255, 127, 255, 212)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Azure">
+            <summary>
+            Azure (Hex #FFF0FFFF, ARGB: 255, 240, 255, 255)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Beige">
+            <summary>
+            Beige (Hex #FFF5F5DC, ARGB: 255, 245, 245, 220)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Bisque">
+            <summary>
+            Bisque (Hex #FFFFE4C4, ARGB: 255, 255, 228, 196)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Black">
+            <summary>
+            Black (Hex #FF000000, ARGB: 255, 0, 0, 0)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.BlanchedAlmond">
+            <summary>
+            BlanchedAlmond (Hex #FFFFEBCD, ARGB: 255, 255, 235, 205)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Blue">
+            <summary>
+            Blue (Hex #FF0000FF, ARGB: 255, 0, 0, 255)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.BlueViolet">
+            <summary>
+            BlueViolet (Hex #FF8A2BE2, ARGB: 255, 138, 43, 226)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Brown">
+            <summary>
+            Brown (Hex #FFA52A2A, ARGB: 255, 165, 42, 42)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.BurlyWood">
+            <summary>
+            BurlyWood (Hex #FFDEB887, ARGB: 255, 222, 184, 135)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.CadetBlue">
+            <summary>
+            CadetBlue (Hex #FF5F9EA0, ARGB: 255, 95, 158, 160)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Chartreuse">
+            <summary>
+            Chartreuse (Hex #FF7FFF00, ARGB: 255, 127, 255, 0)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Chocolate">
+            <summary>
+            Chocolate (Hex #FFD2691E, ARGB: 255, 210, 105, 30)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Coral">
+            <summary>
+            Coral (Hex #FFFF7F50, ARGB: 255, 255, 127, 80)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.CornflowerBlue">
+            <summary>
+            CornflowerBlue (Hex #FF6495ED, ARGB: 255, 100, 149, 237)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Cornsilk">
+            <summary>
+            Cornsilk (Hex #FFFFF8DC, ARGB: 255, 255, 248, 220)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Crimson">
+            <summary>
+            Crimson (Hex #FFDC143C, ARGB: 255, 220, 20, 60)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Cyan">
+            <summary>
+            Cyan (Hex #FF00FFFF, ARGB: 255, 0, 255, 255)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkBlue">
+            <summary>
+            DarkBlue (Hex #FF00008B, ARGB: 255, 0, 0, 139)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkCyan">
+            <summary>
+            DarkCyan (Hex #FF008B8B, ARGB: 255, 0, 139, 139)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkGoldenrod">
+            <summary>
+            DarkGoldenrod (Hex #FFB8860B, ARGB: 255, 184, 134, 11)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkGray">
+            <summary>
+            DarkGray (Hex #FFA9A9A9, ARGB: 255, 169, 169, 169)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkGreen">
+            <summary>
+            DarkGreen (Hex #FF006400, ARGB: 255, 0, 100, 0)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkKhaki">
+            <summary>
+            DarkKhaki (Hex #FFBDB76B, ARGB: 255, 189, 183, 107)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkMagenta">
+            <summary>
+            DarkMagenta (Hex #FF8B008B, ARGB: 255, 139, 0, 139)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkOliveGreen">
+            <summary>
+            DarkOliveGreen (Hex #FF556B2F, ARGB: 255, 85, 107, 47)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkOrange">
+            <summary>
+            DarkOrange (Hex #FFFF8C00, ARGB: 255, 255, 140, 0)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkOrchid">
+            <summary>
+            DarkOrchid (Hex #FF9932CC, ARGB: 255, 153, 50, 204)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkRed">
+            <summary>
+            DarkRed (Hex #FF8B0000, ARGB: 255, 139, 0, 0)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkSalmon">
+            <summary>
+            DarkSalmon (Hex #FFE9967A, ARGB: 255, 233, 150, 122)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkSeaGreen">
+            <summary>
+            DarkSeaGreen (Hex #FF8FBC8B, ARGB: 255, 143, 188, 139)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkSlateBlue">
+            <summary>
+            DarkSlateBlue (Hex #FF483D8B, ARGB: 255, 72, 61, 139)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkSlateGray">
+            <summary>
+            DarkSlateGray (Hex #FF2F4F4F, ARGB: 255, 47, 79, 79)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkTurquoise">
+            <summary>
+            DarkTurquoise (Hex #FF00CED1, ARGB: 255, 0, 206, 209)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DarkViolet">
+            <summary>
+            DarkViolet (Hex #FF9400D3, ARGB: 255, 148, 0, 211)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DeepPink">
+            <summary>
+            DeepPink (Hex #FFFF1493, ARGB: 255, 255, 20, 147)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DeepSkyBlue">
+            <summary>
+            DeepSkyBlue (Hex #FF00BFFF, ARGB: 255, 0, 191, 255)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DimGray">
+            <summary>
+            DimGray (Hex #FF696969, ARGB: 255, 105, 105, 105)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.DodgerBlue">
+            <summary>
+            DodgerBlue (Hex #FF1E90FF, ARGB: 255, 30, 144, 255)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Firebrick">
+            <summary>
+            Firebrick (Hex #FFB22222, ARGB: 255, 178, 34, 34)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.FloralWhite">
+            <summary>
+            FloralWhite (Hex #FFFFFAF0, ARGB: 255, 255, 250, 240)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.ForestGreen">
+            <summary>
+            ForestGreen (Hex #FF228B22, ARGB: 255, 34, 139, 34)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Fuchsia">
+            <summary>
+            Fuchsia (Hex #FFFF00FF, ARGB: 255, 255, 0, 255)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Gainsboro">
+            <summary>
+            Gainsboro (Hex #FFDCDCDC, ARGB: 255, 220, 220, 220)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.GhostWhite">
+            <summary>
+            GhostWhite (Hex #FFF8F8FF, ARGB: 255, 248, 248, 255)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Gold">
+            <summary>
+            Gold (Hex #FFFFD700, ARGB: 255, 255, 215, 0)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Goldenrod">
+            <summary>
+            Goldenrod (Hex #FFDAA520, ARGB: 255, 218, 165, 32)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Gray">
+            <summary>
+            Gray (Hex #FF808080, ARGB: 255, 128, 128, 128)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Green">
+            <summary>
+            Green (Hex #FF008000, ARGB: 255, 0, 128, 0)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.GreenYellow">
+            <summary>
+            GreenYellow (Hex #FFADFF2F, ARGB: 255, 173, 255, 47)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Honeydew">
+            <summary>
+            Honeydew (Hex #FFF0FFF0, ARGB: 255, 240, 255, 240)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.HotPink">
+            <summary>
+            HotPink (Hex #FFFF69B4, ARGB: 255, 255, 105, 180)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.IndianRed">
+            <summary>
+            IndianRed (Hex #FFCD5C5C, ARGB: 255, 205, 92, 92)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Indigo">
+            <summary>
+            Indigo (Hex #FF4B0082, ARGB: 255, 75, 0, 130)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Ivory">
+            <summary>
+            Ivory (Hex #FFFFFFF0, ARGB: 255, 255, 255, 240)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Khaki">
+            <summary>
+            Khaki (Hex #FFF0E68C, ARGB: 255, 240, 230, 140)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Lavender">
+            <summary>
+            Lavender (Hex #FFE6E6FA, ARGB: 255, 230, 230, 250)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LavenderBlush">
+            <summary>
+            LavenderBlush (Hex #FFFFF0F5, ARGB: 255, 255, 240, 245)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LawnGreen">
+            <summary>
+            LawnGreen (Hex #FF7CFC00, ARGB: 255, 124, 252, 0)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LemonChiffon">
+            <summary>
+            LemonChiffon (Hex #FFFFFACD, ARGB: 255, 255, 250, 205)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LightBlue">
+            <summary>
+            LightBlue (Hex #FFADD8E6, ARGB: 255, 173, 216, 230)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LightCoral">
+            <summary>
+            LightCoral (Hex #FFF08080, ARGB: 255, 240, 128, 128)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LightCyan">
+            <summary>
+            LightCyan (Hex #FFE0FFFF, ARGB: 255, 224, 255, 255)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LightGoldenrodYellow">
+            <summary>
+            LightGoldenrodYellow (Hex #FFFAFAD2, ARGB: 255, 250, 250, 210)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LightGray">
+            <summary>
+            LightGray (Hex #FFD3D3D3, ARGB: 255, 211, 211, 211)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LightGreen">
+            <summary>
+            LightGreen (Hex #FF90EE90, ARGB: 255, 144, 238, 144)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LightPink">
+            <summary>
+            LightPink (Hex #FFFFB6C1, ARGB: 255, 255, 182, 193)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LightSalmon">
+            <summary>
+            LightSalmon (Hex #FFFFA07A, ARGB: 255, 255, 160, 122)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LightSeaGreen">
+            <summary>
+            LightSeaGreen (Hex #FF20B2AA, ARGB: 255, 32, 178, 170)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LightSkyBlue">
+            <summary>
+            LightSkyBlue (Hex #FF87CEFA, ARGB: 255, 135, 206, 250)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LightSlateGray">
+            <summary>
+            LightSlateGray (Hex #FF778899, ARGB: 255, 119, 136, 153)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LightSteelBlue">
+            <summary>
+            LightSteelBlue (Hex #FFB0C4DE, ARGB: 255, 176, 196, 222)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LightYellow">
+            <summary>
+            LightYellow (Hex #FFFFFFE0, ARGB: 255, 255, 255, 224)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Lime">
+            <summary>
+            Lime (Hex #FF00FF00, ARGB: 255, 0, 255, 0)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.LimeGreen">
+            <summary>
+            LimeGreen (Hex #FF32CD32, ARGB: 255, 50, 205, 50)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Linen">
+            <summary>
+            Linen (Hex #FFFAF0E6, ARGB: 255, 250, 240, 230)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Magenta">
+            <summary>
+            Magenta (Hex #FFFF00FF, ARGB: 255, 255, 0, 255)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Maroon">
+            <summary>
+            Maroon (Hex #FF800000, ARGB: 255, 128, 0, 0)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.MediumAquamarine">
+            <summary>
+            MediumAquamarine (Hex #FF66CDAA, ARGB: 255, 102, 205, 170)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.MediumBlue">
+            <summary>
+            MediumBlue (Hex #FF0000CD, ARGB: 255, 0, 0, 205)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.MediumOrchid">
+            <summary>
+            MediumOrchid (Hex #FFBA55D3, ARGB: 255, 186, 85, 211)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.MediumPurple">
+            <summary>
+            MediumPurple (Hex #FF9370DB, ARGB: 255, 147, 112, 219)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.MediumSeaGreen">
+            <summary>
+            MediumSeaGreen (Hex #FF3CB371, ARGB: 255, 60, 179, 113)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.MediumSlateBlue">
+            <summary>
+            MediumSlateBlue (Hex #FF7B68EE, ARGB: 255, 123, 104, 238)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.MediumSpringGreen">
+            <summary>
+            MediumSpringGreen (Hex #FF00FA9A, ARGB: 255, 0, 250, 154)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.MediumTurquoise">
+            <summary>
+            MediumTurquoise (Hex #FF48D1CC, ARGB: 255, 72, 209, 204)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.MediumVioletRed">
+            <summary>
+            MediumVioletRed (Hex #FFC71585, ARGB: 255, 199, 21, 133)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.MidnightBlue">
+            <summary>
+            MidnightBlue (Hex #FF191970, ARGB: 255, 25, 25, 112)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.MintCream">
+            <summary>
+            MintCream (Hex #FFF5FFFA, ARGB: 255, 245, 255, 250)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.MistyRose">
+            <summary>
+            MistyRose (Hex #FFFFE4E1, ARGB: 255, 255, 228, 225)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Moccasin">
+            <summary>
+            Moccasin (Hex #FFFFE4B5, ARGB: 255, 255, 228, 181)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.NavajoWhite">
+            <summary>
+            NavajoWhite (Hex #FFFFDEAD, ARGB: 255, 255, 222, 173)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Navy">
+            <summary>
+            Navy (Hex #FF000080, ARGB: 255, 0, 0, 128)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.OldLace">
+            <summary>
+            OldLace (Hex #FFFDF5E6, ARGB: 255, 253, 245, 230)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Olive">
+            <summary>
+            Olive (Hex #FF808000, ARGB: 255, 128, 128, 0)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.OliveDrab">
+            <summary>
+            OliveDrab (Hex #FF6B8E23, ARGB: 255, 107, 142, 35)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Orange">
+            <summary>
+            Orange (Hex #FFFFA500, ARGB: 255, 255, 165, 0)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.OrangeRed">
+            <summary>
+            OrangeRed (Hex #FFFF4500, ARGB: 255, 255, 69, 0)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Orchid">
+            <summary>
+            Orchid (Hex #FFDA70D6, ARGB: 255, 218, 112, 214)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.PaleGoldenrod">
+            <summary>
+            PaleGoldenrod (Hex #FFEEE8AA, ARGB: 255, 238, 232, 170)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.PaleGreen">
+            <summary>
+            PaleGreen (Hex #FF98FB98, ARGB: 255, 152, 251, 152)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.PaleTurquoise">
+            <summary>
+            PaleTurquoise (Hex #FFAFEEEE, ARGB: 255, 175, 238, 238)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.PaleVioletRed">
+            <summary>
+            PaleVioletRed (Hex #FFDB7093, ARGB: 255, 219, 112, 147)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.PapayaWhip">
+            <summary>
+            PapayaWhip (Hex #FFFFEFD5, ARGB: 255, 255, 239, 213)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.PeachPuff">
+            <summary>
+            PeachPuff (Hex #FFFFDAB9, ARGB: 255, 255, 218, 185)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Peru">
+            <summary>
+            Peru (Hex #FFCD853F, ARGB: 255, 205, 133, 63)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Pink">
+            <summary>
+            Pink (Hex #FFFFC0CB, ARGB: 255, 255, 192, 203)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Plum">
+            <summary>
+            Plum (Hex #FFDDA0DD, ARGB: 255, 221, 160, 221)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.PowderBlue">
+            <summary>
+            PowderBlue (Hex #FFB0E0E6, ARGB: 255, 176, 224, 230)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Purple">
+            <summary>
+            Purple (Hex #FF800080, ARGB: 255, 128, 0, 128)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Red">
+            <summary>
+            Red (Hex #FFFF0000, ARGB: 255, 255, 0, 0)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.RosyBrown">
+            <summary>
+            RosyBrown (Hex #FFBC8F8F, ARGB: 255, 188, 143, 143)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.RoyalBlue">
+            <summary>
+            RoyalBlue (Hex #FF4169E1, ARGB: 255, 65, 105, 225)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.SaddleBrown">
+            <summary>
+            SaddleBrown (Hex #FF8B4513, ARGB: 255, 139, 69, 19)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Salmon">
+            <summary>
+            Salmon (Hex #FFFA8072, ARGB: 255, 250, 128, 114)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.SandyBrown">
+            <summary>
+            SandyBrown (Hex #FFF4A460, ARGB: 255, 244, 164, 96)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.SeaGreen">
+            <summary>
+            SeaGreen (Hex #FF2E8B57, ARGB: 255, 46, 139, 87)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.SeaShell">
+            <summary>
+            SeaShell (Hex #FFFFF5EE, ARGB: 255, 255, 245, 238)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Sienna">
+            <summary>
+            Sienna (Hex #FFA0522D, ARGB: 255, 160, 82, 45)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Silver">
+            <summary>
+            Silver (Hex #FFC0C0C0, ARGB: 255, 192, 192, 192)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.SkyBlue">
+            <summary>
+            SkyBlue (Hex #FF87CEEB, ARGB: 255, 135, 206, 235)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.SlateBlue">
+            <summary>
+            SlateBlue (Hex #FF6A5ACD, ARGB: 255, 106, 90, 205)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.SlateGray">
+            <summary>
+            SlateGray (Hex #FF708090, ARGB: 255, 112, 128, 144)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Snow">
+            <summary>
+            Snow (Hex #FFFFFAFA, ARGB: 255, 255, 250, 250)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.SpringGreen">
+            <summary>
+            SpringGreen (Hex #FF00FF7F, ARGB: 255, 0, 255, 127)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.SteelBlue">
+            <summary>
+            SteelBlue (Hex #FF4682B4, ARGB: 255, 70, 130, 180)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Tan">
+            <summary>
+            Tan (Hex #FFD2B48C, ARGB: 255, 210, 180, 140)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Teal">
+            <summary>
+            Teal (Hex #FF008080, ARGB: 255, 0, 128, 128)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Thistle">
+            <summary>
+            Thistle (Hex #FFD8BFD8, ARGB: 255, 216, 191, 216)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Tomato">
+            <summary>
+            Tomato (Hex #FFFF6347, ARGB: 255, 255, 99, 71)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Transparent">
+            <summary>
+            Transparent (Hex #00FFFFFF, ARGB: 0, 255, 255, 255)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Turquoise">
+            <summary>
+            Turquoise (Hex #FF40E0D0, ARGB: 255, 64, 224, 208)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Violet">
+            <summary>
+            Violet (Hex #FFEE82EE, ARGB: 255, 238, 130, 238)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Wheat">
+            <summary>
+            Wheat (Hex #FFF5DEB3, ARGB: 255, 245, 222, 179)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.White">
+            <summary>
+            White (Hex #FFFFFFFF, ARGB: 255, 255, 255, 255)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.WhiteSmoke">
+            <summary>
+            WhiteSmoke (Hex #FFF5F5F5, ARGB: 255, 245, 245, 245)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.Yellow">
+            <summary>
+            Yellow (Hex #FFFFFF00, ARGB: 255, 255, 255, 0)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Color.YellowGreen">
+            <summary>
+            YellowGreen (Hex #FF9ACD32, ARGB: 255, 154, 205, 50)
+            </summary>
+        </member>
+        <member name="T:Simplexcel.ColumnWidthCollection">
+            <summary>
+            Custom Column Widths within a worksheet
+            </summary>
+        </member>
+        <member name="P:Simplexcel.ColumnWidthCollection.Item(System.Int32)">
+            <summary>
+            Get or set the width of a column (Zero-based column index, null value = auto)
+            </summary>
+            <param name="column">Zero-based column index</param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.ColumnWidthCollection.GetEnumerator">
+            <summary>
+            Enumerate over the custom column widths. The Key is the zero-based column, the value is the custom column width.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.ColumnWidthCollection.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Enumerate over the custom column widths. The Key is the zero-based column, the value is the custom column width.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Simplexcel.SimplexcelExtensionMethods">
+            <summary>
+            Some utility methods that don't need to be in their respective classes
+            </summary>
+        </member>
+        <member name="M:Simplexcel.SimplexcelExtensionMethods.InsertManualPageBreakAfterRow(Simplexcel.Worksheet,System.String)">
+            <summary>
+            Insert a manual page break after the row specified by the cell address (e.g., B5)
+            </summary>
+            <param name="sheet"></param>
+            <param name="cellAddress"></param>
+        </member>
+        <member name="M:Simplexcel.SimplexcelExtensionMethods.InsertManualPageBreakAfterColumn(Simplexcel.Worksheet,System.String)">
+            <summary>
+            Insert a manual page break to the left of the column specified by the cell address (e.g., B5)
+            </summary>
+            <param name="sheet"></param>
+            <param name="cellAddress"></param>
+        </member>
+        <member name="M:Simplexcel.ExtensionMethods.ToHexString(System.Collections.Generic.IReadOnlyList{System.Byte},System.Int32,System.Int32)">
+             <remarks>
+             Taken from Bouncy Castle and slightly changed to create a string rather than write to a stream.
+             https://www.bouncycastle.org/
+            
+             Licensed under MIT License
+             https://www.bouncycastle.org/csharp/licence.html
+             </remarks>
+        </member>
+        <member name="T:Simplexcel.LargeNumberHandlingMode">
+            <summary>
+            Excel doesn't want to display large numbers (more than 11 digits) properly:
+            https://support.microsoft.com/en-us/help/2643223/long-numbers-are-displayed-incorrectly-in-excel
+            
+            This decides how to handle larger numbers.
+            See <see cref="P:Simplexcel.Cell.LargeNumberNegativeLimit"/> and <see cref="P:Simplexcel.Cell.LargeNumberPositiveLimit"/> for the actual limits.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.LargeNumberHandlingMode.StoreAsText">
+            <summary>
+            Force the number to be stored as Text (Default)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.LargeNumberHandlingMode.None">
+            <summary>
+            Do not do anything different, and store numbers as-is.
+            This may cause Excel to truncate the number.
+            This was the behavior before Simplexcel Version 2.1.0.
+            </summary>
+        </member>
+        <member name="T:Simplexcel.Orientation">
+            <summary>
+            The Orientation of a page
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Orientation.Portrait">
+            <summary>
+            Portrait (default)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Orientation.Landscape">
+            <summary>
+            Landscape
+            </summary>
+        </member>
+        <member name="T:Simplexcel.PageBreak">
+            <summary>
+            The brk element, for Page Breaks
+            </summary>
+        </member>
+        <member name="P:Simplexcel.PageBreak.Id">
+            <summary>
+            Zero-based row or column Id of the page break.
+            Breaks occur above the specified row and left of the specified column.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.PageBreak.IsManualBreak">
+            <summary>
+            Manual Break flag. true means the break is a manually inserted break.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.PageBreak.Max">
+            <summary>
+            Zero-based index of end row or column of the break.
+            For row breaks, specifies column index;
+            for column breaks, specifies row index.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.PageBreak.Min">
+            <summary>
+            Zero-based index of start row or column of the break.
+            For row breaks, specifies column index;
+            for column breaks, specifies row index.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.PageBreak.IsPivotCreatedPageBreak">
+            <summary>
+            Flag indicating that a PivotTable created this break.
+            </summary>
+        </member>
+        <member name="T:Simplexcel.PageSetup">
+            <summary>
+            Page Setup for a Sheet
+            </summary>
+        </member>
+        <member name="P:Simplexcel.PageSetup.PrintRepeatRows">
+            <summary>
+            How many rows to repeat on each page when printing?
+            </summary>
+        </member>
+        <member name="P:Simplexcel.PageSetup.PrintRepeatColumns">
+            <summary>
+            How many columns to repeat on each page when printing?
+            </summary>
+        </member>
+        <member name="P:Simplexcel.PageSetup.Orientation">
+            <summary>
+            The Orientation of the page, Portrait (default) or Landscape
+            </summary>
+        </member>
+        <member name="T:Simplexcel.SimplexcelVersion">
+            <summary>
+            The version of the Simplexcel Library.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.SimplexcelVersion.VersionString">
+            <summary>
+            The version of the Simplexcel Library.
+            This might include a suffix for development versions, e.g., "2.3.0.177-v3-dev"
+            </summary>
+        </member>
+        <member name="P:Simplexcel.SimplexcelVersion.Version">
+            <summary>
+            The version of the Simplexcel Library.
+            This does not indicate if this is a development version.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.SimplexcelVersion.PublicKey">
+            <summary>
+            The Public Key that was used when signing Simplexcel
+            </summary>
+        </member>
+        <member name="P:Simplexcel.SimplexcelVersion.PublicKeyToken">
+            <summary>
+            The Public Key Token that was used when signing Simplexcel
+            </summary>
+        </member>
+        <member name="T:Simplexcel.Workbook">
+            <summary>
+            An Excel Workbook
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Workbook.Sheets">
+            <summary>
+            The Worksheets in this Workbook
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Workbook.Title">
+            <summary>
+            The title of the Workbook
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Workbook.Author">
+            <summary>
+            The author of the Workbook
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Workbook.SheetCount">
+            <summary>
+            How many <see cref="T:Simplexcel.Worksheet">sheets</see> are in the Workbook currently?
+            </summary>
+        </member>
+        <member name="M:Simplexcel.Workbook.Add(Simplexcel.Worksheet)">
+            <summary>
+            Add a worksheet to this workbook. Sheet names must be unique.
+            </summary>
+            <exception cref="T:System.ArgumentException">Thrown if a sheet with the same Name already exists</exception>
+            <param name="sheet"></param>
+        </member>
+        <member name="M:Simplexcel.Workbook.Save(System.String,System.Boolean)">
+            <summary>
+            Save this workbook to a file, overwriting the file if it exists
+            </summary>
+            <param name="filename"></param>
+            <param name="compress">Use compression? (Smaller files/higher CPU Usage)</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if there are no <see cref="T:Simplexcel.Worksheet">sheets</see> in the workbook.</exception>
+        </member>
+        <member name="M:Simplexcel.Workbook.Save(System.IO.Stream,System.Boolean)">
+            <summary>
+            Save this workbook to the given stream
+            </summary>
+            <param name="stream"></param>
+            <param name="compress">Use compression? (Smaller files/higher CPU Usage)</param>
+            <exception cref="T:System.InvalidOperationException">Thrown if there are no <see cref="T:Simplexcel.Worksheet">sheets</see> in the workbook.</exception>
+        </member>
+        <member name="T:Simplexcel.Worksheet">
+            <summary>
+            A single Worksheet in an Excel Document
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Worksheet.InvalidSheetNameChars">
+            <summary>
+            Get a list of characters that are invalid to use in the Sheet Name
+            </summary>
+            <remarks>
+            These chars are not part of the ECMA-376 standard, but imposed by Excel
+            </remarks>
+        </member>
+        <member name="F:Simplexcel.Worksheet.MaxSheetNameLength">
+            <summary>
+            Get the maximum allowable length for a sheet name
+            </summary>
+            <remarks>
+            This limit is not part of the ECMA-376 standard, but imposed by Excel
+            </remarks>
+        </member>
+        <member name="M:Simplexcel.Worksheet.#ctor(System.String)">
+            <summary>
+            Create a new Worksheet with the given name
+            </summary>
+            <see cref="T:System.ArgumentException">Thrown if the name is null, empty, longer than <see cref="F:Simplexcel.Worksheet.MaxSheetNameLength"/> characters or contains any character in <see cref="F:Simplexcel.Worksheet.InvalidSheetNameChars"/></see>
+            <param name="name"></param>
+        </member>
+        <member name="P:Simplexcel.Worksheet.Name">
+            <summary>
+            Gets or sets the Name of the Worksheet
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Worksheet.PageSetup">
+            <summary>
+            The Page Orientation and some other related values
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Worksheet.Cells">
+            <summary>
+            The Cells of the Worksheet (zero based, [0,0] = A1)
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Worksheet.ColumnWidths">
+            <summary>
+            The Width of individual columns (Zero-based, in Excel's Units)
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Worksheet.LargeNumberHandlingMode">
+            <summary>
+            How to handle numbers that are larger than <see cref="P:Simplexcel.Cell.LargeNumberPositiveLimit"/> or smaller than <see cref="P:Simplexcel.Cell.LargeNumberNegativeLimit"/>?
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Worksheet.AutoFilter">
+            <summary>
+            Whether to enable the AutoFilter feature on the first non-empty row.
+            <para/>
+            Defaults to <see langword="false"/>.
+            </summary>
+            <remarks>See <a href="https://support.microsoft.com/en-us/office/use-autofilter-to-filter-your-data-7d87d63e-ebd0-424b-8106-e2ab61133d92">Use AutoFilter to filter your data</a></remarks>
+        </member>
+        <member name="P:Simplexcel.Worksheet.Item(System.String)">
+            <summary>
+            Get the cell with the given cell reference, e.g. Get the cell "A1". May return NULL.
+            </summary>
+            <param name="address"></param>
+            <returns>The Cell, or NULL of the Cell hasn't been created yet.</returns>
+        </member>
+        <member name="P:Simplexcel.Worksheet.Item(System.Int32,System.Int32)">
+            <summary>
+            Get the cell with the given zero based row and column, e.g. [0,0] returns the A1 cell. May return NULL.
+            </summary>
+            <param name="row"></param>
+            <param name="column"></param>
+            <returns>The Cell, or NULL of the Cell hasn't been created yet.</returns>
+        </member>
+        <member name="M:Simplexcel.Worksheet.FreezeTopRow">
+            <summary>
+            Freeze the top row, that is, create a <see cref="T:Simplexcel.SheetView"/> that splits the first row (A) into a pane. 
+            </summary>
+        </member>
+        <member name="M:Simplexcel.Worksheet.FreezeLeftColumn">
+            <summary>
+            Freeze the first column, that is, create a <see cref="T:Simplexcel.SheetView"/> that splits the first column (1) into a pane. 
+            </summary>
+        </member>
+        <member name="M:Simplexcel.Worksheet.FreezeTopLeft(System.Int32,System.Int32,System.Nullable{Simplexcel.Panes})">
+            <summary>
+            Freezes rows at the top and columns on the left.
+            </summary>
+            <param name="rows">The number of rows to freeze.</param>
+            <param name="columns">The number of columns to freeze.</param>
+            <param name="activePane">The pane that's selected in the sheet. Leave null to automatically determine this.</param>
+        </member>
+        <member name="M:Simplexcel.Worksheet.InsertManualPageBreakAfterRow(System.Int32)">
+            <summary>
+            Insert a manual page break after the row specified by the zero-based index (e.g., 0 for the first row)
+            </summary>
+            <param name="row">The zero-based row index (e.g., 0 for the first row)</param>
+        </member>
+        <member name="M:Simplexcel.Worksheet.InsertManualPageBreakAfterColumn(System.Int32)">
+            <summary>
+            Insert a manual page break to the left of the column specified by the zero-based index (e.g., 0 for column A)
+            </summary>
+            <param name="col">The zero-based index of the column (e.g., 0 for column A)</param>
+        </member>
+        <member name="M:Simplexcel.Worksheet.FromData``1(System.String,System.Collections.Generic.IEnumerable{``0},System.Boolean)">
+            <summary>
+            Create Worksheet with the provided data.
+            
+            Will use the Object Property Names as Column Headers (First Row) and then populate the cells with data.
+            You can use <see cref="T:Simplexcel.XlsxColumnAttribute"/> and <see cref="T:Simplexcel.XlsxIgnoreColumnAttribute"/> to control the output.
+            </summary>
+            <param name="sheetName">The name of the Sheet</param>
+            <param name="data">The data, can be empty or null</param>
+            <param name="cacheTypeColumns">If true, the Column info for the given type is being cached in memory</param>
+        </member>
+        <member name="M:Simplexcel.Worksheet.Populate``1(System.Collections.Generic.IEnumerable{``0},System.Boolean)">
+            <summary>
+            Populate Worksheet with the provided data.
+            
+            Will use the Object Property Names as Column Headers (First Row) and then populate the cells with data.
+            You can use <see cref="T:Simplexcel.XlsxColumnAttribute"/> and <see cref="T:Simplexcel.XlsxIgnoreColumnAttribute"/> to control the output.
+            </summary>
+            <param name="data">The data, can be empty or null</param>
+            <param name="cacheTypeColumns">If true, the Column info for the given type is being cached in memory</param>
+        </member>
+        <member name="T:Simplexcel.Pane">
+            <summary>
+            Worksheet view pane
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Pane.XSplit">
+            <summary>
+            Horizontal position of the split, in 1/20th of a point; 0 (zero) if none. If the pane is frozen,
+            this value indicates the number of columns visible in the top pane.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Pane.YSplit">
+            <summary>
+            Vertical position of the split, in 1/20th of a point; 0 (zero) if none. If the pane is frozen, 
+            this value indicates the number of rows visible in the left pane
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Pane.ActivePane">
+            <summary>
+            The pane that is active.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Pane.State">
+            <summary>
+            Indicates whether the pane has horizontal / vertical splits, and whether those splits are frozen.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Pane.TopLeftCell">
+            <summary>
+            Location of the top left visible cell in the bottom right pane (when in Left-To-Right mode)
+            </summary>
+        </member>
+        <member name="T:Simplexcel.Panes">
+            <summary>
+            Defines the names of the four possible panes into which the view of a workbook in the application can be split.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Panes.BottomRight">
+            <summary>
+            Bottom right pane, when both vertical and horizontal splits are applied.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Panes.TopRight">
+            <summary>
+            Top right pane, when both vertical and horizontal splits are applied.
+            
+            This value is also used when only a vertical split has
+            been applied, dividing the pane into right and left
+            regions. In that case, this value specifies the right pane.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Panes.BottomLeft">
+            <summary>
+            Bottom left pane, when both vertical and horizontal splits are applied.
+            
+            This value is also used when only a horizontal split has
+            been applied, dividing the pane into upper and lower
+            regions. In that case, this value specifies the bottom pane
+            </summary>
+        </member>
+        <member name="F:Simplexcel.Panes.TopLeft">
+            <summary>
+            Top left pane, when both vertical and horizontal splits are applied.
+            
+            This value is also used when only a horizontal split has
+            been applied, dividing the pane into upper and lower
+            regions. In that case, this value specifies the top pane.
+            
+            This value is also used when only a vertical split has
+            been applied, dividing the pane into right and left
+            regions. In that case, this value specifies the left pane
+            </summary>
+        </member>
+        <member name="T:Simplexcel.PaneState">
+            <summary>
+            State of the sheet's pane.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PaneState.Split">
+            <summary>
+            Panes are split, but not frozen. In this state, the split bars are adjustable by the user. 
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PaneState.Frozen">
+            <summary>
+            Panes are frozen, but were not split being frozen. In
+            this state, when the panes are unfrozen again, a single
+            pane results, with no split.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.PaneState.FrozenSplit">
+            <summary>
+            Panes are frozen and were split before being frozen. In
+            this state, when the panes are unfrozen again, the split
+            remains, but is adjustable. 
+            </summary>
+        </member>
+        <member name="T:Simplexcel.Selection">
+            <summary>
+            Worksheet view selection.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Selection.ActivePane">
+            <summary>
+            The pane to which this selection belongs.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.Selection.ActiveCell">
+            <summary>
+            Location of the active cell. E.g., "A1"
+            </summary>
+        </member>
+        <member name="M:Simplexcel.Selection.#ctor">
+            <summary>
+            Create a new selection
+            </summary>
+        </member>
+        <member name="T:Simplexcel.SheetView">
+            <summary>
+            A single sheet view definition. When more than one sheet view is defined in the file, it means that when opening
+            the workbook, each sheet view corresponds to a separate window within the spreadsheet application, where
+            each window is showing the particular sheet containing the same workbookViewId value, the last sheetView
+            definition is loaded, and the others are discarded.
+            
+            When multiple windows are viewing the same sheet, multiple
+            sheetView elements (with corresponding workbookView entries) are saved.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.SheetView.TabSelected">
+            <summary>
+            Flag indicating whether this sheet is selected.
+            When only 1 sheet is selected and active, this value should be in synch with the activeTab value.
+            In case of a conflict, the Start Part setting wins and sets the active sheet tab.
+            Multiple sheets can be selected, but only one sheet shall be active at one time.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.SheetView.ShowRuler">
+            <summary>
+            Show the ruler in page layout view
+            </summary>
+        </member>
+        <member name="P:Simplexcel.SheetView.WorkbookViewId">
+            <summary>
+            Zero-based index of this workbook view, pointing to a workbookView element in the bookViews collection.
+            </summary>
+        </member>
+        <member name="P:Simplexcel.SheetView.Pane">
+            <summary>
+            The pane that this SheetView applies to
+            </summary>
+        </member>
+        <member name="M:Simplexcel.SheetView.AddSelection(Simplexcel.Selection,System.Boolean)">
+            <summary>
+            Add the given selection to the SheetView
+            </summary>
+            <param name="sel"></param>
+            <param name="throwOnDuplicatePane">If true, will throw an <see cref="T:System.InvalidOperationException"/> if there is already a selection with the same <see cref="P:Simplexcel.Selection.ActivePane"/>. If false, overwrite the previous selection for that pane.</param>
+        </member>
+        <member name="T:Simplexcel.XlsxInternal.Namespaces">
+            <summary>
+            Various xmlns namespaces
+            </summary>
+        </member>
+        <member name="T:Simplexcel.XlsxInternal.Relationship">
+            <summary>
+            A Relationship inside the Package
+            </summary>
+        </member>
+        <member name="T:Simplexcel.XlsxInternal.SharedStrings">
+            <summary>
+            The Shared Strings table in an Excel document
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxInternal.SharedStrings.UniqueCount">
+            <summary>
+            The number of Unique Strings
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxInternal.SharedStrings.Count">
+            <summary>
+            The number of total Strings (incl. duplicate uses of the same string)
+            </summary>
+        </member>
+        <member name="M:Simplexcel.XlsxInternal.SharedStrings.GetStringIndex(System.String)">
+            <summary>
+            Add a string to the shared strings table and return the index of that string
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.XlsxInternal.SharedStrings.ToXmlFile">
+            <summary>
+            Create the XmlFile for the Package.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Simplexcel.XlsxInternal.SheetPackageInfo">
+            <summary>
+            Information about a Worksheet in the Package
+            </summary>
+        </member>
+        <member name="F:Simplexcel.XlsxInternal.StyleWriter.StandardFormatIds">
+            <summary>
+            Standard format codes as defined in ECMA-376, 3rd Edition, Part 1, 18.8.30 numFmt (Number Format)
+            </summary>
+        </member>
+        <member name="M:Simplexcel.XlsxInternal.StyleWriter.CreateStyleXml(System.Collections.Generic.IList{Simplexcel.XlsxInternal.XlsxCellStyle})">
+            <summary>
+            Create a styles.xml file
+            </summary>
+            <param name="styles"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Simplexcel.XlsxInternal.XlsxCell">
+            <summary>
+            A Cell inside the sheet.xml file
+            ECMA-376, 3rd Edition, Part 1, 18.3.1.4 c (Cell)
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxInternal.XlsxCell.CellType">
+            <see cref="T:Simplexcel.XlsxInternal.XlsxCellTypes"/>
+        </member>
+        <member name="P:Simplexcel.XlsxInternal.XlsxCell.Reference">
+            <summary>
+            r (Reference) An "A1" style reference to the location of this cell
+            The possible values for this attribute are defined by the ST_CellRef simple type (§18.18.7).
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxInternal.XlsxCell.StyleIndex">
+            <summary>
+            s (StyleIndex)
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxInternal.XlsxCell.Value">
+            <summary>
+            The v element
+            </summary>
+        </member>
+        <member name="T:Simplexcel.XlsxInternal.XlsxCellStyle">
+            <summary>
+            The Style Information about a cell. Isolated from the Cell object because we need to compare styles when building the styles.xml file
+            </summary>
+        </member>
+        <member name="M:Simplexcel.XlsxInternal.XlsxCellStyle.Equals(System.Object)">
+            <summary>
+            Compare this <see cref="T:Simplexcel.XlsxInternal.XlsxCellStyle"/> to another <see cref="T:Simplexcel.XlsxInternal.XlsxCellStyle"/>
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.XlsxInternal.XlsxCellStyle.Equals(Simplexcel.XlsxInternal.XlsxCellStyle)">
+            <summary>
+            Compare this <see cref="T:Simplexcel.XlsxInternal.XlsxCellStyle"/> to another <see cref="T:Simplexcel.XlsxInternal.XlsxCellStyle"/>
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.XlsxInternal.XlsxCellStyle.op_Equality(Simplexcel.XlsxInternal.XlsxCellStyle,Simplexcel.XlsxInternal.XlsxCellStyle)">
+            <summary>
+            Compare a <see cref="T:Simplexcel.XlsxInternal.XlsxCellStyle"/> to another <see cref="T:Simplexcel.XlsxInternal.XlsxCellStyle"/>
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.XlsxInternal.XlsxCellStyle.op_Inequality(Simplexcel.XlsxInternal.XlsxCellStyle,Simplexcel.XlsxInternal.XlsxCellStyle)">
+            <summary>
+            Compare a <see cref="T:Simplexcel.XlsxInternal.XlsxCellStyle"/> to another <see cref="T:Simplexcel.XlsxInternal.XlsxCellStyle"/>
+            </summary>
+            <param name="left"></param>
+            <param name="right"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Simplexcel.XlsxInternal.XlsxCellTypes">
+            <summary>
+            ECMA-376, 3rd Edition, Part 1, 18.18.11 ST_CellType (Cell Type)
+            </summary>
+        </member>
+        <member name="F:Simplexcel.XlsxInternal.XlsxCellTypes.Boolean">
+            <summary>
+            b (Boolean) Cell containing a boolean.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.XlsxInternal.XlsxCellTypes.Date">
+            <summary>
+            d (Date) Cell contains a date in the ISO 8601 format.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.XlsxInternal.XlsxCellTypes.Error">
+            <summary>
+            e (Error) Cell containing an error.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.XlsxInternal.XlsxCellTypes.InlineString">
+            <summary>
+            inlineStr (Inline String) Cell containing an (inline) rich string, i.e., one not in the shared string table.
+            Note: Excel expects "str" instead of "inlineStr"
+            </summary>
+        </member>
+        <member name="F:Simplexcel.XlsxInternal.XlsxCellTypes.Number">
+            <summary>
+            n (Number) Cell containing a number.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.XlsxInternal.XlsxCellTypes.SharedString">
+            <summary>
+            s (Shared String) Cell containing a shared string.
+            </summary>
+        </member>
+        <member name="F:Simplexcel.XlsxInternal.XlsxCellTypes.FormulaString">
+            <summary>
+            str (String) Cell containing a formula string.
+            </summary>
+        </member>
+        <member name="T:Simplexcel.XlsxInternal.XlsxPackage">
+            <summary>
+            A Wrapper for an .xlsx file, containing all the contents and relations and logic to create the file from that content
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxInternal.XlsxPackage.XmlFiles">
+            <summary>
+            All XML Files in this package
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxInternal.XlsxPackage.Relationships">
+            <summary>
+            Package-level relationships (/_rels/.rels)
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxInternal.XlsxPackage.WorkbookRelationships">
+            <summary>
+            Workbook-level relationships (/xl/_rels/workbook.xml.rels)
+            </summary>
+        </member>
+        <member name="M:Simplexcel.XlsxInternal.XlsxPackage.SaveToStream(System.IO.Stream,System.Boolean)">
+            <summary>
+            Save the Xlsx Package to a new Stream (that the caller owns and has to dispose)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.XlsxInternal.XlsxPackage.WorkbookRelsXml">
+            <summary>
+            Create the xl/_rels/workbook.xml.rels file
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Simplexcel.XlsxInternal.XlsxRow">
+            <summary>
+            ECMA-376, 3rd Edition, Part 1, 18.3.1.73 row (Row)
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxInternal.XlsxRow.Cells">
+            <summary>
+            The c elements
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxInternal.XlsxRow.CustomRowHeight">
+            <summary>
+            This implicitly sets customHeight to 1 and ht to the value
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxInternal.XlsxRow.RowIndex">
+            <summary>
+            r (Row Index) Row index. Indicates to which row in the sheet this row definition corresponds.
+            </summary>
+        </member>
+        <member name="M:Simplexcel.XlsxInternal.XlsxWriter.Save(Simplexcel.Workbook,System.IO.Stream,System.Boolean)">
+            <summary>
+            Save a workbook to a MemoryStream
+            </summary>
+            <exception cref="T:System.InvalidOperationException">Thrown if there are no <see cref="T:Simplexcel.Worksheet">sheets</see> in the workbook.</exception>
+            <returns></returns>
+        </member>
+        <member name="T:Simplexcel.XlsxInternal.XlsxWriter.XlsxWriterInternal">
+            <summary>
+            This does the actual writing by manually creating the XML according to ECMA-376, 3rd Edition, Part 1's SpreadsheetML.
+            
+            Note that in many cases, the order of elements in an XML file matters!
+            </summary>
+        </member>
+        <member name="M:Simplexcel.XlsxInternal.XlsxWriter.XlsxWriterInternal.ExtractWorkbookSpecialXmlParts(Simplexcel.Workbook,System.Collections.Generic.IList{Simplexcel.XlsxInternal.XlsxCellStyle}@,System.Collections.Generic.IDictionary{Simplexcel.Worksheet,Simplexcel.XlsxInternal.XlsxIgnoredErrorCollection}@)">
+            <summary>
+            Extract certain parts of the workbook that need special handling.
+            </summary>
+            <remarks>
+            I don't want to loop over cells over and over again, so this is a way to run over all cells once and extract everything needed.
+            </remarks>
+            <param name="workbook"></param>
+            <param name="styles">All unique Styles throughout the workbook</param>
+            <param name="ignoredErrors">Any ignored errors. Key is the Worksheet, and the inner dictionary key is the cell range</param>
+        </member>
+        <member name="M:Simplexcel.XlsxInternal.XlsxWriter.XlsxWriterInternal.CreateCoreFileProperties(Simplexcel.Workbook,Simplexcel.XlsxInternal.RelationshipCounter)">
+            <summary>
+            Generated the docProps/core.xml which contains author, creation date etc.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.XlsxInternal.XlsxWriter.XlsxWriterInternal.CreateWorkbookFile(System.Collections.Generic.List{Simplexcel.XlsxInternal.SheetPackageInfo},Simplexcel.XlsxInternal.RelationshipCounter)">
+            <summary>
+            Create the xl/workbook.xml file and associated relationship
+            </summary>
+            <param name="sheetInfos"></param>
+            <param name="relationshipCounter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Simplexcel.XlsxInternal.XlsxWriter.XlsxWriterInternal.CreateSheetFile(Simplexcel.Worksheet,System.Int32,Simplexcel.XlsxInternal.RelationshipCounter,System.Collections.Generic.IList{Simplexcel.XlsxInternal.XlsxCellStyle},Simplexcel.XlsxInternal.XlsxIgnoredErrorCollection,Simplexcel.XlsxInternal.SharedStrings,Simplexcel.XlsxInternal.XmlFile@)">
+            <summary>
+            Create the xl/worksheets/sheetX.xml file
+            </summary>
+            <param name="sheet"></param>
+            <param name="sheetIndex"></param>
+            <param name="relationshipCounter"></param>
+            <param name="styles"></param>
+            <param name="ignoredErrors"></param>
+            <param name="sharedStrings"></param>
+            <param name="sheetRels">If this worksheet needs an xl/worksheets/_rels/sheetX.xml.rels file</param>
+            <returns></returns>
+        </member>
+        <member name="T:Simplexcel.XlsxInternal.XmlFile">
+            <summary>
+            An XML File in the package
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxInternal.XmlFile.Path">
+            <summary>
+            The path to the file within the package, without leading /
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxInternal.XmlFile.ContentType">
+            <summary>
+            The Content Type of the file (default: application/xml)
+            </summary>
+        </member>
+        <member name="P:Simplexcel.XlsxInternal.XmlFile.Content">
+            <summary>
+            The actual file content
+            </summary>
+        </member>
+    </members>
+</doc>

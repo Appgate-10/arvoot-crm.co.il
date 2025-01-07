@@ -17,6 +17,7 @@ namespace ControlPanel
         ControlPanelInit Pageinit = new ControlPanelInit();
         private string strSrc = "חפש איש קשר";
         public string StrSrc { get { return strSrc; } }
+        DataSet ds;
 
 
         protected void Page_Load(object sender, EventArgs e)
@@ -149,9 +150,10 @@ namespace ControlPanel
         //    Repeater1.DataSource = ds;
         //    Repeater1.DataBind();
         //}
-        public void loadUsers(int page, bool shouldUpdate)
-        {
 
+
+        public DataSet GetDataSet(int page, bool isExcel)
+        {
             int PageNumber = page;
             if (Request.QueryString["Page"] != null)
             {
@@ -164,11 +166,12 @@ namespace ControlPanel
             string sqlWhere = "";
             bool isSearch = false;
             SqlCommand cmd = new SqlCommand();
+
             if (Request.QueryString["Q"] != null)
             {
                 if (Request.QueryString["Q"].ToString().Length > 0)
                 {
-                    sqlWhere = " and( Lead.FirstName like @SrcParam OR Lead.LastName like @SrcParam Or Lead.tz like @SrcParam Or Lead.Phone1 like @SrcParam )";
+                    sqlWhere = " and( Lead.FirstName + Lead.LastName like @SrcParam Or Lead.tz like @SrcParam Or Lead.Phone1 like @SrcParam )";
                     isSearch = true;
                 }
                 strSrc = Request.QueryString["Q"].ToString();
@@ -177,7 +180,7 @@ namespace ControlPanel
             {
                 if (Request.QueryString["filter"].ToString().Length > 0)
                 {
-                    if(Request.QueryString["filter"].ToString().Equals("new"))
+                    if (Request.QueryString["filter"].ToString().Equals("new"))
                         sqlWhere += " and DATEDIFF(DAY,Lead.CreateDate,getdate())<=7 ";
                     else if (Request.QueryString["filter"].ToString().Equals("birthday"))
                         sqlWhere += @" and 
@@ -190,7 +193,7 @@ namespace ControlPanel
                                         MONTH(Lead.DateBirth) = MONTH(DATEADD(DAY, 7, GETDATE())) AND
                                         DAY(Lead.DateBirth) BETWEEN 1 AND DAY(DATEADD(DAY, 7, GETDATE()))
                                     ) ";
-                                               
+
                 }
             }
 
@@ -213,16 +216,16 @@ namespace ControlPanel
                         break;
                     case 6:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type  in (3,6) ";
-                        if(isSearch)
+                        if (isSearch)
                             sqlWhere += " and A.ParentID = (select ParentID from ArvootManagers where ID = @ID)";
                         else sqlWhere += " and A.ID =  @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
-                        break; 
+                        break;
                     case 4:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type  in (3,6) inner join ArvootManagers B on B.ParentID = A.ParentID  ";
                         sqlWhere += " and B.ID = @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
-                        break;    
+                        break;
                     case 5:
                         sqlJoin = " inner join Offer on Offer.LeadID = Lead.ID and OperatorID = @ID left join ArvootManagers A on A.ID = Lead.AgentID ";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
@@ -238,17 +241,18 @@ namespace ControlPanel
 
                 }
             }
-            string sql = @" select Lead.ID,Lead.Phone1,Lead.Tz,
-                        CONVERT(varchar, Lead.CreateDate, 104) as CreateDate---תאריך המרה לאיש קשר
-                            ,Lead.LastName,Lead.FirstName,
-							A.FullName as FullNameAgent,
-                            CONVERT(varchar, DateBirth, 104) as DateBirth 
-                            from Lead "+ sqlJoin  +
+            string selectID = "Lead.ID,";
+            if (isExcel) selectID = "";
+            string sql = @" select " + selectID +
+                       @" CONVERT(varchar, Lead.CreateDate, 104) as CreateDate---תאריך המרה לאיש קשר
+                            ,Lead.FirstName ,Lead.LastName,Lead.Tz, convert(varchar, Lead.Phone1) Phone1,
+                            CONVERT(varchar, DateBirth, 104) as DateBirth, A.FullName as FullNameAgent
+                            from Lead " + sqlJoin +
                             @"where Lead.IsContact=1 ";
 
-            cmd.CommandText =  sql + sqlWhere;
+            cmd.CommandText = sql + sqlWhere;
 
-            string sqlCnt = @"select count(*) from Lead "+ sqlJoin +" where Lead.IsContact=1";
+            string sqlCnt = @"select count(*) from Lead " + sqlJoin + " where Lead.IsContact=1";
             SqlCommand cmdCount = new SqlCommand(sqlCnt + sqlWhere);
             cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
 
@@ -286,9 +290,26 @@ namespace ControlPanel
             }
             catch (Exception) { }
 
-            DataSet ds = DbProvider.GetDataSet(cmd);
+            ds = DbProvider.GetDataSet(cmd);
+            if (isExcel) {
+                DataRow dataRow = ds.Tables[0].NewRow();
+                dataRow[0] = "תאריך הקמה";
+                dataRow[1] = "שם פרטי";
+                dataRow[2] = "שם משפחה";
+                dataRow[3] = "תעודת זהות";
+                dataRow[4] = "טלפון";
+                dataRow[5] = "תאריך לידה";
+                dataRow[6] = "בעלים";         
+                ds.Tables[0].Rows.InsertAt(dataRow, 0);
+            }
+            return ds;
+        }
+        public void loadUsers(int page, bool shouldUpdate)
+        {
+
+
         
-            Repeater1.DataSource = ds;
+            Repeater1.DataSource = GetDataSet(page, false);
             Repeater1.DataBind();
 
             if (shouldUpdate == true)
@@ -301,6 +322,15 @@ namespace ControlPanel
         protected void NewContact_Click(object sender, EventArgs e)
         {
             System.Web.HttpContext.Current.Response.Redirect("ContactAdd.aspx");
+        } 
+        protected void ExcelExport_Click(object sender, EventArgs e)
+        {
+
+           
+            bool didSuccess = CreateSimpleExcelFile.CreateExcelDocument(GetDataSet(1, true), "Contacts.xlsx", Response);
+            ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('" + didSuccess + " ');", true);
+
+
         }
 
         protected void SuspensionBU_Click(object sender, CommandEventArgs e)

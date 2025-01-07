@@ -222,10 +222,7 @@ namespace ControlPanel
             }
             string sql = @"select   Lead.ID ,CONVERT(varchar, Lead.CreateDate, 104) AS  CreateDate,FirstName,LastName,Lead.Tz,Phone1,FirstStatusLeadID FirstStatus,SecondStatusLead.Status SecondStatus, SecondStatusLeadID
                                  ,CONCAT(CONVERT(varchar, TrackingTime, 104), ' ', CONVERT(VARCHAR(5), TrackingTime, 108)) AS TrackingTime,Note,A.FullName as AgentName
-                                  from Lead " + sqlJoin +
-                              @"left join SecondStatusLead on Lead.SecondStatusLeadID=SecondStatusLead.ID
-                                  ";
-            //where Lead.IsContact = 0
+                                  from Lead " + sqlJoin + "left join SecondStatusLead on Lead.SecondStatusLeadID=SecondStatusLead.ID";
 
             if (Request.QueryString["Q"] != null)
             {
@@ -291,6 +288,7 @@ namespace ControlPanel
             }
             catch (Exception) { }
             DataSet ds = DbProvider.GetDataSet(cmd);
+
             if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) != 4 && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) != 5)
             {
                 cmdCount.CommandText = sqlCnt + sqlWhere;
@@ -456,8 +454,124 @@ namespace ControlPanel
             loadUsers(1,true);
 
 
-        } 
+        }
+        protected void ExcelExport_Click(object sender, EventArgs e)
+        {
 
+            string sqlWhere = " where 1=1 ";
+            string sqlJoin = "";
+            SqlCommand cmd = new SqlCommand();
+
+
+            if (HttpContext.Current.Session["AgentLevel"] != null)
+            {
+                switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
+                {
+                    case 7:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlWhere += " and (C.ID = (select ParentID from ArvootManagers where ID = @ID) OR B.ID = (select ParentID from ArvootManagers where ID = @ID))";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 2:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlWhere += " and (C.ID = @ID OR B.ID = @ID)";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 3:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID  ";
+                        sqlWhere += " and (B.ID = @ID OR A.ID = @ID) ";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 6:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type  in (3,6)";
+                        sqlWhere += " and A.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    default:
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID and A.Type  in (3,6)";
+                        break;
+
+                }
+            }
+            string sql = @"select   CONVERT(varchar, Lead.CreateDate, 104) AS  CreateDate,FirstName,LastName,Lead.Tz,Phone1,FirstStatusLead.Status as FirstStatus,SecondStatusLead.Status SecondStatus
+                                 ,A.FullName as AgentName ,CONCAT(CONVERT(varchar, TrackingTime, 104), ' ', CONVERT(VARCHAR(5), TrackingTime, 108)) AS TrackingTime,Note
+                                  from Lead " + sqlJoin + "left join SecondStatusLead on Lead.SecondStatusLeadID=SecondStatusLead.ID left join FirstStatusLead on Lead.FirstStatusLeadID=FirstStatusLead.ID";
+
+            if (Request.QueryString["Q"] != null)
+            {
+                Session["search"] = Request.QueryString["Q"];
+                if (Request.QueryString["Q"].ToString().Length > 0)
+                {
+                    sqlWhere += " and ( Lead.FirstName like @SrcParam Or Lead.LastName like @SrcParam Or Lead.tz like @SrcParam OR Lead.Phone1 like @SrcParam )";
+                }
+                strSrc = Request.QueryString["Q"].ToString();
+            }
+            try
+            {
+                if (int.Parse(Session["subStatus"].ToString()) > 1)
+                {
+
+                    SubStatusList.SelectedValue = Session["subStatus"].ToString();
+
+                    sqlWhere += " and  SecondStatusLeadID = @subStatus";
+                    cmd.Parameters.AddWithValue("@subStatus", Session["subStatus"].ToString());
+                }
+            }
+            catch (Exception) { }
+
+            try
+            {
+                if (int.Parse(Session["selectedAgent"].ToString()) > 1)
+                {
+
+                    AgentsList.SelectedValue = Session["selectedAgent"].ToString();
+
+                    sqlWhere += " and a.id = @agentID";
+                    cmd.Parameters.AddWithValue("@agentID", Session["selectedAgent"].ToString());
+                }
+            }
+            catch (Exception) { }
+
+            try
+            {
+                if (int.Parse(Session["mainStatus"].ToString()) > 1)
+                {
+
+                    MainStatusList.SelectedValue = Session["mainStatus"].ToString();
+
+                    sqlWhere += " and FirstStatusLeadID = @mainStatus";
+                    cmd.Parameters.AddWithValue("@mainStatus", Session["mainStatus"].ToString());
+                }
+            }
+            catch (Exception) { }
+
+            //להציג את הלידים מהישן לחדש
+            string sqlOrder = " Order by Lead.CreateDate desc ";
+            cmd.CommandText = sql + sqlWhere + sqlOrder;
+
+            try
+            {
+                cmd.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString() + "%");
+            }
+            catch (Exception) { }
+            DataSet ds = DbProvider.GetDataSet(cmd);
+            DataRow dataRow = ds.Tables[0].NewRow();
+            dataRow[0] = "תאריך הקמה";
+            dataRow[1] = "שם פרטי";
+            dataRow[2] = "שם משפחה";
+            dataRow[3] = "תעודת זהות";
+            dataRow[4] = "טלפון";
+            dataRow[5] = "סטטוס ראשי";
+            dataRow[6] = "סטטוס משני";
+            dataRow[7] = "סוכן";
+            dataRow[8] = "זמן מעקב";
+            dataRow[9] = "הערות";
+            ds.Tables[0].Rows.InsertAt(dataRow, 0);
+            bool didSuccess = CreateSimpleExcelFile.CreateExcelDocument(ds, "Leads.xlsx", Response);
+            ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('" + didSuccess + " ');", true);
+
+
+        }
         protected void StatusList_SelectedIndexChanged(object sender, EventArgs e)
         {
             Session["mainStatus"] = MainStatusList.SelectedValue.ToString();

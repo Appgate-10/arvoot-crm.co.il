@@ -12,6 +12,8 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <asp:ImageButton  ID="ExcelExport"  ImageUrl="~/images/icons/Excel_Icon.png" Style="width: 62px;height: 58px;position: fixed;left:250px;top: 27px;" runat="server" OnClick="ExcelExport_Click" />
+
     <div class="NewOfferDiv row">
         <label class="NewOfferLable" style="margin-inline-end: 3%;">פוליסות </label>
         <%--  <div class=" HeaderBoxSearch" >--%>
@@ -39,19 +41,26 @@
     <div class="ListDivParamsHead ListDivParamsHeadS">
 
 
-           <div style="width: 20%; text-align: right; padding-right: 2%">תאריך</div>
-                    <div style="width: 15%; text-align: right;">שם מבוטח</div>
-                    <div style="width: 10%; text-align: right;">ת.ז</div>
-                    <div style="width: 15%; text-align: right;">הצעה</div>
-                    <div style="width: 15%; text-align: right;">
-                         <asp:DropDownList style="width:30%" runat="server" ID="AgentList" OnSelectedIndexChanged="AgentList_SelectedIndexChanged" CssClass="StatusClaims" ToolTip="בעלים" AutoPostBack="true"></asp:DropDownList>
+                   <div style="width: 15%; text-align: right; padding-right: 2%">
+                         <asp:Button OnClick="DateSort" style="background: none;border: none; font-size: 17px; color: #6F798E; font-family: 'Open Sans Hebrew';" ID="date" runat="server" Text="תאריך"/>
+
+                   </div>
+                    <div style="width: 15%; text-align: right;color: #6F798E;">שם מבוטח</div>
+                    <div style="width: 10%; text-align: right;color: #6F798E;">ת.ז</div>
+                    <div style="width: 10%; text-align: right;color: #6F798E;">הצעה</div>
+                    <div style="width: 10%; text-align: right;">
+                         <asp:DropDownList style="width:50%;color: #6F798E;" runat="server" ID="AgentList" OnSelectedIndexChanged="AgentList_SelectedIndexChanged" CssClass="StatusClaims" ToolTip="בעלים" AutoPostBack="true"></asp:DropDownList>
 
                     </div>
                     <div id="status" runat="server"  style="width: 20%; text-align: right;">
-                                     <asp:DropDownList style="width:60%" runat="server" ID="StatusList" OnSelectedIndexChanged="StatusList_SelectedIndexChanged" CssClass="StatusClaims" ToolTip="סטטוס" AutoPostBack="true"></asp:DropDownList>
+                                     <asp:DropDownList style="width:60%;color: #6F798E;" runat="server" ID="StatusList" OnSelectedIndexChanged="StatusList_SelectedIndexChanged" CssClass="StatusClaims" ToolTip="סטטוס" AutoPostBack="true"></asp:DropDownList>
                     </div>
                     <div id="operatoring" runat="server"  style="width: 10%; text-align: right;display:none">
-                          <asp:DropDownList  style="width:100%" runat="server" ID="OperatorsList" OnSelectedIndexChanged="OperatorsList_SelectedIndexChanged" CssClass="StatusClaims" ToolTip="מתפעלת" AutoPostBack="true"></asp:DropDownList>
+                          <asp:DropDownList  style="width:60%;color: #6F798E;" runat="server" ID="OperatorsList" OnSelectedIndexChanged="OperatorsList_SelectedIndexChanged" CssClass="StatusClaims" ToolTip="מתפעלת" AutoPostBack="true"></asp:DropDownList>
+
+                    </div>
+                    <div style="width: 15%; text-align: right;">
+                         <asp:Button OnClick="DateSentSort" style="background: none;border: none; font-size: 17px; color: #6F798E; font-family: 'Open Sans Hebrew';" ID="Button1" runat="server" Text=" תאריך שליחה לחברת ביטוח"/>
 
                     </div>
                     <div style="width: 5%; text-align: center;"></div>
@@ -73,13 +82,14 @@
                                     <div style="width: 5%; text-align: center">
                                     <asp:Image ID="BtnDetailsOffer" style="vertical-align: middle;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
                                     </div>
+                                    <div  runat="server" style="width: 15%; text-align: right"><%#Eval("DateSentToInsuranceCompany") %></div>
                                     <div  id="operatorVal" runat="server" style="width: 10%; text-align: right;display:none"><%#Eval("OperatorName") %></div>
                                     <div  id="statusVal" runat="server"  style="width: 20%; text-align: right"><%#Eval("StatusOffer") %></div>
-                                    <div style="width: 15%; text-align: right;"><%#Eval("FullNameAgent") %></div>
-                                    <div style="width: 15%; text-align: right"><%#Eval("OfferType") %></div>
+                                    <div style="width: 10%; text-align: right;"><%#Eval("FullNameAgent") %></div>
+                                    <div style="width: 10%; text-align: right"><%#Eval("OfferType") %></div>
                                     <div style="width: 10%; text-align: right"><%#Eval("Tz") %></div>
                                     <div style="width: 15%; text-align: right"><%#Eval("FullName") %></div>
-                                    <div style="width: 20%; text-align: right; padding-right: 2%"><%#Eval("CreateDate") %></div>
+                                    <div style="width: 15%; text-align: right; padding-right: 2%"><%#Eval("CreateDate") %></div>
 
 
                             </div>

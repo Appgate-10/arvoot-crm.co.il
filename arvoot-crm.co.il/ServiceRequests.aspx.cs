@@ -232,7 +232,76 @@ namespace ControlPanel
             Repeater1.DataBind();
 
         }
+        protected void ExcelExport_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = new SqlCommand();
+            string sqlWhere = " where 1=1 ", sql2 = "", sqlJoin = "";
+            if (HttpContext.Current.Session["AgentLevel"] != null)
+            {
+                switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
+                {
+                    case 2:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlWhere = " and (C.ID = @ID OR B.ID = @ID)";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 7:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlWhere = " and (C.ID = (select ParentID from ArvootManagers where ID = @ID) OR B.ID = (select ParentID from ArvootManagers where ID = @ID))";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 3:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID  ";
+                        sqlWhere = " and (B.ID = @ID OR A.ID = @ID) ";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 6:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) ";
+                        sqlWhere = " and A.ID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 4:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ParentID = A.ParentID  ";
+                        sqlWhere = " and B.ID = @ID and IsInOperatingQueue = 1";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 5:
+                        sqlWhere = " and OperatorID = @ID";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                }
+            }
 
+            string sqlServiceRequest = @"select CONVERT(varchar, s.CreateDate, 104) CreateDate, Lead.FirstName + ' ' + Lead.LastName as Invoice, convert(varchar,Sum) as Sum,
+                                         convert(varchar,Sum - (isnull((select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1),0) + 
+										 iif(IsApprovedCreditOrDenial = 1 and SumCreditOrDenial is not null and SumCreditOrDenial != '',SumCreditOrDenial, 0 ) )) as paid, 
+                                         p.purpose as PurposeName
+                                         from ServiceRequest s 
+                                         left join ServiceRequestPurpose p on s.PurposeID = p.ID 
+                                         inner join Offer on Offer.ID = s.OfferID
+                                         inner join Lead on Lead.ID = Offer.LeadID" + sqlJoin + sqlWhere;
+            cmd.CommandText = sqlServiceRequest;
+            
+            try
+            {
+                cmd.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString() + "%");
+            }
+            catch (Exception) { }
+
+            DataSet ds = DbProvider.GetDataSet(cmd);
+            DataRow dataRow = ds.Tables[0].NewRow();
+            dataRow[0] = "תאריך";
+            dataRow[1] = "חשבון";
+            dataRow[2] = "סכום כולל לגבייה";
+            dataRow[3] = "יתרת גבייה";
+            dataRow[4] = "מטרת הגבייה";
+
+            ds.Tables[0].Rows.InsertAt(dataRow, 0);
+            bool didSuccess = CreateSimpleExcelFile.CreateExcelDocument(ds, "ServiceRequests.xlsx", Response);
+            ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('" + didSuccess + " ');", true);
+
+
+        }
         protected void SuspensionBU_Click(object sender, CommandEventArgs e)
         {
             SqlCommand cmdUpdate = new SqlCommand("Update Users Set Users.Show = 0 Where IDUser = @ID");

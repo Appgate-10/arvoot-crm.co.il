@@ -24,6 +24,15 @@ namespace ControlPanel
         protected global::System.Web.UI.UpdatePanel UpdatePanelButtons;
 
         /// <summary>
+        /// ExcelExport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton ExcelExport;
+
+        /// <summary>
         /// FromDate control.
         /// </summary>
         /// <remarks>
@@ -49,6 +58,15 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button SortBtn;
+
+        /// <summary>
+        /// date control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button date;
 
         /// <summary>
         /// AgentList control.
@@ -94,6 +112,15 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList OperatorsList;
+
+        /// <summary>
+        /// Button1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button1;
 
         /// <summary>
         /// AddForm control.

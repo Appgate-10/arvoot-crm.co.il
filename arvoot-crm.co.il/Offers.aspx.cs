@@ -59,7 +59,8 @@ namespace ControlPanel
                 AgentList.DataValueField = "ID";
                 AgentList.DataBind();
                 AgentList.Items.Insert(0, new ListItem("בעלים", ""));
-
+                Session["DateSort"] = true;
+                Session["DateSentSort"] = null;
                 loadUsers(1);
                 //loadData();
             }
@@ -196,7 +197,7 @@ namespace ControlPanel
             DateTime? toDate = null;
             SqlCommand cmd = new SqlCommand();
             SqlCommand cmdCount = new SqlCommand();
-            string sqlWhere = "", sql2 = "", sqlJoin = "";
+            string sqlWhere = "", sql2 = "", sqlJoin = "",sqlOrderByDate= " order by Offer.CreateDate desc";
 
 
 
@@ -218,6 +219,18 @@ namespace ControlPanel
                     sqlWhere = " and( Lead.FirstName like @SrcParam OR Lead.LastName like @SrcParam Or Lead.tz like @SrcParam Or Lead.Phone1 like @SrcParam )";
                 }
                 strSrc = Request.QueryString["Q"].ToString();
+            }
+            if (Session["DateSort"] != null )
+            {
+                if(!bool.Parse(Session["DateSort"].ToString()))
+                    sqlOrderByDate = " order by Offer.CreateDate ";
+            }
+            if (Session["DateSentSort"]!= null )
+            {
+                if(!bool.Parse(Session["DateSentSort"].ToString()))
+                    sqlOrderByDate = " order by Offer.DateSentToInsuranceCompany ";
+                else sqlOrderByDate = " order by Offer.DateSentToInsuranceCompany desc";
+
             }
             if (HttpContext.Current.Session["AgentLevel"] != null)
             {
@@ -276,14 +289,12 @@ namespace ControlPanel
             }
 
             string sql = @"SELECT Offer.ID, Offer.CreateDate, OfferType.Name as OfferType, A.FullName as FullNameAgent ,StatusOffer.Status as StatusOffer, operators.FullName as OperatorName
-                           , Lead.FirstName + ' ' + Lead.LastName as FullName, Lead.Tz
+                           , Lead.FirstName + ' ' + Lead.LastName as FullName, Lead.Tz, convert(varchar,DateSentToInsuranceCompany,103) as DateSentToInsuranceCompany
                            from Offer
                            left join OfferType on OfferType.ID = Offer.OfferTypeID
                            left join StatusOffer on StatusOffer.ID = Offer.StatusOfferID 
                            left join Lead on Lead.ID = Offer.LeadID     
-                           left join ArvootManagers operators on operators.ID = Offer.OperatorID" +
-                           sqlJoin + " where  OfferType.ID not in(1,2,3,13)";
-
+                           left join ArvootManagers operators on operators.ID = Offer.OperatorID" + sqlJoin + " where OfferType.ID not in(1,2,3,13)";
 
             try
             {
@@ -350,10 +361,10 @@ namespace ControlPanel
                 cmdCount.Parameters.AddWithValue("@ToDate", toDate);
             }
 
-            cmd.CommandText = sql + sqlWhere;
+            cmd.CommandText = sql + sqlWhere + sqlOrderByDate;
 
-            string sqlCnt = @"select count(*)  from Offer  left join Lead on Lead.ID = Offer.LeadID left join StatusOffer on StatusOffer.ID = Offer.StatusOfferID " + sqlJoin + " where OfferTypeID not in(1,2,3,13)";
-            cmdCount.CommandText = sqlCnt + sqlWhere;
+            string sqlCnt = @"select count(*)  from Offer left join Lead on Lead.ID = Offer.LeadID left join StatusOffer on StatusOffer.ID = Offer.StatusOfferID " + sqlJoin + " where OfferTypeID not in(1,2,3,13)";
+            cmdCount.CommandText = sqlCnt + sqlWhere ;
 
             try
             {
@@ -395,6 +406,160 @@ namespace ControlPanel
             Repeater1.DataBind();
 
         }
+        protected void ExcelExport_Click(object sender, EventArgs e)
+        {
+            DateTime? fromDate = null;
+            DateTime? toDate = null;
+            SqlCommand cmd = new SqlCommand();
+            string sqlWhere = "", sql2 = "", sqlJoin = "";
+
+            if (Request.QueryString["Q"] != null)
+            {
+                if (Request.QueryString["Q"].ToString().Length > 0)
+                {
+                    sqlWhere = " and( Lead.FirstName like @SrcParam OR Lead.LastName like @SrcParam Or Lead.tz like @SrcParam Or Lead.Phone1 like @SrcParam )";
+                }
+                strSrc = Request.QueryString["Q"].ToString();
+            }
+            if (HttpContext.Current.Session["AgentLevel"] != null)
+            {
+                switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
+                {
+
+                    case 1:
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) ";
+                        break;
+                    case 2:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlWhere += " and (C.ID = @ID OR B.ID = @ID)";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 7:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
+                        sqlWhere += " and (C.ID = (select ParentID from ArvootManagers where ID = @ID) OR B.ID = (select ParentID from ArvootManagers where ID = @ID))";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 3:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID  ";
+                        sqlWhere += " and (B.ID = @ID OR A.ID = @ID) and StatusOffer.ID != 9 and  StatusOffer.ID != 10 ";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+
+                        break;
+                    case 6:
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) ";
+                        sqlWhere += " and A.ID = @ID and Offer.IsInOperatingQueue = 0 and Offer.OperatorID is null and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                        break;
+                    case 4:
+
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on B.ParentID = C.ID  ";
+                        sqlWhere += " and C.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID )) and (IsInOperatingQueue = 1 or OperatorID is not null) and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+                     
+                        break;
+                    case 5:
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID ";
+                        sqlWhere += " and OperatorID = @ID and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
+                        cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+
+                        break;
+                    default:
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6)";
+                        break;
+
+                }
+            }
+
+            string sql = @"SELECT  CONVERT(varchar,Offer.CreateDate, 104) AS  CreateDate, Lead.FirstName + ' ' + Lead.LastName as FullName,  Lead.Tz, 
+                           OfferType.Name as OfferType, A.FullName as FullNameAgent ,StatusOffer.Status as StatusOffer --, operators.FullName as OperatorName                           
+                           from Offer
+                           left join OfferType on OfferType.ID = Offer.OfferTypeID
+                           left join StatusOffer on StatusOffer.ID = Offer.StatusOfferID 
+                           left join Lead on Lead.ID = Offer.LeadID     
+                           left join ArvootManagers operators on operators.ID = Offer.OperatorID" + sqlJoin + " where OfferType.ID not in(1,2,3,13)";
+
+            try
+            {
+                if (int.Parse(Session["selectedOperator"].ToString()) > 1)
+                {
+
+                    OperatorsList.SelectedValue = Session["selectedOperator"].ToString();
+
+                    sqlWhere += " and Offer.OperatorID = @operatorID";
+                    cmd.Parameters.AddWithValue("@operatorID", Session["selectedOperator"].ToString());
+                }
+            }
+            catch (Exception) { }
+
+            try
+            {
+                if (int.Parse(Session["selectedAgent"].ToString()) > 1)
+                {
+
+                    AgentList.SelectedValue = Session["selectedAgent"].ToString();
+
+                    sqlWhere += " and Lead.AgentID = @agentID";
+                    cmd.Parameters.AddWithValue("@agentID", Session["selectedAgent"].ToString());
+                }
+            }
+            catch (Exception) { }
+
+            try
+            {
+                if (int.Parse(Session["selectedStatus"].ToString()) > 0)
+                {
+
+                    StatusList.SelectedValue = Session["selectedStatus"].ToString();
+
+                    sqlWhere += " and Offer.StatusOfferID  = @StatusOfferID";
+                    cmd.Parameters.AddWithValue("@StatusOfferID", Session["selectedStatus"].ToString());
+                }
+            }
+            catch (Exception) { }
+
+            if (!string.IsNullOrEmpty(Request.QueryString["FromDate"]))
+            {
+                fromDate = ConvertToDateTime(Request.QueryString["FromDate"]);
+
+                strDate1 = Request.QueryString["FromDate"].ToString();
+                FromDate.Text = strDate1;
+                sqlWhere = sqlWhere + " and Offer.CreateDate >= @FromDate ";
+                cmd.Parameters.AddWithValue("@FromDate", fromDate);
+            }
+
+            if (!string.IsNullOrEmpty(Request.QueryString["ToDate"]))
+            {
+                toDate = ConvertToDateTime(Request.QueryString["ToDate"]);
+
+
+                strDate2 = Request.QueryString["ToDate"].ToString();
+                ToDate.Text = strDate2;
+                sqlWhere = sqlWhere + " and Offer.CreateDate <= @ToDate ";
+                cmd.Parameters.AddWithValue("@ToDate", toDate);
+            }
+
+            cmd.CommandText = sql + sqlWhere;
+            try
+            {
+                cmd.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString() + "%");
+            }
+            catch (Exception) { }
+
+            DataSet ds = DbProvider.GetDataSet(cmd);
+            DataRow dataRow = ds.Tables[0].NewRow();
+            dataRow[0] = "תאריך";
+            dataRow[1] = "שם מבוטח";
+            dataRow[2] = "תעודת זהות";
+            dataRow[3] = "הצעה";
+            dataRow[4] = "בעלים";
+            dataRow[5] = "סטטוס";
+
+            ds.Tables[0].Rows.InsertAt(dataRow, 0);
+            bool didSuccess = CreateSimpleExcelFile.CreateExcelDocument(ds, "Offers.xlsx", Response);
+            ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('" + didSuccess + " ');", true);
+
+
+        }
         protected void SortBtn_Click(object sender, EventArgs e)
         {
             ////??
@@ -404,6 +569,35 @@ namespace ControlPanel
 
             System.Web.HttpContext.Current.Response.Redirect("Offers.aspx?FromDate=" + FromDate.Text + "&ToDate=" + ToDate.Text);
 
+
+
+        }      
+        protected void DateSort(object sender, EventArgs e)
+        {
+            ////??
+            //System.Web.HttpContext.Current.Response.Redirect("AdvertisementConfirm.aspx?FromDate=" + FromDate.Text + "&ToDate=" + ToDate.Text);
+            // אם חפשתי שם של עסק (קיו בחיפוש ואז מוסיף קיו ליורל)ורק אחרכ אני מסננת לפי תאריך אז אני צריכה לחפש גם לפי שם וגם לפי תאריך
+            //אבל אם חפשתי לפי תאריך וגם לפי שם אז אני מחפשת רק לפי תאריך
+            Session["DateSentSort"] = null;
+            if (Session["DateSort"] == null || bool.Parse(Session["DateSort"].ToString()))
+                Session["DateSort"] = false;
+            else Session["DateSort"] = true;
+            loadUsers(1);
+
+
+        }
+        protected void DateSentSort(object sender, EventArgs e)
+        {
+            ////??
+            //System.Web.HttpContext.Current.Response.Redirect("AdvertisementConfirm.aspx?FromDate=" + FromDate.Text + "&ToDate=" + ToDate.Text);
+            // אם חפשתי שם של עסק (קיו בחיפוש ואז מוסיף קיו ליורל)ורק אחרכ אני מסננת לפי תאריך אז אני צריכה לחפש גם לפי שם וגם לפי תאריך
+            //אבל אם חפשתי לפי תאריך וגם לפי שם אז אני מחפשת רק לפי תאריך
+            Session["DateSort"] = null;
+            if (Session["DateSentSort"] == null || ! bool.Parse(Session["DateSentSort"].ToString()))
+                Session["DateSentSort"] = true;
+            else Session["DateSentSort"] = false;
+
+            loadUsers(1);
 
 
         }

@@ -20,6 +20,8 @@
 
         </ContentTemplate>
     </asp:UpdatePanel>
+      <asp:ImageButton  ID="ExcelExport"  ImageUrl="~/images/icons/Excel_Icon.png" Style="width: 62px;height: 58px;position: fixed;left: 400px;top: 27px;" runat="server" OnClick="ExcelExport_Click" />
+
      <div class="NewOfferDiv row">
         <label class="NewOfferLable" style="margin-inline-end: 3%;">לידים</label>
         <%--  <div class=" HeaderBoxSearch" >--%>

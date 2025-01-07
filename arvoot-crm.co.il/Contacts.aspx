@@ -17,10 +17,10 @@
         <ContentTemplate>
     <asp:Button  ID="MoveTo" Class="NewLid"  Visible="false" Text="העבר איש קשר" Style="width: 130px; height: 35px; left:220px;" runat="server" OnClick="MoveTo_Click" />
     <asp:Button  ID="NewContact" Class="NewLid"  Visible="false" Text="הקמת איש קשר" Style="width: 130px; height: 35px; left:220px;" runat="server" OnClick="NewContact_Click" />
-<%--      <asp:ImageButton  ID="ExcelExport"  ImageUrl="~/images/icons/Excel_Icon.png" Style="width: 62px;height: 58px;position: fixed;left: 380px;top: 27px;" runat="server" OnClick="NewContact_Click" />--%>
 
             </ContentTemplate>
     </asp:UpdatePanel>
+          <asp:ImageButton  ID="ExcelExport"  ImageUrl="~/images/icons/Excel_Icon.png" Style="width: 62px;height: 58px;position: fixed;left: 380px;top: 27px;" runat="server" OnClick="ExcelExport_Click" />
 
     <div class="NewOfferDiv row">
         <label class="NewOfferLable" style="margin-inline-end: 3%;">אנשי קשר </label>

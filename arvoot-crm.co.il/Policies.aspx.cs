@@ -492,8 +492,8 @@ namespace ControlPanel
             //אבל אם חפשתי לפי תאריך וגם לפי שם אז אני מחפשת רק לפי תאריך
             Session["DateSort"] = null;
             if (Session["DateSentSort"] == null ||!bool.Parse(Session["DateSentSort"].ToString()))
-                Session["DateSentSort"] = false;
-            else Session["DateSentSort"] = true;
+                Session["DateSentSort"] = true;
+            else Session["DateSentSort"] = false;
 
             loadUsers(1);
 

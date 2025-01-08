@@ -319,7 +319,10 @@
                     <div style="width: 5%; text-align: center;"></div>
 
                 </div>
-                <div runat="server" id="divRepeat" style="height: 463px; overflow-x: auto; margin-bottom: 20px">
+
+
+
+                <div runat="server" id="divRepeat" style="height: 380px; overflow-x: auto; margin-bottom: 20px">
                     <asp:Repeater ID="Repeater2" runat="server" >
                         <ItemTemplate>
                             <asp:LinkButton ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnServiceRequest_Command" CssClass="ButtonDiv" >
@@ -342,6 +345,38 @@
                 </div>
 
 
+
+            </div>
+
+              <div  id="divHistory" runat="server" visible="false"  class="col MarginDiv SecondaryDiv PaddingDiv">
+                <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
+                   <div class="row" style="align-items: center;">
+                        <div class="div-arrows-img">
+                            <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
+                        </div>
+                        <div>
+                            <label class="LableBlue">היסטוריית שינויים</label>
+                        </div>
+                   </div>                  
+                </div>
+                <div class="ListDivParamsHead DivParamsHeadMargin">
+                     <div style="width: 20%; text-align: right; padding-right: 1%">תאריך</div>
+                     <div style="width: 20%; text-align: right;">סטטוס</div>
+                     <div style="width: 10%; text-align: right;">סוכן</div>                   
+                     <div style="width: 50%; text-align: right;"></div>                   
+                </div>
+                <div runat="server" id="div1" style="height: 200px; overflow-x: auto; margin-bottom: 20px">
+                    <asp:Repeater ID="Repeater4" runat="server" >
+                        <ItemTemplate>
+                            <div class='ListDivParams' style="position: relative;padding-left: 18px;">
+                                 <div style="width: 50%; text-align: right"></div>
+                                 <div style="width: 10%; text-align: right;"><%#Eval("Agent") %></div>                                  
+                                 <div style="width: 20%; text-align: right"><%#Eval("Status") %></div>
+                                 <div style="width: 20%; text-align: right; padding-right: 1%"><%#Eval("CreateDate") %></div>                         
+                            </div>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </div>
 
             </div>
 

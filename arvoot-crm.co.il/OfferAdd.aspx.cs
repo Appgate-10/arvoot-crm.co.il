@@ -426,6 +426,12 @@ namespace ControlPanel
 
                     }
 
+                    SqlCommand cmdOfferHistory = new SqlCommand("insert into OfferHistory(OfferID, StatusID, AgentID) values(@OfferID, @StatusID, @AgentID)");
+                    cmdOfferHistory.Parameters.AddWithValue("@OfferID", offerID);
+                    cmdOfferHistory.Parameters.AddWithValue("@StatusID", SelectStatusOffer.Value);
+                    cmdOfferHistory.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"].ToString());
+                    DbProvider.ExecuteCommand(cmdOfferHistory);
+
                     return offerID;
                 }
                 else

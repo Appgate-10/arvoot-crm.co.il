@@ -528,13 +528,31 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl MortgageBalance;
 
         /// <summary>
-        /// DateChangeFirstStatus control.
+        /// divHistory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl DateChangeFirstStatus;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divHistory;
+
+        /// <summary>
+        /// div4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div4;
+
+        /// <summary>
+        /// Repeater4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater Repeater4;
 
         /// <summary>
         /// BtnSaveBottomBtn control.

@@ -91,8 +91,11 @@ namespace ControlPanel
                     btn_save.Enabled = false;
                     ExportNewContact.Enabled = false;
                     BtnSaveBottomBtn.Enabled = false;
-                }    
-
+                }
+                if (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) < 5)
+                {
+                    divHistory.Visible = true;
+                }
                 loadData();
             }
 
@@ -191,7 +194,7 @@ namespace ControlPanel
                 PurposeLoan.Value = dtLead.Rows[0]["PurposeLoan"].ToString();
                 MortgageBalance.Value = dtLead.Rows[0]["MortgageBalance"].ToString();
 
-                DateChangeFirstStatus.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["DateChangeFirstStatus"].ToString()) ? "" : DateTime.Parse(dtLead.Rows[0]["DateChangeFirstStatus"].ToString()).ToString("yyyy-MM-dd");
+              //  DateChangeFirstStatus.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["DateChangeFirstStatus"].ToString()) ? "" : DateTime.Parse(dtLead.Rows[0]["DateChangeFirstStatus"].ToString()).ToString("yyyy-MM-dd");
 
                 HttpContext.Current.Session["FirstStatusLeadID"] = dtLead.Rows[0]["FirstStatusLeadID"].ToString();
 
@@ -200,6 +203,15 @@ namespace ControlPanel
                 PhoneAgent.InnerText = dtLead.Rows[0]["PhoneAgent"].ToString();
                 EmailAgent.InnerText = dtLead.Rows[0]["EmailAgent"].ToString();
 
+                string sqlHistory = @"select  L.CreateDate, S.Status ,A.FullName as Agent from LeadHistory L
+                                      left join StatusOffer S on L.StatusID = S.ID
+                                      left join ArvootManagers A on A.ID = L.AgentID
+                                      where L.LeadID = @LeadID order by L.CreateDate desc";
+                SqlCommand cmdHistory = new SqlCommand(sqlHistory);
+                cmdHistory.Parameters.AddWithValue("@LeadID", Request.QueryString["LeadID"]);
+                DataTable dtHistory = DbProvider.GetDataTable(cmdHistory);
+                Repeater4.DataSource = dtHistory;
+                Repeater4.DataBind();
             }
 
 
@@ -1304,8 +1316,17 @@ namespace ControlPanel
                             DbProvider.ExecuteCommand(cmdAlert);
 
                         }
+
+                        SqlCommand cmdHistoryLead = new SqlCommand("INSERT INTO LeadHistory (LeadID, StatusID, AgentID) values(@LeadID, @StatusID, @AgentID)");
+                        cmdHistoryLead.Parameters.AddWithValue("@LeadID", long.Parse(Request.QueryString["LeadID"]));
+                        cmdHistoryLead.Parameters.AddWithValue("@StatusID", SelectFirstStatus.Value);
+                        cmdHistoryLead.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"].ToString());
+                        DbProvider.ExecuteCommand(cmdHistoryLead);
+
                         return true;
                     }
+
+
 
                     return true;
                 }

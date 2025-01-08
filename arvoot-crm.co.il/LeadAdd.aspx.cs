@@ -511,6 +511,13 @@ namespace ControlPanel
                     cmdHistory.Parameters.AddWithValue("@details", ("הוספת ליד חדש " + FirstName.Value + " " + LastName.Value));
                     DbProvider.ExecuteCommand(cmdHistory);
                     Helpers.loadActivityHistoryOnAdd(Page);
+
+                    SqlCommand cmdHistoryLead = new SqlCommand("INSERT INTO LeadHistory (LeadID, StatusID, AgentID) values(@LeadID, @StatusID, @AgentID)");
+                    cmdHistoryLead.Parameters.AddWithValue("@LeadID", LeadID);
+                    cmdHistoryLead.Parameters.AddWithValue("@StatusID", SelectFirstStatus.Value);
+                    cmdHistoryLead.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"].ToString());
+                    DbProvider.ExecuteCommand(cmdHistoryLead);
+
                     if (!string.IsNullOrEmpty(TrackingTime.Value))
                     {
                         string sqlTasks = @" INSERT INTO [Tasks]( Text

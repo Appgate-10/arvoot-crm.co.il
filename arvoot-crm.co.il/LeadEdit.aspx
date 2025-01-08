@@ -670,13 +670,36 @@
 
             </div>--%>
 
-            <div class="row MarginDiv SecondaryDiv" style="justify-content: space-between; align-items: center; height: 85px;">
+   <%--         <div class="row MarginDiv SecondaryDiv" style="justify-content: space-between; align-items: center; height: 85px;">
                 <div class="row" style="width: 20%;">
                     <label class="InputLable">תאריך שינוי סטטוס:</label>
                     <input id="DateChangeFirstStatus" name="DateChangeFirstStatus" type="date" runat="server" style="width: 100%;" class="InputAdd" disabled="disabled" />
                 </div>
-            </div>
+            </div>--%>
+                <div id="divHistory" runat="server" visible="false" class="col MarginDiv SecondaryDiv PaddingDiv">
+                <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
+                   <div class="row" style="align-items: center;">
+                        <div class="div-arrows-img">
+                            <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
+                        </div>
+                        <div>
+                            <label class="LableBlue">היסטוריית שינויים</label>
+                        </div>
+                   </div>                  
+                </div>
+               
+                <div runat="server" id="div4" style="height: 200px; overflow-x: auto; margin-bottom: 20px">
+                    <asp:Repeater ID="Repeater4" runat="server" >
+                        <ItemTemplate>
+                            <div class='ListDivParams' style="position: relative;padding-left: 18px;">
+                                 <div style="width: 100%; text-align: right"><%#"סטטוס שונה ל - " + Eval("Status") + " בתאריך " + Eval("CreateDate") + " על ידי " + Eval("Agent") %></div>
+                                                
+                            </div>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </div>
 
+            </div>
             <div class="DivLidTop">
                 <asp:Button runat="server" ID="BtnSaveBottomBtn" Text="שמור" OnClick="btn_save_Click" CssClass="BtnSave" OnClientClick="reload(LoadingDiv);" />
             </div>

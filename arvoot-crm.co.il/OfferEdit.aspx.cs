@@ -90,7 +90,10 @@ namespace ControlPanel
                     ImageButton2.Enabled = false;
                     BtnSaveBottom.Enabled = false;
                 }
-
+                if (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) < 5)
+                {
+                    divHistory.Visible = true;
+                }
                 loadData();
               
             }
@@ -476,6 +479,19 @@ namespace ControlPanel
                 dtServiceRequest = DbProvider.GetDataTable(cmdServiceRequest);
                 Repeater2.DataSource = dtServiceRequest;
                 Repeater2.DataBind();
+
+
+                string sqlHistory = @"select  O.CreateDate, S.Status ,A.FullName as Agent from OfferHistory O
+                                      left join StatusOffer S on O.StatusID = S.ID
+                                      left join ArvootManagers A on A.ID = O.AgentID
+                                      where O.OfferID = @OfferID order by O.CreateDate desc";
+                SqlCommand cmdHistory = new SqlCommand(sqlHistory);
+                cmdHistory.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
+                DataTable dtHistory = DbProvider.GetDataTable(cmdHistory);
+                Repeater4.DataSource = dtHistory;
+                Repeater4.DataBind();
+
+
                 if ((HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) != 4)|| rowOffer["IsInOperatingQueue"].ToString() != "1")
                     btnMoveToOperator.Visible = false;
 
@@ -842,7 +858,14 @@ namespace ControlPanel
 
                 if (DbProvider.ExecuteCommand(cmdInsert) > 0)
                 {
-
+                    if(SelectStatusOffer.SelectedValue != CurrentStatusOfferID.Value)
+                    {
+                        SqlCommand cmdOfferHistory = new SqlCommand("insert into OfferHistory(OfferID, StatusID, AgentID) values(@OfferID, @StatusID, @AgentID)");
+                        cmdOfferHistory.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
+                        cmdOfferHistory.Parameters.AddWithValue("@StatusID", SelectStatusOffer.SelectedValue);
+                        cmdOfferHistory.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"].ToString());
+                        DbProvider.ExecuteCommand(cmdOfferHistory);
+                    }
 
                     if (SelectStatusOffer.SelectedValue == "9" && SelectStatusOffer.SelectedValue != CurrentStatusOfferID.Value)
                     {

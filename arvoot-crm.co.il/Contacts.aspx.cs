@@ -171,7 +171,7 @@ namespace ControlPanel
             {
                 if (Request.QueryString["Q"].ToString().Length > 0)
                 {
-                    sqlWhere = " and( Lead.FirstName + Lead.LastName like @SrcParam Or Lead.tz like @SrcParam Or Lead.Phone1 like @SrcParam )";
+                    sqlWhere = " and( REPLACE(FirstName + LastName, ' ', '') like @SrcParam Or Lead.tz like @SrcParam Or Lead.Phone1 like @SrcParam )";
                     isSearch = true;
                 }
                 strSrc = Request.QueryString["Q"].ToString();
@@ -258,7 +258,7 @@ namespace ControlPanel
 
             try
             {
-                cmdCount.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString() + "%");
+                cmdCount.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString().Trim().Replace(" ", "") + "%");
             }
             catch (Exception) { }
 
@@ -286,7 +286,7 @@ namespace ControlPanel
 
             try
             {
-                cmd.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString() + "%");
+                cmd.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString().Trim().Replace(" ", "") + "%");
             }
             catch (Exception) { }
 

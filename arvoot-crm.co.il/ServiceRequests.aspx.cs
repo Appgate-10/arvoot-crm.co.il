@@ -272,9 +272,12 @@ namespace ControlPanel
                 }
             }
 
-            string sqlServiceRequest = @"select CONVERT(varchar, s.CreateDate, 104) CreateDate, Lead.FirstName + ' ' + Lead.LastName as Invoice, convert(varchar,Sum) as Sum,
+            string sqlServiceRequest = @"select CONVERT(varchar, s.CreateDate, 104) CreateDate, Lead.FirstName + ' ' + Lead.LastName as Invoice,Lead.tz, convert(varchar,Sum) as Sum,
+                                         (isnull((select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1),0) + 
+										 iif(IsApprovedCreditOrDenial = 1 and SumCreditOrDenial is not null and SumCreditOrDenial != '',SumCreditOrDenial, 0 ) ) as ApprovedSum,
                                          convert(varchar,Sum - (isnull((select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1),0) + 
 										 iif(IsApprovedCreditOrDenial = 1 and SumCreditOrDenial is not null and SumCreditOrDenial != '',SumCreditOrDenial, 0 ) )) as paid, 
+
                                          p.purpose as PurposeName
                                          from ServiceRequest s 
                                          left join ServiceRequestPurpose p on s.PurposeID = p.ID 
@@ -290,11 +293,14 @@ namespace ControlPanel
 
             DataSet ds = DbProvider.GetDataSet(cmd);
             DataRow dataRow = ds.Tables[0].NewRow();
-            dataRow[0] = "תאריך";
-            dataRow[1] = "חשבון";
-            dataRow[2] = "סכום כולל לגבייה";
-            dataRow[3] = "יתרת גבייה";
-            dataRow[4] = "מטרת הגבייה";
+            dataRow[0] = "תאריך הקמה";
+            dataRow[1] = "שם לקוח";
+            dataRow[2] = "ת.ז.";
+            dataRow[3] = "סכום גבייה";
+            dataRow[4] = "סכום שאושר";
+            dataRow[5] = "יתרת גבייה";
+            dataRow[6] = "תאריך אישור הגבייה";
+            dataRow[7] = "מטרת הגבייה";
 
             ds.Tables[0].Rows.InsertAt(dataRow, 0);
             bool didSuccess = CreateSimpleExcelFile.CreateExcelDocument(ds, "ServiceRequests.xlsx", Response);

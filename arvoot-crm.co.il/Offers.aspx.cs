@@ -197,7 +197,7 @@ namespace ControlPanel
             DateTime? toDate = null;
             SqlCommand cmd = new SqlCommand();
             SqlCommand cmdCount = new SqlCommand();
-            string sqlWhere = "", sql2 = "", sqlJoin = "",sqlOrderByDate= " order by Offer.CreateDate desc";
+            string sqlWhere = "", sql2 = "", sqlJoin = "",sqlOrderByDate= " order by Offer.CreateDate desc" , sqlCreateDate = ", Offer.CreateDate";
 
 
 
@@ -266,7 +266,8 @@ namespace ControlPanel
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     case 4:
-
+                        sqlCreateDate = ", OperatingQueueDate as CreateDate ";
+                        sqlOrderByDate = sqlOrderByDate.Replace("Offer.CreateDate", "OperatingQueueDate");
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on B.ParentID = C.ID  ";
                         sqlWhere += " and C.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID )) and (IsInOperatingQueue = 1 or OperatorID is not null) and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
@@ -275,6 +276,9 @@ namespace ControlPanel
                         operatoring.Style.Remove("display");
                         break;
                     case 5:
+
+                        sqlCreateDate = ", DateSentToOperator as CreateDate ";
+                        sqlOrderByDate = sqlOrderByDate.Replace("Offer.CreateDate", "DateSentToOperator");
                         sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID ";
                         sqlWhere += " and OperatorID = @ID and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
@@ -288,7 +292,7 @@ namespace ControlPanel
                 }
             }
 
-            string sql = @"SELECT Offer.ID, Offer.CreateDate, OfferType.Name as OfferType, A.FullName as FullNameAgent ,StatusOffer.Status as StatusOffer, operators.FullName as OperatorName
+            string sql = @"SELECT Offer.ID" + sqlCreateDate + @", OfferType.Name as OfferType, A.FullName as FullNameAgent ,StatusOffer.Status as StatusOffer, operators.FullName as OperatorName
                            , Lead.FirstName + ' ' + Lead.LastName as FullName, Lead.Tz, convert(varchar,DateSentToInsuranceCompany,103) as DateSentToInsuranceCompany
                            from Offer
                            left join OfferType on OfferType.ID = Offer.OfferTypeID

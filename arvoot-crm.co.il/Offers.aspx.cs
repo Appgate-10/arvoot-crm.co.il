@@ -50,8 +50,10 @@ namespace ControlPanel
                 StatusList.DataBind();
                 StatusList.Items.Insert(0, new ListItem("סטטוס", ""));
 
-
-                SqlCommand cmdAgents = new SqlCommand(" SELECT  FullName as AgentName,ID FROM ArvootManagers where ParentID = (select ParentID FROM ArvootManagers where ID = @ID) and Type in (3,6)");
+                string sql = "";
+                if (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 4)
+                    sql = " Or ParentID = (select ParentID FROM ArvootManagers where ID = (select ParentID FROM ArvootManagers where ID = @ID))";
+                SqlCommand cmdAgents = new SqlCommand(" SELECT  FullName as AgentName,ID FROM ArvootManagers where (ParentID = (select ParentID FROM ArvootManagers where ID = @ID)" + sql + ") and Type in (3,6)");
                 cmdAgents.Parameters.AddWithValue("@ID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
                 DataSet dsAgents = DbProvider.GetDataSet(cmdAgents);
                 AgentList.DataSource = dsAgents;
@@ -268,8 +270,8 @@ namespace ControlPanel
                     case 4:
                         sqlCreateDate = ", OperatingQueueDate as CreateDate ";
                         sqlOrderByDate = sqlOrderByDate.Replace("Offer.CreateDate", "OperatingQueueDate");
-                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on B.ParentID = C.ID  ";
-                        sqlWhere += " and C.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID )) and (IsInOperatingQueue = 1 or OperatorID is not null) and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on B.ParentID = C.ID  ";
+                        sqlWhere += " and (C.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID )) Or B.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID ))) and (IsInOperatingQueue = 1 or OperatorID is not null) and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         status.Style.Add("width", "10%");
@@ -456,8 +458,8 @@ namespace ControlPanel
                         break;
                     case 4:
 
-                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID inner join ArvootManagers C on B.ParentID = C.ID  ";
-                        sqlWhere += " and C.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID )) and (IsInOperatingQueue = 1 or OperatorID is not null) and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
+                        sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on B.ParentID = C.ID  ";
+                        sqlWhere += " and (C.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID )) Or B.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID ))) and (IsInOperatingQueue = 1 or OperatorID is not null) and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                      
                         break;

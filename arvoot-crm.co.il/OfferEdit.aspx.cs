@@ -867,8 +867,14 @@ namespace ControlPanel
                         DbProvider.ExecuteCommand(cmdOfferHistory);
                     }
 
-                    if (SelectStatusOffer.SelectedValue == "9" && SelectStatusOffer.SelectedValue != CurrentStatusOfferID.Value)
+                    if ((SelectStatusOffer.SelectedValue == "9" || SelectStatusOffer.SelectedValue == "2") && SelectStatusOffer.SelectedValue != CurrentStatusOfferID.Value)
                     {
+                        string text = "ממתין להשלמת חוסרים בהצעה: ";
+                        if (SelectStatusOffer.SelectedValue.Equals("9"))
+                        {
+                            text = "סיום טיפול בהצעה: ";
+                        }
+                       
                         string sqlBranchManager = @"SELECT a.ParentID, a.ID from Offer
                                                     INNER JOIN [Lead] l On l.ID = Offer.LeadID
                                                     INNER JOIN ArvootManagers a on a.ID = l.AgentID WHERE Offer.ID = @OfferID";
@@ -882,14 +888,14 @@ namespace ControlPanel
                             SqlCommand cmdAlert = new SqlCommand(sqlAlert);
                             cmdAlert.Parameters.AddWithValue("@AgentID", dt.Rows[0]["ParentID"].ToString());
                             cmdAlert.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
-                            cmdAlert.Parameters.AddWithValue("@Text", "סיום טיפול בהצעה: " + NameOffer.Value + " על ידי: " + lblOwner.InnerText);
+                            cmdAlert.Parameters.AddWithValue("@Text", text + NameOffer.Value + " על ידי: " + lblOwner.InnerText);
                             DbProvider.ExecuteCommand(cmdAlert); 
                             string sqlAlert2 = "INSERT INTO Alerts (AgentID, Text, CreationDate, DisplayDate, OfferID) Values (@AgentID, @Text, GETDATE(), GETDATE(), @OfferID)";
                             SqlCommand cmdAlert2 = new SqlCommand(sqlAlert2);
                             cmdAlert2.Parameters.AddWithValue("@AgentID", dt.Rows[0]["ID"].ToString());
-                            cmdAlert.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
-                            cmdAlert2.Parameters.AddWithValue("@Text", "סיום טיפול בהצעה: " + NameOffer.Value + " על ידי: " + lblOwner.InnerText);
-                            DbProvider.ExecuteCommand(cmdAlert);
+                            cmdAlert2.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
+                            cmdAlert2.Parameters.AddWithValue("@Text", text + NameOffer.Value + " על ידי: " + lblOwner.InnerText);
+                            DbProvider.ExecuteCommand(cmdAlert2);
                         }
                         
                     }

@@ -273,7 +273,7 @@
         <div id="AllTasksList" class="popUpOut MainDivDocuments" visible="false" runat="server">
             <div class="popUpIn" style="width: 35%; height: 700px; margin-top: 100px; margin-bottom: 100px; direction: rtl; text-align: center; border-width: 2px;" runat="server">
                 <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ImageButton4" OnClick="CloseTasksListPopUp_Click" />
-                <div class="DivDownPopUp" style="width: 85%;">
+                <div class="DivDownPopUp" style="width: 85%; height: 600px;">
                     <label style="font-size: 15pt" class="LableBlue">רשימת התראות</label>
                     <div class="MainDivDocuments DivRepeaterPopUp">
                         <asp:Repeater ID="Repeater1" runat="server">

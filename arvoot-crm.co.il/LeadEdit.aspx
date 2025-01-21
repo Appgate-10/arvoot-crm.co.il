@@ -244,7 +244,8 @@
                     <div class="row  MarginRow" style="width: 100%; align-items: flex-end;">
                         <div style="width: 31%; margin-inline-end: 2%;" class="row">
                             <label class="InputLable">*טלפון 1:</label>
-                            <input id="Phone1" name="Phone1" type="text" runat="server" style="width: 100%;" class="InputAdd" />
+                            <input id="Phone1" name="Phone1" type="text" runat="server" style="width: 100%;" class="InputAdd"
+                                 pattern="[0-9]*"  onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
                         </div>
                         <div class="row" style="width: 30%; margin-inline-end: 7%;">
                             <label class="InputLable">אימייל:</label>
@@ -265,7 +266,7 @@
                     <div class="row MarginRow" style="justify-content: space-between;">
                         <div style="width: 31%; margin-inline-end: 2%;" class="row">
                             <label class="InputLable">טלפון 2:</label>
-                            <input id="Phone2" name="Phone2" type="text" runat="server" style="width: 100%;" class="InputAdd" />
+                            <input id="Phone2" name="Phone2" type="text" runat="server" style="width: 100%;" class="InputAdd"  pattern="[0-9]*"  onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
                         </div>
 
                         <div style="width: 30%; justify-content: flex-end;" class="row">
@@ -376,7 +377,7 @@
                       
                         <div class="row ColUpLid">
                             <label class="InputLable">טלפון העסק:</label>
-                            <input id="BusinessPhone" type="text" runat="server" style="width: 100%;" class="InputAdd" />
+                            <input id="BusinessPhone" type="text" runat="server" style="width: 100%;" class="InputAdd"  pattern="[0-9]*"  onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
                         </div>
                         <div class="row ColUpLid">
                             <label class="InputLable">עיר בה ממקום העסק:</label>

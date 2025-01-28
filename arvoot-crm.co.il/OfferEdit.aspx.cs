@@ -481,7 +481,7 @@ namespace ControlPanel
                 Repeater2.DataBind();
 
 
-                string sqlHistory = @"select  O.CreateDate, S.Status ,A.FullName as Agent from OfferHistory O
+                string sqlHistory = @"select  O.CreateDate, isnull(S.Status,O.Message) as Status, A.FullName as Agent from OfferHistory O
                                       left join StatusOffer S on O.StatusID = S.ID
                                       left join ArvootManagers A on A.ID = O.AgentID
                                       where O.OfferID = @OfferID order by O.CreateDate desc";
@@ -996,6 +996,11 @@ namespace ControlPanel
             }
             else
             {
+                SqlCommand cmdOfferHistory = new SqlCommand("insert into OfferHistory(OfferID, AgentID, Message) values(@OfferID, @AgentID, @Message)");
+                cmdOfferHistory.Parameters.AddWithValue("@OfferID", Request.QueryString["OfferID"]);
+                cmdOfferHistory.Parameters.AddWithValue("@AgentID", HttpContext.Current.Session["AgentID"].ToString());
+                cmdOfferHistory.Parameters.AddWithValue("@Message", "הועבר לתור תפעול");
+                DbProvider.ExecuteCommand(cmdOfferHistory);
                 Response.Redirect("Contact.aspx?ContactID=" + ContactID.Value);
             }
         }

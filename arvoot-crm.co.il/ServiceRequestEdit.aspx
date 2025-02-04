@@ -474,7 +474,7 @@
                                     </div>
                                     <div style="width: 7%; text-align: center;" class="RowDocuments">
                                         <%--<asp:ImageButton ID="ImageButton5" runat="server" CommandArgument='<%#Eval("File") %>' OnCommand="UploadFile_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icon/Upload_Button.png" />--%>
-                                        <asp:ImageButton ID="UploadFile" runat="server" OnCommand="UploadFile_Command" CommandArgument='<%# Eval("FileName") + "," + Eval("ID") %>' Style="vertical-align: middle; position: relative" ImageUrl="~/images/icons/Choosing_New_Service_Request_Downlaod_Button.png" />
+                                        <asp:ImageButton ID="UploadFile" runat="server" OnCommand="UploadFile_Command" CommandArgument='<%# Eval("FileName") + "," + Eval("ServiceRequestID") %>' Style="vertical-align: middle; position: relative" ImageUrl="~/images/icons/Choosing_New_Service_Request_Downlaod_Button.png" />
                                     </div>       
                                     <div style="width: 7%; text-align: center;" class="RowDocuments">
                                         <%--<asp:ImageButton ID="ImageButton5" runat="server" CommandArgument='<%#Eval("File") %>' OnCommand="UploadFile_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icon/Upload_Button.png" />--%>

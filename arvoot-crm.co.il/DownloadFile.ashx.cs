@@ -22,6 +22,7 @@ namespace ControlPanel
             System.Web.HttpResponse response = System.Web.HttpContext.Current.Response;
             System.Web.HttpRequest request = System.Web.HttpContext.Current.Request;
             string fileName = request.QueryString["fileName"];
+            string ServiceRequestID = request.QueryString["ServiceRequestID"];
             string OfferID = request.QueryString["OfferID"];
             string ext = Path.GetExtension(fileName); //get file extension
             string type = "";
@@ -45,24 +46,50 @@ namespace ControlPanel
                         break;
                 }
             }
-            string path = Path.Combine(ConfigurationManager.AppSettings["MapPath"], "OfferDocuments", fileName);
-            //fileName = "4b38c7244721e01caee0aa73c4ba2a1d.pdf";
-            if (File.Exists(path))
+            if (OfferID != null)
             {
-                //response.Redirect("OfferEdit.aspx");
-                response.ClearContent();
-                response.Clear();
-                response.ContentType = type;
-                response.AddHeader("Content-Disposition",
-                                   "attachment; filename=" + fileName + ";");
-                response.TransmitFile(path);
-                response.Flush();
-                response.End();
+                string path = Path.Combine(ConfigurationManager.AppSettings["MapPath"], "OfferDocuments", fileName);
+                //fileName = "4b38c7244721e01caee0aa73c4ba2a1d.pdf";
+                if (File.Exists(path))
+                {
+                    //response.Redirect("OfferEdit.aspx");
+                    response.ClearContent();
+                    response.Clear();
+                    response.ContentType = type;
+                    response.AddHeader("Content-Disposition",
+                                       "attachment; filename=" + fileName + ";");
+                    response.TransmitFile(path);
+                    response.Flush();
+                    response.End();
 
+                }
+                else
+                {
+                    response.Redirect("OfferEdit.aspx?OfferID=" + OfferID);
+                }
             }
             else
             {
-                response.Redirect("OfferEdit.aspx?OfferID=" + OfferID);
+                string path = Path.Combine(ConfigurationManager.AppSettings["MapPath"], "ServiceRequestDocuments", fileName);
+                //fileName = "4b38c7244721e01caee0aa73c4ba2a1d.pdf";
+                if (File.Exists(path))
+                {
+                    //response.Redirect("OfferEdit.aspx");
+                    response.ClearContent();
+                    response.Clear();
+                    response.ContentType = type;
+                    response.AddHeader("Content-Disposition",
+                                       "attachment; filename=" + fileName + ";");
+                    response.TransmitFile(path);
+                    response.Flush();
+                    response.End();
+
+                }
+                else
+                {
+                    response.Redirect("ServiceRequestEdit.aspx?ServiceRequestID=" + ServiceRequestID);
+                }
+
             }
 
 

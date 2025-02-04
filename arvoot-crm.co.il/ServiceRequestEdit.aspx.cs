@@ -260,7 +260,7 @@ namespace ControlPanel
                 }
             }
             // Combine both DataTables
-            string sqlServiceRequestDocument = @"select ID,FileName from ServiceRequestDocuments where ServiceRequestID = @ServiceRequestID";
+            string sqlServiceRequestDocument = @"select ID,FileName, ServiceRequestID from ServiceRequestDocuments where ServiceRequestID = @ServiceRequestID";
             SqlCommand cmdServiceRequestDocument = new SqlCommand(sqlServiceRequestDocument);
             cmdServiceRequestDocument.Parameters.AddWithValue("@ServiceRequestID", Request.QueryString["ServiceRequestID"]);
             dtServiceRequestDocument = DbProvider.GetDataTable(cmdServiceRequestDocument);
@@ -309,7 +309,7 @@ namespace ControlPanel
         {
             string[] parameters = e.CommandArgument.ToString().Split(',');
             if (!parameters[1].ToString().Equals("0"))
-                Response.Redirect("DownloadFile.ashx?fileName=" + parameters[0]);
+                Response.Redirect("DownloadFile.ashx?fileName=" + parameters[0] + "&ServiceRequestID=" + parameters[1]);
             else ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('עליך לשמור את הקובץ לפני הורדה');", true);
 
 

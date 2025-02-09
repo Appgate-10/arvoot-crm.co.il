@@ -273,12 +273,13 @@ namespace ControlPanel
             }
 
             string sqlServiceRequest = @"select CONVERT(varchar, s.CreateDate, 104) CreateDate, Lead.FirstName + ' ' + Lead.LastName as Invoice,Lead.tz, convert(varchar,Sum) as Sum,
-                                         convert(varchar,(isnull((select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1),0) + 
-										 iif(IsApprovedCreditOrDenial = 1 and SumCreditOrDenial is not null and SumCreditOrDenial != '',SumCreditOrDenial, 0 ) )) as ApprovedSum,
+                                         convert(varchar,(iif(payment.IsApprovedPayment = 1,payment.SumPayment,0) + 
+                                         iif(IsApprovedCreditOrDenial = 1 and SumCreditOrDenial is not null and SumCreditOrDenial != '',SumCreditOrDenial, 0 ) )) 										 
+                                         as ApprovedSum, convert(varchar, payment.DatePayment,104) as PaymentDate,
                                          convert(varchar,Sum - (isnull((select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1),0) + 
 										 convert(varchar,iif(IsApprovedCreditOrDenial = 1 and SumCreditOrDenial is not null and SumCreditOrDenial != '',SumCreditOrDenial, 0 ) ))) as paid, 
                                          p.purpose as PurposeName
-                                         from ServiceRequest s 
+                                         from ServiceRequest s  left join ServiceRequestPayment payment on payment.ServiceRequestID = s.ID
                                          left join ServiceRequestPurpose p on s.PurposeID = p.ID 
                                          inner join Offer on Offer.ID = s.OfferID
                                          inner join Lead on Lead.ID = Offer.LeadID" + sqlJoin + sqlWhere;
@@ -297,8 +298,9 @@ namespace ControlPanel
             dataRow[2] = "ת.ז.";
             dataRow[3] = "סכום גבייה";
             dataRow[4] = "סכום שאושר";
-            dataRow[5] = "יתרת גבייה";
-            dataRow[6] = "מטרת הגבייה";
+            dataRow[5] = "תאריך תשלום";
+            dataRow[6] = "יתרת גבייה";
+            dataRow[7] = "מטרת הגבייה";
 
             ds.Tables[0].Rows.InsertAt(dataRow, 0);
             bool didSuccess = CreateSimpleExcelFile.CreateExcelDocument(ds, "ServiceRequests.xlsx", Response);

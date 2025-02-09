@@ -9,3 +9,16 @@ C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\ControlPanel.csproj.Asse
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\ControlPanel.csproj.CoreCompileInputs.cache
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\arvoot-crm.co.il.dll
 C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\arvoot-crm.co.il.pdb
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\arvoot-crm.co.il.dll.config
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\arvoot-crm.co.il.dll
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\arvoot-crm.co.il.pdb
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\Newtonsoft.Json.dll
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\RestSharp.Net2.dll
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\Simplexcel.dll
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\Newtonsoft.Json.pdb
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\Newtonsoft.Json.xml
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\Simplexcel.xml
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\ControlPanel.csproj.CoreCompileInputs.cache
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\ControlPanel.csproj.CopyComplete
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\arvoot-crm.co.il.dll
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\arvoot-crm.co.il.pdb

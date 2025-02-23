@@ -9,31 +9,31 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="AgentNumbers.aspx">
-      <publishTime>02/11/2024 23:56:46</publishTime>
+      <publishTime>11/02/2024 23:56:46</publishTime>
     </File>
     <File Include="bin/arvoot-crm.co.il.dll">
-      <publishTime>02/09/2025 12:15:18</publishTime>
+      <publishTime>02/17/2025 16:37:02</publishTime>
     </File>
     <File Include="bin/arvoot-crm.co.il.pdb">
-      <publishTime>02/09/2025 12:15:18</publishTime>
+      <publishTime>02/17/2025 16:37:02</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.pdb">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="bin/RestSharp.Net2.dll">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="bin/Simplexcel.dll">
-      <publishTime>01/05/2022 03:38:48</publishTime>
+      <publishTime>05/01/2022 03:38:48</publishTime>
     </File>
     <File Include="Business.aspx">
-      <publishTime>03/11/2024 10:13:45</publishTime>
+      <publishTime>11/03/2024 10:13:45</publishTime>
     </File>
     <File Include="ChatList.aspx">
-      <publishTime>08/10/2024 12:38:44</publishTime>
+      <publishTime>10/08/2024 12:38:44</publishTime>
     </File>
     <File Include="Contact.aspx">
       <publishTime>01/21/2025 12:36:55</publishTime>
@@ -48,103 +48,103 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/06/2025 09:20:59</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Bold.eot">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Bold.ttf">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Bold.woff">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Bold.woff2">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-BoldItalic.eot">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-BoldItalic.ttf">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-BoldItalic.woff">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-BoldItalic.woff2">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-ExtraBold.eot">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-ExtraBold.ttf">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-ExtraBold.woff">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-ExtraBold.woff2">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-ExtraBoldItalic.eot">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-ExtraBoldItalic.ttf">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-ExtraBoldItalic.woff">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-ExtraBoldItalic.woff2">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Italic.eot">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Italic.ttf">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Italic.woff">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Italic.woff2">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Light.eot">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Light.ttf">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Light.woff">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Light.woff2">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-LightItalic.eot">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-LightItalic.ttf">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-LightItalic.woff">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-LightItalic.woff2">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Regular.eot">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Regular.ttf">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Regular.woff">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Regular.woff2">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/opensanshebrew/opensanshebrew.css">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="css/theme.css">
       <publishTime>10/13/2024 21:21:08</publishTime>
@@ -153,19 +153,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/25/2024 13:55:43</publishTime>
     </File>
     <File Include="default.aspx">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="DesignDisplay.Master">
       <publishTime>01/19/2025 11:20:46</publishTime>
     </File>
     <File Include="DesignDisplayFailed.Master">
-      <publishTime>06/11/2024 10:41:04</publishTime>
+      <publishTime>11/06/2024 10:41:04</publishTime>
     </File>
     <File Include="DownloadFile.ashx">
-      <publishTime>06/11/2024 10:41:04</publishTime>
+      <publishTime>11/06/2024 10:41:04</publishTime>
     </File>
     <File Include="HomePage.aspx">
-      <publishTime>06/11/2024 15:22:46</publishTime>
+      <publishTime>11/06/2024 15:22:46</publishTime>
     </File>
     <File Include="HouseHolds.aspx">
       <publishTime>10/08/2024 12:38:44</publishTime>
@@ -177,400 +177,400 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/30/2024 13:17:49</publishTime>
     </File>
     <File Include="images/appgate.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/Avatar.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/blank.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/Calendar_Big_BG.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/camera/200X120.jpg">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/camera/200X146.jpg">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/camera/200X200.jpg">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/camera/200X330.jpg">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/Chack_Box_1_Off.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/Chack_Box_1_On.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/HederBg.jpg">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/1212121.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Active_Icon.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Agent_Avatar_Icon.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Agent_Profile_Image.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/areas.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Arrow_Blue_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Arrow_Left_1.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Arrow_Slide_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Back_User_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/black_Calendar.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/black_home.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/black_user.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Blue_Vi.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Calendar_Big_BG.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Choosing_New_Service_Request_Downlaod_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Choosing_New_Service_Request_Shere_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Choosing_Service_Choose_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Choosing_Service_New_Service_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Choosing_Service_Request_Cancel_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Choosing_Service_Request_Ok_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Copy_Button_2.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Copy_Lid_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Customer_Avatar.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Delete_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Delete_Button_2.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Delete_Lid_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/DownLaod_Pdf_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Down_Arrow_Blue.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Duble_Arrow_Button_Blue.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/duplicate.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/edit.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Edit_Button_2.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Edit_Comment_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Excel_Icon.png">
       <publishTime>12/29/2024 13:01:29</publishTime>
     </File>
     <File Include="images/icons/exel_pizur.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Export_New_Contact_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/file.png">
       <publishTime>12/25/2024 22:22:14</publishTime>
     </File>
     <File Include="images/icons/Forward_Leads_To_Agent_Forward_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Forward_Leads_To_Agent_Mark_All_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/gift.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Help_Button_2.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Hide_Media.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/History_Delete_All_Message_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/home.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/In_Treatment_Status_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Last_Message_Icon.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/LogOut.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Mail_Icon.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Mark_For_Archives_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/New_Insured_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/New_Lid_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/New_Offer_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/New_Polica_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Non_Active_Icon.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Not_Relevant_Button.png">
       <publishTime>10/15/2024 11:14:41</publishTime>
     </File>
     <File Include="images/icons/Open_Mession_Blue_Point_1.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Open_Mession_Blue_Point_2.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Open_Mession_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Open_Mession_Delete_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Open_Mession_Edit_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Open_Mession_Sending_Flug.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Open_Mession_Waiting_Flug.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/pdf.png">
       <publishTime>12/25/2024 22:19:41</publishTime>
     </File>
     <File Include="images/icons/Pdf_Icon.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Phone_Icon.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Popup_Close_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Print_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Profile_Image.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Profile_Image_Box.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/push_icon_panel.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Refrash_List_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Refresh_Last_Message_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/search.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Search_Contact_User_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Search_Pdf_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Secondary_Status_1.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Secondary_Status_2.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Secondary_Status_3.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Secondary_Status_4.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Secondary_Status_5.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Secondary_Status_6.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Send_Mail_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Send_Sms_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Shere_Button_2.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Shere_Lid_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Show_Media.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Side_Menu_Icon_1.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Side_Menu_Icon_2.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Side_Menu_Icon_3.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Side_Menu_Icon_4.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Side_Menu_Icon_5.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Side_Menu_Icon_6.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Side_Menu_Icon_7.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Side_Menu_Icon_8.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Side_Menu_Icon_9.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/signin.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Signin_BG.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Signin_Detele_Hide_Password_Off.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Signin_Detele_Hide_Password_On.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Signin_Detele_Next_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Status_1.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Status_2.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Status_3_1.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Status_3_2.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Status_3_3.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Status_4.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Status_5.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Status_6.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Topbar_Logo_1.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Topbar_Logo_Message_Icon_Off.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Uplaod_File_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Upload_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/users.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/User_Image_Avatar.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/v.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/winners.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/Work_Status_List_BG.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/icons/x.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/imgTemp.jpg">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/left.jpg">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/Logout_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/Mail_Logo_1.png">
       <publishTime>10/30/2024 13:17:49</publishTime>
@@ -579,31 +579,31 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/30/2024 13:17:49</publishTime>
     </File>
     <File Include="images/right.jpg">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/Save_Button_1.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/Save_Change_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/Save_Episode_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/Send_Push_Messge_Button.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/Small_Icon_Media_Box.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/Small_Image_Box.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="images/TempUser.png">
-      <publishTime>08/10/2024 12:38:45</publishTime>
+      <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="js/js.js">
-      <publishTime>04/11/2024 16:00:39</publishTime>
+      <publishTime>11/04/2024 16:00:39</publishTime>
     </File>
     <File Include="Lead2.aspx">
       <publishTime>11/03/2024 10:13:45</publishTime>
@@ -621,7 +621,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/06/2025 12:55:12</publishTime>
     </File>
     <File Include="Notifications.aspx">
-      <publishTime>03/11/2024 10:13:45</publishTime>
+      <publishTime>11/03/2024 10:13:45</publishTime>
     </File>
     <File Include="OfferAdd.aspx">
       <publishTime>12/26/2024 11:57:48</publishTime>
@@ -639,7 +639,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/07/2025 11:43:25</publishTime>
     </File>
     <File Include="ResetPassword.aspx">
-      <publishTime>03/11/2024 15:12:57</publishTime>
+      <publishTime>11/03/2024 15:12:57</publishTime>
     </File>
     <File Include="ServiceRequestAdd.aspx">
       <publishTime>01/05/2025 10:36:17</publishTime>
@@ -651,10 +651,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/06/2025 14:09:10</publishTime>
     </File>
     <File Include="SignIn.aspx">
-      <publishTime>04/11/2024 16:00:39</publishTime>
+      <publishTime>11/04/2024 16:00:39</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>02/09/2025 12:15:52</publishTime>
+      <publishTime>02/17/2025 16:37:36</publishTime>
     </File>
   </ItemGroup>
 </Project>

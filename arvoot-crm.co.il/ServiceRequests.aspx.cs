@@ -235,44 +235,44 @@ namespace ControlPanel
         protected void ExcelExport_Click(object sender, EventArgs e)
         {
             SqlCommand cmd = new SqlCommand();
-            string sqlWhere = " where 1=1 ", sql2 = "", sqlJoin = "";
+            string sqlWhere = " where 1=1 ", sql2 = "", sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID";
             if (HttpContext.Current.Session["AgentLevel"] != null)
             {
                 switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
                 {
                     case 2:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
-                        sqlWhere = " and (C.ID = @ID OR B.ID = @ID)";
+                        sqlWhere += " and (C.ID = @ID OR B.ID = @ID)";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     case 7:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
-                        sqlWhere = " and (C.ID = (select ParentID from ArvootManagers where ID = @ID) OR B.ID = (select ParentID from ArvootManagers where ID = @ID))";
+                        sqlWhere += " and (C.ID = (select ParentID from ArvootManagers where ID = @ID) OR B.ID = (select ParentID from ArvootManagers where ID = @ID))";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     case 3:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID  ";
-                        sqlWhere = " and (B.ID = @ID OR A.ID = @ID) ";
+                        sqlWhere += " and (B.ID = @ID OR A.ID = @ID) ";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     case 6:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) ";
-                        sqlWhere = " and A.ID = @ID";
+                        sqlWhere += " and A.ID = @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     case 4:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ParentID = A.ParentID  ";
-                        sqlWhere = " and B.ID = @ID and IsInOperatingQueue = 1";
+                        sqlWhere += " and B.ID = @ID and IsInOperatingQueue = 1";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     case 5:
-                        sqlWhere = " and OperatorID = @ID";
+                        sqlWhere += " and OperatorID = @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                 }
             }
 
-            string sqlServiceRequest = @"select CONVERT(varchar, s.CreateDate, 104) CreateDate, Lead.FirstName + ' ' + Lead.LastName as Invoice,Lead.tz, convert(varchar,Sum) as Sum,
+            string sqlServiceRequest = @"select CONVERT(varchar, s.CreateDate, 104) CreateDate, Lead.FirstName + ' ' + Lead.LastName as Invoice,Lead.tz,A.FullName, convert(varchar,Sum) as Sum,
                                          convert(varchar,(iif(payment.IsApprovedPayment = 1,payment.SumPayment,0) + 
                                          iif(IsApprovedCreditOrDenial = 1 and SumCreditOrDenial is not null and SumCreditOrDenial != '',SumCreditOrDenial, 0 ) )) 										 
                                          as ApprovedSum, convert(varchar, payment.DatePayment,104) as PaymentDate,
@@ -296,11 +296,12 @@ namespace ControlPanel
             dataRow[0] = "תאריך הקמה";
             dataRow[1] = "שם לקוח";
             dataRow[2] = "ת.ז.";
-            dataRow[3] = "סכום גבייה";
-            dataRow[4] = "סכום שאושר";
-            dataRow[5] = "תאריך תשלום";
-            dataRow[6] = "יתרת גבייה";
-            dataRow[7] = "מטרת הגבייה";
+            dataRow[3] = "בעלים";
+            dataRow[4] = "סכום גבייה";
+            dataRow[5] = "סכום שאושר";
+            dataRow[6] = "תאריך תשלום";
+            dataRow[7] = "יתרת גבייה";
+            dataRow[8] = "מטרת הגבייה";
 
             ds.Tables[0].Rows.InsertAt(dataRow, 0);
             bool didSuccess = CreateSimpleExcelFile.CreateExcelDocument(ds, "ServiceRequests.xlsx", Response);

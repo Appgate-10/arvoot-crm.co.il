@@ -244,8 +244,8 @@
                         <asp:Label ID="Label7" Text="משימות פתוחות" class="text-blue" Style="font-size: 11pt; padding-right: 10px" runat="server" />
                         <asp:Button ID="BtnFutureTasks" CssClass="btnBlue" runat="server" Text="משימות עתידיות" OnClick="BtnFutureTasks_Click"/>
                     </div>
-                    <div style="padding-bottom: 12%; margin: 10px 10px 10px 30px;">
-                        <asp:Repeater ID="Repeater3" runat="server" OnItemDataBound="Repeater3_ItemDataBound">
+                    <div style="height: 75%; overflow-y: auto; margin: 10px 10px 10px 30px;">
+                        <asp:Repeater ID="Repeater3"  runat="server" OnItemDataBound="Repeater3_ItemDataBound">
                             <ItemTemplate>
                                 <div style="display: flex; border-radius: 12px; margin-left: 10px; padding-right: 16px; padding-bottom: 8px;">
                                     <img src="images/icons/Open_Mession_Blue_Point_1.png" runat="server" style="width: 39px; height: 40px;" />
@@ -260,9 +260,13 @@
                                             <img src="images/icons/Open_Mession_Waiting_Flug.png" runat="server" style="width: 18px; height: auto;" /></div>
                                         <div id="Status" class="text-gray" style="width: 15%"><%#Eval("Status") %></div>
                                         <div class="text-gray" style="width: 5%">
-                                            <img src="images/icons/Open_Mession_Delete_Button.png" runat="server" style="width: 18px; height: auto;" /></div>
+                                             <asp:ImageButton OnCommand="Mession_Delete" OnClientClick="return confirm('האם אתה בטוח שברצונך למחוק את המשימה?');"  CommandArgument='<%#Eval("ID") %>'  ImageUrl="images/icons/Open_Mession_Delete_Button.png" runat="server" style="width: 18px; height: auto;" />
+
+                                        </div>
                                         <div class="text-gray" style="width: 5%">
-                                            <img src="images/icons/Open_Mession_Edit_Button.png" runat="server" style="width: 18px; height: auto;" /></div>
+<%--                                            <img src="images/icons/Open_Mession_Edit_Button.png" runat="server" style="width: 18px; height: auto;" />--%>
+                                            <asp:ImageButton OnCommand="Mession_Edit"  CommandArgument='<%#Eval("ID") %>' runat="server" style="width: 18px; height: auto;" ImageUrl="images/icons/Open_Mession_Edit_Button.png"  />
+                                        </div>
 
 
                                     </div>
@@ -444,14 +448,60 @@
                         <asp:Button ID="AddNewAgent" Name="AddNewAgent" style="margin-bottom:40px" runat="server" OnClick="SaveNewAgent_Click" Text="צרף עובד חברה/סוכן חדש" class="AddAgentButton" OnClientClick="reload(LoadingDiv)" />
                           <asp:Label ID="FormErrorAgent_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
                    </div>
+         
 
 
                 </div>
-
+                     
          </div>
 
 
      </div>
+              <div id="TaskDiv" class="popUpOut MainDivDocuments" visible="false" runat="server">
+                <div id="TaskDiv2" class="popUpIn" style="width: 35%; height: 592px; margin-top: 147px; margin-bottom: 100px; direction: rtl; text-align: center; border-width: 2px;" runat="server">
+                    <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ImageButton5" OnClick="CloseTaskPopUp_Click" />
+                    <div class="col MainDivPopup2" style="padding-top: 45px;">
+                        <label class="HeaderPopupPurple">עידכון משימה</label>
+                    <div class="row" style="align-items: center; justify-content: center; margin-top: 2%; height: 31%; margin-bottom: 2%;width: 100%;">
+                    
+                        <div class="col form-group-wrapper" style="margin-left: 15px; height: 100%;width:100%">
+                                    <div class="col form-input-wrapper">
+                                        <span class="form-span-wrapper-right">תוכן</span>
+                                        <textarea type="text" runat="server" name="Name" style="margin: 0px 5%; text-align: right;padding-right: 10px;height: 147px; border: solid 1px #a3a3a4;
+                                                    border-radius: 7px;width: 599px; resize:none" id="TextTask" placeholder="תוכן" />
+                                       
+                                    </div>
+                            <div style="display:flex; padding: 20px 0px;">
+                                    <div class="col form-input-wrapper" style="width:50%;margin-right: 2.5%;">
+                                        <span class="form-span-wrapper-right">תאריך</span>
+                                        <input type="date" runat="server" name="Name" style="margin: 0px 5%;border-radius: 7px; width: 90%;height: 37px;" id="Date" placeholder="תאריך" />
+                                       
+                                    </div>
+                              <div class="col form-input-wrapper" style="width:50%; margin-left: 1.5%;">
+                                        <span class="form-span-wrapper-right">סטטוס</span>
+                                         <select id="SelectStatusTask" runat="server" class="selectGlobal" style="width: 90%; border: solid 1px #a3a3a4; border-radius: 7px;
+                                                 height: 37px; margin: 0px 5%; color: #767676; font-size: 12pt; padding-right: 20px;"></select>
+                                         
+                                    </div>
+                                </div>
+                                </div>
+                 
+
+                   </div>
+    
+                   <div class="RowGrayPopUpPay" style="margin-bottom: 6%;"></div>
+                   <div class="col" style="width:220px">
+                        <asp:Label ID="Label10" runat="server" Text="" CssClass="ErrorLable2" Visible="false"></asp:Label>
+                       <asp:HiddenField runat="server" ID="ID" />
+                        <asp:Button ID="AddNewTask" Name="AddNewTask" OnClick="OpenNewTask_Click" runat="server"  Text="שמור" class="AddAgentButton" />
+                          <asp:Label ID="FormErrorTask_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
+                   </div>
+                    </div>
+
+
+
+                </div>
+            </div>
         </ContentTemplate>
     </asp:UpdatePanel>
        <input type="text" runat="server" name="ImageFile_1" id="ImageFile_1" style="display: none" />

@@ -12,10 +12,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/02/2024 23:56:46</publishTime>
     </File>
     <File Include="bin/arvoot-crm.co.il.dll">
-      <publishTime>02/17/2025 16:37:02</publishTime>
+      <publishTime>03/11/2025 15:52:02</publishTime>
     </File>
     <File Include="bin/arvoot-crm.co.il.pdb">
-      <publishTime>02/17/2025 16:37:02</publishTime>
+      <publishTime>03/11/2025 15:52:02</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>10/08/2024 12:38:45</publishTime>
@@ -156,7 +156,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/08/2024 12:38:45</publishTime>
     </File>
     <File Include="DesignDisplay.Master">
-      <publishTime>01/19/2025 11:20:46</publishTime>
+      <publishTime>03/11/2025 13:10:52</publishTime>
     </File>
     <File Include="DesignDisplayFailed.Master">
       <publishTime>11/06/2024 10:41:04</publishTime>
@@ -165,7 +165,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/06/2024 10:41:04</publishTime>
     </File>
     <File Include="HomePage.aspx">
-      <publishTime>11/06/2024 15:22:46</publishTime>
+      <publishTime>03/11/2025 12:13:25</publishTime>
     </File>
     <File Include="HouseHolds.aspx">
       <publishTime>10/08/2024 12:38:44</publishTime>
@@ -624,10 +624,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/03/2024 10:13:45</publishTime>
     </File>
     <File Include="OfferAdd.aspx">
-      <publishTime>12/26/2024 11:57:48</publishTime>
+      <publishTime>03/09/2025 14:24:08</publishTime>
     </File>
     <File Include="OfferEdit.aspx">
-      <publishTime>01/28/2025 16:26:50</publishTime>
+      <publishTime>03/11/2025 14:28:22</publishTime>
     </File>
     <File Include="Offers.aspx">
       <publishTime>01/07/2025 11:55:49</publishTime>
@@ -654,7 +654,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/04/2024 16:00:39</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>02/17/2025 16:37:36</publishTime>
+      <publishTime>03/11/2025 15:52:29</publishTime>
     </File>
   </ItemGroup>
 </Project>

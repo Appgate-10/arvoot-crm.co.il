@@ -76,9 +76,7 @@ namespace ControlPanel
             }
 
         }
-        protected void Repeater2_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-        }
+    
         //protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
         //{
 

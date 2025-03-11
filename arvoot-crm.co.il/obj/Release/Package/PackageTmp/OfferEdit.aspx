@@ -27,7 +27,8 @@
             <div class="DivLidTop">
       
                 <asp:Button runat="server" ID="btnMoveToOperatingQueqe" Text="העבר לתור תפעול" OnClick="btnMoveToOperatingQueqe_Click" CssClass="BtnMove" OnClientClick="reload(LoadingDiv);" />
-                <asp:Button runat="server" ID="btnMoveToOperator" Text="העבר למתפעלת" OnClick="btnMoveToOperator_Click" CssClass="BtnMove" OnClientClick="reload(LoadingDiv);" />
+                <asp:Button runat="server"  ID="btnMoveToOperator" Text="העבר למתפעלת" OnClick="btnMoveToOperator_Click" CssClass="BtnMove" OnClientClick="reload(LoadingDiv);" />
+                <asp:Button runat="server" Visible="false" ID="btnMoveToAgent" Text="החזר לסוכן" OnClick="btnMoveToAgent_Click" CssClass="BtnMove" OnClientClick="reload(LoadingDiv);" />
                 <asp:ImageButton ID="DeleteLid" runat="server" OnClientClick="return confirm('האם אתה בטוח שברצונך למחוק את ההצעה');" ImageUrl="~/images/icons/Delete_Lid_Button.png" OnClick="DeleteOffer_Click" />
                 <asp:Button runat="server" ID="btn_save" Text="שמור" OnClick="btn_save_Click" CssClass="BtnSave" Style="width: 110px; height: 35px;" OnClientClick="reload(LoadingDiv);" />
             </div>
@@ -207,7 +208,7 @@
                     </div>
                     <div  style="width: 20%;">
                          <textarea id="Note" name="FirstName" type="text" runat="server" style="width: 100%;height: 164px;border: 1px solid rgb(0, 152, 255);
-                                    border-radius: 12px;margin-top: 20px;resize: none;overflow-y: scroll;scrollbar-width: none;" class="InputAdd" />
+                                    border-radius: 12px;margin-top: 20px;resize: none;overflow-y: hidden;scrollbar-width: none;" class="InputAdd" />
 
                     </div>
                 </div>
@@ -435,33 +436,7 @@
                 </div>
             </div>
 
-             <div id="OpenTasksList" class="popUpOut MainDivDocuments" visible="false" runat="server">
-                <div class="popUpIn" style="width: 35%; height: 700px; margin-top: 100px; margin-bottom: 100px; direction: rtl; text-align: center; border-width: 2px;" runat="server">  
-                    <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ImageButton6" OnClick="CloseTasksListPopUp_Click" />
-                    <div class="DivDownPopUp" >
-                        <label style="font-size:15pt" class="LableBlue">רשימת משימות פתוחות</label>
-                        <div class="MainDivDocuments DivRepeaterPopUp">
-                         <asp:Repeater ID="Repeater3" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
-                             <ItemTemplate>
-                                 <div class="row DivRpwRepeaterPopUp">
-                                     <div style="width: 50%; text-align: right;" class="ColorLable"><%#Eval("Text") %></div>
-                                     <div style="width: 22.5%; text-align: right;" class="ColorLable"><%#Eval("PerformDate") %></div>
-                                     <div style="width: 22.5%; text-align: right;" class="ColorLable"><%#Eval("Status") %></div>
-                                        <div style="width: 5%; text-align: right;" class="ColorLable">
-                                              <asp:ImageButton ID="DeleteTask" runat="server" OnClientClick="return confirm('האם אתה בטוח שברצונך למחוק את המשימה?');" CommandArgument='<%#Eval("ID") %>' OnCommand="DeleteTask_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icons/Open_Mession_Delete_Button.png" />
-
-                                        </div>
-                                    
-                                 </div>
-                                 <div class="RowWhitePopUp"></div>
-                             </ItemTemplate>
-
-
-                         </asp:Repeater>
-                     </div>
-                    </div>
-                 </div>
-            </div>
+           
         </ContentTemplate>
     </asp:UpdatePanel>
 
@@ -487,12 +462,38 @@
                 </div>
             </div>
 
+              <div id="OpenTasksList" class="popUpOut MainDivDocuments" visible="false" runat="server">
+                <div class="popUpIn" style="width: 35%; height: 700px; margin-top: 100px; margin-bottom: 100px; direction: rtl; text-align: center; border-width: 2px;" runat="server">  
+                    <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ImageButton6" OnClick="CloseTasksListPopUp_Click" />
+                    <div class="DivDownPopUp">
+                        <label style="font-size:15pt" class="LableBlue">רשימת משימות פתוחות</label>
+                        <div class="MainDivDocuments DivRepeaterPopUp">
+                         <asp:Repeater ID="Repeater3" runat="server">
+                             <ItemTemplate>
+                                 <div class="row DivRpwRepeaterPopUp">
+                                    <div style="width: 50%; text-align: right;" class="ColorLable"><%#Eval("Text") %></div>
+                                    <div style="width: 22.5%; text-align: right;" class="ColorLable"><%#Eval("PerformDate") %></div>
+                                    <div style="width: 22.5%; text-align: right;" class="ColorLable"><%#Eval("Status") %></div>
+                                    <div style="width: 5%; text-align: right;" class="ColorLable">
+                                          <asp:ImageButton ID="DeleteTask" runat="server" OnClientClick="return confirm('האם אתה בטוח שברצונך למחוק את המשימה?');"  CommandArgument='<%#Eval("ID") %>' OnCommand="DeleteTask_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icons/Open_Mession_Delete_Button.png" />
+                                    </div>                                    
+                                 </div>
+                                 <div class="RowWhitePopUp"></div>
+                             </ItemTemplate>
+
+
+                         </asp:Repeater>
+                     </div>
+                    </div>
+                 </div>
+            </div>
+
          </ContentTemplate>
      </asp:UpdatePanel>
 
        <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
-            <div id="popupImg" class="popUpOut MainDivDocuments " visible="false" runat="server">
+            <div id="popupImg" class="popUpOut MainDivDocuments" visible="false" runat="server">
                 <div id="Div2" class="popUpIn" style="    width: 50%; height: 90%;margin-top: 40px; direction: rtl;  text-align: center; border-width: 2px;" runat="server">
                     <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ImageButton7" OnClick="CloseImagePopUp_Click" />
                    
@@ -529,6 +530,36 @@
 
                }
            }
+           function adjustTextareaHeight(textarea) {
+               // Reset height to auto to get the correct scrollHeight measurement
+               textarea.style.height = "164px"; // Default height
+
+               if (textarea.value.trim() === "") {
+                   // If textarea is empty, set to default height
+                   textarea.style.height = "164px";
+               } else {
+                   // Set height based on content
+                   textarea.style.height = textarea.scrollHeight + "px";
+               }
+           }
+
+           // Run when the document is loaded
+           document.addEventListener("DOMContentLoaded", function () {
+               var textarea = document.getElementById("ContentPlaceHolder1_Note");
+
+               // Initial adjustment
+               adjustTextareaHeight(textarea);
+
+               // Add event listeners for input changes
+               textarea.addEventListener("input", function () {
+                   adjustTextareaHeight(this);
+               });
+
+               // Also adjust on window resize
+               window.addEventListener("resize", function () {
+                   adjustTextareaHeight(textarea);
+               });
+           });
        </script>
 </asp:Content>
 

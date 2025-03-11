@@ -42,7 +42,7 @@ namespace ControlPanel
                 OperatorsList.DataBind();
                 OperatorsList.Items.Insert(0, new ListItem("מתפעלת", ""));
 
-                SqlCommand cmdStatus = new SqlCommand("SELECT * FROM StatusOffer where  ID != 9 and ID != 10 ");
+                SqlCommand cmdStatus = new SqlCommand("SELECT * FROM StatusOffer where   ID != 10 ");
                 DataSet dsStatus = DbProvider.GetDataSet(cmdStatus);
                 StatusList.DataSource = dsStatus;
                 StatusList.DataTextField = "Status";

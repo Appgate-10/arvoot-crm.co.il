@@ -22,4 +22,3 @@ C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\Cont
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\ControlPanel.csproj.CopyComplete
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\arvoot-crm.co.il.dll
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\arvoot-crm.co.il.pdb
-C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\ControlPanel.csprojAssemblyReference.cache

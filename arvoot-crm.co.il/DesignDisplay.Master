@@ -220,7 +220,7 @@
                                                 <asp:ImageButton ID="BtnDeleteAllHistory" runat="server" Class="ImgCleanAll" src="images/icons/History_Delete_All_Message_Button.png" OnClick="BtnDeleteAllHistory_Click" />
                                             </div>
                                             <div style="overflow-y: auto; height: 353px; margin-top: 20px;">
-                                                <asp:Repeater ID="Repeater2" runat="server" OnItemDataBound="Repeater2_ItemDataBound">
+                                                <asp:Repeater ID="Repeater2" runat="server">
                                                     <ItemTemplate>
                                                         <div style="background-color: whitesmoke; border-radius: 12px; margin: 10px 10px; padding-right: 16px; padding-bottom: 8px;">
                                                             <div style="text-align: left; padding-left: 10px;">

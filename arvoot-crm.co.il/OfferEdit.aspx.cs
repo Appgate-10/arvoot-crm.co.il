@@ -418,6 +418,8 @@ namespace ControlPanel
 
                     movedToOperating.Visible = false;
                     isInOperatingManager = true;
+                    if (HttpContext.Current.Session["AgentLevel"] != null && (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 4 || int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 3))
+                        btnMoveToAgent.Visible = true;
                 }
                 if (rowOffer["IsInOperatingQueue"].ToString() == "1")
                 {
@@ -494,6 +496,7 @@ namespace ControlPanel
 
                 if ((HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) != 4)|| rowOffer["IsInOperatingQueue"].ToString() != "1")
                     btnMoveToOperator.Visible = false;
+              
 
             }
 
@@ -689,11 +692,13 @@ namespace ControlPanel
         protected void PopUpTasksList_Click(object sender, EventArgs e)
         {
             OpenTasksList.Visible = true;
-            SqlCommand cmdSelectTasks = new SqlCommand("select t.ID, Text,ts.Status,CONVERT(varchar,PerformDate, 104) as PerformDate from Tasks t left join TaskStatuses ts on t.Status = ts.ID where OfferID = @ID");
+            UpdatePanel2.Update();
+            SqlCommand cmdSelectTasks = new SqlCommand("select t.ID, Text, ts.Status, CONVERT(varchar,PerformDate, 104) as PerformDate from Tasks t left join TaskStatuses ts on t.Status = ts.ID where OfferID = @ID");
             cmdSelectTasks.Parameters.AddWithValue("@ID", Request.QueryString["OfferID"]);
             DataSet ds = DbProvider.GetDataSet(cmdSelectTasks);
-            Repeater3.DataSource = ds;
+          Repeater3.DataSource = ds;
             Repeater3.DataBind();
+
         }
 
         protected void SendSms_Click(object sender, EventArgs e)
@@ -1030,8 +1035,18 @@ namespace ControlPanel
             MoveToOperatorPopUp.Visible = true;
             UpdatePanel2.Update();
 
-        }       
-        
+        }
+        protected void btnMoveToAgent_Click(object sender, EventArgs e) {
+            string sql = "update Offer set OperatorID = @OperatorID where ID = @ID";
+            SqlCommand sqlCommand = new SqlCommand(sql);
+            sqlCommand.Parameters.AddWithValue("@OperatorID", DBNull.Value);
+            sqlCommand.Parameters.AddWithValue("@ID", Request.QueryString["OfferID"]);
+            DbProvider.ExecuteCommand(sqlCommand);
+
+            Response.Redirect("Offers.aspx");
+
+        }
+
 
     }
 }

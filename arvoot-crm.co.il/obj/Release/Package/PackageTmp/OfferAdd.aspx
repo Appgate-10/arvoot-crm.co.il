@@ -175,7 +175,7 @@
                 </div>--%>
                     </div>
                     <div style="width: 20%;">
-                        <textarea id="Note" name="FirstName" type="text" runat="server" style="width: 100%; height: 164px; border: 1px solid rgb(0, 152, 255); border-radius: 12px; margin-top: 20px; resize: none; overflow-y: scroll; scrollbar-width: none;"
+                        <textarea id="Note" name="FirstName" type="text" runat="server" style="width: 100%; height: 164px; border: 1px solid rgb(0, 152, 255); border-radius: 12px; margin-top: 20px; resize: none; overflow-y: hidden; scrollbar-width: none;"
                             class="InputAdd" />
 
                     </div>
@@ -315,7 +315,39 @@
                                  document.getElementById(x).click();
 
                              }
-                         }
+        }
+
+
+         function adjustTextareaHeight(textarea) {
+                // Reset height to auto to get the correct scrollHeight measurement
+                textarea.style.height = "164px"; // Default height
+
+        if (textarea.value.trim() === "") {
+                // If textarea is empty, set to default height
+                textarea.style.height = "164px";
+        } else {
+                // Set height based on content
+                textarea.style.height = textarea.scrollHeight + "px";
+        }
+    }
+
+    // Run when the document is loaded
+         document.addEventListener("DOMContentLoaded", function() {
+        var textarea = document.getElementById("ContentPlaceHolder1_Note");
+
+        // Initial adjustment
+        adjustTextareaHeight(textarea);
+
+        // Add event listeners for input changes
+        textarea.addEventListener("input", function() {
+                adjustTextareaHeight(this);
+        });
+
+        // Also adjust on window resize
+        window.addEventListener("resize", function() {
+                adjustTextareaHeight(textarea);
+        });
+    });
     </script>
     <%--    <script type="text/javascript">MarkMenuCss('Users');</script>--%>
 </asp:Content>

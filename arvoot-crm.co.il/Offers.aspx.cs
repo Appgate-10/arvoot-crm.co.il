@@ -50,10 +50,57 @@ namespace ControlPanel
                 StatusList.DataBind();
                 StatusList.Items.Insert(0, new ListItem("סטטוס", ""));
 
-                string sql = "";
-                if (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 4)
+                string sql = " SELECT A.FullName as AgentName,A.ID FROM ArvootManagers A";
+
+                /*if (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 4)
                     sql = " Or ParentID = (select ParentID FROM ArvootManagers where ID = (select ParentID FROM ArvootManagers where ID = @ID))";
                 SqlCommand cmdAgents = new SqlCommand(" SELECT  FullName as AgentName,ID FROM ArvootManagers where (ParentID = (select ParentID FROM ArvootManagers where ID = @ID)" + sql + ") and Type in (3,6)");
+                cmdAgents.Parameters.AddWithValue("@ID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
+                DataSet dsAgents = DbProvider.GetDataSet(cmdAgents);*/
+
+                if (HttpContext.Current.Session["AgentLevel"] != null)
+                {
+                    switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
+                    {
+
+                        case 1:
+                            sql += " where A.Type in (3,6) ";
+                            break;
+                        case 2:
+                            sql += " inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID where A.Type in (3, 6) and(C.ID = @ID OR B.ID =  @ID) ";
+                            break;
+                        case 7:
+                            sql += @" inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID where A.Type in (3, 6)  
+                                      and (C.ID = (select ParentID from ArvootManagers where ID = @ID) OR B.ID = (select ParentID from ArvootManagers where ID = @ID))";
+                            break;
+                        case 3:
+                            sql += @" inner join ArvootManagers B on B.ID = A.ParentID where A.Type in (3, 6) 
+                                       and (B.ID = @ID OR A.ID = @ID)";                       
+                            break;
+                        case 6:
+                            sql += @" where A.Type in (3,6)  
+                                      and A.ID = @ID ";                        
+                            break;
+                        case 4:
+                            sql += @" inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on B.ParentID = C.ID  where A.Type in (3, 6)
+                                  and (C.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID )) Or B.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID )))";
+                          
+                            break;
+                        case 5:                       
+                           // sql += @" where A.Type in (3, 6)  and ";
+                            sql += " inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID where A.Type in (3, 6) and (C.ID = (select ParentID from ArvootManagers where ID= (  select ParentID from ArvootManagers where ID = @ID)) OR B.ID =  (select ParentID from ArvootManagers where ID= (  select ParentID from ArvootManagers where ID = @ID))) ";
+
+
+                            break;
+                        default:
+                          //  sql += " where A.Type in (3,6)";
+                            sql += " inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID where A.Type in (3, 6) and(C.ID = (select ParentID from ArvootManagers where ID = @ID) OR B.ID =  (select ParentID from ArvootManagers where ID = @ID)) ";
+
+                            break;
+
+                    }
+                }
+                SqlCommand cmdAgents = new SqlCommand(sql);
                 cmdAgents.Parameters.AddWithValue("@ID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
                 DataSet dsAgents = DbProvider.GetDataSet(cmdAgents);
                 AgentList.DataSource = dsAgents;

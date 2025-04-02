@@ -15,10 +15,10 @@ namespace ControlPanel
     public partial class _serviceRequests : System.Web.UI.Page
     {
         ControlPanelInit Pageinit = new ControlPanelInit();
-        private string strSrc = "חפש איש קשר";
+        private string strSrc = "חיפוש";
         public string StrSrc { get { return strSrc; } }
 
-
+        public string sqlServiceRequestNext = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             Page.Form.Attributes.Add("enctype", "multipart/form-data");
@@ -28,8 +28,69 @@ namespace ControlPanel
                 Pageinit.CheckManagerPermissions();
 
 
-                loadUsers(1);
+             
                 //loadData();
+
+                string sql = " SELECT A.FullName as AgentName,A.ID FROM ArvootManagers A";
+
+                /*if (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) == 4)
+                    sql = " Or ParentID = (select ParentID FROM ArvootManagers where ID = (select ParentID FROM ArvootManagers where ID = @ID))";
+                SqlCommand cmdAgents = new SqlCommand(" SELECT  FullName as AgentName,ID FROM ArvootManagers where (ParentID = (select ParentID FROM ArvootManagers where ID = @ID)" + sql + ") and Type in (3,6)");
+                cmdAgents.Parameters.AddWithValue("@ID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
+                DataSet dsAgents = DbProvider.GetDataSet(cmdAgents);*/
+
+                if (HttpContext.Current.Session["AgentLevel"] != null)
+                {
+                    switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
+                    {
+
+                        case 1:
+                            sql += " where A.Type in (3,6) ";
+                            break;
+                        case 2:
+                            sql += " inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID where A.Type in (3, 6) and(C.ID = @ID OR B.ID =  @ID) ";
+                            break;
+                        case 7:
+                            sql += @" inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID where A.Type in (3, 6)  
+                                      and (C.ID = (select ParentID from ArvootManagers where ID = @ID) OR B.ID = (select ParentID from ArvootManagers where ID = @ID))";
+                            break;
+                        case 3:
+                            sql += @" inner join ArvootManagers B on B.ID = A.ParentID where A.Type in (3, 6) 
+                                       and (B.ID = @ID OR A.ID = @ID)";
+                            break;
+                        case 6:
+                            sql += @" where A.Type in (3,6)  
+                                      and A.ID = @ID ";
+                            break;
+                        case 4:
+                            sql += @" inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on B.ParentID = C.ID  where A.Type in (3, 6)
+                                  and (C.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID )) Or B.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID )))";
+
+                            break;
+                        case 5:
+                            // sql += @" where A.Type in (3, 6)  and ";
+                            sql += " inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID where A.Type in (3, 6) and (C.ID = (select ParentID from ArvootManagers where ID= (  select ParentID from ArvootManagers where ID = @ID)) OR B.ID =  (select ParentID from ArvootManagers where ID= (  select ParentID from ArvootManagers where ID = @ID))) ";
+
+
+                            break;
+                        default:
+                            //  sql += " where A.Type in (3,6)";
+                            sql += " inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID where A.Type in (3, 6) and(C.ID = (select ParentID from ArvootManagers where ID = @ID) OR B.ID =  (select ParentID from ArvootManagers where ID = @ID)) ";
+
+                            break;
+
+                    }
+                }
+                SqlCommand cmdAgents = new SqlCommand(sql);
+                cmdAgents.Parameters.AddWithValue("@ID", long.Parse(HttpContext.Current.Session["AgentID"].ToString()));
+                DataSet dsAgents = DbProvider.GetDataSet(cmdAgents);
+                AgentList.DataSource = dsAgents;
+                AgentList.DataTextField = "AgentName";
+                AgentList.DataValueField = "ID";
+                AgentList.DataBind();
+                AgentList.Items.Insert(0, new ListItem("בעלים", ""));
+
+                loadUsers(1);
             }
         }
 
@@ -145,7 +206,19 @@ namespace ControlPanel
             SqlCommand cmd = new SqlCommand();
             SqlCommand cmdCount = new SqlCommand();
 
+
+
             string sqlWhere = " where 1=1 ", sql2 = "", sqlJoin = "";
+
+
+            if (Request.QueryString["Q"] != null)
+            {
+                if (Request.QueryString["Q"].ToString().Length > 0)
+                {
+                    sqlWhere += " and( REPLACE(FirstName + LastName, ' ', '') like @SrcParam  Or Lead.tz like @SrcParam Or Lead.Phone1 like @SrcParam )";
+                }
+                strSrc = Request.QueryString["Q"].ToString();
+            }
             if (HttpContext.Current.Session["AgentLevel"] != null)
             {
                 switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
@@ -185,6 +258,7 @@ namespace ControlPanel
 
                         break;
                     case 5:
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID";
                         sqlWhere += " and OperatorID = @ID";
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
@@ -193,19 +267,49 @@ namespace ControlPanel
 
                 }
             }
+            try
+            {
+                if (int.Parse(Session["selectedAgent"].ToString()) > 1)
+                {
 
+                    AgentList.SelectedValue = Session["selectedAgent"].ToString();
+
+                    sqlWhere += " and Lead.AgentID = @agentID";
+                    cmd.Parameters.AddWithValue("@agentID", Session["selectedAgent"].ToString());
+                    cmdCount.Parameters.AddWithValue("@agentID", Session["selectedAgent"].ToString());
+                }
+            }
+            catch (Exception) { }
             string sqlServiceRequest = @"select s.ID, Lead.FirstName + ' ' + Lead.LastName as Invoice,Sum,CONVERT(varchar, s.CreateDate, 104)  CreateDate, p.purpose as PurposeName,
-                                        (select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1) as paid, 
+                                        (select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1) as paid, A.FullName  as AgentName,
                                         SumCreditOrDenial, IsApprovedCreditOrDenial
                                         from ServiceRequest s 
                                         left join ServiceRequestPurpose p on s.PurposeID = p.ID 
                                         inner join Offer on Offer.ID = s.OfferID
                                         inner join Lead on Lead.ID = Offer.LeadID" + sqlJoin + sqlWhere;
+
+            Session["sqlServiceRequestNext"]  = @"select top 1 s.ID
+                                        from ServiceRequest s 
+                                        inner join Offer on Offer.ID = s.OfferID
+                                        inner join Lead on Lead.ID = Offer.LeadID" + sqlJoin + sqlWhere +" and s.ID > @ServiceRequestID";         
+            
+
+
             cmd.CommandText = sqlServiceRequest;
+            try
+            {
+                cmd.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString().Trim().Replace(" ", "") + "%");
+            }
+            catch (Exception) { }
             DataTable dtServiceRequest = DbProvider.GetDataTable(cmd);
 
             string sqlCnt = @"select count(*) from ServiceRequest s inner join Offer on Offer.ID = s.OfferID inner join Lead on Lead.ID = Offer.LeadID " + sqlJoin + sqlWhere;
             cmdCount.CommandText = sqlCnt ;
+            try
+            {
+                cmdCount.Parameters.AddWithValue("@SrcParam", "%" + Request.QueryString["Q"].ToString().Trim().Replace(" ", "") + "%");
+            }
+            catch (Exception) { }
             ItemCount = DbProvider.GetDataTable(cmdCount).Rows.Count;
 
             if (ItemCount > PageSize)
@@ -332,6 +436,14 @@ namespace ControlPanel
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('An error occurred');", true);
             }
         }
+
+        protected void AgentList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Session["selectedAgent"] = AgentList.SelectedValue.ToString();
+
+            loadUsers(1);
+        }
+
         protected void CopyLid_Click(object sender, ImageClickEventArgs e)
         {
         }
@@ -373,7 +485,7 @@ namespace ControlPanel
 
         protected void BtnDetailsServiceReq_Command(object sender, CommandEventArgs e)
         {
-           Response.Redirect("ServiceRequestEdit.aspx?ServiceRequestID=" + e.CommandArgument.ToString());
+           Response.Redirect("ServiceRequestEdit.aspx?ServiceRequestID=" + e.CommandArgument.ToString() );
         }
     }
 }

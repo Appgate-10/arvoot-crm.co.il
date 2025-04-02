@@ -1,14 +1,20 @@
 ﻿using ControlPanel.HelpersFunctions;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 //using MySql.Data.MySqlClient;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using ListItem = System.Web.UI.WebControls.ListItem;
+
 namespace ControlPanel
 {
     public partial class _offers : System.Web.UI.Page
@@ -735,5 +741,10 @@ namespace ControlPanel
                 return null;
             }
         }
+
+
+
+        //פונקציה עזר ליצירת תאי טקסט ותאים ריקים עם קו תחתון
+     
     }
 }

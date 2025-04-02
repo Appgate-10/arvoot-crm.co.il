@@ -247,18 +247,23 @@
                     <div style="height: 75%; overflow-y: auto; margin: 10px 10px 10px 30px;">
                         <asp:Repeater ID="Repeater3"  runat="server" OnItemDataBound="Repeater3_ItemDataBound">
                             <ItemTemplate>
-                                <div style="display: flex; border-radius: 12px; margin-left: 10px; padding-right: 16px; padding-bottom: 8px;">
+
+                                <div  style="display: flex; border-radius: 12px; margin-left: 10px; padding-right: 16px; padding-bottom: 8px;">
                                     <img src="images/icons/Open_Mession_Blue_Point_1.png" runat="server" style="width: 39px; height: 40px;" />
 
                                     <div style="text-align: left; display: flex; width: 100%; background-color: whitesmoke; padding-left: 10px; text-align: right; margin-top: 6px; font-size: 12px">
+                                    <asp:LinkButton ID="ButtonDiv" style="width:90%"  runat="server" CommandArgument='<%#Eval("LeadID") + "," + Eval("OfferID") %>'  OnCommand="BtnTask_Command" CssClass="ButtonDiv" >
+                                           <div style="display: flex; border-radius: 12px; margin-left: 10px; padding-right: 16px; padding-bottom: 8px;">
+                                                <div id="Label7" class="text-gray" style="width: 10%"><%#Eval("dateTask") %> </div>
+                                                <div id="Label8" class="text-gray" style="width: 3%">| </div>
+                                                <div id="Label9" class="text-gray" style="width: 10%"><%#Eval("timeTask") %> </div>
+                                                <div id="Label6" class="text-gray" style="width: 52%"><%#Eval("Text") %> </div>
+                                                <div style="width: 5%" class="text-gray">
+                                                    <img src="images/icons/Open_Mession_Waiting_Flug.png" runat="server" style="width: 18px; height: auto;" /></div>
+                                                <div id="Status" class="text-gray" style="width: 15%"><%#Eval("Status") %></div>
+                                            </div>
+                                        </asp:LinkButton>
 
-                                        <div id="Label7" class="text-gray" style="width: 10%"><%#Eval("dateTask") %> </div>
-                                        <div id="Label8" class="text-gray" style="width: 3%">| </div>
-                                        <div id="Label9" class="text-gray" style="width: 10%"><%#Eval("timeTask") %> </div>
-                                        <div id="Label6" class="text-gray" style="width: 52%"><%#Eval("Text") %> </div>
-                                        <div style="width: 5%" class="text-gray">
-                                            <img src="images/icons/Open_Mession_Waiting_Flug.png" runat="server" style="width: 18px; height: auto;" /></div>
-                                        <div id="Status" class="text-gray" style="width: 15%"><%#Eval("Status") %></div>
                                         <div class="text-gray" style="width: 5%">
                                              <asp:ImageButton OnCommand="Mession_Delete" OnClientClick="return confirm('האם אתה בטוח שברצונך למחוק את המשימה?');"  CommandArgument='<%#Eval("ID") %>'  ImageUrl="images/icons/Open_Mession_Delete_Button.png" runat="server" style="width: 18px; height: auto;" />
 

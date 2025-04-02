@@ -45,7 +45,7 @@ namespace ControlPanel
 
                     //Gila
                     string strTasks = @"select Tasks.ID, FORMAT(Tasks.PerformDate, 'dd.MM.yy') as dateTask , 
-                                    CONVERT(varchar(5), Tasks.PerformDate, 108) as timeTask, Tasks.Text, ts.Status 
+                                    CONVERT(varchar(5), Tasks.PerformDate, 108) as timeTask, Tasks.Text, ts.Status ,isnull(Tasks.OfferID,0) as OfferID , isnull(Tasks.LeadID ,0) as LeadID
                                     from Tasks left join Offer on Offer.ID = Tasks.OfferID  left join Lead on Lead.ID = Offer.LeadID 
                                     left join TaskStatuses ts on ts.ID = Tasks.Status left join Lead lead2 on Tasks.LeadID = lead2.ID
                                     where isnull(isnull(Offer.OperatorID, Lead.AgentID),lead2.AgentID) = @AgentID
@@ -982,7 +982,7 @@ left join Lead on Lead.ID = Offer.LeadID ";
         protected void TasksCalendar_SelectionChanged(object sender, EventArgs e)
         {
             string strTasks = @"select Tasks.ID, FORMAT(Tasks.PerformDate, 'dd.MM.yy') as dateTask , 
-                                    CONVERT(varchar(5), Tasks.PerformDate, 108) as timeTask, Tasks.Text, ts.Status 
+                                    CONVERT(varchar(5), Tasks.PerformDate, 108) as timeTask, Tasks.Text, ts.Status ,isnull(Tasks.OfferID,0) as OfferID , isnull(Tasks.LeadID ,0) as LeadID
                                     from Tasks left join Offer on Offer.ID = Tasks.OfferID left join Lead on Lead.ID = Offer.LeadID 
                                     left join TaskStatuses ts on ts.ID = Tasks.Status left join Lead lead2 on Tasks.LeadID = lead2.ID
                                     where isnull(isnull(Offer.OperatorID, Lead.AgentID),lead2.AgentID) = @AgentID
@@ -998,10 +998,23 @@ left join Lead on Lead.ID = Offer.LeadID ";
             LoadTaskDates();
         }
 
+        protected void BtnTask_Command(object sender, CommandEventArgs e)
+        {
+            string[] arg = e.CommandArgument.ToString().Split(',');
+            if (arg[0].ToString().Equals("0")){
+                System.Web.HttpContext.Current.Response.Redirect("OfferEdit.aspx?OfferID=" + arg[1].ToString());
+
+            }
+            else
+            {
+                System.Web.HttpContext.Current.Response.Redirect("LeadEdit.aspx?LeadID=" + arg[0].ToString());
+
+            }
+        }
         protected void BtnFutureTasks_Click(object sender, EventArgs e)
         {
             string strTasks = @"select Tasks.ID, FORMAT(Tasks.PerformDate, 'dd.MM.yy') as dateTask , 
-                                    CONVERT(varchar(5), Tasks.PerformDate, 108) as timeTask, Tasks.Text, ts.Status 
+                                    CONVERT(varchar(5), Tasks.PerformDate, 108) as timeTask, Tasks.Text, ts.Status ,isnull(Tasks.OfferID,0) as OfferID , isnull(Tasks.LeadID ,0) as LeadID
                                     from Tasks 
                                 left join Offer on Offer.ID = Tasks.OfferID 
                                 left JOIN Lead on Lead.ID = Offer.LeadID 

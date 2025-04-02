@@ -722,6 +722,28 @@ SumPayment3=@SumPayment3,DatePayment3=@DatePayment3, NumPayment3=@NumPayment3, R
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
                 loadData();
             }
+        }        
+        
+        protected void ServiceNext_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = new SqlCommand(Session["sqlServiceRequestNext"].ToString());
+            cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+            cmd.Parameters.AddWithValue("@ServiceRequestID", Request.QueryString["ServiceRequestID"].ToString());
+            string IDServiceNext = DbProvider.GetOneParamValueString(cmd);
+            if(!String.IsNullOrEmpty(IDServiceNext))
+                Response.Redirect("ServiceRequestEdit.aspx?ServiceRequestID=" + IDServiceNext);
+
+        }       
+        
+        protected void ServicePrev_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = new SqlCommand(Session["sqlServiceRequestNext"].ToString().Replace(">","<") + " order by ID desc");
+            cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
+            cmd.Parameters.AddWithValue("@ServiceRequestID", Request.QueryString["ServiceRequestID"].ToString());
+            string IDServiceNext = DbProvider.GetOneParamValueString(cmd);
+            if (!String.IsNullOrEmpty(IDServiceNext))
+                Response.Redirect("ServiceRequestEdit.aspx?ServiceRequestID=" + IDServiceNext );
+
         }
         protected void DeleteService_Click(object sender, ImageClickEventArgs e)
         {

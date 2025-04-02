@@ -23,3 +23,6 @@ C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\Cont
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\arvoot-crm.co.il.dll
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\arvoot-crm.co.il.pdb
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\ControlPanel.csprojAssemblyReference.cache
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\BouncyCastle.Crypto.dll
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\itextsharp.dll
+C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\itextsharp.xml

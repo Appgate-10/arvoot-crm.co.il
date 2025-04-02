@@ -10,14 +10,52 @@
     <meta http-equiv="title" content="<% = Title%>" />
     <title><% = Title %></title>
     <style>
-       
+        .Btn {
+            background-color: #993796;
+            color: white;
+            padding: 0px 2%;
+            border: none;
+            border-radius: 5px;
+            font-size: medium;
+            font-weight: bold;
+            margin-inline-start: 5px;
+            cursor: pointer;
+            font-family: 'Open Sans Hebrew', sans-serif; 
+        }
+        .InputAdd2 {
+            border: none;
+            border-bottom: 1px solid black;
+            /*   width: 50%;*/
+        }
+       .PaddingRow2 {
+            padding-top: 12px;
+        }
         .lblAns {
             float: right;
             text-align: right;
             /*   color: #636e88;
             font-weight: 700;*/
+            margin-right: 10px;
+               font-weight: 700;
+               font-size:14px;
         }
+        .InputLable {
+            font-weight: 700;
+            margin-left: 10px;
+            white-space: nowrap;
+            font-size:14px;
 
+        }
+        .MarginRow2 {
+            margin-bottom: 15px;
+        }       
+        .TextInnerTable{
+            width:100%;
+            background:none;
+            border:none;
+            font-size: 14px !important;
+            text-align:center
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -25,7 +63,9 @@
     <asp:UpdatePanel ID="AddForm" UpdateMode="Conditional" runat="server">
         <ContentTemplate>
             <div class="DivLidTop">
-      
+      <%-- OnClientClick="reload(LoadingDiv);" --%>
+                <asp:Button runat="server" ID="btnCreateDoc" Text="צור מסמך" Visible="false" OnClick="btnCreateDoc_Click" CssClass="BtnMove"  />
+                <asp:Button runat="server" ID="btnDownloadDoc" Text="הורד מסמך" Visible="false" OnClick="btnDownloadDoc_Click" CssClass="BtnMove"  />
                 <asp:Button runat="server" ID="btnMoveToOperatingQueqe" Text="העבר לתור תפעול" OnClick="btnMoveToOperatingQueqe_Click" CssClass="BtnMove" OnClientClick="reload(LoadingDiv);" />
                 <asp:Button runat="server"  ID="btnMoveToOperator" Text="העבר למתפעלת" OnClick="btnMoveToOperator_Click" CssClass="BtnMove" OnClientClick="reload(LoadingDiv);" />
                 <asp:Button runat="server" Visible="false" ID="btnMoveToAgent" Text="החזר לסוכן" OnClick="btnMoveToAgent_Click" CssClass="BtnMove" OnClientClick="reload(LoadingDiv);" />
@@ -89,7 +129,7 @@
             </div>
 
             <div class="col MarginDiv SecondaryDiv ">
-                <div class="row MarginRow ServiceRequestDiv">
+                <div class="row MarginRow2 ServiceRequestDiv">
                     <div class="row" style="align-items: center;">
                         <div class="div-arrows-img">
                             <img src="images/icons/Duble_Arrow_Button_Blue.png" runat="server" />
@@ -99,6 +139,7 @@
                         </div>
                         <div>
                             <asp:HiddenField  id="ContactID" runat="server"></asp:HiddenField>
+                            <asp:HiddenField  id="PdfFile" runat="server"></asp:HiddenField>
                         </div>
                     </div>
                     <div style="min-width:180px;"  class="row">
@@ -109,7 +150,7 @@
                         <%--                        <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="~/images/icons/In_Treatment_Status_Button.png" OnClick="CopyLid_Click" />--%>
                     </div>
                 </div>
-                <div class="row MarginRow " style="width: 100%;">
+                <div class="row MarginRow2 " style="width: 100%;">
                     <div style="width: 31%; margin-left: 24%" class="row">
                         <lable class="InputLable">מבוטח ראשי:</lable>
 <%--                        <lable class="ColorLable" id="FullName" runat="server"></lable>--%>
@@ -144,9 +185,9 @@
                         <select runat="server" id="SelectSourceLoanOrInsurance" class="selectGlobal"></select>
                     </div>
                 </div>
-                <div  class="row MarginRow "  style="width: 100%;">
+                <div  class="row MarginRow2 "  style="width: 100%;">
                     <div  style="width: 80%;">
-                                       <div class="row MarginRow PaddingRow" style="width: 100%;">
+                                       <div class="row MarginRow2 PaddingRow" style="width: 100%;">
                     <div style="width: 26%; margin-left: 24%" class="row">
                         <lable class="InputLable">מועד כניסה לתוקף:</lable>
                         <lable class="ColorLable" id="EffectiveDate" runat="server"></lable>
@@ -160,7 +201,7 @@
 <%--                        <textarea id="Note" name="FirstName" type="text" runat="server" style="width: 100%;" class="InputAdd" />--%>
                     </div>
                 </div>
-                <div class="row MarginRow " style="width: 100%;">
+                <div class="row MarginRow2 " style="width: 100%;">
                     <div style="width: 21%; margin-left: 24%" class="row">
                         <%--       todo-לחשב כמה ימים עברו מפתיחת ההצעה
                         מועד כניסה לתוקף-לחשב כמה ימים עברו--%>
@@ -182,7 +223,7 @@
                         <lable class="ColorLable">2.6.23</lable>
                     </div>
                 </div>--%>
-                <div class="row MarginRow " style="width: 100%;">
+                <div class="row MarginRow2 " style="width: 100%;">
                     <%--    <div style="width: 31%; margin-left: 24%" class="row">
                         <lable class="InputLable">מספר בקשות שירות גביה:</lable>
                         <lable class="ColorLable">3.6.2023</lable>
@@ -208,7 +249,7 @@
                     </div>
                     <div  style="width: 20%;">
                          <textarea id="Note" name="FirstName" type="text" runat="server" style="width: 100%;height: 164px;border: 1px solid rgb(0, 152, 255);
-                                    border-radius: 12px;margin-top: 20px;resize: none;overflow-y: hidden;scrollbar-width: none;" class="InputAdd" />
+                                    border-radius: 12px;margin-top: 20px;resize: none;overflow-y: hidden;scrollbar-width: none; padding:5px" class="InputAdd" />
 
                     </div>
                 </div>
@@ -238,7 +279,7 @@
                         </div>--%>
                     </div>
                 </div>
-                <div class="row PaddingRow MarginRow" style="width: 100%;">
+                <div class="row PaddingRow MarginRow2" style="width: 100%;">
 <%--                    <asp:ImageButton ID="ImageButton2" Style="margin-inline-end: 10px" runat="server" ImageUrl="~/images/icons/Mark_For_Archives_Button.png" OnClick="CopyLid_Click" />--%>
                     <asp:ImageButton ID="ImageButton3" Style="margin-inline-end: 10px" runat="server" ImageUrl="~/images/icons/Send_Mail_Button.png" OnClick="SendMail_Click" />
                     <asp:ImageButton ID="ImageButton4" runat="server" ImageUrl="~/images/icons/Send_Sms_Button.png" OnClick="SendSms_Click" />
@@ -291,7 +332,7 @@
                 </div>
 
              
-                   <div class="col MarginDiv SecondaryDiv PaddingDiv">
+                 <div class="col MarginDiv SecondaryDiv PaddingDiv">
                 <div class="row" style="justify-content: space-between; width: 100%; border-bottom: 1px solid #dddddd; height: 75px; align-items: center;">
                    <div class="row" style="align-items: center;">
                         <div class="div-arrows-img">
@@ -389,53 +430,7 @@
             <div>
                 <asp:Label ID="FormErrorBottom_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
             </div>
-
-                        <div id="TaskDiv" class="popUpOut MainDivDocuments" visible="false" runat="server">
-                <div id="TaskDiv2" class="popUpIn" style="width: 35%; height: 592px; margin-top: 147px; margin-bottom: 100px; direction: rtl; text-align: center; border-width: 2px;" runat="server">
-                    <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ImageButton5" OnClick="CloseTaskPopUp_Click" />
-                    <div class="col MainDivPopup2" style="padding-top: 45px;">
-                        <label class="HeaderPopupPurple">משימה חדשה</label>
-                    <div class="row" style="align-items: center; justify-content: center; margin-top: 2%; height: 31%; margin-bottom: 2%;width: 100%;">
-                    
-                        <div class="col form-group-wrapper" style="margin-left: 15px; height: 100%;width:100%">
-                                    <div class="col form-input-wrapper">
-                                        <span class="form-span-wrapper-right">תוכן</span>
-                                        <textarea type="text" runat="server" name="Name" style="margin: 0px 5%; text-align: right;padding-right: 10px;height: 147px; border: solid 1px #a3a3a4;
-                                                    border-radius: 7px;width: 599px; resize:none" id="TextTask" placeholder="תוכן" />
-                                       
-                                    </div>
-                            <div style="display:flex; padding: 20px 0px;">
-                                    <div class="col form-input-wrapper" style="width:50%;margin-right: 2.5%;">
-                                        <span class="form-span-wrapper-right">תאריך</span>
-                                        <input type="date" runat="server" name="Name" style="margin: 0px 5%;border-radius: 7px; width: 90%;height: 37px;" id="Date" placeholder="תאריך" />
-                                       
-                                    </div>
-                              <div class="col form-input-wrapper" style="width:50%; margin-left: 1.5%;">
-                                        <span class="form-span-wrapper-right">סטטוס</span>
-                                         <select id="SelectStatusTask" runat="server" class="selectGlobal" style="width: 90%; border: solid 1px #a3a3a4; border-radius: 7px;
-                                                 height: 37px; margin: 0px 5%; color: #767676; font-size: 12pt; padding-right: 20px;"></select>
-                                         
-                                    </div>
-                                </div>
-                                </div>
-                 
-
-                   </div>
-    
-                   <div class="RowGrayPopUpPay" style="margin-bottom: 6%;"></div>
-                   <div class="col" style="width:220px">
-                        <asp:Label ID="Label4" runat="server" Text="" CssClass="ErrorLable2" Visible="false"></asp:Label>
-
-                        <asp:Button ID="AddNewTask" Name="AddNewTask" OnClick="OpenNewTask_Click" runat="server"  Text="פתח" class="AddAgentButton" />
-                          <asp:Label ID="FormErrorTask_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
-                   </div>
-                    </div>
-
-
-
-                </div>
-            </div>
-
+          
            
         </ContentTemplate>
     </asp:UpdatePanel>
@@ -476,7 +471,11 @@
                                     <div style="width: 22.5%; text-align: right;" class="ColorLable"><%#Eval("Status") %></div>
                                     <div style="width: 5%; text-align: right;" class="ColorLable">
                                           <asp:ImageButton ID="DeleteTask" runat="server" OnClientClick="return confirm('האם אתה בטוח שברצונך למחוק את המשימה?');"  CommandArgument='<%#Eval("ID") %>' OnCommand="DeleteTask_Command" Style="vertical-align: middle; position: relative" ImageUrl="~/images/icons/Open_Mession_Delete_Button.png" />
-                                    </div>                                    
+                                    </div> 
+                                        <div class="text-gray" style="width: 5%">
+<%--                                            <img src="images/icons/Open_Mession_Edit_Button.png" runat="server" style="width: 18px; height: auto;" />--%>
+                                            <asp:ImageButton OnCommand="Mession_Edit"  CommandArgument='<%#Eval("ID") %>' runat="server" style="width: 18px; height: auto; vertical-align: middle;" ImageUrl="images/icons/Open_Mession_Edit_Button.png"  />
+                                        </div>
                                  </div>
                                  <div class="RowWhitePopUp"></div>
                              </ItemTemplate>
@@ -486,6 +485,282 @@
                      </div>
                     </div>
                  </div>
+            </div>
+
+
+              <div id="CreateDocPopup" class="popUpOut MainDivDocuments" visible="false" runat="server">
+              <div class="popUpIn" style="width: 60%; height: 850px;   margin-top: 30px; margin-bottom: 30px; direction: rtl; text-align: center; border-width: 2px;" runat="server">
+                     <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ImageButton8" OnClick="CloseCreateDoc_Click" />
+                      <div class="col MainDivPopup2" style="padding-top: 15px;">
+                          <label class="HeaderPopupPurple">הסכם שירות</label>
+                                  <div class="row" style="display: flex; flex-direction: column; width: 70%;">
+                                   <asp:Repeater ID="Repeater5" runat="server" >
+                                        <ItemTemplate>
+                                                   <div style="width: 70%; ">
+                                                       <div class="row MarginRow2" style="width: 100%;">
+                                                            <div style="width: 100%;"class="row">
+                                                                 <asp:CheckBox runat="server" ClientIDMode="Static" ID="CheckBox"  AutoPostBack="true" />
+                                                                 <asp:Label ID="lblIsApprove1" AssociatedControlID="CheckBox" runat="server" CssClass="lblAns" Text='<%# Container.DataItem %>'></asp:Label>                  
+                                                            </div>
+                                         
+                                       
+                                                         </div>
+                <%--                                       <div class="row MarginRow2 " style="width: 100%;">
+                                                            <div style="width: 60%;" class="row">
+                                                               <asp:CheckBox runat="server" ID="CheckBox1"  AutoPostBack="true" />
+                                                               <asp:Label ID="Label2" AssociatedControlID="CheckBox1" runat="server" CssClass="lblAns" Text="הגשת בקשה להלוואה כנגד קופות (פנסיה, גמל, השתלמות, ביטוח מנהלים)"></asp:Label>
+                                                            </div>
+                                           
+                                                        </div>
+
+                                                       <div class="row MarginRow2 " style="width: 100%;">
+    
+                                                            <div style="width: 60%;"  class="row">
+                                                                  <asp:CheckBox runat="server" ID="CheckBox2"  AutoPostBack="true" />
+                                                                  <asp:Label ID="Label3" AssociatedControlID="CheckBox2" runat="server" CssClass="lblAns" Text="הגשת בקשה לפדיון כספים מחברות הביטוח"></asp:Label>
+                                         
+                                                            </div>
+                                      
+                                                       </div>          
+                                                      <div class="row MarginRow2 " style="width: 100%;">
+    
+                                                            <div style="width: 60%;" class="row">
+                                                                  <asp:CheckBox runat="server" ID="CheckBox3"  AutoPostBack="true" />
+                                                                  <asp:Label ID="Label5" AssociatedControlID="CheckBox3" runat="server" CssClass="lblAns" Text="הלוואה כנגד הנכס (בנקאי/חוץ בנקאי)"></asp:Label>
+                                         
+                                                            </div>
+                                      
+                                                       </div>   
+                                                      <div class="row MarginRow2 " style="width: 100%;">
+    
+                                                            <div style="width: 60%" class="row">
+                                                                  <asp:CheckBox runat="server" ID="CheckBox4"  AutoPostBack="true" />
+                                                                  <asp:Label ID="Label6" AssociatedControlID="CheckBox4" runat="server" CssClass="lblAns" Text="הגשת בקשה להלוואה (בנקאי/חוץ בנקאי)"></asp:Label>
+                                         
+                                                            </div>
+                                     
+                                                       </div>--%>
+        
+                                                  </div>
+                                            </ItemTemplate>
+                            </asp:Repeater>
+                            </div>
+                       
+                            <table style="border-collapse: collapse; width: 70%; margin-top:20px">
+                                <tr>
+                                    <td  style="border: 1px solid black; padding: 8px; text-align: center; font-weight: bold;width:22%;font-size:14px">סוג קופה</td>
+                                    <td style="border: 1px solid black; padding: 8px; width:13%">
+                                        <asp:TextBox ID="PosType1" runat="server" CssClass="TextInnerTable"/>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 8px; width:13%">
+                                         <asp:TextBox ID="PosType2" runat="server" CssClass="TextInnerTable"/>
+
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 8px; width:13%">
+                                         <asp:TextBox ID="PosType3" runat="server" CssClass="TextInnerTable"/>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 8px; width:13%">
+                                          <asp:TextBox ID="PosType4" runat="server" CssClass="TextInnerTable"/>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 8px; width:13%">
+                                          <asp:TextBox  ID="PosType5" runat="server" CssClass="TextInnerTable"/>
+
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 8px; width:13%">
+                                          <asp:TextBox  ID="PosType6" runat="server" CssClass="TextInnerTable"/>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 8px; text-align: center; font-weight: bold;font-size:14px">סוג בקשה</td>
+                                    <td style="border: 1px solid black; padding: 8px;">
+                                        <asp:TextBox ID="RequestType1" runat="server" CssClass="TextInnerTable"/>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 8px;">
+                                        <asp:TextBox ID="RequestType2" runat="server" CssClass="TextInnerTable"/>
+
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 8px;">
+                                        <asp:TextBox ID="RequestType3" runat="server" CssClass="TextInnerTable"/>
+
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 8px;">
+                                         <asp:TextBox ID="RequestType4" runat="server" CssClass="TextInnerTable"/>
+
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 8px;">
+                                          <asp:TextBox ID="RequestType5" runat="server" CssClass="TextInnerTable"/>
+
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 8px;">
+                                          <asp:TextBox ID="RequestType6" runat="server" CssClass="TextInnerTable"/>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 8px; text-align: center; font-weight: bold;font-size:14px">חברת ביטוח</td>
+                                    <td style="border: 1px solid black; padding: 8px;">
+                                          <asp:TextBox ID="InsuranceCompany1" runat="server" CssClass="TextInnerTable"/>
+
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 8px;">
+                                        <asp:TextBox ID="InsuranceCompany2" runat="server" CssClass="TextInnerTable"/>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 8px;">
+                                        <asp:TextBox ID="InsuranceCompany3" runat="server" CssClass="TextInnerTable"/>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 8px;">
+                                        <asp:TextBox ID="InsuranceCompany4" runat="server" CssClass="TextInnerTable"/>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 8px;">
+                                        <asp:TextBox  ID="InsuranceCompany5" runat="server" CssClass="TextInnerTable"/>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 8px;">
+                                        <asp:TextBox ID="InsuranceCompany6" runat="server" CssClass="TextInnerTable"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 8px; text-align: center; font-weight: bold;font-size:14px">מס' קופה</td>
+                                    <td style="border: 1px solid black; padding: 8px;"><asp:TextBox ID="PosNumber1" runat="server" CssClass="TextInnerTable"/></td>
+                                    <td style="border: 1px solid black; padding: 8px;"><asp:TextBox ID="PosNumber2" runat="server" CssClass="TextInnerTable"/></td>
+                                    <td style="border: 1px solid black; padding: 8px;"><asp:TextBox ID="PosNumber3" runat="server" CssClass="TextInnerTable"/></td>
+                                    <td style="border: 1px solid black; padding: 8px;"><asp:TextBox ID="PosNumber4" runat="server" CssClass="TextInnerTable"/></td>
+                                    <td style="border: 1px solid black; padding: 8px;"><asp:TextBox ID="PosNumber5" runat="server" CssClass="TextInnerTable"/></td>
+                                    <td style="border: 1px solid black; padding: 8px;"><asp:TextBox ID="PosNumber6" runat="server" CssClass="TextInnerTable"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 8px; text-align: center; font-weight: bold;font-size:14px">סכום בקשה</td>
+                                    <td style="border: 1px solid black; padding: 8px;"> <asp:TextBox ID="RequestSum1" runat="server" CssClass="TextInnerTable"/></td>
+                                    <td style="border: 1px solid black; padding: 8px;"> <asp:TextBox ID="RequestSum2" runat="server" CssClass="TextInnerTable"/></td>
+                                    <td style="border: 1px solid black; padding: 8px;"> <asp:TextBox ID="RequestSum3" runat="server" CssClass="TextInnerTable"/></td>
+                                    <td style="border: 1px solid black; padding: 8px;"> <asp:TextBox ID="RequestSum4" runat="server" CssClass="TextInnerTable"/></td>
+                                    <td style="border: 1px solid black; padding: 8px;"> <asp:TextBox ID="RequestSum5" runat="server" CssClass="TextInnerTable"/></td>
+                                    <td style="border: 1px solid black; padding: 8px;"> <asp:TextBox ID="RequestSum6" runat="server" CssClass="TextInnerTable"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 8px; text-align: center; font-weight: bold;font-size:14px">הלוואה קיימת</td>
+                                    <td style="border: 1px solid black; padding: 8px;"> <asp:TextBox ID="ExistingLoan1" runat="server" CssClass="TextInnerTable"/></td>
+                                    <td style="border: 1px solid black; padding: 8px;"> <asp:TextBox ID="ExistingLoan2" runat="server" CssClass="TextInnerTable"/></td>
+                                    <td style="border: 1px solid black; padding: 8px;"> <asp:TextBox ID="ExistingLoan3" runat="server" CssClass="TextInnerTable"/></td>
+                                    <td style="border: 1px solid black; padding: 8px;"> <asp:TextBox ID="ExistingLoan4" runat="server" CssClass="TextInnerTable"/></td>
+                                    <td style="border: 1px solid black; padding: 8px;"> <asp:TextBox ID="ExistingLoan5" runat="server" CssClass="TextInnerTable"/></td>
+                                    <td style="border: 1px solid black; padding: 8px;"> <asp:TextBox ID="ExistingLoan6" runat="server" CssClass="TextInnerTable"/></td>
+                                </tr>
+                            </table>
+
+                            <div class="row PaddingRow2" style="width: 70%; margin-top:15px">
+                
+                                <div style="width: 50%; margin-left: 14%;" class="row">
+                                    <label class="InputLable">מספר אשראי:</label>
+                                    <input id="CreditNumber" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd2" />
+                                </div>
+                                <div style="width: 50%;" class="row">
+                                    <label class="InputLable">עלות הטיפול:</label>
+                                    <input id="Text4" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd2" />
+                                </div>
+                            </div>
+                
+                           
+                            <div class="row PaddingRow2" style="width: 70%;">
+                                <div style="width: 50%; margin-left: 14%;" class="row">
+                                    <label class="InputLable">תוקף:</label>
+                                    <select  runat="server"  style="border-bottom: 1px solid black;  background: url(../images/icons/Arrow_Slide_Button.png) no-repeat left 4px center;" ID="SelectYear"  class="selectGlobal"></select>                       
+                                    <select  runat="server"   ID="SelectMonth" style="margin-right:25px;border-bottom: 1px solid black;    background: url(../images/icons/Arrow_Slide_Button.png) no-repeat left 4px center;" class="selectGlobal"></select>                       
+
+            <%--                        <input id="CreditValidity" name="FullName" type="date" runat="server" style="width: 100%;" class="InputAdd" />--%>
+                                </div>
+                               <div style="width: 50%;" class="row">
+                                    <label class="InputLable">הערות:</label>
+                                </div>
+                            </div>
+                            <div class="row PaddingRow2 " style="width: 70%;">
+               
+                                <div style="width: 50%; margin-left: 14%;" class="row">
+                                    <label class="InputLable">Cvv:</label>
+                                    <input id="Cvv" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd2" />
+                                </div>
+                                  <div style="width: 50%;" class="row">
+                                    <input id="Text1" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd2" />
+                                </div>
+                            </div>
+                            <div class="row PaddingRow2" style="width: 70%;">
+                
+                                <div style="width: 50%; margin-left: 14%;" class="row">
+                                    <label class="InputLable">ת.ז. בעל הכרטיס:</label>
+                                    <input id="CardholdersID" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd2" />
+                                </div>
+                                 <div style="width: 50%;" class="row">
+                                    <label class="InputLable">שם מיופה הכח (יחיד/תאגיד):</label>
+                                    <input id="Text3" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd2" />
+                                </div>
+                            </div>        
+                          <div class="row PaddingRow2 MarginRow" style="width: 70%;">
+                
+                                <div style="width: 50%; margin-left: 14%;" class="row">
+                                    <label class="InputLable">שם בעל הכרטיס:</label>
+                                    <input id="CreditHolderName" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd2" />
+                                </div>
+                                <div style="width: 50%;" class="row">
+                                    <label class="InputLable">רשיון מס':</label>
+                                    <input id="Text2" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd2" />
+                                </div>
+                            </div>
+                           <div class="DivLidTop">
+                               <label class="InputLable" id="error" style="color:red" runat="server" visible="false">עליך למלא את כל הפרטי אשראי</label>
+                            </div> 
+                          <div class="DivLidTop PaddingRow2">
+                                <asp:Button runat="server" ID="Button1" Text="שלח טופס" OnClick="btn_sendDoc_Click" Style="width: 165px; height: 53px;" CssClass="Btn" OnClientClick="reload(LoadingDiv);" />
+                            </div>
+
+                       </div>
+                   </div>
+                </div>
+           <div id="TaskDiv" class="popUpOut MainDivDocuments" visible="false" runat="server">
+                <div id="TaskDiv2" class="popUpIn" style="width: 35%; height: 592px; margin-top: 147px; margin-bottom: 100px; direction: rtl; text-align: center; border-width: 2px;" runat="server">
+                    <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="ImageButton5" OnClick="CloseTaskPopUp_Click" />
+                    <div class="col MainDivPopup2" style="padding-top: 45px;">
+                        <label runat="server" id="titleTask" class="HeaderPopupPurple">משימה חדשה</label>
+                    <div class="row" style="align-items: center; justify-content: center; margin-top: 2%; height: 31%; margin-bottom: 2%;width: 100%;">
+                    
+                        <div class="col form-group-wrapper" style="margin-left: 15px; height: 100%;width:100%">
+                                    <div class="col form-input-wrapper">
+                                        <span class="form-span-wrapper-right">תוכן</span>
+                                        <textarea type="text" runat="server" name="Name" style="margin: 0px 5%; text-align: right;padding-right: 10px;height: 147px; border: solid 1px #a3a3a4;
+                                                    border-radius: 7px;width: 599px; resize:none" id="TextTask" placeholder="תוכן" />
+                                       
+                                    </div>
+                            <div style="display:flex; padding: 20px 0px;">
+                                    <div class="col form-input-wrapper" style="width:50%;margin-right: 2.5%;">
+                                        <span class="form-span-wrapper-right">תאריך</span>
+                                        <input type="date" runat="server" name="Name" style="margin: 0px 5%;border-radius: 7px; width: 90%;height: 37px;" id="Date" placeholder="תאריך" />
+                                       
+                                    </div>
+                              <div class="col form-input-wrapper" style="width:50%; margin-left: 1.5%;">
+                                        <span class="form-span-wrapper-right">סטטוס</span>
+                                         <select id="SelectStatusTask" runat="server" class="selectGlobal" style="width: 90%; border: solid 1px #a3a3a4; border-radius: 7px;
+                                                 height: 37px; margin: 0px 5%; color: #767676; font-size: 12pt; padding-right: 20px;"></select>
+                                         
+                                    </div>
+                                </div>
+                                </div>
+                 
+
+                   </div>
+    
+                   <div class="RowGrayPopUpPay" style="margin-bottom: 6%;"></div>
+                   <div class="col" style="width:220px">
+                        <asp:Label ID="Label4" runat="server" Text="" CssClass="ErrorLable2" Visible="false"></asp:Label>
+                                              <asp:HiddenField runat="server" ID="ID" />
+
+
+                        <asp:Button ID="AddNewTask" Name="AddNewTask" OnClick="OpenNewTask_Click" runat="server"  Text="פתח" class="AddAgentButton" />
+                          <asp:Label ID="FormErrorTask_lable" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
+                   </div>
+                    </div>
+
+
+
+                </div>
             </div>
 
          </ContentTemplate>

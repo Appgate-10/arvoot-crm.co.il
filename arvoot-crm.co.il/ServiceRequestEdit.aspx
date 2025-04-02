@@ -74,7 +74,10 @@
                 <asp:Label ID="FormError_label" runat="server" Text="" CssClass="ErrorLable2" Visible="false" Style="float: left;"></asp:Label>
             </div>
             <div class="NewOfferDiv">
+                <asp:ImageButton OnClick="ServicePrev_Click" ID="right_service" style="vertical-align: sub; transform: scaleX(-1);" runat="server"  ImageUrl="~/images/icons/Arrow_Left_1.png"  />
                 <label class="NewOfferLable">בקשת שירות חדשה</label>
+                <asp:ImageButton OnClick="ServiceNext_Click" ID="left_service" style="vertical-align: sub;" runat="server" ImageUrl="~/images/icons/Arrow_Left_1.png"  />
+
             </div>
 
             <div class="row MarginDiv">

@@ -51,6 +51,24 @@ namespace ControlPanel
         protected global::System.Web.UI.WebControls.Label FormError_label;
 
         /// <summary>
+        /// right_service control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton right_service;
+
+        /// <summary>
+        /// left_service control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton left_service;
+
+        /// <summary>
         /// lblAgency control.
         /// </summary>
         /// <remarks>

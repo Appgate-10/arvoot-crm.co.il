@@ -295,7 +295,7 @@ namespace ControlPanel.HelpersFunctions
         {
             if (Phone[0] == '0') { Phone = Phone.Substring(1); }
 
-            var str1 = "{\"details\":{\"name\":\"Arvoot-crm\",\"from_name\":\"Arvoot-crm\",\"sms_sending_profile_id\":5,\"content\":\"" + MSG + "\"},\"scheduling\":{\"send_now\":true},\"mobiles\":[{\"phone_number\":\"+972" + Phone + "\"},],\"from_name\":\"Arvoot-crm\"}";
+            var str1 = "{\"details\":{\"name\":\"Platinum\",\"from_name\":\"Platinum\",\"sms_sending_profile_id\":5,\"content\":\"" + MSG + "\"},\"scheduling\":{\"send_now\":true},\"mobiles\":[{\"phone_number\":\"+972" + Phone + "\",\"unsubscribe_text\":\"unsubscribe Platinum\"}]}";
 
             string url1 = "http://webapi.mymarketing.co.il/api/smscampaign/OperationalMessage";
 
@@ -305,7 +305,7 @@ namespace ControlPanel.HelpersFunctions
 
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url1);
 
-            httpWebRequest.Headers.Add("Authorization", "");
+            httpWebRequest.Headers.Add("Authorization", "0X42A01069143C79C147774E4DA0EB2DA41CF3542A44EB43121BCB6D4B377F3A39282008534351848444D5A762460C5C1C");
 
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";

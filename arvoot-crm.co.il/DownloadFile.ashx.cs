@@ -48,7 +48,10 @@ namespace ControlPanel
             }
             if (OfferID != null)
             {
-                string path = Path.Combine(ConfigurationManager.AppSettings["MapPath"], "OfferDocuments", fileName);
+                string path = "";
+                if (request.QueryString["PdfFile"] !=null) 
+                    path = Path.Combine(ConfigurationManager.AppSettings["MapPath"], "pdf", fileName);
+                else  path = Path.Combine(ConfigurationManager.AppSettings["MapPath"], "OfferDocuments", fileName);
                 //fileName = "4b38c7244721e01caee0aa73c4ba2a1d.pdf";
                 if (File.Exists(path))
                 {

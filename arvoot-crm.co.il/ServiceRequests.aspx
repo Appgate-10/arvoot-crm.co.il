@@ -12,15 +12,15 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-<%--    <div class="NewOfferDiv row">
-        <label class="NewOfferLable" style="margin-inline-end: 3%;">אנשי קשר </label>
+    <div class="NewOfferDiv row">
+        <label class="NewOfferLable" style="margin-inline-end: 3%;">בקשות שירות</label>
         <div class="row DivSearchBox">
             <a href="javascript:window.location.href = 'Contacts.aspx?Q=' + document.getElementById('Q').value;">
                 <img src="images/icons/Search_Contact_User_Button.png" class="ImgSearch" /></a>
-            <input type="text" class="InputTextSearch" style="text-align: right;" value="<% = StrSrc%>" name="Q" id="Q" onblur="javascript:if(this.value==''){this.value='חפש איש קשר'};" onfocus="javascript:if(this.value=='חפש איש קשר'){this.value='';}" onkeypress="javascript:runSearch(event, 'Contacts.aspx');" />
+            <input type="text" class="InputTextSearch" style="text-align: right;" value="<% = StrSrc%>" name="Q" id="Q" onblur="javascript:if(this.value==''){this.value='חיפוש'};" onfocus="javascript:if(this.value=='חיפוש'){this.value='';}" onkeypress="javascript:runSearch(event, 'ServiceRequests.aspx');" />
         </div>
        
-    </div>--%>
+    </div>
 <%--    <div class="ListDivParamsHead ListDivParamsHeadS">
         <div style="width: 5%; text-align: right;"></div>
         <div style="width: 10%; text-align: right;">ת.הקמה</div>
@@ -41,7 +41,11 @@
                     <div style="width: 15%; text-align: right;">חשבון</div>
                     <div style="width: 15%; text-align: right;">סכום כולל לגבייה</div>
                     <div style="width: 15%; text-align: right;">יתרת גבייה</div>
-                    <div style="width: 33%; text-align: right;">מטרת הגבייה</div>
+                    <div style="width: 17%; text-align: right;">מטרת הגבייה</div>
+                    <div style="width: 16%; text-align: right;">
+                           <asp:DropDownList style="width:30%; color: #6F798E;" runat="server" ID="AgentList" OnSelectedIndexChanged="AgentList_SelectedIndexChanged" CssClass="StatusClaims" ToolTip="בעלים" AutoPostBack="true"></asp:DropDownList>
+
+                    </div>
                     <div style="width: 5%; text-align: center;"></div>
 
                 </div>
@@ -75,7 +79,8 @@
                                     <div style="width: 5%; text-align: center">
                                     <asp:Image  ID="BtnServiceRequest" Style="vertical-align: middle;" ImageUrl="~/images/icons/Arrow_Left_1.png" runat="server" />
                                     </div>
-                                      <div style="width: 33%; text-align: right"><%#Eval("PurposeName") %></div>
+                                      <div style="width: 16%; text-align: right"><%#Eval("AgentName") %></div>
+                                      <div style="width: 17%; text-align: right"><%#Eval("PurposeName") %></div>
                                 <div style="width: 15%; text-align: right;">
                                     <%#(double.Parse(Eval("Sum").ToString()) - (!string.IsNullOrWhiteSpace(Eval("paid").ToString()) ?double.Parse(Eval("paid").ToString()) : 0) + (Eval("IsApprovedCreditOrDenial").ToString() == "1" && !string.IsNullOrWhiteSpace(Eval("SumCreditOrDenial").ToString()) ? double.Parse(Eval("SumCreditOrDenial").ToString()) : 0)).ToString() %></div>
                                 <div style="width: 15%; text-align: right;"><%#Eval("Sum") %></div>

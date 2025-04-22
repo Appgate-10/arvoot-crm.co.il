@@ -86,8 +86,8 @@
             <div runat="server" id="div2">
                 <asp:Repeater ID="Repeater1" runat="server" OnItemDataBound="Repeater1_ItemDataBound">
                     <ItemTemplate>
-                        <asp:LinkButton ID="ButtonDiv" runat="server"  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsOffer_Command" CssClass="ButtonDiv" >
-
+                        <a  ID="ButtonDiv" runat="server" href='<%# "OfferEdit.aspx?OfferID=" + Eval("ID") %>'   CssClass="ButtonDiv" >
+                            <%--  CommandArgument='<%#Eval("ID") %>' OnCommand="BtnDetailsOffer_Command"  --%>
                             <div class='ListDivParams'>
 
                                 <div style="width: 5%; text-align: center">
@@ -118,7 +118,7 @@
                                      <asp:CheckBox ID="chk" runat="server" />
                                 </div>--%>
                             </div>
-                        </asp:LinkButton>
+                        </a>
                     </ItemTemplate>
                 </asp:Repeater>
                 <div id="PageingDiv" class="PageingDiv" runat="server"></div>

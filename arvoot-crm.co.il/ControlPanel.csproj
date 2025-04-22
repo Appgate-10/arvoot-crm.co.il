@@ -96,6 +96,7 @@
     <Content Include="ChatList.aspx" />
     <Content Include="images\Calendar_Big_BG.png" />
     <Content Include="images\icons\Calendar_Big_BG.png" />
+    <Content Include="images\icons\copy.png" />
     <Content Include="images\icons\Excel_Icon.png" />
     <Content Include="images\icons\file.png" />
     <Content Include="images\icons\Last_Message_Icon.png" />

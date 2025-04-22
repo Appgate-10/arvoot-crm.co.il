@@ -223,8 +223,11 @@ namespace ControlPanel
             {
                 switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))
                 {
+                    case 1:
+                        sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID ";
+                     
+                        break;
 
-                  
                     case 2:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on C.ID = B.ParentID ";
                         sqlWhere += " and (C.ID = @ID OR B.ID = @ID)";
@@ -382,8 +385,9 @@ namespace ControlPanel
                                          as ApprovedSum, convert(varchar, payment.DatePayment,104) as PaymentDate,
                                          convert(varchar,Sum - (isnull((select sum(SumPayment) from ServiceRequestPayment where ServiceRequestID = s.ID and IsApprovedPayment = 1),0) + 
 										 convert(varchar,iif(IsApprovedCreditOrDenial = 1 and SumCreditOrDenial is not null and SumCreditOrDenial != '',SumCreditOrDenial, 0 ) ))) as paid, 
-                                         p.purpose as PurposeName
+                                         p.purpose as PurposeName , m.Text as MethodPayment
                                          from ServiceRequest s  left join ServiceRequestPayment payment on payment.ServiceRequestID = s.ID
+                                         left join MethodsPayment m on m.ID = s.PaymentMethodID
                                          left join ServiceRequestPurpose p on s.PurposeID = p.ID 
                                          inner join Offer on Offer.ID = s.OfferID
                                          inner join Lead on Lead.ID = Offer.LeadID" + sqlJoin + sqlWhere;
@@ -406,6 +410,7 @@ namespace ControlPanel
             dataRow[6] = "תאריך תשלום";
             dataRow[7] = "יתרת גבייה";
             dataRow[8] = "מטרת הגבייה";
+            dataRow[9] = "אמצעי תשלום";
 
             ds.Tables[0].Rows.InsertAt(dataRow, 0);
             bool didSuccess = CreateSimpleExcelFile.CreateExcelDocument(ds, "ServiceRequests.xlsx", Response);

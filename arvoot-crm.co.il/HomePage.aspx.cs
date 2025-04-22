@@ -997,7 +997,17 @@ left join Lead on Lead.ID = Offer.LeadID ";
 
             LoadTaskDates();
         }
-
+        protected string GetRedirectUrl(object leadID, object offerID)
+        {
+            if (Convert.ToInt32(leadID) == 0)
+            {
+                return "OfferEdit.aspx?OfferID=" + offerID.ToString();
+            }
+            else
+            {
+                return "LeadEdit.aspx?LeadID=" + leadID.ToString();
+            }
+        }
         protected void BtnTask_Command(object sender, CommandEventArgs e)
         {
             string[] arg = e.CommandArgument.ToString().Split(',');

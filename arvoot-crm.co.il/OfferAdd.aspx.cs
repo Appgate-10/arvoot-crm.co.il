@@ -253,7 +253,7 @@ namespace ControlPanel
         {
             //int PageNumber = 1;
 
-            string sql = @"select Lead.Tz, Lead.FirstName+' '+Lead.LastName as FullName, A.FullName as FullNameAgent, parent2.CompanyName from Lead
+            string sql = @"select Lead.Tz, Lead.FirstName+' '+Lead.LastName as FullName, A.FullName as FullNameAgent, parent2.CompanyName, Lead.Phone1 from Lead
                            inner join ArvootManagers A on Lead.AgentID=A.ID 
                            left join ArvootManagers parent on parent.ID = A.ParentID
                            left join ArvootManagers parent2 on parent2.ID = parent.ParentID
@@ -269,6 +269,7 @@ namespace ControlPanel
              //FullNameAgent.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
                 lblOwner.InnerText = dt.Rows[0]["FullNameAgent"].ToString();
                 lblAgency.InnerText = dt.Rows[0]["CompanyName"].ToString();
+                Phone.InnerText = dt.Rows[0]["Phone1"].ToString();
                 Tz.InnerText = dt.Rows[0]["Tz"].ToString();
                 EffectiveDate.InnerText = DateTime.Now.ToString("dd.MM.yyyy");
             }

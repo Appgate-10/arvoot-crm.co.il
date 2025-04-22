@@ -387,7 +387,7 @@ namespace ControlPanel
         {
            
 
-            string sql = @"select Lead.Tz, Lead.FirstName+' '+Lead.LastName as FullName, A.FullName as FullNameAgent, Lead.AgentID, parent2.CompanyName from Lead
+            string sql = @"select Lead.Tz, Lead.FirstName+' '+Lead.LastName as FullName, A.FullName as FullNameAgent, Lead.AgentID, parent2.CompanyName,Lead.Phone1  from Lead
                            inner join ArvootManagers A on Lead.AgentID=A.ID inner join Offer on Offer.LeadID = Lead.ID 
                            left join ArvootManagers parent on parent.ID = A.ParentID
                            left join ArvootManagers parent2 on parent2.ID = parent.ParentID
@@ -406,6 +406,7 @@ namespace ControlPanel
                 Tz.InnerText = dt.Rows[0]["Tz"].ToString();
                 EffectiveDate.InnerText = DateTime.Now.ToString("dd.MM.yyyy");
                 lblAgency.InnerText = dt.Rows[0]["CompanyName"].ToString();
+                Phone.InnerText = dt.Rows[0]["Phone1"].ToString();
             }
 
             string sqlOffer = @"select LeadID, CONVERT(varchar,Offer.CreateDate, 104) as CreateDate, CONVERT(varchar,Offer.DateSentToOperator, 104) as DateSentToOperator, IsInOperatingQueue, OperatorID,

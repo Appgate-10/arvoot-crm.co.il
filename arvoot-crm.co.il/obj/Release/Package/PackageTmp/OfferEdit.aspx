@@ -151,12 +151,13 @@
                     </div>
                 </div>
                 <div class="row MarginRow2 " style="width: 100%;">
-                    <div style="width: 31%; margin-left: 24%" class="row">
+                    <div style="width: 15%; margin-left: 40%" class="row">
                         <lable class="InputLable">מבוטח ראשי:</lable>
 <%--                        <lable class="ColorLable" id="FullName" runat="server"></lable>--%>
                             <asp:Button OnClick="OpenContact_Click"  ID="FullName" runat="server" name="FullName" type="text" 
                                 style="width: 100%; border-bottom: 0px;background: none;text-align: right;font-size: medium;" class="InputAdd" />
-                 
+                                         <img src="images/icons/copy.png"  onclick="CopyToClipboard()" style="font-size:24px;background:none;border:none; width: 20px;margin-right: 10px;height:20px"></img>
+
                     </div>
                     <%--<div style="width: 20%; margin-left: 2%;" class="row">
                         <label class="InputLable">בעלים:</label>
@@ -173,7 +174,7 @@
                         <select runat="server" id="SelectOfferType" class="selectGlobal"></select>
                     </div>
                 </div>
-                <div class="row GrayLine" style="width: 100%;">
+                <div class="row MarginRow2" style="width: 100%;">
                     <div style="width: 31%; margin-left: 24%" class="row">
                         <lable class="InputLable">ת.ז. של מבוטח ראשי:</lable>
                         <lable class="ColorLable" id="Tz" runat="server"></lable>
@@ -185,10 +186,21 @@
                         <select runat="server" id="SelectSourceLoanOrInsurance" class="selectGlobal"></select>
                     </div>
                 </div>
+                <div class="row GrayLine" style="width: 100%;">
+                    <div style="width: 31%; margin-left: 24%" class="row">
+                        <lable class="InputLable">טלפון:</lable>
+                        <lable class="ColorLable" id="Phone" runat="server"></lable>
+                         <img src="images/icons/copy.png"  onclick="CopyPhoneToClipboard()" style="font-size:24px;background:none;border:none; width: 20px;margin-right: 10px;height:20px"></img>
+
+                    </div>
+                     <div style="width: 31%; margin-left: 14%" class="row">
+                     
+                    </div>
+                </div>
                 <div  class="row MarginRow2 "  style="width: 100%;">
-                    <div  style="width: 80%;">
+                    <div  style="width: 55%;">
                                        <div class="row MarginRow2 PaddingRow" style="width: 100%;">
-                    <div style="width: 26%; margin-left: 24%" class="row">
+                    <div style="width: 10%; margin-left: 24%" class="row">
                         <lable class="InputLable">מועד כניסה לתוקף:</lable>
                         <lable class="ColorLable" id="EffectiveDate" runat="server"></lable>
                     </div>
@@ -202,7 +214,7 @@
                     </div>
                 </div>
                 <div class="row MarginRow2 " style="width: 100%;">
-                    <div style="width: 21%; margin-left: 24%" class="row">
+                    <div style="width: 10%; margin-left: 24%" class="row">
                         <%--       todo-לחשב כמה ימים עברו מפתיחת ההצעה
                         מועד כניסה לתוקף-לחשב כמה ימים עברו--%>
                         <lable class="InputLable">sla מפתיחת ההצעה:</lable>
@@ -228,7 +240,7 @@
                         <lable class="InputLable">מספר בקשות שירות גביה:</lable>
                         <lable class="ColorLable">3.6.2023</lable>
                     </div>--%>
-                    <div style="width: 31%; margin-left: 14%" class="row">
+                    <div style="width: 10%; margin-left: 24%" class="row">
                         <lable class="InputLable">תאריך שליחה למתפעלת:</lable>
                         <%--                        <lable class="ColorLable">לאומי</lable>--%>
                        <lable class="ColorLable" id="DateSentToOperator" runat="server"></lable>
@@ -247,7 +259,7 @@
                 </div>--%>
 
                     </div>
-                    <div  style="width: 20%;">
+                    <div  style="width: 45%;">
                          <textarea id="Note" name="FirstName" type="text" runat="server" style="width: 100%;height: 164px;border: 1px solid rgb(0, 152, 255);
                                     border-radius: 12px;margin-top: 20px;resize: none;overflow-y: hidden;scrollbar-width: none; padding:5px" class="InputAdd" />
 
@@ -805,6 +817,31 @@
 
                }
            }
+           function CopyToClipboard() {
+               var textToCopy = document.getElementById('<%=FullName.ClientID %>');
+
+               navigator.clipboard.writeText(textToCopy.value)
+                   .then(() => {
+                       alert("הועתק בהצלחה!");
+                   })
+                   .catch((err) => {
+                       console.error("Failed to copy text: ", err);
+                   });
+           }
+
+           function CopyPhoneToClipboard() {
+
+               var textToCopy = document.getElementById('<%=Phone.ClientID %>');
+
+               navigator.clipboard.writeText(textToCopy.innerText)
+                   .then(() => {
+                       alert("הועתק בהצלחה!");
+                   })
+                   .catch((err) => {
+                       console.error("Failed to copy text: ", err);
+                   });
+           }
+
            function adjustTextareaHeight(textarea) {
                // Reset height to auto to get the correct scrollHeight measurement
                textarea.style.height = "164px"; // Default height

@@ -36,6 +36,7 @@
             overflow-y: auto;
             max-width: 800px;
             margin: 0 auto;
+            height:89%;
         }
 
         .agent-item {
@@ -108,6 +109,7 @@
                         <asp:ImageButton runat="server" OnClick="navigateToOtherPage" ImageUrl="~/images/icons/Topbar_Logo_1.png " />
                     </div>
                     <div class="row nav-bar" id="AfterSignIn2" runat="server">
+               
                         <div style="width: 14.5%; text-align: right; padding-left: 2%; color: #973595;">
                             <label class="FontWeightBold" style="margin-inline-end: 7%;">
                                 <%= DateTime.Now.ToString("dd.MM.yy") %>
@@ -191,7 +193,14 @@
                                     <div>
                                         <asp:Button ID="Button4" runat="server" class="bar-item buttonWithOneImages buttonWithImages " OnCommand="BtnBarItem_Command" Text="דוחות" />
                                     </div>
+                                <%--     <div class="row">
+                                     </div>--%>
+                                      
                                 </div>
+                             
+                                <%--onkeypress="searchInsuredWhithEnter(event)" 
+                                    OnClick="SearchInsured_Click" Text="חפש"   
+                                    --%>
                                 <%--       <div class="row">
                                     <div  onclick="javascript: window.location = 'Notifications.aspx';">בקשת שירות מספר</div>
                                     <div  onclick="javascript: window.location = 'PushNotifications_Send.aspx';">הלוואה ממנורה מבטחים</div>
@@ -206,6 +215,20 @@
                                 </div>--%>
                             </ContentTemplate>
                         </asp:UpdatePanel>
+                                 <div runat="server" visible ="false" id="SearchByTzOrPhone" style="position:fixed; left:5%;width:20%;text-align:center;top: 14%;" >
+                            <asp:Label runat="server" Style="font-size: 12pt;text-align:center">חיפוש לפי ת.ז. או מספר טלפון בלבד</asp:Label>
+                              <div style="display: flex;margin-top: 8px;margin-bottom: 4px;">
+                                <div class="row DivSearchBox" style="justify-content: end;width:100%;height:35px;">
+                                    <input type="text" runat="server" name="Name" 
+                                        style="width: 100%; padding-right: 6px; margin-right: 0px;" id="TxtInsuredSearch" class="InputTextSearch" placeholder="חיפוש לקוח במערכת לכל הסוכנים" />   
+                               </div>
+                               <div style="display: inline-flex; flex-direction: column; width: 160px;  margin-right: 10px;">
+                                    <asp:Button ID="SortBtn" OnClick="OnSearch" Text="חפש"  runat="server" CssClass="BtnSort" />
+                               </div>    
+                             </div>
+                             <asp:Label ID="resultSearch" Visible="false" runat="server" Style="font-size: 12pt;text-align:center;margin-top:8px">שם לקוח: גגג</asp:Label>
+
+                        </div>
                     </div>
                     <div style="display: flex">
                         <%-- Heni --%>
@@ -298,11 +321,13 @@
             </div>
         </div>
 
+
+
         <asp:UpdatePanel ID="UpdatePanelAlerts" runat="server">
             <ContentTemplate>
 
                 <div id="AgentsListPopUp" runat="server" class="popUpOut" visible="false">
-                    <div id="AgentsIn" class="popUpIn" style="position: relative; min-width: 600px; width: 60%; height: 50%; direction: rtl; margin-top: 20px;" runat="server">
+                    <div id="AgentsIn" class="popUpIn" style="position: relative; min-width: 600px; width: 60%; height: 89%; direction: rtl; margin-top: 20px;" runat="server">
                         <asp:ImageButton runat="server" ImageUrl="images/icons/Popup_Close_Button.png" CssClass="ImgX" ID="CloseAgentsPopUp" OnClick="CloseAgentsPopUp_Click" />
 
                         <div class="form-header-agent">עובדים</div>

@@ -295,7 +295,7 @@ namespace ControlPanel.HelpersFunctions
         {
             if (Phone[0] == '0') { Phone = Phone.Substring(1); }
 
-            var str1 = "{\"details\":{\"name\":\"arvoot\",\"from_name\":\"arvoot\",\"sms_sending_profile_id\":5,\"content\":\"" + MSG + "\"},\"scheduling\":{\"send_now\":true},\"mobiles\":[{\"phone_number\":\"+972" + Phone + "\",\"unsubscribe_text\":\"unsubscribe arvoot\"}]}";
+            var str1 = "{\"details\":{\"name\":\"arvoot\",\"from_name\":\"2Sign\",\"sms_sending_profile_id\":5,\"content\":\"" + MSG + "\"},\"scheduling\":{\"send_now\":true},\"mobiles\":[{\"phone_number\":\"+972" + Phone + "\",\"unsubscribe_text\":\"unsubscribe arvoot\"}]}";
 
             string url1 = "http://webapi.mymarketing.co.il/api/smscampaign/OperationalMessage";
 

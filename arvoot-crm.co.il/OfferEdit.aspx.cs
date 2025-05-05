@@ -1102,14 +1102,14 @@ namespace ControlPanel
         protected void btn_sendDoc_Click(object sender, EventArgs e)
         {
 
-            if (String.IsNullOrEmpty(CreditNumber.Value.ToString()) || String.IsNullOrEmpty(Cvv.Value.ToString()) || String.IsNullOrEmpty(CreditHolderName.Value.ToString()) || String.IsNullOrEmpty(CardholdersID.Value.ToString()))
+            /*if (String.IsNullOrEmpty(CreditNumber.Value.ToString()) || String.IsNullOrEmpty(Cvv.Value.ToString()) || String.IsNullOrEmpty(CreditHolderName.Value.ToString()) || String.IsNullOrEmpty(CardholdersID.Value.ToString()))
             {
                 error.Visible = true;
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "setTimeout(HideLoadingDiv, 0);", true);
 
                 return;
             }
-            else error.Visible = false;
+            else error.Visible = false;*/
 
             CreateDocPopup.Visible = false;
             string fileName = exportPDF();
@@ -1128,9 +1128,6 @@ namespace ControlPanel
 
                 msg1.AppendLine("לקוח יקר!");
                 msg1.AppendLine("מצורף טופס הסכם שירות לחתימתך");
-                msg1.AppendLine();
-                msg1.AppendLine("בברכה,");
-                msg1.AppendLine("פיננסים בעמ");
                 msg1.AppendLine("");
                 msg1.AppendLine("https://sign.arvoot-crm.co.il/PdfFile.aspx?ID=" + Request.QueryString["OfferID"]);
 /*                		dt.Rows[0]["Phone1"].ToString()	
@@ -1250,8 +1247,8 @@ namespace ControlPanel
                     PdfWriter writer = PdfWriter.GetInstance(document, fs);
                     document.Open();
 
-                    /*    string fontPath = "C:/Users/AppGate/source/repos/arvoot-crm.co.il/arvoot-crm.co.il/css/opensanshebrew/OpenSansHebrew-Regular.ttf";
-                        string boldFontPath = "C:/Users/AppGate/source/repos/arvoot-crm.co.il/arvoot-crm.co.il/css/opensanshebrew/OpenSansHebrew-Bold.ttf";*/
+             /*       string fontPath = "C:/Users/AppGate/source/repos/arvoot-crm.co.il/arvoot-crm.co.il/css/opensanshebrew/OpenSansHebrew-Regular.ttf";
+                    string boldFontPath = "C:/Users/AppGate/source/repos/arvoot-crm.co.il/arvoot-crm.co.il/css/opensanshebrew/OpenSansHebrew-Bold.ttf";*/
 
                     string fontPath = "C:/inetpub/vhosts/arvoot-crm.co.il/httpdocs/css/opensanshebrew/OpenSansHebrew-Regular.ttf";
                     string boldFontPath = "C:/inetpub/vhosts/arvoot-crm.co.il/httpdocs/css/opensanshebrew/OpenSansHebrew-Bold.ttf";
@@ -1436,7 +1433,8 @@ namespace ControlPanel
                     idCell5.HorizontalAlignment = Element.ALIGN_LEFT;
                     /**/
                     // תא שישי - ריק עם קו
-                    PdfPCell emptyCell555 = new PdfPCell(new Phrase(HttpContext.Current.Session["AgentName"].ToString(), font));
+                    string FirstAgentName = HttpContext.Current.Session["AgentName"].ToString().Contains(' ') ? HttpContext.Current.Session["AgentName"].ToString().Split(' ')[0] : "";
+                    PdfPCell emptyCell555 = new PdfPCell(new Phrase(FirstAgentName, font));
                     emptyCell555.BorderWidth = 0;
                     emptyCell555.BorderWidthBottom = 1;
 
@@ -2058,8 +2056,8 @@ namespace ControlPanel
                     detailsTable12.SetWidths(new float[] { 41.5f, 9.5f, 35f, 15f });
 
                     // הוספת שורת שם ומספר זיהוי
-                    AddLabelAndLine(detailsTable12, "שם (יחיד/תאגיד):", font, Text3.Value);
-                    AddLabelAndLine(detailsTable12, "רישיון מס:'", font,Text2.Value);
+                    AddLabelAndLine(detailsTable12, "שם (יחיד/תאגיד):", font,"");/* Text3.Value*/
+                    AddLabelAndLine(detailsTable12, "רישיון מס:'", font,"");/*Text2.Value*/
                     document.Add(detailsTable12);
 
                     PdfPTable table6 = new PdfPTable(1);
@@ -2108,7 +2106,7 @@ namespace ControlPanel
 
                     // הוספת שורת טלפון ומייל
                     AddLabelAndLine(detailsTable3, "טלפון:", font, dt.Rows[0]["Phone1"].ToString());
-                    AddLabelAndLine(detailsTable3, "מייל:", font, dt.Rows[0]["Email"].ToString());
+                    AddLabelAndLine(detailsTable3, "מייל:", font, dt.Rows[0]["Email"].ToString()); 
                     document.Add(detailsTable3);
 
                     // יצירת טבלת הצהרה

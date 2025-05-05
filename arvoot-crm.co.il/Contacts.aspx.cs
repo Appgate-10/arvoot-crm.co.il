@@ -27,7 +27,7 @@ namespace ControlPanel
             if (!Page.IsPostBack)
             {
                 Pageinit.CheckManagerPermissions();
-
+                this.Master.FindControl("SearchByTzOrPhone").Visible = true;
                 if (HttpContext.Current.Session["AgentLevel"] != null && int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()) < 4)
                 {
                     MoveTo.Visible = true;

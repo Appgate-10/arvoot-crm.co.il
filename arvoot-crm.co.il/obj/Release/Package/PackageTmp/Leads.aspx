@@ -14,13 +14,16 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:UpdatePanel ID="UpdatePanelButtons" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
-             <asp:Button  ID="NewLidBtn" Class="NewLid" Text="ליד חדש" Style="width: 110px; height: 35px;" runat="server" OnClick="NewLidBtn_Click" />
-    <asp:Button  ID="MoveTo" Class="NewLid"  Visible="false" Text="העבר ליד" Style="width: 110px; height: 35px; left:22%" runat="server" OnClick="MoveTo_Click" />
-    <asp:Button  ID="SetStatus" Class="NewLid"  Visible="false" Text="ערוך סטטוס" Style="width: 110px; height: 35px; left:30%" runat="server" OnClick="SetStatus_Click" />
+                          <div class="row" style="position: fixed;top: 27px; align-items: center; left: 14%;">
 
+             <asp:Button  ID="NewLidBtn" Class="NewLid2" Text="ליד חדש" Style="width: 110px; height: 35px; margin-left:30px" runat="server" OnClick="NewLidBtn_Click" />
+    <asp:Button  ID="MoveTo" Class="NewLid2"  Visible="false" Text="העבר ליד" Style="width: 110px; height: 35px;  margin-left:30px" runat="server" OnClick="MoveTo_Click" />
+    <asp:Button  ID="SetStatus" Class="NewLid2"  Visible="false" Text="ערוך סטטוס" Style="width: 110px; height: 35px; margin-left:30px" runat="server" OnClick="SetStatus_Click" />
+    <asp:ImageButton  ID="ExcelExport"  ImageUrl="~/images/icons/Excel_Icon.png" Style="width: 62px;height: 58px;" runat="server" OnClick="ExcelExport_Click" />
+
+</div>
         </ContentTemplate>
     </asp:UpdatePanel>
-      <asp:ImageButton  ID="ExcelExport"  ImageUrl="~/images/icons/Excel_Icon.png" Style="width: 62px;height: 58px;position: fixed;left: 400px;top: 27px;" runat="server" OnClick="ExcelExport_Click" />
 
      <div class="NewOfferDiv row">
         <label class="NewOfferLable" style="margin-inline-end: 3%;">לידים</label>

@@ -933,15 +933,6 @@ namespace ControlPanel
         protected global::System.Web.UI.HtmlControls.HtmlInputText CardholdersID;
 
         /// <summary>
-        /// Text3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText Text3;
-
-        /// <summary>
         /// CreditHolderName control.
         /// </summary>
         /// <remarks>
@@ -949,15 +940,6 @@ namespace ControlPanel
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText CreditHolderName;
-
-        /// <summary>
-        /// Text2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText Text2;
 
         /// <summary>
         /// error control.

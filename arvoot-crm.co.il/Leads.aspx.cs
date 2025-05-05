@@ -186,6 +186,8 @@ namespace ControlPanel
             SqlCommand cmd = new SqlCommand();
             SqlCommand cmdCount = new SqlCommand();
 
+            
+            this.Master.FindControl("SearchByTzOrPhone").Visible = true;
 
             if (HttpContext.Current.Session["AgentLevel"] != null) {
                 switch (int.Parse(HttpContext.Current.Session["AgentLevel"].ToString()))

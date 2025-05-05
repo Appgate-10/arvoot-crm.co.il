@@ -2305,6 +2305,20 @@ H2 {
     font-family: 'Open Sans Hebrew', sans-serif;
 }
 
+.NewLid2 {
+  
+    height: 60px;
+    background-color: #973595;
+    border: none;
+    color: white;
+    font-size: medium;
+    font-weight: bold;
+    border-radius: 38px;
+    width: 11%;
+    cursor: pointer;
+    font-family: 'Open Sans Hebrew', sans-serif;
+}
+
 .AllPopUp {
     z-index: 2; /* ערך גבוה יותר מהערך של דיב ה-x */
 }

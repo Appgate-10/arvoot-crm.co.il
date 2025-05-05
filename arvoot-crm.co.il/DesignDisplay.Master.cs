@@ -902,6 +902,28 @@ namespace ControlPanel
         protected void CloseAgentsPopUp_Click(object sender, ImageClickEventArgs e)
         {
             AgentsListPopUp.Visible = false;
+        }       
+        protected void OnSearch(object sender, EventArgs e)
+        {
+            resultSearch.Text = "";
+            if (!String.IsNullOrWhiteSpace(TxtInsuredSearch.Value))
+            {
+                string sql = @"select L.ID, L.IsContact,L.FirstName,L.LastName,A.FullName, A.Type, isnull(A.CompanyName,isnull(B.CompanyName,C.CompanyName)) as CompanyName
+                            from Lead L left join ArvootManagers A on A.ID = L.AgentID 
+                             LEFT JOIN ArvootManagers B ON a.ParentID = b.ID
+                             LEFT JOIN ArvootManagers C ON b.ParentID = c.ID
+                             where Phone1 = '" + TxtInsuredSearch.Value + "' or L.Tz = '" + TxtInsuredSearch.Value + "' ";
+                SqlCommand cmd = new SqlCommand(sql);
+                DataTable dt = DbProvider.GetDataTable(cmd);
+                if (dt.Rows.Count > 0)
+                {
+                    resultSearch.Visible = true;
+                    resultSearch.Text = "שם " + (dt.Rows[0]["IsContact"].ToString().Equals("1") ? "איש קשר: " : "ליד: ") + dt.Rows[0]["FirstName"].ToString() + " " + dt.Rows[0]["LastName"].ToString() + "\n נציג מטפל: " + dt.Rows[0]["FullName"].ToString() + " חברה: " + dt.Rows[0]["CompanyName"].ToString();
+                    resultSearch.Style.Add("white-space", "pre");
+                }
+            }
+
+
         }
 
         protected void EditButton_Click(object sender, ImageClickEventArgs e)

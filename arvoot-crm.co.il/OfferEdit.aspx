@@ -702,8 +702,8 @@
                                     <input id="CardholdersID" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd2" />
                                 </div>
                                  <div style="width: 50%;" class="row">
-                                    <label class="InputLable">שם מיופה הכח (יחיד/תאגיד):</label>
-                                    <input id="Text3" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd2" />
+                                 <%--   <label class="InputLable">שם מיופה הכח (יחיד/תאגיד):</label>
+                                    <input id="Text3" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd2" />--%>
                                 </div>
                             </div>        
                           <div class="row PaddingRow2 MarginRow" style="width: 70%;">
@@ -713,8 +713,8 @@
                                     <input id="CreditHolderName" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd2" />
                                 </div>
                                 <div style="width: 50%;" class="row">
-                                    <label class="InputLable">רשיון מס':</label>
-                                    <input id="Text2" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd2" />
+                                    <%--<label class="InputLable">רשיון מס':</label>
+                                    <input id="Text2" name="FullName" type="text" runat="server" style="width: 100%;" class="InputAdd2" />--%>
                                 </div>
                             </div>
                            <div class="DivLidTop">

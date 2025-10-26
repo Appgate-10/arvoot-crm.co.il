@@ -6,16 +6,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>ftp://192.117.146.93:2121/vhosts/arvoot-crm.co.il/httpdocs</_PublishTargetUrl>
+    <History>True|2025-09-08T07:46:07.2179705Z;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="AgentNumbers.aspx">
       <publishTime>11/02/2024 23:56:46</publishTime>
     </File>
     <File Include="bin/arvoot-crm.co.il.dll">
-      <publishTime>05/05/2025 15:13:04</publishTime>
+      <publishTime>09/08/2025 10:45:40</publishTime>
     </File>
     <File Include="bin/arvoot-crm.co.il.pdb">
-      <publishTime>05/05/2025 15:13:04</publishTime>
+      <publishTime>09/08/2025 10:45:40</publishTime>
     </File>
     <File Include="bin/BouncyCastle.Crypto.dll">
       <publishTime>02/21/2020 16:24:54</publishTime>
@@ -51,7 +52,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/10/2024 12:38:44</publishTime>
     </File>
     <File Include="Contacts.aspx">
-      <publishTime>05/05/2025 13:33:40</publishTime>
+      <publishTime>04/06/2025 15:02:40</publishTime>
     </File>
     <File Include="css/opensanshebrew/OpenSansHebrew-Bold.eot">
       <publishTime>10/08/2024 12:38:45</publishTime>
@@ -627,7 +628,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Leads.aspx">
-      <publishTime>04/22/2025 13:35:26</publishTime>
+      <publishTime>04/06/2025 15:03:00</publishTime>
     </File>
     <File Include="Notifications.aspx">
       <publishTime>11/03/2024 10:13:45</publishTime>
@@ -663,7 +664,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/04/2024 16:00:39</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>04/01/2025 09:36:52</publishTime>
+      <publishTime>09/08/2025 10:45:51</publishTime>
     </File>
   </ItemGroup>
 </Project>

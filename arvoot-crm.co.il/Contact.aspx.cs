@@ -645,6 +645,7 @@ namespace ControlPanel
         {
             int ErrorCount = 0;
             FormError_lable.Visible = false;
+            ExportNewContact_lable.Text = "";
             if (FirstName.Value == "")
             {
                 ErrorCount++;

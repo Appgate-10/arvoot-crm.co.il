@@ -83,10 +83,10 @@ namespace ControlPanel
                 SelectGender.DataBind();
                 SelectGender.Items.Insert(0, new ListItem("בחר", ""));
 
-                 
+
 
                 HttpContext.Current.Session["FirstStatusLeadID"] = null;
-                if(HttpContext.Current.Session["AgentLevel"].ToString() == "7")
+                if (HttpContext.Current.Session["AgentLevel"].ToString() == "7")
                 {
                     btn_save.Enabled = false;
                     ExportNewContact.Enabled = false;
@@ -144,14 +144,14 @@ namespace ControlPanel
                 //if (dtLead.Rows[0]["Gender"].ToString() == "other") { BtnGender.Text = "אחר"; }
                 //else if (dtLead.Rows[0]["Gender"].ToString() == "male") { BtnGender.Text = "זכר"; }
                 //else if (dtLead.Rows[0]["Gender"].ToString() == "female") { BtnGender.Text = "נקבה"; }
-               
+
                 //DateBirth.Value =DateTime.Parse(dtLead.Rows[0]["DateBirth"].ToString()).ToString("dd/mm/yyyy");
                 Address.Value = dtLead.Rows[0]["Address"].ToString();
                 SelectFamilyStatus.Value = dtLead.Rows[0]["FamilyStatusID"].ToString();
                 Tz.Value = dtLead.Rows[0]["Tz"].ToString();
                 IssuanceDateTz.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["IssuanceDateTz"].ToString()) ? "" : DateTime.ParseExact(dtLead.Rows[0]["IssuanceDateTz"].ToString(), "dd.MM.yyyy", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd");
-               /* IsValidIssuanceDateTz.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidIssuanceDateTz"].ToString()));
-                IsValidBdi.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString()));*/
+                /* IsValidIssuanceDateTz.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidIssuanceDateTz"].ToString()));
+                 IsValidBdi.Checked = Convert.ToBoolean(int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString()));*/
                 BdiValidity.SelectedIndex = int.Parse(dtLead.Rows[0]["IsValidBdi"].ToString());
                 InvalidBdiReason.Value = dtLead.Rows[0]["InvalidBdiReason"].ToString();
                 Phone1.Value = dtLead.Rows[0]["Phone1"].ToString();
@@ -194,7 +194,7 @@ namespace ControlPanel
                 PurposeLoan.Value = dtLead.Rows[0]["PurposeLoan"].ToString();
                 MortgageBalance.Value = dtLead.Rows[0]["MortgageBalance"].ToString();
 
-              //  DateChangeFirstStatus.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["DateChangeFirstStatus"].ToString()) ? "" : DateTime.Parse(dtLead.Rows[0]["DateChangeFirstStatus"].ToString()).ToString("yyyy-MM-dd");
+                //  DateChangeFirstStatus.Value = string.IsNullOrWhiteSpace(dtLead.Rows[0]["DateChangeFirstStatus"].ToString()) ? "" : DateTime.Parse(dtLead.Rows[0]["DateChangeFirstStatus"].ToString()).ToString("yyyy-MM-dd");
 
                 HttpContext.Current.Session["FirstStatusLeadID"] = dtLead.Rows[0]["FirstStatusLeadID"].ToString();
 
@@ -246,8 +246,8 @@ namespace ControlPanel
         protected void CopyLid_Click(object sender, ImageClickEventArgs e)
         {
             var x = 1;
-        }    
-        
+        }
+
         //protected void DeleteTask_Command(object sender, CommandEventArgs e)
         //{
         //    string strDel = "delete from Tasks where ID = @ID ";
@@ -450,7 +450,7 @@ namespace ControlPanel
         }
         protected void btnDateFilter_Click(object sender, EventArgs e)
         {
-            
+
         }
         protected void ShereLid_Click(object sender, ImageClickEventArgs e)
         {
@@ -598,40 +598,41 @@ namespace ControlPanel
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין שם משפחה";
             }
-            else if (SelectGender.Value == "")
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין מין";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין מין";
-            }
-            else if (DateBirth.Value == "")
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין תאריך לידה";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין תאריך לידה";
-            }
+            //Gila 20.07.2025 הסתרתי כי לא שדה חובה
+            //else if (SelectGender.Value == "")
+            //{
+            //    ErrorCount++;
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש להזין מין";
+            //    FormErrorBottom_label.Visible = true;
+            //    FormErrorBottom_label.Text = "יש להזין מין";
+            //}
+            //else if (DateBirth.Value == "")
+            //{
+            //    ErrorCount++;
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש להזין תאריך לידה";
+            //    FormErrorBottom_label.Visible = true;
+            //    FormErrorBottom_label.Text = "יש להזין תאריך לידה";
+            //}
             //else if (DateTime.ParseExact(DateBirth.Value, "dd.MM.yyyy", CultureInfo.InvariantCulture) > DateTime.Now)
-                else if (DateTime.Parse(DateBirth.Value) > DateTime.Now)
-                    {
+            else if (DateBirth.Value != "" && DateTime.Parse(DateBirth.Value) > DateTime.Now)
+            {
                 ErrorCount++;
                 FormError_label.Visible = true;
                 FormError_label.Text = "יש להזין תאריך לידה תקין";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין תאריך לידה תקין";
             }
-            else if (Tz.Value == "")
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין ת.ז";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין ת.ז";
-            }
-            else if (Tz.Value.Length != 9)
+            //else if (Tz.Value == "")
+            //{
+            //    ErrorCount++;
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש להזין ת.ז";
+            //    FormErrorBottom_label.Visible = true;
+            //    FormErrorBottom_label.Text = "יש להזין ת.ז";
+            //}
+            else if (Tz.Value != "" && Tz.Value.Length != 9)
             {
                 ErrorCount++;
                 FormError_label.Visible = true;
@@ -639,7 +640,7 @@ namespace ControlPanel
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין ת.ז תקינה";
             }
-            else if(Helpers.insuredTzExist(Tz.Value, long.Parse(Request.QueryString["LeadID"])) == "true")
+            else if (Helpers.insuredTzExist(Tz.Value, long.Parse(Request.QueryString["LeadID"])) == "true")
             {
                 ErrorCount++;
                 FormError_label.Visible = true;
@@ -648,15 +649,15 @@ namespace ControlPanel
                 FormErrorBottom_label.Text = "ת.ז קיימת במערכת";
                 return false;
             }
-            else if (Address.Value == "")
-            {
-                ErrorCount++;
-                FormError_label.Visible = true;
-                FormError_label.Text = "יש להזין כתובת";
-                FormErrorBottom_label.Visible = true;
-                FormErrorBottom_label.Text = "יש להזין כתובת";
-            }
-          
+            //else if (Address.Value == "")
+            //{
+            //    ErrorCount++;
+            //    FormError_label.Visible = true;
+            //    FormError_label.Text = "יש להזין כתובת";
+            //    FormErrorBottom_label.Visible = true;
+            //    FormErrorBottom_label.Text = "יש להזין כתובת";
+            //}
+
             else if (SelectFamilyStatus.SelectedIndex == 0)
             {
                 ErrorCount++;
@@ -777,8 +778,8 @@ namespace ControlPanel
             //    FormError_label.Text = "יש לבחור מצב תעסוקתי";
             //}            
 
-           
-  
+
+
             else if (SelectHaveAsset.SelectedIndex == 0)
             {
                 ErrorCount++;
@@ -863,7 +864,7 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@Address", string.IsNullOrEmpty(Address.Value) ? (object)DBNull.Value : Address.Value);
                 cmd.Parameters.AddWithValue("@FamilyStatusID", string.IsNullOrEmpty(SelectFamilyStatus.Value) ? (object)DBNull.Value : SelectFamilyStatus.Value);
                 cmd.Parameters.AddWithValue("@Tz", string.IsNullOrEmpty(Tz.Value) ? (object)DBNull.Value : Tz.Value);
-                cmd.Parameters.AddWithValue("@IssuanceDateTz", string.IsNullOrEmpty(IssuanceDateTz.Value) ? (object)DBNull.Value : IssuanceDateTz.Value );
+                cmd.Parameters.AddWithValue("@IssuanceDateTz", string.IsNullOrEmpty(IssuanceDateTz.Value) ? (object)DBNull.Value : IssuanceDateTz.Value);
                 //cmd.Parameters.AddWithValue("@IsValidIssuanceDateTz", IsValidIssuanceDateTz.Checked == true ? 1 : 0);
                 cmd.Parameters.AddWithValue("@IsValidBdi", /*IsValidBdi.Checked == true*/ BdiValidity.SelectedIndex);
                 cmd.Parameters.AddWithValue("@InvalidBdiReason", string.IsNullOrEmpty(InvalidBdiReason.Value) ? (object)DBNull.Value : InvalidBdiReason.Value);
@@ -876,7 +877,7 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@SecondStatusLeadID", string.IsNullOrEmpty(SelectSecondStatus.Value) ? (object)DBNull.Value : int.Parse(SelectSecondStatus.Value));
                 cmd.Parameters.AddWithValue("@SourceLeadID", string.IsNullOrEmpty(SelectSourceLead.Value) ? (object)DBNull.Value : int.Parse(SelectSourceLead.Value));
                 cmd.Parameters.AddWithValue("@InterestedIn", string.IsNullOrEmpty(InterestedIn.Value) ? (object)DBNull.Value : InterestedIn.Value);
-                cmd.Parameters.AddWithValue("@TrackingTime", string.IsNullOrEmpty(TrackingTime.Value) ? (object)DBNull.Value : DateTime.Parse(TrackingTime.Value ));
+                cmd.Parameters.AddWithValue("@TrackingTime", string.IsNullOrEmpty(TrackingTime.Value) ? (object)DBNull.Value : DateTime.Parse(TrackingTime.Value));
 
                 cmd.Parameters.AddWithValue("@Note", string.IsNullOrEmpty(Note.Value) ? (object)DBNull.Value : Note.Value);
 
@@ -924,7 +925,7 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@MortgageBalance", string.IsNullOrEmpty(MortgageBalance.Value) ? (object)DBNull.Value : long.Parse(MortgageBalance.Value));
 
 
-               
+
                 cmd.Parameters.AddWithValue("@LeadID", Request.QueryString["LeadID"]);
 
                 if (DbProvider.ExecuteCommand(cmd) > 0)
@@ -1037,14 +1038,14 @@ namespace ControlPanel
                 return false;
             }
             if (LastName.Value == "")
-            { 
+            {
                 ErrorCount++;
                 FormError_label.Visible = true;
                 FormError_label.Text = "יש להזין שם משפחה";
                 FormErrorBottom_label.Visible = true;
                 FormErrorBottom_label.Text = "יש להזין שם משפחה";
                 return false;
-            }            
+            }
             if (Phone1.Value == "")
             {
                 ErrorCount++;
@@ -1090,7 +1091,7 @@ namespace ControlPanel
                 FormErrorBottom_label.Text = "יש להזין אימייל תקין";
                 return false;
             }
-             if (DateBirth.Value != "" && DateTime.Parse(DateBirth.Value) > DateTime.Now)
+            if (DateBirth.Value != "" && DateTime.Parse(DateBirth.Value) > DateTime.Now)
             {
                 ErrorCount++;
                 FormError_label.Visible = true;
@@ -1116,7 +1117,7 @@ namespace ControlPanel
                 return false;
             }
             //סטטוס מעקב לחייב למלא תאריך
-            if(SelectFirstStatus.SelectedIndex == 8 && TrackingTime.Value == "")
+            if (SelectFirstStatus.SelectedIndex == 8 && TrackingTime.Value == "")
             {
                 ErrorCount++;
                 FormError_label.Visible = true;
@@ -1198,7 +1199,7 @@ namespace ControlPanel
                     sql += " ,DateChangeFirstStatus = GETDATE()";
                 }
 
-                
+
                 sql += " where ID = @LeadID";
                 SqlCommand cmd = new SqlCommand(sql);
 
@@ -1249,7 +1250,7 @@ namespace ControlPanel
                 cmd.Parameters.AddWithValue("@PrevBusinessSeniority", string.IsNullOrEmpty(PrevBusinessSeniority.Value) ? (object)DBNull.Value : PrevBusinessSeniority.Value);
                 cmd.Parameters.AddWithValue("@BusinessProfession", string.IsNullOrEmpty(BusinessProfession.Value) ? (object)DBNull.Value : BusinessProfession.Value);
                 cmd.Parameters.AddWithValue("@BusinessCity", string.IsNullOrEmpty(BusinessCity.Value) ? (object)DBNull.Value : BusinessCity.Value);
-            //    cmd.Parameters.AddWithValue("@BusinessEmail", string.IsNullOrEmpty(BusinessEmail.Value) ? (object)DBNull.Value : BusinessEmail.Value);
+                //    cmd.Parameters.AddWithValue("@BusinessEmail", string.IsNullOrEmpty(BusinessEmail.Value) ? (object)DBNull.Value : BusinessEmail.Value);
                 cmd.Parameters.AddWithValue("@BusinessPhone", string.IsNullOrEmpty(BusinessPhone.Value) ? (object)DBNull.Value : BusinessPhone.Value);
                 cmd.Parameters.AddWithValue("@BusinessGrossSalary", string.IsNullOrEmpty(BusinessGrossSalary.Value) ? (object)DBNull.Value : BusinessGrossSalary.Value);
                 cmd.Parameters.AddWithValue("@BusinessLineBusiness", string.IsNullOrEmpty(SelectBusinessLineBusiness.Value) ? (object)DBNull.Value : int.Parse(SelectBusinessLineBusiness.Value));
@@ -1277,9 +1278,9 @@ namespace ControlPanel
 
                 cmd.Parameters.AddWithValue("@LeadID", long.Parse(Request.QueryString["LeadID"]));
 
-              //  long LeadID = DbProvider.GetOneParamValueLong(cmd);
+                //  long LeadID = DbProvider.GetOneParamValueLong(cmd);
                 if (DbProvider.ExecuteCommand(cmd) > 0)
-                { 
+                {
                     if (HttpContext.Current.Session["FirstStatusLeadID"].ToString() != SelectFirstStatus.Value)
                     {
                         SqlCommand cmdHistory = new SqlCommand("INSERT INTO ActivityHistory (AgentID, Details, CreateDate, Show) VALUES (@agentID, @details, GETDATE(), 1)");
@@ -1380,7 +1381,7 @@ namespace ControlPanel
         //        ,LeadID
         //        ,PerformDate)
         //         VALUES (
-	       //       @Text
+        //       @Text
         //         ,@Status
         //         ,@LeadID
         //         ,@PerformDate)";
@@ -1421,6 +1422,6 @@ namespace ControlPanel
         //        TaskDiv.Visible = false;
         //    }
         //}
-      
+
     }
 }

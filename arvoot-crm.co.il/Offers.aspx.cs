@@ -309,14 +309,14 @@ namespace ControlPanel
                         break;
                     case 3:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID  ";
-                        sqlWhere += " and (B.ID = @ID OR A.ID = @ID) and StatusOffer.ID != 9 and  StatusOffer.ID != 10 ";
+                        sqlWhere += " and (B.ID = @ID OR A.ID = @ID) and StatusOffer.ID != 9 and  StatusOffer.ID != 10 and StatusOffer.ID != 6 ";//Gila 20.07.2025 add status 6
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
 
                         break;
                     case 6:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) ";
-                        sqlWhere += " and A.ID = @ID and Offer.IsInOperatingQueue = 0 and Offer.OperatorID is null and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
+                        sqlWhere += " and A.ID = @ID and Offer.IsInOperatingQueue = 0 and Offer.OperatorID is null and StatusOffer.ID != 9 and  StatusOffer.ID != 10 and StatusOffer.ID != 6 ";//Gila 20.07.2025 add status 6
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
@@ -324,7 +324,7 @@ namespace ControlPanel
                         sqlCreateDate = ", OperatingQueueDate as CreateDate ";
                         sqlOrderByDate = sqlOrderByDate.Replace("Offer.CreateDate", "OperatingQueueDate");
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on B.ParentID = C.ID  ";
-                        sqlWhere += " and (C.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID )) Or B.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID ))) and (IsInOperatingQueue = 1 or OperatorID is not null) and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
+                        sqlWhere += " and (C.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID )) Or B.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID ))) and (IsInOperatingQueue = 1 or OperatorID is not null) and StatusOffer.ID != 9 and  StatusOffer.ID != 10 and StatusOffer.ID != 6 ";//Gila 20.07.2025 add status 6
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         status.Style.Add("width", "10%");
@@ -335,7 +335,7 @@ namespace ControlPanel
                         sqlCreateDate = ", DateSentToOperator as CreateDate ";
                         sqlOrderByDate = sqlOrderByDate.Replace("Offer.CreateDate", "DateSentToOperator");
                         sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID ";
-                        sqlWhere += " and OperatorID = @ID and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
+                        sqlWhere += " and OperatorID = @ID and StatusOffer.ID != 9 and  StatusOffer.ID != 10 and StatusOffer.ID != 6 ";//Gila 20.07.2025 add status 6
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         cmdCount.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
 
@@ -500,25 +500,25 @@ namespace ControlPanel
                         break;
                     case 3:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID  ";
-                        sqlWhere += " and (B.ID = @ID OR A.ID = @ID) and StatusOffer.ID != 9 and  StatusOffer.ID != 10 ";
+                        sqlWhere += " and (B.ID = @ID OR A.ID = @ID) and StatusOffer.ID != 9 and  StatusOffer.ID != 10 and StatusOffer.ID != 6 ";//Gila 20.07.2025 add status 6
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
 
                         break;
                     case 6:
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) ";
-                        sqlWhere += " and A.ID = @ID and Offer.IsInOperatingQueue = 0 and Offer.OperatorID is null and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
+                        sqlWhere += " and A.ID = @ID and Offer.IsInOperatingQueue = 0 and Offer.OperatorID is null and StatusOffer.ID != 9 and  StatusOffer.ID != 10 and StatusOffer.ID != 6 ";//Gila 20.07.2025 add status 6
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                         break;
                     case 4:
 
                         sqlJoin = " inner join ArvootManagers A on A.ID = Lead.AgentID and A.Type in (3,6) inner join ArvootManagers B on B.ID = A.ParentID left join ArvootManagers C on B.ParentID = C.ID  ";
-                        sqlWhere += " and (C.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID )) Or B.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID ))) and (IsInOperatingQueue = 1 or OperatorID is not null) and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
+                        sqlWhere += " and (C.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID )) Or B.ID = ( select ParentID from ArvootManagers where ID = (select ParentID  from ArvootManagers where ID = @ID ))) and (IsInOperatingQueue = 1 or OperatorID is not null) and StatusOffer.ID != 9 and  StatusOffer.ID != 10 and StatusOffer.ID != 6 ";//Gila 20.07.2025 add status 6
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
                      
                         break;
                     case 5:
                         sqlJoin = " left join ArvootManagers A on A.ID = Lead.AgentID ";
-                        sqlWhere += " and OperatorID = @ID and StatusOffer.ID != 9 and  StatusOffer.ID != 10";
+                        sqlWhere += " and OperatorID = @ID and StatusOffer.ID != 9 and  StatusOffer.ID != 10 and StatusOffer.ID != 6 ";//Gila 20.07.2025 add status 6
                         cmd.Parameters.AddWithValue("@ID", HttpContext.Current.Session["AgentID"]);
 
                         break;
@@ -529,8 +529,9 @@ namespace ControlPanel
                 }
             }
 
-            string sql = @"SELECT  CONVERT(varchar,Offer.CreateDate, 104) AS  CreateDate, Lead.FirstName + ' ' + Lead.LastName as FullName,  Lead.Tz, 
-                           OfferType.Name as OfferType, A.FullName as FullNameAgent ,StatusOffer.Status as StatusOffer --, operators.FullName as OperatorName                           
+            //Gila 20.07.2025 החזרתי את שם המתפעלת , operators.FullName as OperatorName
+            string sql = @"SELECT  CONVERT(varchar,Offer.CreateDate, 104) AS  CreateDate, Lead.FirstName + ' ' + Lead.LastName as FullName,  Lead.Tz, convert(varchar, Lead.Phone1) Phone1, 
+                           OfferType.Name as OfferType, A.FullName as FullNameAgent ,StatusOffer.Status as StatusOffer, operators.FullName as OperatorName                           
                            from Offer
                            left join OfferType on OfferType.ID = Offer.OfferTypeID
                            left join StatusOffer on StatusOffer.ID = Offer.StatusOfferID 
@@ -609,9 +610,11 @@ namespace ControlPanel
             dataRow[0] = "תאריך";
             dataRow[1] = "שם מבוטח";
             dataRow[2] = "תעודת זהות";
-            dataRow[3] = "הצעה";
-            dataRow[4] = "בעלים";
-            dataRow[5] = "סטטוס";
+            dataRow[3] = "טלפון";
+            dataRow[4] = "הצעה";
+            dataRow[5] = "בעלים";
+            dataRow[6] = "סטטוס";
+            dataRow[7] = "מתפעלת";
 
             ds.Tables[0].Rows.InsertAt(dataRow, 0);
             bool didSuccess = CreateSimpleExcelFile.CreateExcelDocument(ds, "Offers.xlsx", Response);

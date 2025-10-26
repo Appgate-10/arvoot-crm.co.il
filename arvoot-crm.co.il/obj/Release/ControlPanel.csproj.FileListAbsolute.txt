@@ -26,3 +26,8 @@ C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\obj\Release\Cont
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\BouncyCastle.Crypto.dll
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\itextsharp.dll
 C:\Users\AppGate\source\repos\arvoot-crm.co.il\arvoot-crm.co.il\bin\itextsharp.xml
+C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\BouncyCastle.Crypto.dll
+C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\itextsharp.dll
+C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\Simplexcel.dll
+C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\itextsharp.xml
+C:\Server\arvoot-crm.co.il\arvoot-crm.co.il\bin\Simplexcel.xml
